@@ -1,0 +1,5 @@
+syntax = "proto3";
+
+package grpc.v1;
+
+option go_package = "api/proto/v1";
