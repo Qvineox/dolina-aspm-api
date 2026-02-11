@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package dolina.sbom.v1;
+
+option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/sbom/v1;sbom_v1";
+
+import "sbom/v1/vulnerability.proto";
+
+message Component {
+  string name = 1;
+
+  string group = 2;
+  string version = 3;
+  string description = 4;
+  string type = 5;
+
+  int32 level = 6;
+
+  string bom_ref = 7;
+  optional string purl = 8;
+
+  repeated Component children = 9;
+  repeated Vulnerability vulnerabilities = 10;
+
+  bool has_transitive_vulns = 11;
+  float max_severity = 12;
+  int32 total_cve_count = 13;
+}

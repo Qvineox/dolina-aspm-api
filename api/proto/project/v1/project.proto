@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package dolina.project.v1;
+
+option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/project/v1;project_v1";
+
+import "google/protobuf/timestamp.proto";
+
+message Project {
+  uint64 id = 1;
+
+  string name = 2;
+  string slug = 3;
+  optional string description = 4;
+
+  repeated string tags = 5;
+
+  optional string vcs_url = 6;
+
+  repeated dolina.project.v1.Project revisions = 7;
+
+  optional google.protobuf.Timestamp created_at = 8;
+  optional google.protobuf.Timestamp updated_at = 9;
+}

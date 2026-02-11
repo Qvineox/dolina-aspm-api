@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package dolina.sbom.v1;
+
+option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/sbom/v1;sbom_v1";
+
+import "google/api/annotations.proto";
+
+import "sbom/v1/vulnerability.proto";
+import "sbom/v1/component.proto";
+import "sbom/v1/sbom.proto";
+import "sbom/v1/meta.proto";
+
+import "project/v1/revision.proto";
+
+service SbomService {
+  rpc Decompose(DecomposeOptions) returns (SBOMDecomposition) {
+    option (google.api.http) = {
+      post: "/api/v1/sbom/decompose"
+      body: "*",
+      additional_bindings: {
+        post: "/api/v1/sbom/{file_uuid}/decompose"
+        body: "*",
+      }
+    };
+  };
+
+  rpc Upload(UploadOptions) returns (project.v1.Revision) {
+    option (google.api.http) = {
+      post: "/api/v1/sbom/{project_uid}/upload"
+      body: "*",
+    };
+  }
+}
+
+message DecomposeOptions {
+  oneof source {
+    string file_uuid = 1;
+    SBOMFiles upload = 2;
+  }
+
+  uint64 max_depth = 3;
+  bool only_vulnerable = 4;
+}
+
+message SBOMDecomposition {
+  optional uint64 id = 1;
+  optional string serial_number = 2;
+  optional string md5 = 3;
+
+  Meta meta_data = 4;
+
+  Component graph = 5;
+
+  repeated Component components = 6;
+  repeated Vulnerability vulnerabilities = 7;
+
+  uint64 total_nodes = 8;
+  repeated DependencyCycle dependency_cycles = 9;
+}
+
+message UploadOptions {
+  SBOMFiles upload = 1;
+
+  string project_uid = 2;
+}

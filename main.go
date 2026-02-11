@@ -2,10 +2,11 @@ package main
 
 import (
 	"context"
-	"gitlab.domsnail.ru/templates/go-clean-template/internal/app"
 	"log/slog"
 	"os/signal"
 	"syscall"
+
+	"gitlab.domsnail.ru/dolina/dolina-aspm-api/internal/app"
 )
 
 func main() {
