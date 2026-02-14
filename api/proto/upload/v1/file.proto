@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package dolina.upload.v1;
+
+option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/upload/v1;upload_v1";
+
+message FileChunk {
+  bytes content = 1;
+  optional FileMetadata metadata = 2;
+}
+
+message FileMetadata {
+  string file_name = 1;
+
+  string mime_type = 2;
+  uint64 total_size = 3;
+}
+
+message UploadStatus {
+  string file_uuid = 1;
+  string file_name = 2;
+
+  uint64 received_size = 3;
+}

@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package dolina.reports.v1;
+
+option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/analysis.proto/v1;reports_v1";
+
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+import "reports/v1/scanners.proto";
+
+message AnalyzeOptions {
+  string uploaded_file_uuid = 1;
+
+  // create or update project by provided attributes
+  optional uint64 project_id = 2;
+  optional string project_slug = 3; // ignored if project_id is provided
+
+  // create or update project repository by provided attributes
+  optional string repository_uuid = 4;
+  optional string repository_url = 5; // ignored if repository_uuid is provided
+
+  // create or update project artifact by provided attributes
+  optional string artifact_uuid = 6;
+  optional string artifact_purl = 7; // ignored if artifact_uuid is provided
+
+  // override scanner type
+  optional ScannerID scanner_id = 8;
+  optional ScannerFormat scanner_format = 9;
+
+  // defines if non-existing entities (projects, repositories or artifacts) will be created
+  bool auto_create = 10;
+}
+
+message AnalysisStatus {
+  string analysis_uuid = 1;
+
+  ScannerID scanner_id = 2;
+  ScannerFormat scanner_format = 3;
+
+  optional string project_id = 4;
+  optional string repository_uuid = 5;
+  optional string artifact_uuid = 6;
+
+  optional uint64 worker_id = 7;
+
+  AnalysisState current_state = 8;
+  bool is_done = 9;
+
+  google.protobuf.Timestamp created_at = 10;
+  optional google.protobuf.Timestamp started_at = 11;
+  optional google.protobuf.Timestamp ended_at = 12;
+  optional uint64 elapsed_seconds = 13;
+
+  // after analysis is complete report is created
+  optional string report_uuid = 14;
+}
+
+enum AnalysisState {
+  ANALYSIS_STATE_UNSPECIFIED = 0;
+
+  ANALYSIS_STATE_NOT_STARTED = 1; // analysis job in a queue
+  ANALYSIS_STATE_ASSIGNED = 2; // worker is assigned
+  ANALYSIS_STATE_IN_PROGRESS = 3; // worker is processing
+  ANALYSIS_STATE_VERIFICATION = 4; // worker is verifying and sends analysis results
+  ANALYSIS_STATE_DONE = 5; // analysis is done and results are saved
+
+  ANALYSIS_STATE_ERROR = 6; // analysis is finished with error
+  ANALYSIS_STATE_TIMEOUT = 7; // analysis is finished with timeout
+  ANALYSIS_STATE_CANCELED = 8; // analysis is cancel by user
+}

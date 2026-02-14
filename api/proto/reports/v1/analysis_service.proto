@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package dolina.reports.v1;
+
+option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/analysis.proto/v1;reports_v1";
+
+import "google/api/annotations.proto";
+import "reports/v1/analysis.proto";
+import "common/v1/uuid.proto";
+
+service AnalysisService {
+  // Synchronised method for reports analysis
+  rpc AnalyzeStream(AnalyzeOptions) returns (stream AnalysisStatus) {}
+
+  // Asynchronous method for reports analysis, always returns uncertain info
+  rpc AnalyzeUnary(AnalyzeOptions) returns (AnalysisStatus) {
+    option (google.api.http) = {
+      post: "/api/v1/reports/analyze"
+      body: "*"
+      additional_bindings: [
+        {
+          post: "/api/v1/reports/{uploaded_file_uuid}/analyze"
+          body: "*"
+        },
+        {
+          post: "/api/v1/projects/{project_id}/reports/analyze"
+          body: "*"
+        },
+        {
+          post: "/api/v1/projects/{project_id}/repositories/{repository_uuid}/reports/analyze"
+          body: "*"
+        },
+        {
+          post: "/api/v1/repositories/{repository_uuid}/reports/analyze"
+          body: "*"
+        },
+        {
+          post: "/api/v1/projects/{project_id}/artifacts/{artifact_uuid}/reports/analyze"
+          body: "*"
+        },
+        {
+          post: "/api/v1/artifacts/{artifact_uuid}/reports/analyze"
+          body: "*"
+        }
+      ]
+    };
+  }
+
+  rpc GetAnalysisStatusByUUID(common.v1.UUID) returns (AnalysisStatus) {
+    option (google.api.http) = {
+      get: "/api/v1/reports/analysis/{uuid}"
+    };
+  }
+}

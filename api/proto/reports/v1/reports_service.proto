@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package dolina.reports.v1;
+
+option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/analysis.proto/v1;reports_v1";
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "reports/v1/report.proto";
+import "common/v1/uuid.proto";
+
+
+service ReportsService {
+  rpc GetReportByUUID(common.v1.UUID) returns (Report) {
+    option (google.api.http) = {
+      get: "/api/v1/reports/{uuid}"
+    };
+  }
+
+  rpc GetReportsByQueryFilter(ReportsQueryFilter) returns (Reports) {
+    option (google.api.http) = {
+      get: "/api/v1/reports",
+      additional_bindings: [
+        {
+          get: "/api/v1/projects/{project_id}/reports"
+        },
+        {
+          get: "/api/v1/projects/{project_id}/repositories/{repository_uuid}/reports"
+        },
+        {
+          get: "/api/v1/projects/{project_id}/artifacts/{artifact_uuid}/reports"
+        }
+      ]
+    };
+  }
+
+  rpc PatchReport(ReportPatch) returns (Report) {
+    option (google.api.http) = {
+      patch: "/api/v1/reports/{uuid}"
+      body: "*"
+    };
+  }
+
+  rpc DeleteReportByUUID(common.v1.UUID) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/api/v1/reports/{uuid}"
+    };
+  }
+}

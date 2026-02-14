@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package dolina.upload.v1;
+
+option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/upload/v1;upload_v1";
+
+import "google/api/annotations.proto";
+import "upload/v1/file.proto";
+
+service UploadService {
+  rpc UploadUnary(FileChunk) returns (UploadStatus) {
+    option (google.api.http) = {
+      post: "/api/v1/upload"
+      body: "*",
+    };
+  }
+
+  rpc UploadStream(stream FileChunk) returns (UploadStatus) {
+    option (google.api.http) = {
+      post: "/api/v1/upload/stream"
+      body: "*",
+    };
+  }
+}

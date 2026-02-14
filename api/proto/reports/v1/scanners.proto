@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package dolina.reports.v1;
+
+option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/analysis.proto/v1;reports_v1";
+
+import "google/api/annotations.proto";
+
+enum ScannerID {
+  SCANNER_ID_UNSPECIFIED = 0;
+
+  SCANNER_ID_TRIVY = 1;
+  SCANNER_ID_GITLEAKS = 2;
+}
+
+enum ScannerFormat {
+  SCANNER_FORMAT_UNSPECIFIED = 0;
+
+  SCANNER_TRIVY_FS = 1;
+  SCANNER_FORMAT_SARIF = 2;
+  SCANNER_FORMAT_SBOM = 3;
+}
