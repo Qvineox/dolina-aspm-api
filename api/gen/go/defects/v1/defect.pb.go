@@ -80,6 +80,7 @@ type Defect struct {
 	Uuid        string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
 	Title       string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
 	Description string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	Type        DefectType             `protobuf:"varint,4,opt,name=type,proto3,enum=dolina.defects.v1.DefectType" json:"type,omitempty"`
 	// risk score is based on inputs from security scanners and applied ruleset
 	AppliedRiskScore uint32 `protobuf:"varint,5,opt,name=applied_risk_score,json=appliedRiskScore,proto3" json:"applied_risk_score,omitempty"`
 	CvssScore        uint32 `protobuf:"varint,6,opt,name=cvss_score,json=cvssScore,proto3" json:"cvss_score,omitempty"`
@@ -145,6 +146,13 @@ func (x *Defect) GetDescription() string {
 		return x.Description
 	}
 	return ""
+}
+
+func (x *Defect) GetType() DefectType {
+	if x != nil {
+		return x.Type
+	}
+	return DefectType_DEFECT_TYPE_UNSPECIFIED
 }
 
 func (x *Defect) GetAppliedRiskScore() uint32 {
@@ -342,11 +350,12 @@ var File_defects_v1_defect_proto protoreflect.FileDescriptor
 
 const file_defects_v1_defect_proto_rawDesc = "" +
 	"\n" +
-	"\x17defects/v1/defect.proto\x12\x11dolina.defects.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x16common/v1/paging.proto\x1a\x14common/v1/sort.proto\"\xe4\x04\n" +
+	"\x17defects/v1/defect.proto\x12\x11dolina.defects.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x16common/v1/paging.proto\x1a\x14common/v1/sort.proto\"\x97\x05\n" +
 	"\x06Defect\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12 \n" +
-	"\vdescription\x18\x03 \x01(\tR\vdescription\x12,\n" +
+	"\vdescription\x18\x03 \x01(\tR\vdescription\x121\n" +
+	"\x04type\x18\x04 \x01(\x0e2\x1d.dolina.defects.v1.DefectTypeR\x04type\x12,\n" +
 	"\x12applied_risk_score\x18\x05 \x01(\rR\x10appliedRiskScore\x12\x1d\n" +
 	"\n" +
 	"cvss_score\x18\x06 \x01(\rR\tcvssScore\x12\x1b\n" +
@@ -408,17 +417,18 @@ var file_defects_v1_defect_proto_goTypes = []any{
 	(*v1.Sort)(nil),               // 6: dolina.common.v1.Sort
 }
 var file_defects_v1_defect_proto_depIdxs = []int32{
-	1, // 0: dolina.defects.v1.Defect.defect_duplicates:type_name -> dolina.defects.v1.Defect
-	4, // 1: dolina.defects.v1.Defect.created_at:type_name -> google.protobuf.Timestamp
-	4, // 2: dolina.defects.v1.Defect.updated_at:type_name -> google.protobuf.Timestamp
-	1, // 3: dolina.defects.v1.Defects.defects:type_name -> dolina.defects.v1.Defect
-	5, // 4: dolina.defects.v1.DefectsQueryFilter.paging:type_name -> dolina.common.v1.Paging
-	6, // 5: dolina.defects.v1.DefectsQueryFilter.sort:type_name -> dolina.common.v1.Sort
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	0, // 0: dolina.defects.v1.Defect.type:type_name -> dolina.defects.v1.DefectType
+	1, // 1: dolina.defects.v1.Defect.defect_duplicates:type_name -> dolina.defects.v1.Defect
+	4, // 2: dolina.defects.v1.Defect.created_at:type_name -> google.protobuf.Timestamp
+	4, // 3: dolina.defects.v1.Defect.updated_at:type_name -> google.protobuf.Timestamp
+	1, // 4: dolina.defects.v1.Defects.defects:type_name -> dolina.defects.v1.Defect
+	5, // 5: dolina.defects.v1.DefectsQueryFilter.paging:type_name -> dolina.common.v1.Paging
+	6, // 6: dolina.defects.v1.DefectsQueryFilter.sort:type_name -> dolina.common.v1.Sort
+	7, // [7:7] is the sub-list for method output_type
+	7, // [7:7] is the sub-list for method input_type
+	7, // [7:7] is the sub-list for extension type_name
+	7, // [7:7] is the sub-list for extension extendee
+	0, // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_defects_v1_defect_proto_init() }

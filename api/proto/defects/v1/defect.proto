@@ -14,7 +14,7 @@ message Defect {
   string title = 2;
   string description = 3;
 
-  //  DefectType type = 4;
+  DefectType type = 4;
 
   // risk score is based on inputs from security scanners and applied ruleset
   uint32 applied_risk_score = 5;

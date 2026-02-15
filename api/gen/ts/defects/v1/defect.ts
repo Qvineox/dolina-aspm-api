@@ -61,6 +61,7 @@ export interface Defect {
   uuid: string;
   title: string;
   description: string;
+  type: DefectType;
   /** risk score is based on inputs from security scanners and applied ruleset */
   appliedRiskScore: number;
   cvssScore: number;
@@ -96,6 +97,7 @@ function createBaseDefect(): Defect {
     uuid: "",
     title: "",
     description: "",
+    type: 0,
     appliedRiskScore: 0,
     cvssScore: 0,
     isLatest: false,
@@ -118,6 +120,9 @@ export const Defect: MessageFns<Defect> = {
     }
     if (message.description !== "") {
       writer.uint32(26).string(message.description);
+    }
+    if (message.type !== 0) {
+      writer.uint32(32).int32(message.type);
     }
     if (message.appliedRiskScore !== 0) {
       writer.uint32(40).uint32(message.appliedRiskScore);
@@ -178,6 +183,14 @@ export const Defect: MessageFns<Defect> = {
           }
 
           message.description = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 32) {
+            break;
+          }
+
+          message.type = reader.int32() as any;
           continue;
         }
         case 5: {
@@ -266,6 +279,7 @@ export const Defect: MessageFns<Defect> = {
       uuid: isSet(object.uuid) ? globalThis.String(object.uuid) : "",
       title: isSet(object.title) ? globalThis.String(object.title) : "",
       description: isSet(object.description) ? globalThis.String(object.description) : "",
+      type: isSet(object.type) ? defectTypeFromJSON(object.type) : 0,
       appliedRiskScore: isSet(object.appliedRiskScore) ? globalThis.Number(object.appliedRiskScore) : 0,
       cvssScore: isSet(object.cvssScore) ? globalThis.Number(object.cvssScore) : 0,
       isLatest: isSet(object.isLatest) ? globalThis.Boolean(object.isLatest) : false,
@@ -290,6 +304,9 @@ export const Defect: MessageFns<Defect> = {
     }
     if (message.description !== "") {
       obj.description = message.description;
+    }
+    if (message.type !== 0) {
+      obj.type = defectTypeToJSON(message.type);
     }
     if (message.appliedRiskScore !== 0) {
       obj.appliedRiskScore = Math.round(message.appliedRiskScore);
@@ -329,6 +346,7 @@ export const Defect: MessageFns<Defect> = {
     message.uuid = object.uuid ?? "";
     message.title = object.title ?? "";
     message.description = object.description ?? "";
+    message.type = object.type ?? 0;
     message.appliedRiskScore = object.appliedRiskScore ?? 0;
     message.cvssScore = object.cvssScore ?? 0;
     message.isLatest = object.isLatest ?? false;

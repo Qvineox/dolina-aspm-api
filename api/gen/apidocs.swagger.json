@@ -1624,6 +1624,9 @@
         "description": {
           "type": "string"
         },
+        "type": {
+          "$ref": "#/definitions/v1DefectType"
+        },
         "appliedRiskScore": {
           "type": "integer",
           "format": "int64",
@@ -1665,6 +1668,16 @@
           "format": "date-time"
         }
       }
+    },
+    "v1DefectType": {
+      "type": "string",
+      "enum": [
+        "DEFECT_TYPE_UNSPECIFIED",
+        "DEFECT_TYPE_SAST",
+        "DEFECT_TYPE_DAST",
+        "DEFECT_TYPE_SCA"
+      ],
+      "default": "DEFECT_TYPE_UNSPECIFIED"
     },
     "v1Defects": {
       "type": "object",
