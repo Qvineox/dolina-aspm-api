@@ -523,13 +523,13 @@ message Metadata {
 }
 
 message Lifecycles {
-   oneof choice {
-     // A pre-defined phase in the product lifecycle.
-     LifecyclePhase phase = 1;
-     // The name of the lifecycle phase
-     string name = 2;
-   }
-   // The description of the lifecycle phase
+  oneof choice {
+    // A pre-defined phase in the product lifecycle.
+    LifecyclePhase phase = 1;
+    // The name of the lifecycle phase
+    string name = 2;
+  }
+  // The description of the lifecycle phase
   optional string description = 3;
 }
 

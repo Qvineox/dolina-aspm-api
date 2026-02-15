@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package dolina.auth.v1;
+
+option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/auth/v1;auth_v1";
+
+import "google/protobuf/timestamp.proto";
+
+message User {
+  uint32 id = 1;
+  string username = 2;
+
+  string given_name = 3;
+  string family_name = 4;
+  string middle_name = 5;
+  string pronounce = 6;
+
+  optional google.protobuf.Timestamp created_at = 10;
+  optional google.protobuf.Timestamp updated_at = 11;
+}

@@ -11,7 +11,7 @@ PROTO_GRPC_GW_INC="C:\Users\YDLysak\go\pkg\mod\github.com\grpc-ecosystem\grpc-ga
 # C:\Users\YDLysak\protoc\include
 # C:\Users\YDLysak\go\pkg\mod\github.com\grpc-ecosystem\grpc-gateway@v1.16.0\third_party\googleapis
 
-all: go gateway
+all: go gateway ts
 
 go:
 	protoc -I . -I $(PROTOC_INC) -I $(PROTO_GRPC_GW_INC) \
@@ -52,7 +52,18 @@ ts:
 	protoc -I . -I $(PROTO_DIR) -I $(PROTOC_INC) -I $(PROTO_GRPC_GW_INC) \
 		--ts_proto_out=$(TS_OUT) \
 		--ts_proto_opt=esModuleInterop=true,forceLong=string,outputServices=grpc-js \
-		api/proto/sbom/v1/*.proto
+		applications/v1/*.proto \
+		cyclonedx/v17/*.proto \
+		cyclonedx/v16/*.proto \
+		components/v1/*.proto \
+		projects/v1/*.proto \
+		reports/v1/*.proto \
+		defects/v1/*.proto \
+		workers/v1/*.proto \
+		upload/v1/*.proto \
+		common/v1/*.proto \
+		sbom/v1/*.proto \
+		openapi.proto
 
 clean:
 	del /S /Q $(GO_OUT)\* || echo ""
