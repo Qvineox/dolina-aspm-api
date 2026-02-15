@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package dolina.v1;
+
+option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/openapi;openapi_v1";
+
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    version: "0.1.0-dev"
+    title: "Dolina ASPM API"
+    description: "API for the Dolina Application Security Posture Management (ASPM) system. "
+        "Enables ingestion of security scanner reports, management of application "
+        "components, and retrieval of unified security analysis reports."
+    contact: {
+      name: "Yaroslav Lysak"
+      email: "lysal.yaroslav00@yandex.ru"
+      url: "https://github.com/Qvineox"
+    }
+    license: {
+      name: "Proprietary"
+    }
+  }
+  schemes: [
+    HTTP, HTTPS
+  ]
+  host: "0.0.0.0:80"
+  swagger: "2.0"
+  tags: [
+    {
+      name: "CLI"
+      description: "Methods user by a Dolina CLI module"
+    }
+  ]
+};

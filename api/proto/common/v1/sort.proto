@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package dolina.common.v1;
+
+option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/common/v1;common_v1";
+
+message Sort {
+
+}

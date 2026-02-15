@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package dolina.workers.v1;
+
+option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/workers.proto/v1;workers_v1";
+
+import "google/protobuf/empty.proto";
+import "workers/v1/queue.proto";
+
+service WorkerQueueService {
+  rpc GetJob(google.protobuf.Empty) returns (WorkerJob) {}
+}

@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package dolina.components.v1;
+
+option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/components/v1;components_v1";
+
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+import "google/protobuf/timestamp.proto";
+
+import "defects/v1/defect.proto";
+import "common/v1/paging.proto";
+import "common/v1/sort.proto";
+
+message Component {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Component"
+      description: "A software component that is part of an application's architecture."
+          "Components can include libraries, frameworks, services, containers "
+          "or other artifacts. Each component tracks metadata such as name, "
+          "version, type, and security‑relevant attributes like vulnerabilities, "
+          "licenses, and dependencies. In Dolina ASPM, components are the primary "
+          "units for assessing and managing application security posture."
+    }
+  };
+
+  string uuid = 1;
+  string purl = 2;
+
+  bool is_public = 3; // if component was obtained from public sources (npm, github etc.)
+
+  optional string repository_uuid = 4;
+  optional string repository_ref = 5;
+
+  optional string artifact_uuid = 6;
+
+  repeated defects.v1.Defect defects = 10;
+
+  optional google.protobuf.Timestamp created_at = 20;
+  optional google.protobuf.Timestamp updated_at = 21;
+}
+
+message Components {
+  repeated Component components = 1;
+}
+
+message ComponentsQueryFilter {
+  string purl = 1;
+
+  optional string repository_uuid = 4;
+  optional string repository_ref = 5;
+  optional string artifact_uuid = 6;
+
+  common.v1.Paging paging = 20;
+  common.v1.Sort sort = 21;
+}

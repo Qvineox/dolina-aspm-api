@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package dolina.workers.v1;
+
+option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/workers.proto/v1;workers_v1";
+
+import "google/protobuf/empty.proto";
+
+import "workers/v1/report_processing.proto";
+import "reports/v1/report.proto";
+import "common/v1/uuid.proto";
+
+service ReportProcessingService {
+  rpc GetReportByUUID(common.v1.UUID) returns (reports.v1.Report) {}
+
+  rpc StreamAnalysisProcess(stream AnalysisProcessStream) returns (google.protobuf.Empty) {}
+}

@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package dolina.defects.v1;
+
+option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/defects/v1;defects_v1";
+
+import "google/api/annotations.proto";
+
+import "defects/v1/defect.proto";
+import "common/v1/uuid.proto";
+
+service DefectsService {
+  rpc GetDefectByUUID(common.v1.UUID) returns (Defect) {
+    option (google.api.http) = {
+      get: "/api/v1/defects/{uuid}"
+    };
+  }
+
+  rpc GetDefectsByQueryFilter(DefectsQueryFilter) returns (Defects) {
+    option (google.api.http) = {
+      get: "/api/v1/defects"
+    };
+  }
+}

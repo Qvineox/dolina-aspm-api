@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package dolina.workers.v1;
+
+option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/workers.proto/v1;workers_v1";
+
+import "components/v1/component.proto";
+import "reports/v1/analysis.proto";
+import "reports/v1/report.proto";
+import "defects/v1/defect.proto";
+
+message AnalysisProcessStream {
+  string report_uuid = 1;
+
+  reports.v1.AnalysisState current_state = 3;
+
+  oneof processed_artifacts {
+    components.v1.Components components = 4;
+    defects.v1.Defects defects = 5;
+    reports.v1.Report report = 6;
+  }
+
+  // worker_id, analysis_uuid, report_uuid must be added to metadata
+}
+
+message AnalysisProcessSummary {
+
+}

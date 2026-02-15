@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package dolina.workers.v1;
+
+option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/workers.proto/v1;workers_v1";
+
+message WorkerQueue {
+
+}
+
+message WorkerJob {
+
+}

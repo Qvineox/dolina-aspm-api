@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package dolina.components.v1;
+
+option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/components/v1;components_v1";
+
+import "google/api/annotations.proto";
+
+import "components/v1/component.proto";
+import "common/v1/uuid.proto";
+
+service ComponentsService {
+  rpc GetComponentByUUID(common.v1.UUID) returns (Component) {
+    option (google.api.http) = {
+      get: "/api/v1/components/{uuid}"
+    };
+  };
+
+  rpc GetComponentsByQueryFilter(ComponentsQueryFilter) returns (Components) {
+    option (google.api.http) = {
+      get: "/api/v1/components"
+    };
+  };
+}

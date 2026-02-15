@@ -14,7 +14,7 @@ func main() {
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGTERM)
 	defer stop()
 
-	// running application
+	// running applications
 	go func() {
 		err := app.Run(ctx)
 		if err != nil {
@@ -22,6 +22,6 @@ func main() {
 		}
 	}()
 
-	slog.Info("application started.")
+	slog.Info("applications started.")
 	<-ctx.Done()
 }

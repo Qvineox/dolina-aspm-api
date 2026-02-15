@@ -11,7 +11,7 @@ import "sbom/v1/component.proto";
 import "sbom/v1/sbom.proto";
 import "sbom/v1/meta.proto";
 
-import "project/v1/revision.proto";
+import "projects/v1/revision.proto";
 
 service SbomService {
   rpc Decompose(DecomposeOptions) returns (SBOMDecomposition) {

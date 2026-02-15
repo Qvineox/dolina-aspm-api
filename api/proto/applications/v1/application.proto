@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package dolina.application.v1;
+
+option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/applications/v1;application_v1";
+
+message Application {
+  uint32 id = 1;
+}

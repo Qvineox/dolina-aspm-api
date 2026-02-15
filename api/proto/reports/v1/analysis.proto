@@ -2,57 +2,66 @@ syntax = "proto3";
 
 package dolina.reports.v1;
 
-option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/analysis.proto/v1;reports_v1";
+option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/reports/v1;reports_v1";
+
+import "protoc-gen-openapiv2/options/annotations.proto";
 
 import "google/protobuf/timestamp.proto";
-import "google/api/annotations.proto";
+import "google/protobuf/duration.proto";
 import "reports/v1/scanners.proto";
 
 message AnalyzeOptions {
-  string uploaded_file_uuid = 1;
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Analyze options"
+      description: "Contextual metadata accompanying a raw scanner report. It provides information "
+          "about the environment in which the scan was executed, such as the repository URL, "
+          "Git reference (branch, tag, commit), pipeline or build ID, and any other relevant "
+          "deployment or runtime context. This data is used by Dolina ASPM to enrich, filter, "
+          "and correlate findings with specific code versions or build stages."
+    }
+  };
 
-  // create or update project by provided attributes
-  optional uint64 project_id = 2;
-  optional string project_slug = 3; // ignored if project_id is provided
+  repeated ScannerReport scanner_reports = 1;
 
   // create or update project repository by provided attributes
-  optional string repository_uuid = 4;
-  optional string repository_url = 5; // ignored if repository_uuid is provided
+  optional string repository_uuid = 2;
+  optional string repository_url = 3; // ignored if repository_uuid is provided
+  optional string repository_ref = 4; // added to repository data (can be branch or tag)
 
   // create or update project artifact by provided attributes
-  optional string artifact_uuid = 6;
-  optional string artifact_purl = 7; // ignored if artifact_uuid is provided
+  optional string artifact_uuid = 5;
+  optional string artifact_purl = 6; // ignored if artifact_uuid is provided
 
-  // override scanner type
-  optional ScannerID scanner_id = 8;
-  optional ScannerFormat scanner_format = 9;
+  // ci/cd attributes
+  optional string pipeline_id = 7;
+  optional uint32 upload_window = 8; // defines how long to delay processing
 
   // defines if non-existing entities (projects, repositories or artifacts) will be created
-  bool auto_create = 10;
+  bool auto_create = 9;
 }
 
 message AnalysisStatus {
-  string analysis_uuid = 1;
+  string report_uuid = 1;
 
-  ScannerID scanner_id = 2;
-  ScannerFormat scanner_format = 3;
+  repeated ScannerReport scanner_reports = 2;
+
+  optional string pipeline_id = 3;
 
   optional string project_id = 4;
   optional string repository_uuid = 5;
   optional string artifact_uuid = 6;
 
-  optional uint64 worker_id = 7;
+  optional uint32 worker_id = 7;
 
   AnalysisState current_state = 8;
   bool is_done = 9;
+  optional float progress = 10;
 
-  google.protobuf.Timestamp created_at = 10;
-  optional google.protobuf.Timestamp started_at = 11;
-  optional google.protobuf.Timestamp ended_at = 12;
-  optional uint64 elapsed_seconds = 13;
-
-  // after analysis is complete report is created
-  optional string report_uuid = 14;
+  optional google.protobuf.Timestamp created_at = 11;
+  optional google.protobuf.Timestamp started_at = 12;
+  optional google.protobuf.Timestamp ended_at = 13;
+  optional google.protobuf.Duration elapsed_duration = 14;
 }
 
 enum AnalysisState {

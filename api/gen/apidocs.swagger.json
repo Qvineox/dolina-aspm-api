@@ -1,0 +1,2113 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Dolina ASPM API",
+    "description": "API for the Dolina Application Security Posture Management (ASPM) system. Enables ingestion of security scanner reports, management of application components, and retrieval of unified security analysis reports.",
+    "version": "0.1.0-dev",
+    "contact": {
+      "name": "Yaroslav Lysak",
+      "url": "https://github.com/Qvineox",
+      "email": "lysal.yaroslav00@yandex.ru"
+    },
+    "license": {
+      "name": "Proprietary"
+    }
+  },
+  "tags": [
+    {
+      "name": "CLI",
+      "description": "Methods user by a Dolina CLI module"
+    },
+    {
+      "name": "ComponentsService"
+    },
+    {
+      "name": "ProjectService"
+    },
+    {
+      "name": "AnalysisService"
+    },
+    {
+      "name": "ReportsService"
+    },
+    {
+      "name": "DefectsService"
+    },
+    {
+      "name": "ReportProcessingService"
+    },
+    {
+      "name": "WorkerQueueService"
+    },
+    {
+      "name": "UploadService"
+    },
+    {
+      "name": "SbomService"
+    }
+  ],
+  "host": "0.0.0.0:80",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/v1/components": {
+      "get": {
+        "operationId": "ComponentsService_GetComponentsByQueryFilter",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Components"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "purl",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "repositoryUuid",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "repositoryRef",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "artifactUuid",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "paging.offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "paging.limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "ComponentsService"
+        ]
+      }
+    },
+    "/api/v1/components/{uuid}": {
+      "get": {
+        "operationId": "ComponentsService_GetComponentByUUID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/dolinaComponentsV1Component"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ComponentsService"
+        ]
+      }
+    },
+    "/api/v1/defects": {
+      "get": {
+        "operationId": "DefectsService_GetDefectsByQueryFilter",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Defects"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "title",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "componentPurl",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "applicationId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "applicationRef",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "paging.offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "paging.limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "DefectsService"
+        ]
+      }
+    },
+    "/api/v1/defects/{uuid}": {
+      "get": {
+        "operationId": "DefectsService_GetDefectByUUID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Defect"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "DefectsService"
+        ]
+      }
+    },
+    "/api/v1/projects": {
+      "get": {
+        "operationId": "ProjectService_GetProjectsByQueryFilter",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ProjectsList"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "slug",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "ProjectService"
+        ]
+      },
+      "put": {
+        "operationId": "ProjectService_CreateProject",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Project"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1Project"
+            }
+          }
+        ],
+        "tags": [
+          "ProjectService"
+        ]
+      }
+    },
+    "/api/v1/projects/{id}": {
+      "get": {
+        "operationId": "ProjectService_GetProject",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Project"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "slug",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "ProjectService"
+        ]
+      },
+      "patch": {
+        "operationId": "ProjectService_UpdateProject",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Project"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProjectServiceUpdateProjectBody"
+            }
+          }
+        ],
+        "tags": [
+          "ProjectService"
+        ]
+      }
+    },
+    "/api/v1/projects/{projectId}/{id}": {
+      "patch": {
+        "operationId": "ProjectService_UpdateProjectRevision",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Revision"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProjectServiceUpdateProjectRevisionBody"
+            }
+          }
+        ],
+        "tags": [
+          "ProjectService"
+        ]
+      }
+    },
+    "/api/v1/projects/{projectId}/{revisionId}": {
+      "get": {
+        "operationId": "ProjectService_GetProjectRevision",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Revision"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "revisionId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "projectSlug",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ProjectService"
+        ]
+      }
+    },
+    "/api/v1/projects/{projectSlug}/{revisionId}": {
+      "get": {
+        "operationId": "ProjectService_GetProjectRevision2",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Revision"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectSlug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "revisionId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "projectId",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "ProjectService"
+        ]
+      }
+    },
+    "/api/v1/projects/{slug}": {
+      "get": {
+        "operationId": "ProjectService_GetProject2",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Project"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "ProjectService"
+        ]
+      }
+    },
+    "/api/v1/reports": {
+      "get": {
+        "operationId": "ReportsService_GetReportsByQueryFilter",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Reports"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "projectSlug",
+            "description": "ignored if project_id is provided",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "applicationId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "applicationSlug",
+            "description": "ignored if application_id is provided",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "repositoryUuid",
+            "description": "create or update project repository by provided attributes",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "repositoryUrl",
+            "description": "ignored if repository_uuid is provided",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "artifactUuid",
+            "description": "create or update project artifact by provided attributes",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "artifactPurl",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "scannerId",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "SCANNER_ID_UNSPECIFIED",
+              "SCANNER_ID_TRIVY",
+              "SCANNER_ID_GITLEAKS"
+            ],
+            "default": "SCANNER_ID_UNSPECIFIED"
+          },
+          {
+            "name": "scannerFormat",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "SCANNER_FORMAT_UNSPECIFIED",
+              "SCANNER_TRIVY_FS",
+              "SCANNER_FORMAT_SARIF",
+              "SCANNER_FORMAT_SBOM"
+            ],
+            "default": "SCANNER_FORMAT_UNSPECIFIED"
+          },
+          {
+            "name": "pipelineId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "paging.offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "paging.limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "ReportsService"
+        ]
+      }
+    },
+    "/api/v1/reports/analysis/{uuid}": {
+      "get": {
+        "operationId": "AnalysisService_GetAnalysisStatusByReportUUID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1AnalysisStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AnalysisService"
+        ]
+      }
+    },
+    "/api/v1/reports/analyze": {
+      "post": {
+        "summary": "Asynchronous method for reports analysis, always returns uncertain info",
+        "operationId": "AnalysisService_AnalyzeUnary",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1AnalysisStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "Contextual metadata accompanying a raw scanner report. It provides information about the environment in which the scan was executed, such as the repository URL, Git reference (branch, tag, commit), pipeline or build ID, and any other relevant deployment or runtime context. This data is used by Dolina ASPM to enrich, filter, and correlate findings with specific code versions or build stages.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1AnalyzeOptions"
+            }
+          }
+        ],
+        "tags": [
+          "AnalysisService"
+        ]
+      }
+    },
+    "/api/v1/reports/{uuid}": {
+      "get": {
+        "operationId": "ReportsService_GetReportByUUID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Report"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ReportsService"
+        ]
+      },
+      "delete": {
+        "operationId": "ReportsService_DeleteReportByUUID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ReportsService"
+        ]
+      },
+      "patch": {
+        "operationId": "ReportsService_PatchReport",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Report"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ReportsServicePatchReportBody"
+            }
+          }
+        ],
+        "tags": [
+          "ReportsService"
+        ]
+      }
+    },
+    "/api/v1/sbom/decompose": {
+      "post": {
+        "operationId": "SbomService_Decompose",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1SBOMDecomposition"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1DecomposeOptions"
+            }
+          }
+        ],
+        "tags": [
+          "SbomService"
+        ]
+      }
+    },
+    "/api/v1/sbom/{fileUuid}/decompose": {
+      "post": {
+        "operationId": "SbomService_Decompose2",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1SBOMDecomposition"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "fileUuid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SbomServiceDecomposeBody"
+            }
+          }
+        ],
+        "tags": [
+          "SbomService"
+        ]
+      }
+    },
+    "/api/v1/sbom/{projectUid}/upload": {
+      "post": {
+        "operationId": "SbomService_Upload",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Revision"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectUid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SbomServiceUploadBody"
+            }
+          }
+        ],
+        "tags": [
+          "SbomService"
+        ]
+      }
+    },
+    "/api/v1/upload": {
+      "post": {
+        "operationId": "UploadService_UploadUnary",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UploadStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1FileChunk"
+            }
+          }
+        ],
+        "tags": [
+          "UploadService"
+        ]
+      }
+    },
+    "/api/v1/upload/stream": {
+      "post": {
+        "operationId": "UploadService_UploadStream",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UploadStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": " (streaming inputs)",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1FileChunk"
+            }
+          }
+        ],
+        "tags": [
+          "UploadService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "ProjectServiceUpdateProjectBody": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "vcsUrl": {
+          "type": "string"
+        },
+        "revisions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Project"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "ProjectServiceUpdateProjectRevisionBody": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "projectSlug": {
+          "type": "string",
+          "title": "used to create new projects"
+        },
+        "gitTags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "gitBranches": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "gitCommitHash": {
+          "type": "string"
+        },
+        "vcsUrl": {
+          "type": "string"
+        },
+        "createdBy": {
+          "type": "string"
+        },
+        "sbomFileUuid": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "ReportsServicePatchReportBody": {
+      "type": "object"
+    },
+    "SbomServiceDecomposeBody": {
+      "type": "object",
+      "properties": {
+        "upload": {
+          "$ref": "#/definitions/v1SBOMFiles"
+        },
+        "maxDepth": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "onlyVulnerable": {
+          "type": "boolean"
+        }
+      }
+    },
+    "SbomServiceUploadBody": {
+      "type": "object",
+      "properties": {
+        "upload": {
+          "$ref": "#/definitions/v1SBOMFiles"
+        }
+      }
+    },
+    "dolinaComponentsV1Component": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string"
+        },
+        "purl": {
+          "type": "string"
+        },
+        "isPublic": {
+          "type": "boolean",
+          "title": "if component was obtained from public sources (npm, github etc.)"
+        },
+        "repositoryUuid": {
+          "type": "string"
+        },
+        "repositoryRef": {
+          "type": "string"
+        },
+        "artifactUuid": {
+          "type": "string"
+        },
+        "defects": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Defect"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "description": "A software component that is part of an application's architecture.Components can include libraries, frameworks, services, containers or other artifacts. Each component tracks metadata such as name, version, type, and security‑relevant attributes like vulnerabilities, licenses, and dependencies. In Dolina ASPM, components are the primary units for assessing and managing application security posture.",
+      "title": "Component"
+    },
+    "dolinaSbomV1Component": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "group": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "level": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "bomRef": {
+          "type": "string"
+        },
+        "purl": {
+          "type": "string"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/dolinaSbomV1Component"
+          }
+        },
+        "vulnerabilities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/sbomV1Vulnerability"
+          }
+        },
+        "hasTransitiveVulns": {
+          "type": "boolean"
+        },
+        "maxSeverity": {
+          "type": "number",
+          "format": "float"
+        },
+        "totalCveCount": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "sbomV1Advisory": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "sbomV1Contact": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "bomRef": {
+          "type": "string"
+        }
+      }
+    },
+    "sbomV1Source": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "sbomV1Vulnerability": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/definitions/sbomV1Source"
+        },
+        "description": {
+          "type": "string"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "recommendation": {
+          "type": "string"
+        },
+        "maxRating": {
+          "type": "number",
+          "format": "float"
+        },
+        "ratings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Rating"
+          }
+        },
+        "cwes": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "advisories": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/sbomV1Advisory"
+          }
+        },
+        "affects": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Affect"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "publishedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "rejectedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "v1Affect": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "type": "string"
+        },
+        "ranges": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Range"
+          }
+        }
+      }
+    },
+    "v1AnalysisState": {
+      "type": "string",
+      "enum": [
+        "ANALYSIS_STATE_UNSPECIFIED",
+        "ANALYSIS_STATE_NOT_STARTED",
+        "ANALYSIS_STATE_ASSIGNED",
+        "ANALYSIS_STATE_IN_PROGRESS",
+        "ANALYSIS_STATE_VERIFICATION",
+        "ANALYSIS_STATE_DONE",
+        "ANALYSIS_STATE_ERROR",
+        "ANALYSIS_STATE_TIMEOUT",
+        "ANALYSIS_STATE_CANCELED"
+      ],
+      "default": "ANALYSIS_STATE_UNSPECIFIED",
+      "title": "- ANALYSIS_STATE_NOT_STARTED: analysis job in a queue\n - ANALYSIS_STATE_ASSIGNED: worker is assigned\n - ANALYSIS_STATE_IN_PROGRESS: worker is processing\n - ANALYSIS_STATE_VERIFICATION: worker is verifying and sends analysis results\n - ANALYSIS_STATE_DONE: analysis is done and results are saved\n - ANALYSIS_STATE_ERROR: analysis is finished with error\n - ANALYSIS_STATE_TIMEOUT: analysis is finished with timeout\n - ANALYSIS_STATE_CANCELED: analysis is cancel by user"
+    },
+    "v1AnalysisStatus": {
+      "type": "object",
+      "properties": {
+        "reportUuid": {
+          "type": "string"
+        },
+        "scannerReports": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1ScannerReport"
+          }
+        },
+        "pipelineId": {
+          "type": "string"
+        },
+        "projectId": {
+          "type": "string"
+        },
+        "repositoryUuid": {
+          "type": "string"
+        },
+        "artifactUuid": {
+          "type": "string"
+        },
+        "workerId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "currentState": {
+          "$ref": "#/definitions/v1AnalysisState"
+        },
+        "isDone": {
+          "type": "boolean"
+        },
+        "progress": {
+          "type": "number",
+          "format": "float"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "startedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "endedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "elapsedDuration": {
+          "type": "string"
+        }
+      }
+    },
+    "v1AnalyzeOptions": {
+      "type": "object",
+      "properties": {
+        "scannerReports": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1ScannerReport"
+          }
+        },
+        "repositoryUuid": {
+          "type": "string",
+          "title": "create or update project repository by provided attributes"
+        },
+        "repositoryUrl": {
+          "type": "string",
+          "title": "ignored if repository_uuid is provided"
+        },
+        "repositoryRef": {
+          "type": "string",
+          "title": "added to repository data (can be branch or tag)"
+        },
+        "artifactUuid": {
+          "type": "string",
+          "title": "create or update project artifact by provided attributes"
+        },
+        "artifactPurl": {
+          "type": "string",
+          "title": "ignored if artifact_uuid is provided"
+        },
+        "pipelineId": {
+          "type": "string",
+          "title": "ci/cd attributes"
+        },
+        "uploadWindow": {
+          "type": "integer",
+          "format": "int64",
+          "title": "defines how long to delay processing"
+        },
+        "autoCreate": {
+          "type": "boolean",
+          "title": "defines if non-existing entities (projects, repositories or artifacts) will be created"
+        }
+      },
+      "description": "Contextual metadata accompanying a raw scanner report. It provides information about the environment in which the scan was executed, such as the repository URL, Git reference (branch, tag, commit), pipeline or build ID, and any other relevant deployment or runtime context. This data is used by Dolina ASPM to enrich, filter, and correlate findings with specific code versions or build stages.",
+      "title": "Analyze options"
+    },
+    "v1Components": {
+      "type": "object",
+      "properties": {
+        "components": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/dolinaComponentsV1Component"
+          }
+        }
+      }
+    },
+    "v1DecomposeOptions": {
+      "type": "object",
+      "properties": {
+        "fileUuid": {
+          "type": "string"
+        },
+        "upload": {
+          "$ref": "#/definitions/v1SBOMFiles"
+        },
+        "maxDepth": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "onlyVulnerable": {
+          "type": "boolean"
+        }
+      }
+    },
+    "v1Defect": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "appliedRiskScore": {
+          "type": "integer",
+          "format": "int64",
+          "title": "risk score is based on inputs from security scanners and applied ruleset"
+        },
+        "cvssScore": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "isLatest": {
+          "type": "boolean",
+          "title": "deduplication"
+        },
+        "defectDuplicates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Defect"
+          }
+        },
+        "componentPurl": {
+          "type": "string",
+          "title": "membership attributes"
+        },
+        "applicationId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "applicationRef": {
+          "type": "string",
+          "title": "git ref of an application to define where defect was found"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "v1Defects": {
+      "type": "object",
+      "properties": {
+        "defects": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Defect"
+          }
+        }
+      }
+    },
+    "v1DependencyCycle": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "v1FileChunk": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string",
+          "format": "byte"
+        },
+        "metadata": {
+          "$ref": "#/definitions/v1FileMetadata"
+        }
+      }
+    },
+    "v1FileMetadata": {
+      "type": "object",
+      "properties": {
+        "fileName": {
+          "type": "string"
+        },
+        "mimeType": {
+          "type": "string"
+        },
+        "totalSize": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
+    },
+    "v1Lifecycle": {
+      "type": "object",
+      "properties": {
+        "phase": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "v1Meta": {
+      "type": "object",
+      "properties": {
+        "bomVersion": {
+          "type": "string"
+        },
+        "tools": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/dolinaSbomV1Component"
+          }
+        },
+        "project": {
+          "$ref": "#/definitions/dolinaSbomV1Component"
+        },
+        "authors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/sbomV1Contact"
+          }
+        },
+        "lifecycles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Lifecycle"
+          }
+        },
+        "properties": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "v1Paging": {
+      "type": "object",
+      "properties": {
+        "offset": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "v1Project": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "vcsUrl": {
+          "type": "string"
+        },
+        "revisions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Project"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "v1ProjectsList": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Project"
+          }
+        }
+      }
+    },
+    "v1Range": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string"
+        },
+        "range": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        }
+      }
+    },
+    "v1Rating": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "$ref": "#/definitions/sbomV1Source"
+        },
+        "score": {
+          "type": "number",
+          "format": "float"
+        },
+        "severity": {
+          "type": "string"
+        },
+        "method": {
+          "type": "string"
+        },
+        "vector": {
+          "type": "string"
+        },
+        "justification": {
+          "type": "string"
+        }
+      }
+    },
+    "v1Report": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string"
+        },
+        "scannerReports": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1ScannerReport"
+          }
+        },
+        "projectId": {
+          "type": "integer",
+          "format": "int64",
+          "title": "membership attributes"
+        },
+        "applicationId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "repositoryUuid": {
+          "type": "string"
+        },
+        "artifactUuid": {
+          "type": "string"
+        },
+        "pipelineId": {
+          "type": "string",
+          "title": "ci/cd attributes"
+        }
+      },
+      "description": "A comprehensive security assessment report generated by Dolina ASPM after analyzing one or more scanner reports. It contains normalized findings, risk scores, severity classifications, remediation recommendations, and contextual metadata (e.g., affected components, code locations). This report provides a unified view of the application's security posture, enabling prioritization and tracking of vulnerabilities across the software development lifecycle.",
+      "title": "Report"
+    },
+    "v1Reports": {
+      "type": "object",
+      "properties": {
+        "reports": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Report"
+          }
+        }
+      }
+    },
+    "v1Revision": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "projectId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "projectSlug": {
+          "type": "string",
+          "title": "used to create new projects"
+        },
+        "gitTags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "gitBranches": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "gitCommitHash": {
+          "type": "string"
+        },
+        "vcsUrl": {
+          "type": "string"
+        },
+        "createdBy": {
+          "type": "string"
+        },
+        "sbomFileUuid": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "v1SBOMDecomposition": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "serialNumber": {
+          "type": "string"
+        },
+        "md5": {
+          "type": "string"
+        },
+        "metaData": {
+          "$ref": "#/definitions/v1Meta"
+        },
+        "graph": {
+          "$ref": "#/definitions/dolinaSbomV1Component"
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/dolinaSbomV1Component"
+          }
+        },
+        "vulnerabilities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/sbomV1Vulnerability"
+          }
+        },
+        "totalNodes": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "dependencyCycles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1DependencyCycle"
+          }
+        }
+      }
+    },
+    "v1SBOMFile": {
+      "type": "object",
+      "properties": {
+        "fileName": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "data": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "v1SBOMFiles": {
+      "type": "object",
+      "properties": {
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1SBOMFile"
+          }
+        }
+      }
+    },
+    "v1ScannerFormat": {
+      "type": "string",
+      "enum": [
+        "SCANNER_FORMAT_UNSPECIFIED",
+        "SCANNER_TRIVY_FS",
+        "SCANNER_FORMAT_SARIF",
+        "SCANNER_FORMAT_SBOM"
+      ],
+      "default": "SCANNER_FORMAT_UNSPECIFIED"
+    },
+    "v1ScannerID": {
+      "type": "string",
+      "enum": [
+        "SCANNER_ID_UNSPECIFIED",
+        "SCANNER_ID_TRIVY",
+        "SCANNER_ID_GITLEAKS"
+      ],
+      "default": "SCANNER_ID_UNSPECIFIED"
+    },
+    "v1ScannerReport": {
+      "type": "object",
+      "properties": {
+        "uploadedFileUuid": {
+          "type": "string"
+        },
+        "scannerId": {
+          "$ref": "#/definitions/v1ScannerID"
+        },
+        "scannerFormat": {
+          "$ref": "#/definitions/v1ScannerFormat"
+        }
+      },
+      "description": "A report generated by an external security scanner (e.g., Trivy, Semgrep, Snyk). It encapsulates raw findings, scan metadata (scanner name, version, timestamp), target information (repository, image, file path), and any additional context required for ingestion. This report serves as the primary input to Dolina ASPM for normalization, deduplication, and risk analysis.",
+      "title": "Scanner Report"
+    },
+    "v1Sort": {
+      "type": "object"
+    },
+    "v1UploadStatus": {
+      "type": "object",
+      "properties": {
+        "fileUuid": {
+          "type": "string"
+        },
+        "fileName": {
+          "type": "string"
+        },
+        "receivedSize": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
+    }
+  }
+}
