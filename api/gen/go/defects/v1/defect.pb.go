@@ -7,7 +7,9 @@
 package defects_v1
 
 import (
-	v1 "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/common/v1"
+	v12 "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/common/v1"
+	v11 "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/components/v1"
+	v1 "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/cve/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -75,26 +77,87 @@ func (DefectType) EnumDescriptor() ([]byte, []int) {
 	return file_defects_v1_defect_proto_rawDescGZIP(), []int{0}
 }
 
+type DefectStatus int32
+
+const (
+	DefectStatus_DEFECT_STATUS_UNSPECIFIED     DefectStatus = 0
+	DefectStatus_DEFECT_STATUS_FIXED_BY_UPDATE DefectStatus = 1 // defect is removed by library/package update
+	DefectStatus_DEFECT_STATUS_WILL_NOT_FIX    DefectStatus = 2 // defect is purposely left in code by distributor
+	DefectStatus_DEFECT_STATUS_HAS_EXPLOIT     DefectStatus = 3 // defect has known exploit
+	DefectStatus_DEFECT_STATUS_INDIRECT        DefectStatus = 4 // defect is indirect for scanner application
+)
+
+// Enum value maps for DefectStatus.
+var (
+	DefectStatus_name = map[int32]string{
+		0: "DEFECT_STATUS_UNSPECIFIED",
+		1: "DEFECT_STATUS_FIXED_BY_UPDATE",
+		2: "DEFECT_STATUS_WILL_NOT_FIX",
+		3: "DEFECT_STATUS_HAS_EXPLOIT",
+		4: "DEFECT_STATUS_INDIRECT",
+	}
+	DefectStatus_value = map[string]int32{
+		"DEFECT_STATUS_UNSPECIFIED":     0,
+		"DEFECT_STATUS_FIXED_BY_UPDATE": 1,
+		"DEFECT_STATUS_WILL_NOT_FIX":    2,
+		"DEFECT_STATUS_HAS_EXPLOIT":     3,
+		"DEFECT_STATUS_INDIRECT":        4,
+	}
+)
+
+func (x DefectStatus) Enum() *DefectStatus {
+	p := new(DefectStatus)
+	*p = x
+	return p
+}
+
+func (x DefectStatus) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (DefectStatus) Descriptor() protoreflect.EnumDescriptor {
+	return file_defects_v1_defect_proto_enumTypes[1].Descriptor()
+}
+
+func (DefectStatus) Type() protoreflect.EnumType {
+	return &file_defects_v1_defect_proto_enumTypes[1]
+}
+
+func (x DefectStatus) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use DefectStatus.Descriptor instead.
+func (DefectStatus) EnumDescriptor() ([]byte, []int) {
+	return file_defects_v1_defect_proto_rawDescGZIP(), []int{1}
+}
+
 type Defect struct {
 	state       protoimpl.MessageState `protogen:"open.v1"`
 	Uuid        string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
 	Title       string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
 	Description string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
 	Type        DefectType             `protobuf:"varint,4,opt,name=type,proto3,enum=dolina.defects.v1.DefectType" json:"type,omitempty"`
-	// risk score is based on inputs from security scanners and applied ruleset
-	AppliedRiskScore uint32 `protobuf:"varint,5,opt,name=applied_risk_score,json=appliedRiskScore,proto3" json:"applied_risk_score,omitempty"`
-	CvssScore        uint32 `protobuf:"varint,6,opt,name=cvss_score,json=cvssScore,proto3" json:"cvss_score,omitempty"`
+	Status      []DefectStatus         `protobuf:"varint,5,rep,packed,name=status,proto3,enum=dolina.defects.v1.DefectStatus" json:"status,omitempty"`
+	// applied risk score is based on inputs from security scanners and applied ruleset
+	AppliedRiskScore uint32  `protobuf:"varint,6,opt,name=applied_risk_score,json=appliedRiskScore,proto3" json:"applied_risk_score,omitempty"`
+	CvssScore        float32 `protobuf:"fixed32,7,opt,name=cvss_score,json=cvssScore,proto3" json:"cvss_score,omitempty"`
+	Cve              *v1.CVE `protobuf:"bytes,8,opt,name=cve,proto3,oneof" json:"cve,omitempty"`
+	Cwe              *string `protobuf:"bytes,9,opt,name=cwe,proto3,oneof" json:"cwe,omitempty"`
 	// deduplication
-	IsLatest         bool      `protobuf:"varint,9,opt,name=is_latest,json=isLatest,proto3" json:"is_latest,omitempty"`
-	DefectDuplicates []*Defect `protobuf:"bytes,10,rep,name=defect_duplicates,json=defectDuplicates,proto3" json:"defect_duplicates,omitempty"`
+	IsLatest         bool      `protobuf:"varint,10,opt,name=is_latest,json=isLatest,proto3" json:"is_latest,omitempty"`
+	DefectDuplicates []*Defect `protobuf:"bytes,11,rep,name=defect_duplicates,json=defectDuplicates,proto3" json:"defect_duplicates,omitempty"`
 	// membership attributes
-	ComponentPurl  *string                `protobuf:"bytes,20,opt,name=component_purl,json=componentPurl,proto3,oneof" json:"component_purl,omitempty"`
-	ApplicationId  *uint32                `protobuf:"varint,21,opt,name=application_id,json=applicationId,proto3,oneof" json:"application_id,omitempty"`
-	ApplicationRef *string                `protobuf:"bytes,22,opt,name=application_ref,json=applicationRef,proto3,oneof" json:"application_ref,omitempty"` // git ref of an application to define where defect was found
-	CreatedAt      *timestamppb.Timestamp `protobuf:"bytes,23,opt,name=created_at,json=createdAt,proto3,oneof" json:"created_at,omitempty"`
-	UpdatedAt      *timestamppb.Timestamp `protobuf:"bytes,24,opt,name=updated_at,json=updatedAt,proto3,oneof" json:"updated_at,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	ComponentPurl  *v11.PURL `protobuf:"bytes,20,opt,name=component_purl,json=componentPurl,proto3,oneof" json:"component_purl,omitempty"`
+	ApplicationId  *uint32   `protobuf:"varint,21,opt,name=application_id,json=applicationId,proto3,oneof" json:"application_id,omitempty"`
+	ApplicationRef *string   `protobuf:"bytes,22,opt,name=application_ref,json=applicationRef,proto3,oneof" json:"application_ref,omitempty"` // git ref of an application to define where defect was found
+	// additional information about defect
+	ReferenceUrlList []string               `protobuf:"bytes,30,rep,name=reference_url_list,json=referenceUrlList,proto3" json:"reference_url_list,omitempty"`
+	FixInfo          *FixInfo               `protobuf:"bytes,31,opt,name=fix_info,json=fixInfo,proto3,oneof" json:"fix_info,omitempty"`
+	CreatedAt        *timestamppb.Timestamp `protobuf:"bytes,41,opt,name=created_at,json=createdAt,proto3,oneof" json:"created_at,omitempty"`
+	UpdatedAt        *timestamppb.Timestamp `protobuf:"bytes,42,opt,name=updated_at,json=updatedAt,proto3,oneof" json:"updated_at,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *Defect) Reset() {
@@ -155,6 +218,13 @@ func (x *Defect) GetType() DefectType {
 	return DefectType_DEFECT_TYPE_UNSPECIFIED
 }
 
+func (x *Defect) GetStatus() []DefectStatus {
+	if x != nil {
+		return x.Status
+	}
+	return nil
+}
+
 func (x *Defect) GetAppliedRiskScore() uint32 {
 	if x != nil {
 		return x.AppliedRiskScore
@@ -162,11 +232,25 @@ func (x *Defect) GetAppliedRiskScore() uint32 {
 	return 0
 }
 
-func (x *Defect) GetCvssScore() uint32 {
+func (x *Defect) GetCvssScore() float32 {
 	if x != nil {
 		return x.CvssScore
 	}
 	return 0
+}
+
+func (x *Defect) GetCve() *v1.CVE {
+	if x != nil {
+		return x.Cve
+	}
+	return nil
+}
+
+func (x *Defect) GetCwe() string {
+	if x != nil && x.Cwe != nil {
+		return *x.Cwe
+	}
+	return ""
 }
 
 func (x *Defect) GetIsLatest() bool {
@@ -183,11 +267,11 @@ func (x *Defect) GetDefectDuplicates() []*Defect {
 	return nil
 }
 
-func (x *Defect) GetComponentPurl() string {
-	if x != nil && x.ComponentPurl != nil {
-		return *x.ComponentPurl
+func (x *Defect) GetComponentPurl() *v11.PURL {
+	if x != nil {
+		return x.ComponentPurl
 	}
-	return ""
+	return nil
 }
 
 func (x *Defect) GetApplicationId() uint32 {
@@ -202,6 +286,20 @@ func (x *Defect) GetApplicationRef() string {
 		return *x.ApplicationRef
 	}
 	return ""
+}
+
+func (x *Defect) GetReferenceUrlList() []string {
+	if x != nil {
+		return x.ReferenceUrlList
+	}
+	return nil
+}
+
+func (x *Defect) GetFixInfo() *FixInfo {
+	if x != nil {
+		return x.FixInfo
+	}
+	return nil
 }
 
 func (x *Defect) GetCreatedAt() *timestamppb.Timestamp {
@@ -220,7 +318,7 @@ func (x *Defect) GetUpdatedAt() *timestamppb.Timestamp {
 
 type Defects struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Defects       []*Defect              `protobuf:"bytes,1,rep,name=defects,proto3" json:"defects,omitempty"`
+	DefectList    []*Defect              `protobuf:"bytes,1,rep,name=defect_list,json=defectList,proto3" json:"defect_list,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -255,9 +353,9 @@ func (*Defects) Descriptor() ([]byte, []int) {
 	return file_defects_v1_defect_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *Defects) GetDefects() []*Defect {
+func (x *Defects) GetDefectList() []*Defect {
 	if x != nil {
-		return x.Defects
+		return x.DefectList
 	}
 	return nil
 }
@@ -268,8 +366,8 @@ type DefectsQueryFilter struct {
 	ComponentPurl  *string                `protobuf:"bytes,2,opt,name=component_purl,json=componentPurl,proto3,oneof" json:"component_purl,omitempty"`
 	ApplicationId  *uint32                `protobuf:"varint,5,opt,name=application_id,json=applicationId,proto3,oneof" json:"application_id,omitempty"`
 	ApplicationRef *string                `protobuf:"bytes,6,opt,name=application_ref,json=applicationRef,proto3,oneof" json:"application_ref,omitempty"`
-	Paging         *v1.Paging             `protobuf:"bytes,23,opt,name=paging,proto3" json:"paging,omitempty"`
-	Sort           *v1.Sort               `protobuf:"bytes,24,opt,name=sort,proto3" json:"sort,omitempty"`
+	Paging         *v12.Paging            `protobuf:"bytes,23,opt,name=paging,proto3" json:"paging,omitempty"`
+	Sort           *v12.Sort              `protobuf:"bytes,24,opt,name=sort,proto3" json:"sort,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -332,14 +430,14 @@ func (x *DefectsQueryFilter) GetApplicationRef() string {
 	return ""
 }
 
-func (x *DefectsQueryFilter) GetPaging() *v1.Paging {
+func (x *DefectsQueryFilter) GetPaging() *v12.Paging {
 	if x != nil {
 		return x.Paging
 	}
 	return nil
 }
 
-func (x *DefectsQueryFilter) GetSort() *v1.Sort {
+func (x *DefectsQueryFilter) GetSort() *v12.Sort {
 	if x != nil {
 		return x.Sort
 	}
@@ -350,32 +448,41 @@ var File_defects_v1_defect_proto protoreflect.FileDescriptor
 
 const file_defects_v1_defect_proto_rawDesc = "" +
 	"\n" +
-	"\x17defects/v1/defect.proto\x12\x11dolina.defects.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x16common/v1/paging.proto\x1a\x14common/v1/sort.proto\"\x97\x05\n" +
+	"\x17defects/v1/defect.proto\x12\x11dolina.defects.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18components/v1/purl.proto\x1a\x16common/v1/paging.proto\x1a\x14common/v1/sort.proto\x1a\x14defects/v1/fix.proto\x1a\x10cve/v1/cve.proto\"\xb5\a\n" +
 	"\x06Defect\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12 \n" +
 	"\vdescription\x18\x03 \x01(\tR\vdescription\x121\n" +
-	"\x04type\x18\x04 \x01(\x0e2\x1d.dolina.defects.v1.DefectTypeR\x04type\x12,\n" +
-	"\x12applied_risk_score\x18\x05 \x01(\rR\x10appliedRiskScore\x12\x1d\n" +
+	"\x04type\x18\x04 \x01(\x0e2\x1d.dolina.defects.v1.DefectTypeR\x04type\x127\n" +
+	"\x06status\x18\x05 \x03(\x0e2\x1f.dolina.defects.v1.DefectStatusR\x06status\x12,\n" +
+	"\x12applied_risk_score\x18\x06 \x01(\rR\x10appliedRiskScore\x12\x1d\n" +
 	"\n" +
-	"cvss_score\x18\x06 \x01(\rR\tcvssScore\x12\x1b\n" +
-	"\tis_latest\x18\t \x01(\bR\bisLatest\x12F\n" +
-	"\x11defect_duplicates\x18\n" +
-	" \x03(\v2\x19.dolina.defects.v1.DefectR\x10defectDuplicates\x12*\n" +
-	"\x0ecomponent_purl\x18\x14 \x01(\tH\x00R\rcomponentPurl\x88\x01\x01\x12*\n" +
-	"\x0eapplication_id\x18\x15 \x01(\rH\x01R\rapplicationId\x88\x01\x01\x12,\n" +
-	"\x0fapplication_ref\x18\x16 \x01(\tH\x02R\x0eapplicationRef\x88\x01\x01\x12>\n" +
+	"cvss_score\x18\a \x01(\x02R\tcvssScore\x12)\n" +
+	"\x03cve\x18\b \x01(\v2\x12.dolina.cve.v1.CVEH\x00R\x03cve\x88\x01\x01\x12\x15\n" +
+	"\x03cwe\x18\t \x01(\tH\x01R\x03cwe\x88\x01\x01\x12\x1b\n" +
+	"\tis_latest\x18\n" +
+	" \x01(\bR\bisLatest\x12F\n" +
+	"\x11defect_duplicates\x18\v \x03(\v2\x19.dolina.defects.v1.DefectR\x10defectDuplicates\x12F\n" +
+	"\x0ecomponent_purl\x18\x14 \x01(\v2\x1a.dolina.components.v1.PURLH\x02R\rcomponentPurl\x88\x01\x01\x12*\n" +
+	"\x0eapplication_id\x18\x15 \x01(\rH\x03R\rapplicationId\x88\x01\x01\x12,\n" +
+	"\x0fapplication_ref\x18\x16 \x01(\tH\x04R\x0eapplicationRef\x88\x01\x01\x12,\n" +
+	"\x12reference_url_list\x18\x1e \x03(\tR\x10referenceUrlList\x12:\n" +
+	"\bfix_info\x18\x1f \x01(\v2\x1a.dolina.defects.v1.FixInfoH\x05R\afixInfo\x88\x01\x01\x12>\n" +
 	"\n" +
-	"created_at\x18\x17 \x01(\v2\x1a.google.protobuf.TimestampH\x03R\tcreatedAt\x88\x01\x01\x12>\n" +
+	"created_at\x18) \x01(\v2\x1a.google.protobuf.TimestampH\x06R\tcreatedAt\x88\x01\x01\x12>\n" +
 	"\n" +
-	"updated_at\x18\x18 \x01(\v2\x1a.google.protobuf.TimestampH\x04R\tupdatedAt\x88\x01\x01B\x11\n" +
+	"updated_at\x18* \x01(\v2\x1a.google.protobuf.TimestampH\aR\tupdatedAt\x88\x01\x01B\x06\n" +
+	"\x04_cveB\x06\n" +
+	"\x04_cweB\x11\n" +
 	"\x0f_component_purlB\x11\n" +
 	"\x0f_application_idB\x12\n" +
-	"\x10_application_refB\r\n" +
+	"\x10_application_refB\v\n" +
+	"\t_fix_infoB\r\n" +
 	"\v_created_atB\r\n" +
-	"\v_updated_at\">\n" +
-	"\aDefects\x123\n" +
-	"\adefects\x18\x01 \x03(\v2\x19.dolina.defects.v1.DefectR\adefects\"\xc8\x02\n" +
+	"\v_updated_at\"E\n" +
+	"\aDefects\x12:\n" +
+	"\vdefect_list\x18\x01 \x03(\v2\x19.dolina.defects.v1.DefectR\n" +
+	"defectList\"\xc8\x02\n" +
 	"\x12DefectsQueryFilter\x12\x14\n" +
 	"\x05title\x18\x01 \x01(\tR\x05title\x12*\n" +
 	"\x0ecomponent_purl\x18\x02 \x01(\tH\x00R\rcomponentPurl\x88\x01\x01\x12*\n" +
@@ -391,7 +498,13 @@ const file_defects_v1_defect_proto_rawDesc = "" +
 	"\x17DEFECT_TYPE_UNSPECIFIED\x10\x00\x12\x14\n" +
 	"\x10DEFECT_TYPE_SAST\x10\x01\x12\x14\n" +
 	"\x10DEFECT_TYPE_DAST\x10\x02\x12\x13\n" +
-	"\x0fDEFECT_TYPE_SCA\x10\x03BLZJgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/defects/v1;defects_v1b\x06proto3"
+	"\x0fDEFECT_TYPE_SCA\x10\x03*\xab\x01\n" +
+	"\fDefectStatus\x12\x1d\n" +
+	"\x19DEFECT_STATUS_UNSPECIFIED\x10\x00\x12!\n" +
+	"\x1dDEFECT_STATUS_FIXED_BY_UPDATE\x10\x01\x12\x1e\n" +
+	"\x1aDEFECT_STATUS_WILL_NOT_FIX\x10\x02\x12\x1d\n" +
+	"\x19DEFECT_STATUS_HAS_EXPLOIT\x10\x03\x12\x1a\n" +
+	"\x16DEFECT_STATUS_INDIRECT\x10\x04BLZJgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/defects/v1;defects_v1b\x06proto3"
 
 var (
 	file_defects_v1_defect_proto_rawDescOnce sync.Once
@@ -405,30 +518,38 @@ func file_defects_v1_defect_proto_rawDescGZIP() []byte {
 	return file_defects_v1_defect_proto_rawDescData
 }
 
-var file_defects_v1_defect_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_defects_v1_defect_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_defects_v1_defect_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_defects_v1_defect_proto_goTypes = []any{
 	(DefectType)(0),               // 0: dolina.defects.v1.DefectType
-	(*Defect)(nil),                // 1: dolina.defects.v1.Defect
-	(*Defects)(nil),               // 2: dolina.defects.v1.Defects
-	(*DefectsQueryFilter)(nil),    // 3: dolina.defects.v1.DefectsQueryFilter
-	(*timestamppb.Timestamp)(nil), // 4: google.protobuf.Timestamp
-	(*v1.Paging)(nil),             // 5: dolina.common.v1.Paging
-	(*v1.Sort)(nil),               // 6: dolina.common.v1.Sort
+	(DefectStatus)(0),             // 1: dolina.defects.v1.DefectStatus
+	(*Defect)(nil),                // 2: dolina.defects.v1.Defect
+	(*Defects)(nil),               // 3: dolina.defects.v1.Defects
+	(*DefectsQueryFilter)(nil),    // 4: dolina.defects.v1.DefectsQueryFilter
+	(*v1.CVE)(nil),                // 5: dolina.cve.v1.CVE
+	(*v11.PURL)(nil),              // 6: dolina.components.v1.PURL
+	(*FixInfo)(nil),               // 7: dolina.defects.v1.FixInfo
+	(*timestamppb.Timestamp)(nil), // 8: google.protobuf.Timestamp
+	(*v12.Paging)(nil),            // 9: dolina.common.v1.Paging
+	(*v12.Sort)(nil),              // 10: dolina.common.v1.Sort
 }
 var file_defects_v1_defect_proto_depIdxs = []int32{
-	0, // 0: dolina.defects.v1.Defect.type:type_name -> dolina.defects.v1.DefectType
-	1, // 1: dolina.defects.v1.Defect.defect_duplicates:type_name -> dolina.defects.v1.Defect
-	4, // 2: dolina.defects.v1.Defect.created_at:type_name -> google.protobuf.Timestamp
-	4, // 3: dolina.defects.v1.Defect.updated_at:type_name -> google.protobuf.Timestamp
-	1, // 4: dolina.defects.v1.Defects.defects:type_name -> dolina.defects.v1.Defect
-	5, // 5: dolina.defects.v1.DefectsQueryFilter.paging:type_name -> dolina.common.v1.Paging
-	6, // 6: dolina.defects.v1.DefectsQueryFilter.sort:type_name -> dolina.common.v1.Sort
-	7, // [7:7] is the sub-list for method output_type
-	7, // [7:7] is the sub-list for method input_type
-	7, // [7:7] is the sub-list for extension type_name
-	7, // [7:7] is the sub-list for extension extendee
-	0, // [0:7] is the sub-list for field type_name
+	0,  // 0: dolina.defects.v1.Defect.type:type_name -> dolina.defects.v1.DefectType
+	1,  // 1: dolina.defects.v1.Defect.status:type_name -> dolina.defects.v1.DefectStatus
+	5,  // 2: dolina.defects.v1.Defect.cve:type_name -> dolina.cve.v1.CVE
+	2,  // 3: dolina.defects.v1.Defect.defect_duplicates:type_name -> dolina.defects.v1.Defect
+	6,  // 4: dolina.defects.v1.Defect.component_purl:type_name -> dolina.components.v1.PURL
+	7,  // 5: dolina.defects.v1.Defect.fix_info:type_name -> dolina.defects.v1.FixInfo
+	8,  // 6: dolina.defects.v1.Defect.created_at:type_name -> google.protobuf.Timestamp
+	8,  // 7: dolina.defects.v1.Defect.updated_at:type_name -> google.protobuf.Timestamp
+	2,  // 8: dolina.defects.v1.Defects.defect_list:type_name -> dolina.defects.v1.Defect
+	9,  // 9: dolina.defects.v1.DefectsQueryFilter.paging:type_name -> dolina.common.v1.Paging
+	10, // 10: dolina.defects.v1.DefectsQueryFilter.sort:type_name -> dolina.common.v1.Sort
+	11, // [11:11] is the sub-list for method output_type
+	11, // [11:11] is the sub-list for method input_type
+	11, // [11:11] is the sub-list for extension type_name
+	11, // [11:11] is the sub-list for extension extendee
+	0,  // [0:11] is the sub-list for field type_name
 }
 
 func init() { file_defects_v1_defect_proto_init() }
@@ -436,6 +557,7 @@ func file_defects_v1_defect_proto_init() {
 	if File_defects_v1_defect_proto != nil {
 		return
 	}
+	file_defects_v1_fix_proto_init()
 	file_defects_v1_defect_proto_msgTypes[0].OneofWrappers = []any{}
 	file_defects_v1_defect_proto_msgTypes[2].OneofWrappers = []any{}
 	type x struct{}
@@ -443,7 +565,7 @@ func file_defects_v1_defect_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_defects_v1_defect_proto_rawDesc), len(file_defects_v1_defect_proto_rawDesc)),
-			NumEnums:      1,
+			NumEnums:      2,
 			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,

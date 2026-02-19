@@ -27,7 +27,8 @@ go:
 		workers/v1/*.proto \
 		upload/v1/*.proto \
 		common/v1/*.proto \
-		sbom/v1/*.proto
+		sbom/v1/*.proto \
+		cve/v1/*.proto
 
 # https://grpc-ecosystem.github.io/grpc-gateway/docs/mapping/customizing_openapi_output/
 
@@ -46,6 +47,7 @@ gateway:
 		upload/v1/*.proto \
 		common/v1/*.proto \
 		sbom/v1/*.proto \
+		cve/v1/*.proto \
 		openapi.proto
 
 ts:
@@ -63,6 +65,7 @@ ts:
 		upload/v1/*.proto \
 		common/v1/*.proto \
 		sbom/v1/*.proto \
+		cve/v1/*.proto \
 		openapi.proto
 
 clean:

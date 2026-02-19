@@ -8,7 +8,10 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Paging } from "../../common/v1/paging";
 import { Sort } from "../../common/v1/sort";
+import { PURL } from "../../components/v1/purl";
+import { CVE } from "../../cve/v1/cve";
 import { Timestamp } from "../../google/protobuf/timestamp";
+import { FixInfo } from "./fix";
 
 export const protobufPackage = "dolina.defects.v1";
 
@@ -57,30 +60,95 @@ export function defectTypeToJSON(object: DefectType): string {
   }
 }
 
+export enum DefectStatus {
+  DEFECT_STATUS_UNSPECIFIED = 0,
+  /** DEFECT_STATUS_FIXED_BY_UPDATE - defect is removed by library/package update */
+  DEFECT_STATUS_FIXED_BY_UPDATE = 1,
+  /** DEFECT_STATUS_WILL_NOT_FIX - defect is purposely left in code by distributor */
+  DEFECT_STATUS_WILL_NOT_FIX = 2,
+  /** DEFECT_STATUS_HAS_EXPLOIT - defect has known exploit */
+  DEFECT_STATUS_HAS_EXPLOIT = 3,
+  /** DEFECT_STATUS_INDIRECT - defect is indirect for scanner application */
+  DEFECT_STATUS_INDIRECT = 4,
+  UNRECOGNIZED = -1,
+}
+
+export function defectStatusFromJSON(object: any): DefectStatus {
+  switch (object) {
+    case 0:
+    case "DEFECT_STATUS_UNSPECIFIED":
+      return DefectStatus.DEFECT_STATUS_UNSPECIFIED;
+    case 1:
+    case "DEFECT_STATUS_FIXED_BY_UPDATE":
+      return DefectStatus.DEFECT_STATUS_FIXED_BY_UPDATE;
+    case 2:
+    case "DEFECT_STATUS_WILL_NOT_FIX":
+      return DefectStatus.DEFECT_STATUS_WILL_NOT_FIX;
+    case 3:
+    case "DEFECT_STATUS_HAS_EXPLOIT":
+      return DefectStatus.DEFECT_STATUS_HAS_EXPLOIT;
+    case 4:
+    case "DEFECT_STATUS_INDIRECT":
+      return DefectStatus.DEFECT_STATUS_INDIRECT;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return DefectStatus.UNRECOGNIZED;
+  }
+}
+
+export function defectStatusToJSON(object: DefectStatus): string {
+  switch (object) {
+    case DefectStatus.DEFECT_STATUS_UNSPECIFIED:
+      return "DEFECT_STATUS_UNSPECIFIED";
+    case DefectStatus.DEFECT_STATUS_FIXED_BY_UPDATE:
+      return "DEFECT_STATUS_FIXED_BY_UPDATE";
+    case DefectStatus.DEFECT_STATUS_WILL_NOT_FIX:
+      return "DEFECT_STATUS_WILL_NOT_FIX";
+    case DefectStatus.DEFECT_STATUS_HAS_EXPLOIT:
+      return "DEFECT_STATUS_HAS_EXPLOIT";
+    case DefectStatus.DEFECT_STATUS_INDIRECT:
+      return "DEFECT_STATUS_INDIRECT";
+    case DefectStatus.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
 export interface Defect {
   uuid: string;
   title: string;
   description: string;
   type: DefectType;
-  /** risk score is based on inputs from security scanners and applied ruleset */
+  status: DefectStatus[];
+  /** applied risk score is based on inputs from security scanners and applied ruleset */
   appliedRiskScore: number;
   cvssScore: number;
+  cve?: CVE | undefined;
+  cwe?:
+    | string
+    | undefined;
   /** deduplication */
   isLatest: boolean;
   defectDuplicates: Defect[];
   /** membership attributes */
-  componentPurl?: string | undefined;
+  componentPurl?: PURL | undefined;
   applicationId?:
     | number
     | undefined;
   /** git ref of an application to define where defect was found */
-  applicationRef?: string | undefined;
+  applicationRef?:
+    | string
+    | undefined;
+  /** additional information about defect */
+  referenceUrlList: string[];
+  fixInfo?: FixInfo | undefined;
   createdAt?: Date | undefined;
   updatedAt?: Date | undefined;
 }
 
 export interface Defects {
-  defects: Defect[];
+  defectList: Defect[];
 }
 
 export interface DefectsQueryFilter {
@@ -98,13 +166,18 @@ function createBaseDefect(): Defect {
     title: "",
     description: "",
     type: 0,
+    status: [],
     appliedRiskScore: 0,
     cvssScore: 0,
+    cve: undefined,
+    cwe: undefined,
     isLatest: false,
     defectDuplicates: [],
     componentPurl: undefined,
     applicationId: undefined,
     applicationRef: undefined,
+    referenceUrlList: [],
+    fixInfo: undefined,
     createdAt: undefined,
     updatedAt: undefined,
   };
@@ -124,20 +197,31 @@ export const Defect: MessageFns<Defect> = {
     if (message.type !== 0) {
       writer.uint32(32).int32(message.type);
     }
+    writer.uint32(42).fork();
+    for (const v of message.status) {
+      writer.int32(v);
+    }
+    writer.join();
     if (message.appliedRiskScore !== 0) {
-      writer.uint32(40).uint32(message.appliedRiskScore);
+      writer.uint32(48).uint32(message.appliedRiskScore);
     }
     if (message.cvssScore !== 0) {
-      writer.uint32(48).uint32(message.cvssScore);
+      writer.uint32(61).float(message.cvssScore);
+    }
+    if (message.cve !== undefined) {
+      CVE.encode(message.cve, writer.uint32(66).fork()).join();
+    }
+    if (message.cwe !== undefined) {
+      writer.uint32(74).string(message.cwe);
     }
     if (message.isLatest !== false) {
-      writer.uint32(72).bool(message.isLatest);
+      writer.uint32(80).bool(message.isLatest);
     }
     for (const v of message.defectDuplicates) {
-      Defect.encode(v!, writer.uint32(82).fork()).join();
+      Defect.encode(v!, writer.uint32(90).fork()).join();
     }
     if (message.componentPurl !== undefined) {
-      writer.uint32(162).string(message.componentPurl);
+      PURL.encode(message.componentPurl, writer.uint32(162).fork()).join();
     }
     if (message.applicationId !== undefined) {
       writer.uint32(168).uint32(message.applicationId);
@@ -145,11 +229,17 @@ export const Defect: MessageFns<Defect> = {
     if (message.applicationRef !== undefined) {
       writer.uint32(178).string(message.applicationRef);
     }
+    for (const v of message.referenceUrlList) {
+      writer.uint32(242).string(v!);
+    }
+    if (message.fixInfo !== undefined) {
+      FixInfo.encode(message.fixInfo, writer.uint32(250).fork()).join();
+    }
     if (message.createdAt !== undefined) {
-      Timestamp.encode(toTimestamp(message.createdAt), writer.uint32(186).fork()).join();
+      Timestamp.encode(toTimestamp(message.createdAt), writer.uint32(330).fork()).join();
     }
     if (message.updatedAt !== undefined) {
-      Timestamp.encode(toTimestamp(message.updatedAt), writer.uint32(194).fork()).join();
+      Timestamp.encode(toTimestamp(message.updatedAt), writer.uint32(338).fork()).join();
     }
     return writer;
   },
@@ -194,31 +284,65 @@ export const Defect: MessageFns<Defect> = {
           continue;
         }
         case 5: {
-          if (tag !== 40) {
-            break;
+          if (tag === 40) {
+            message.status.push(reader.int32() as any);
+
+            continue;
           }
 
-          message.appliedRiskScore = reader.uint32();
-          continue;
+          if (tag === 42) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.status.push(reader.int32() as any);
+            }
+
+            continue;
+          }
+
+          break;
         }
         case 6: {
           if (tag !== 48) {
             break;
           }
 
-          message.cvssScore = reader.uint32();
+          message.appliedRiskScore = reader.uint32();
+          continue;
+        }
+        case 7: {
+          if (tag !== 61) {
+            break;
+          }
+
+          message.cvssScore = reader.float();
+          continue;
+        }
+        case 8: {
+          if (tag !== 66) {
+            break;
+          }
+
+          message.cve = CVE.decode(reader, reader.uint32());
           continue;
         }
         case 9: {
-          if (tag !== 72) {
+          if (tag !== 74) {
+            break;
+          }
+
+          message.cwe = reader.string();
+          continue;
+        }
+        case 10: {
+          if (tag !== 80) {
             break;
           }
 
           message.isLatest = reader.bool();
           continue;
         }
-        case 10: {
-          if (tag !== 82) {
+        case 11: {
+          if (tag !== 90) {
             break;
           }
 
@@ -230,7 +354,7 @@ export const Defect: MessageFns<Defect> = {
             break;
           }
 
-          message.componentPurl = reader.string();
+          message.componentPurl = PURL.decode(reader, reader.uint32());
           continue;
         }
         case 21: {
@@ -249,16 +373,32 @@ export const Defect: MessageFns<Defect> = {
           message.applicationRef = reader.string();
           continue;
         }
-        case 23: {
-          if (tag !== 186) {
+        case 30: {
+          if (tag !== 242) {
+            break;
+          }
+
+          message.referenceUrlList.push(reader.string());
+          continue;
+        }
+        case 31: {
+          if (tag !== 250) {
+            break;
+          }
+
+          message.fixInfo = FixInfo.decode(reader, reader.uint32());
+          continue;
+        }
+        case 41: {
+          if (tag !== 330) {
             break;
           }
 
           message.createdAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
         }
-        case 24: {
-          if (tag !== 194) {
+        case 42: {
+          if (tag !== 338) {
             break;
           }
 
@@ -280,15 +420,22 @@ export const Defect: MessageFns<Defect> = {
       title: isSet(object.title) ? globalThis.String(object.title) : "",
       description: isSet(object.description) ? globalThis.String(object.description) : "",
       type: isSet(object.type) ? defectTypeFromJSON(object.type) : 0,
+      status: globalThis.Array.isArray(object?.status) ? object.status.map((e: any) => defectStatusFromJSON(e)) : [],
       appliedRiskScore: isSet(object.appliedRiskScore) ? globalThis.Number(object.appliedRiskScore) : 0,
       cvssScore: isSet(object.cvssScore) ? globalThis.Number(object.cvssScore) : 0,
+      cve: isSet(object.cve) ? CVE.fromJSON(object.cve) : undefined,
+      cwe: isSet(object.cwe) ? globalThis.String(object.cwe) : undefined,
       isLatest: isSet(object.isLatest) ? globalThis.Boolean(object.isLatest) : false,
       defectDuplicates: globalThis.Array.isArray(object?.defectDuplicates)
         ? object.defectDuplicates.map((e: any) => Defect.fromJSON(e))
         : [],
-      componentPurl: isSet(object.componentPurl) ? globalThis.String(object.componentPurl) : undefined,
+      componentPurl: isSet(object.componentPurl) ? PURL.fromJSON(object.componentPurl) : undefined,
       applicationId: isSet(object.applicationId) ? globalThis.Number(object.applicationId) : undefined,
       applicationRef: isSet(object.applicationRef) ? globalThis.String(object.applicationRef) : undefined,
+      referenceUrlList: globalThis.Array.isArray(object?.referenceUrlList)
+        ? object.referenceUrlList.map((e: any) => globalThis.String(e))
+        : [],
+      fixInfo: isSet(object.fixInfo) ? FixInfo.fromJSON(object.fixInfo) : undefined,
       createdAt: isSet(object.createdAt) ? fromJsonTimestamp(object.createdAt) : undefined,
       updatedAt: isSet(object.updatedAt) ? fromJsonTimestamp(object.updatedAt) : undefined,
     };
@@ -308,11 +455,20 @@ export const Defect: MessageFns<Defect> = {
     if (message.type !== 0) {
       obj.type = defectTypeToJSON(message.type);
     }
+    if (message.status?.length) {
+      obj.status = message.status.map((e) => defectStatusToJSON(e));
+    }
     if (message.appliedRiskScore !== 0) {
       obj.appliedRiskScore = Math.round(message.appliedRiskScore);
     }
     if (message.cvssScore !== 0) {
-      obj.cvssScore = Math.round(message.cvssScore);
+      obj.cvssScore = message.cvssScore;
+    }
+    if (message.cve !== undefined) {
+      obj.cve = CVE.toJSON(message.cve);
+    }
+    if (message.cwe !== undefined) {
+      obj.cwe = message.cwe;
     }
     if (message.isLatest !== false) {
       obj.isLatest = message.isLatest;
@@ -321,13 +477,19 @@ export const Defect: MessageFns<Defect> = {
       obj.defectDuplicates = message.defectDuplicates.map((e) => Defect.toJSON(e));
     }
     if (message.componentPurl !== undefined) {
-      obj.componentPurl = message.componentPurl;
+      obj.componentPurl = PURL.toJSON(message.componentPurl);
     }
     if (message.applicationId !== undefined) {
       obj.applicationId = Math.round(message.applicationId);
     }
     if (message.applicationRef !== undefined) {
       obj.applicationRef = message.applicationRef;
+    }
+    if (message.referenceUrlList?.length) {
+      obj.referenceUrlList = message.referenceUrlList;
+    }
+    if (message.fixInfo !== undefined) {
+      obj.fixInfo = FixInfo.toJSON(message.fixInfo);
     }
     if (message.createdAt !== undefined) {
       obj.createdAt = message.createdAt.toISOString();
@@ -347,13 +509,22 @@ export const Defect: MessageFns<Defect> = {
     message.title = object.title ?? "";
     message.description = object.description ?? "";
     message.type = object.type ?? 0;
+    message.status = object.status?.map((e) => e) || [];
     message.appliedRiskScore = object.appliedRiskScore ?? 0;
     message.cvssScore = object.cvssScore ?? 0;
+    message.cve = (object.cve !== undefined && object.cve !== null) ? CVE.fromPartial(object.cve) : undefined;
+    message.cwe = object.cwe ?? undefined;
     message.isLatest = object.isLatest ?? false;
     message.defectDuplicates = object.defectDuplicates?.map((e) => Defect.fromPartial(e)) || [];
-    message.componentPurl = object.componentPurl ?? undefined;
+    message.componentPurl = (object.componentPurl !== undefined && object.componentPurl !== null)
+      ? PURL.fromPartial(object.componentPurl)
+      : undefined;
     message.applicationId = object.applicationId ?? undefined;
     message.applicationRef = object.applicationRef ?? undefined;
+    message.referenceUrlList = object.referenceUrlList?.map((e) => e) || [];
+    message.fixInfo = (object.fixInfo !== undefined && object.fixInfo !== null)
+      ? FixInfo.fromPartial(object.fixInfo)
+      : undefined;
     message.createdAt = object.createdAt ?? undefined;
     message.updatedAt = object.updatedAt ?? undefined;
     return message;
@@ -361,12 +532,12 @@ export const Defect: MessageFns<Defect> = {
 };
 
 function createBaseDefects(): Defects {
-  return { defects: [] };
+  return { defectList: [] };
 }
 
 export const Defects: MessageFns<Defects> = {
   encode(message: Defects, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.defects) {
+    for (const v of message.defectList) {
       Defect.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -384,7 +555,7 @@ export const Defects: MessageFns<Defects> = {
             break;
           }
 
-          message.defects.push(Defect.decode(reader, reader.uint32()));
+          message.defectList.push(Defect.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -398,14 +569,16 @@ export const Defects: MessageFns<Defects> = {
 
   fromJSON(object: any): Defects {
     return {
-      defects: globalThis.Array.isArray(object?.defects) ? object.defects.map((e: any) => Defect.fromJSON(e)) : [],
+      defectList: globalThis.Array.isArray(object?.defectList)
+        ? object.defectList.map((e: any) => Defect.fromJSON(e))
+        : [],
     };
   },
 
   toJSON(message: Defects): unknown {
     const obj: any = {};
-    if (message.defects?.length) {
-      obj.defects = message.defects.map((e) => Defect.toJSON(e));
+    if (message.defectList?.length) {
+      obj.defectList = message.defectList.map((e) => Defect.toJSON(e));
     }
     return obj;
   },
@@ -415,7 +588,7 @@ export const Defects: MessageFns<Defects> = {
   },
   fromPartial<I extends Exact<DeepPartial<Defects>, I>>(object: I): Defects {
     const message = createBaseDefects();
-    message.defects = object.defects?.map((e) => Defect.fromPartial(e)) || [];
+    message.defectList = object.defectList?.map((e) => Defect.fromPartial(e)) || [];
     return message;
   },
 };

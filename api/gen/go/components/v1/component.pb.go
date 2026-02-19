@@ -25,15 +25,78 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type ComponentType int32
+
+const (
+	ComponentType_COMPONENT_TYPE_UNSPECIFIED        ComponentType = 0
+	ComponentType_COMPONENT_TYPE_LANGUAGE_PACKAGE   ComponentType = 1
+	ComponentType_COMPONENT_TYPE_CONTAINER_IMAGE    ComponentType = 2
+	ComponentType_COMPONENT_TYPE_OS_PACKAGE         ComponentType = 3
+	ComponentType_COMPONENT_TYPE_BUNDLE             ComponentType = 4
+	ComponentType_COMPONENT_TYPE_BINARY_EXECUTABLE  ComponentType = 5
+	ComponentType_COMPONENT_TYPE_MOBILE_APPLICATION ComponentType = 6
+)
+
+// Enum value maps for ComponentType.
+var (
+	ComponentType_name = map[int32]string{
+		0: "COMPONENT_TYPE_UNSPECIFIED",
+		1: "COMPONENT_TYPE_LANGUAGE_PACKAGE",
+		2: "COMPONENT_TYPE_CONTAINER_IMAGE",
+		3: "COMPONENT_TYPE_OS_PACKAGE",
+		4: "COMPONENT_TYPE_BUNDLE",
+		5: "COMPONENT_TYPE_BINARY_EXECUTABLE",
+		6: "COMPONENT_TYPE_MOBILE_APPLICATION",
+	}
+	ComponentType_value = map[string]int32{
+		"COMPONENT_TYPE_UNSPECIFIED":        0,
+		"COMPONENT_TYPE_LANGUAGE_PACKAGE":   1,
+		"COMPONENT_TYPE_CONTAINER_IMAGE":    2,
+		"COMPONENT_TYPE_OS_PACKAGE":         3,
+		"COMPONENT_TYPE_BUNDLE":             4,
+		"COMPONENT_TYPE_BINARY_EXECUTABLE":  5,
+		"COMPONENT_TYPE_MOBILE_APPLICATION": 6,
+	}
+)
+
+func (x ComponentType) Enum() *ComponentType {
+	p := new(ComponentType)
+	*p = x
+	return p
+}
+
+func (x ComponentType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ComponentType) Descriptor() protoreflect.EnumDescriptor {
+	return file_components_v1_component_proto_enumTypes[0].Descriptor()
+}
+
+func (ComponentType) Type() protoreflect.EnumType {
+	return &file_components_v1_component_proto_enumTypes[0]
+}
+
+func (x ComponentType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use ComponentType.Descriptor instead.
+func (ComponentType) EnumDescriptor() ([]byte, []int) {
+	return file_components_v1_component_proto_rawDescGZIP(), []int{0}
+}
+
 type Component struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	Uuid           string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
-	Purl           string                 `protobuf:"bytes,2,opt,name=purl,proto3" json:"purl,omitempty"`
-	IsPublic       bool                   `protobuf:"varint,3,opt,name=is_public,json=isPublic,proto3" json:"is_public,omitempty"` // if component was obtained from public sources (npm, github etc.)
-	RepositoryUuid *string                `protobuf:"bytes,4,opt,name=repository_uuid,json=repositoryUuid,proto3,oneof" json:"repository_uuid,omitempty"`
-	RepositoryRef  *string                `protobuf:"bytes,5,opt,name=repository_ref,json=repositoryRef,proto3,oneof" json:"repository_ref,omitempty"`
-	ArtifactUuid   *string                `protobuf:"bytes,6,opt,name=artifact_uuid,json=artifactUuid,proto3,oneof" json:"artifact_uuid,omitempty"`
-	Defects        []*v1.Defect           `protobuf:"bytes,10,rep,name=defects,proto3" json:"defects,omitempty"`
+	ScannerUid     string                 `protobuf:"bytes,2,opt,name=scanner_uid,json=scannerUid,proto3" json:"scanner_uid,omitempty"` // internal scanner component id
+	Purl           *PURL                  `protobuf:"bytes,3,opt,name=purl,proto3" json:"purl,omitempty"`
+	Type           ComponentType          `protobuf:"varint,4,opt,name=type,proto3,enum=dolina.components.v1.ComponentType" json:"type,omitempty"`
+	IsPublic       bool                   `protobuf:"varint,5,opt,name=is_public,json=isPublic,proto3" json:"is_public,omitempty"` // if component was obtained from public sources (npm, github etc.)
+	RepositoryUuid *string                `protobuf:"bytes,6,opt,name=repository_uuid,json=repositoryUuid,proto3,oneof" json:"repository_uuid,omitempty"`
+	RepositoryRef  *string                `protobuf:"bytes,7,opt,name=repository_ref,json=repositoryRef,proto3,oneof" json:"repository_ref,omitempty"`
+	ArtifactUuid   *string                `protobuf:"bytes,8,opt,name=artifact_uuid,json=artifactUuid,proto3,oneof" json:"artifact_uuid,omitempty"`
+	DefectList     []*v1.Defect           `protobuf:"bytes,10,rep,name=defect_list,json=defectList,proto3" json:"defect_list,omitempty"`
 	CreatedAt      *timestamppb.Timestamp `protobuf:"bytes,20,opt,name=created_at,json=createdAt,proto3,oneof" json:"created_at,omitempty"`
 	UpdatedAt      *timestamppb.Timestamp `protobuf:"bytes,21,opt,name=updated_at,json=updatedAt,proto3,oneof" json:"updated_at,omitempty"`
 	unknownFields  protoimpl.UnknownFields
@@ -77,11 +140,25 @@ func (x *Component) GetUuid() string {
 	return ""
 }
 
-func (x *Component) GetPurl() string {
+func (x *Component) GetScannerUid() string {
+	if x != nil {
+		return x.ScannerUid
+	}
+	return ""
+}
+
+func (x *Component) GetPurl() *PURL {
 	if x != nil {
 		return x.Purl
 	}
-	return ""
+	return nil
+}
+
+func (x *Component) GetType() ComponentType {
+	if x != nil {
+		return x.Type
+	}
+	return ComponentType_COMPONENT_TYPE_UNSPECIFIED
 }
 
 func (x *Component) GetIsPublic() bool {
@@ -112,9 +189,9 @@ func (x *Component) GetArtifactUuid() string {
 	return ""
 }
 
-func (x *Component) GetDefects() []*v1.Defect {
+func (x *Component) GetDefectList() []*v1.Defect {
 	if x != nil {
-		return x.Defects
+		return x.DefectList
 	}
 	return nil
 }
@@ -135,7 +212,7 @@ func (x *Component) GetUpdatedAt() *timestamppb.Timestamp {
 
 type Components struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Components    []*Component           `protobuf:"bytes,1,rep,name=components,proto3" json:"components,omitempty"`
+	ComponentList []*Component           `protobuf:"bytes,1,rep,name=component_list,json=componentList,proto3" json:"component_list,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -170,9 +247,9 @@ func (*Components) Descriptor() ([]byte, []int) {
 	return file_components_v1_component_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *Components) GetComponents() []*Component {
+func (x *Components) GetComponentList() []*Component {
 	if x != nil {
-		return x.Components
+		return x.ComponentList
 	}
 	return nil
 }
@@ -265,16 +342,20 @@ var File_components_v1_component_proto protoreflect.FileDescriptor
 
 const file_components_v1_component_proto_rawDesc = "" +
 	"\n" +
-	"\x1dcomponents/v1/component.proto\x12\x14dolina.components.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17defects/v1/defect.proto\x1a\x16common/v1/paging.proto\x1a\x14common/v1/sort.proto\"\x8c\a\n" +
+	"\x1dcomponents/v1/component.proto\x12\x14dolina.components.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18components/v1/purl.proto\x1a\x17defects/v1/defect.proto\x1a\x16common/v1/paging.proto\x1a\x14common/v1/sort.proto\"\x89\b\n" +
 	"\tComponent\x12\x12\n" +
-	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x12\n" +
-	"\x04purl\x18\x02 \x01(\tR\x04purl\x12\x1b\n" +
-	"\tis_public\x18\x03 \x01(\bR\bisPublic\x12,\n" +
-	"\x0frepository_uuid\x18\x04 \x01(\tH\x00R\x0erepositoryUuid\x88\x01\x01\x12*\n" +
-	"\x0erepository_ref\x18\x05 \x01(\tH\x01R\rrepositoryRef\x88\x01\x01\x12(\n" +
-	"\rartifact_uuid\x18\x06 \x01(\tH\x02R\fartifactUuid\x88\x01\x01\x123\n" +
-	"\adefects\x18\n" +
-	" \x03(\v2\x19.dolina.defects.v1.DefectR\adefects\x12>\n" +
+	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x1f\n" +
+	"\vscanner_uid\x18\x02 \x01(\tR\n" +
+	"scannerUid\x12.\n" +
+	"\x04purl\x18\x03 \x01(\v2\x1a.dolina.components.v1.PURLR\x04purl\x127\n" +
+	"\x04type\x18\x04 \x01(\x0e2#.dolina.components.v1.ComponentTypeR\x04type\x12\x1b\n" +
+	"\tis_public\x18\x05 \x01(\bR\bisPublic\x12,\n" +
+	"\x0frepository_uuid\x18\x06 \x01(\tH\x00R\x0erepositoryUuid\x88\x01\x01\x12*\n" +
+	"\x0erepository_ref\x18\a \x01(\tH\x01R\rrepositoryRef\x88\x01\x01\x12(\n" +
+	"\rartifact_uuid\x18\b \x01(\tH\x02R\fartifactUuid\x88\x01\x01\x12:\n" +
+	"\vdefect_list\x18\n" +
+	" \x03(\v2\x19.dolina.defects.v1.DefectR\n" +
+	"defectList\x12>\n" +
 	"\n" +
 	"created_at\x18\x14 \x01(\v2\x1a.google.protobuf.TimestampH\x03R\tcreatedAt\x88\x01\x01\x12>\n" +
 	"\n" +
@@ -284,12 +365,10 @@ const file_components_v1_component_proto_rawDesc = "" +
 	"\x0f_repository_refB\x10\n" +
 	"\x0e_artifact_uuidB\r\n" +
 	"\v_created_atB\r\n" +
-	"\v_updated_at\"M\n" +
+	"\v_updated_at\"T\n" +
 	"\n" +
-	"Components\x12?\n" +
-	"\n" +
-	"components\x18\x01 \x03(\v2\x1f.dolina.components.v1.ComponentR\n" +
-	"components\"\xc6\x02\n" +
+	"Components\x12F\n" +
+	"\x0ecomponent_list\x18\x01 \x03(\v2\x1f.dolina.components.v1.ComponentR\rcomponentList\"\xc6\x02\n" +
 	"\x15ComponentsQueryFilter\x12\x12\n" +
 	"\x04purl\x18\x01 \x01(\tR\x04purl\x12,\n" +
 	"\x0frepository_uuid\x18\x04 \x01(\tH\x00R\x0erepositoryUuid\x88\x01\x01\x12*\n" +
@@ -299,7 +378,15 @@ const file_components_v1_component_proto_rawDesc = "" +
 	"\x04sort\x18\x15 \x01(\v2\x16.dolina.common.v1.SortR\x04sortB\x12\n" +
 	"\x10_repository_uuidB\x11\n" +
 	"\x0f_repository_refB\x10\n" +
-	"\x0e_artifact_uuidBRZPgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/components/v1;components_v1b\x06proto3"
+	"\x0e_artifact_uuid*\xff\x01\n" +
+	"\rComponentType\x12\x1e\n" +
+	"\x1aCOMPONENT_TYPE_UNSPECIFIED\x10\x00\x12#\n" +
+	"\x1fCOMPONENT_TYPE_LANGUAGE_PACKAGE\x10\x01\x12\"\n" +
+	"\x1eCOMPONENT_TYPE_CONTAINER_IMAGE\x10\x02\x12\x1d\n" +
+	"\x19COMPONENT_TYPE_OS_PACKAGE\x10\x03\x12\x19\n" +
+	"\x15COMPONENT_TYPE_BUNDLE\x10\x04\x12$\n" +
+	" COMPONENT_TYPE_BINARY_EXECUTABLE\x10\x05\x12%\n" +
+	"!COMPONENT_TYPE_MOBILE_APPLICATION\x10\x06BRZPgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/components/v1;components_v1b\x06proto3"
 
 var (
 	file_components_v1_component_proto_rawDescOnce sync.Once
@@ -313,28 +400,33 @@ func file_components_v1_component_proto_rawDescGZIP() []byte {
 	return file_components_v1_component_proto_rawDescData
 }
 
+var file_components_v1_component_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_components_v1_component_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_components_v1_component_proto_goTypes = []any{
-	(*Component)(nil),             // 0: dolina.components.v1.Component
-	(*Components)(nil),            // 1: dolina.components.v1.Components
-	(*ComponentsQueryFilter)(nil), // 2: dolina.components.v1.ComponentsQueryFilter
-	(*v1.Defect)(nil),             // 3: dolina.defects.v1.Defect
-	(*timestamppb.Timestamp)(nil), // 4: google.protobuf.Timestamp
-	(*v11.Paging)(nil),            // 5: dolina.common.v1.Paging
-	(*v11.Sort)(nil),              // 6: dolina.common.v1.Sort
+	(ComponentType)(0),            // 0: dolina.components.v1.ComponentType
+	(*Component)(nil),             // 1: dolina.components.v1.Component
+	(*Components)(nil),            // 2: dolina.components.v1.Components
+	(*ComponentsQueryFilter)(nil), // 3: dolina.components.v1.ComponentsQueryFilter
+	(*PURL)(nil),                  // 4: dolina.components.v1.PURL
+	(*v1.Defect)(nil),             // 5: dolina.defects.v1.Defect
+	(*timestamppb.Timestamp)(nil), // 6: google.protobuf.Timestamp
+	(*v11.Paging)(nil),            // 7: dolina.common.v1.Paging
+	(*v11.Sort)(nil),              // 8: dolina.common.v1.Sort
 }
 var file_components_v1_component_proto_depIdxs = []int32{
-	3, // 0: dolina.components.v1.Component.defects:type_name -> dolina.defects.v1.Defect
-	4, // 1: dolina.components.v1.Component.created_at:type_name -> google.protobuf.Timestamp
-	4, // 2: dolina.components.v1.Component.updated_at:type_name -> google.protobuf.Timestamp
-	0, // 3: dolina.components.v1.Components.components:type_name -> dolina.components.v1.Component
-	5, // 4: dolina.components.v1.ComponentsQueryFilter.paging:type_name -> dolina.common.v1.Paging
-	6, // 5: dolina.components.v1.ComponentsQueryFilter.sort:type_name -> dolina.common.v1.Sort
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	4, // 0: dolina.components.v1.Component.purl:type_name -> dolina.components.v1.PURL
+	0, // 1: dolina.components.v1.Component.type:type_name -> dolina.components.v1.ComponentType
+	5, // 2: dolina.components.v1.Component.defect_list:type_name -> dolina.defects.v1.Defect
+	6, // 3: dolina.components.v1.Component.created_at:type_name -> google.protobuf.Timestamp
+	6, // 4: dolina.components.v1.Component.updated_at:type_name -> google.protobuf.Timestamp
+	1, // 5: dolina.components.v1.Components.component_list:type_name -> dolina.components.v1.Component
+	7, // 6: dolina.components.v1.ComponentsQueryFilter.paging:type_name -> dolina.common.v1.Paging
+	8, // 7: dolina.components.v1.ComponentsQueryFilter.sort:type_name -> dolina.common.v1.Sort
+	8, // [8:8] is the sub-list for method output_type
+	8, // [8:8] is the sub-list for method input_type
+	8, // [8:8] is the sub-list for extension type_name
+	8, // [8:8] is the sub-list for extension extendee
+	0, // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_components_v1_component_proto_init() }
@@ -342,6 +434,7 @@ func file_components_v1_component_proto_init() {
 	if File_components_v1_component_proto != nil {
 		return
 	}
+	file_components_v1_purl_proto_init()
 	file_components_v1_component_proto_msgTypes[0].OneofWrappers = []any{}
 	file_components_v1_component_proto_msgTypes[2].OneofWrappers = []any{}
 	type x struct{}
@@ -349,13 +442,14 @@ func file_components_v1_component_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_components_v1_component_proto_rawDesc), len(file_components_v1_component_proto_rawDesc)),
-			NumEnums:      0,
+			NumEnums:      1,
 			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_components_v1_component_proto_goTypes,
 		DependencyIndexes: file_components_v1_component_proto_depIdxs,
+		EnumInfos:         file_components_v1_component_proto_enumTypes,
 		MessageInfos:      file_components_v1_component_proto_msgTypes,
 	}.Build()
 	File_components_v1_component_proto = out.File

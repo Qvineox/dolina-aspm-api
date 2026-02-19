@@ -8,9 +8,11 @@ import "protoc-gen-openapiv2/options/annotations.proto";
 
 import "google/protobuf/timestamp.proto";
 
+import "components/v1/purl.proto";
 import "defects/v1/defect.proto";
 import "common/v1/paging.proto";
 import "common/v1/sort.proto";
+
 
 message Component {
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
@@ -26,23 +28,25 @@ message Component {
   };
 
   string uuid = 1;
-  string purl = 2;
+  string scanner_uid = 2; // internal scanner component id
+  PURL purl = 3;
+  ComponentType type = 4;
 
-  bool is_public = 3; // if component was obtained from public sources (npm, github etc.)
+  bool is_public = 5; // if component was obtained from public sources (npm, github etc.)
 
-  optional string repository_uuid = 4;
-  optional string repository_ref = 5;
+  optional string repository_uuid = 6;
+  optional string repository_ref = 7;
 
-  optional string artifact_uuid = 6;
+  optional string artifact_uuid = 8;
 
-  repeated defects.v1.Defect defects = 10;
+  repeated defects.v1.Defect defect_list = 10;
 
   optional google.protobuf.Timestamp created_at = 20;
   optional google.protobuf.Timestamp updated_at = 21;
 }
 
 message Components {
-  repeated Component components = 1;
+  repeated Component component_list = 1;
 }
 
 message ComponentsQueryFilter {
@@ -54,4 +58,15 @@ message ComponentsQueryFilter {
 
   common.v1.Paging paging = 20;
   common.v1.Sort sort = 21;
+}
+
+enum ComponentType {
+  COMPONENT_TYPE_UNSPECIFIED = 0;
+
+  COMPONENT_TYPE_LANGUAGE_PACKAGE = 1;
+  COMPONENT_TYPE_CONTAINER_IMAGE = 2;
+  COMPONENT_TYPE_OS_PACKAGE = 3;
+  COMPONENT_TYPE_BUNDLE = 4;
+  COMPONENT_TYPE_BINARY_EXECUTABLE = 5;
+  COMPONENT_TYPE_MOBILE_APPLICATION = 6;
 }

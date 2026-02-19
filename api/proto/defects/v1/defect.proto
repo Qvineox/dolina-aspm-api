@@ -5,8 +5,12 @@ package dolina.defects.v1;
 option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/defects/v1;defects_v1";
 
 import "google/protobuf/timestamp.proto";
+
+import "components/v1/purl.proto";
 import "common/v1/paging.proto";
 import "common/v1/sort.proto";
+import "defects/v1/fix.proto";
+import "cve/v1/cve.proto";
 
 message Defect {
   string uuid = 1;
@@ -15,27 +19,35 @@ message Defect {
   string description = 3;
 
   DefectType type = 4;
+  repeated DefectStatus status = 5;
 
-  // risk score is based on inputs from security scanners and applied ruleset
-  uint32 applied_risk_score = 5;
-  uint32 cvss_score = 6;
+  // applied risk score is based on inputs from security scanners and applied ruleset
+  uint32 applied_risk_score = 6;
+  float cvss_score = 7;
+
+  optional cve.v1.CVE cve = 8;
+  optional string cwe = 9;
 
   // deduplication
-  bool is_latest = 9;
-  repeated Defect defect_duplicates = 10;
+  bool is_latest = 10;
+  repeated Defect defect_duplicates = 11;
 
   // membership attributes
-  optional string component_purl = 20;
+  optional components.v1.PURL component_purl = 20;
 
   optional uint32 application_id = 21;
   optional string application_ref = 22; // git ref of an application to define where defect was found
 
-  optional google.protobuf.Timestamp created_at = 23;
-  optional google.protobuf.Timestamp updated_at = 24;
+  // additional information about defect
+  repeated string reference_url_list = 30;
+  optional FixInfo fix_info = 31;
+
+  optional google.protobuf.Timestamp created_at = 41;
+  optional google.protobuf.Timestamp updated_at = 42;
 }
 
 message Defects {
-  repeated Defect defects = 1;
+  repeated Defect defect_list = 1;
 }
 
 enum DefectType {
@@ -44,6 +56,15 @@ enum DefectType {
   DEFECT_TYPE_SAST = 1;
   DEFECT_TYPE_DAST = 2;
   DEFECT_TYPE_SCA = 3;
+}
+
+enum DefectStatus {
+  DEFECT_STATUS_UNSPECIFIED = 0;
+
+  DEFECT_STATUS_FIXED_BY_UPDATE = 1; // defect is removed by library/package update
+  DEFECT_STATUS_WILL_NOT_FIX = 2; // defect is purposely left in code by distributor
+  DEFECT_STATUS_HAS_EXPLOIT = 3; // defect has known exploit
+  DEFECT_STATUS_INDIRECT = 4; // defect is indirect for scanner application
 }
 
 message DefectsQueryFilter {

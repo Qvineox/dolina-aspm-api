@@ -10,24 +10,91 @@ import { Paging } from "../../common/v1/paging";
 import { Sort } from "../../common/v1/sort";
 import { Defect } from "../../defects/v1/defect";
 import { Timestamp } from "../../google/protobuf/timestamp";
+import { PURL } from "./purl";
 
 export const protobufPackage = "dolina.components.v1";
 
+export enum ComponentType {
+  COMPONENT_TYPE_UNSPECIFIED = 0,
+  COMPONENT_TYPE_LANGUAGE_PACKAGE = 1,
+  COMPONENT_TYPE_CONTAINER_IMAGE = 2,
+  COMPONENT_TYPE_OS_PACKAGE = 3,
+  COMPONENT_TYPE_BUNDLE = 4,
+  COMPONENT_TYPE_BINARY_EXECUTABLE = 5,
+  COMPONENT_TYPE_MOBILE_APPLICATION = 6,
+  UNRECOGNIZED = -1,
+}
+
+export function componentTypeFromJSON(object: any): ComponentType {
+  switch (object) {
+    case 0:
+    case "COMPONENT_TYPE_UNSPECIFIED":
+      return ComponentType.COMPONENT_TYPE_UNSPECIFIED;
+    case 1:
+    case "COMPONENT_TYPE_LANGUAGE_PACKAGE":
+      return ComponentType.COMPONENT_TYPE_LANGUAGE_PACKAGE;
+    case 2:
+    case "COMPONENT_TYPE_CONTAINER_IMAGE":
+      return ComponentType.COMPONENT_TYPE_CONTAINER_IMAGE;
+    case 3:
+    case "COMPONENT_TYPE_OS_PACKAGE":
+      return ComponentType.COMPONENT_TYPE_OS_PACKAGE;
+    case 4:
+    case "COMPONENT_TYPE_BUNDLE":
+      return ComponentType.COMPONENT_TYPE_BUNDLE;
+    case 5:
+    case "COMPONENT_TYPE_BINARY_EXECUTABLE":
+      return ComponentType.COMPONENT_TYPE_BINARY_EXECUTABLE;
+    case 6:
+    case "COMPONENT_TYPE_MOBILE_APPLICATION":
+      return ComponentType.COMPONENT_TYPE_MOBILE_APPLICATION;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ComponentType.UNRECOGNIZED;
+  }
+}
+
+export function componentTypeToJSON(object: ComponentType): string {
+  switch (object) {
+    case ComponentType.COMPONENT_TYPE_UNSPECIFIED:
+      return "COMPONENT_TYPE_UNSPECIFIED";
+    case ComponentType.COMPONENT_TYPE_LANGUAGE_PACKAGE:
+      return "COMPONENT_TYPE_LANGUAGE_PACKAGE";
+    case ComponentType.COMPONENT_TYPE_CONTAINER_IMAGE:
+      return "COMPONENT_TYPE_CONTAINER_IMAGE";
+    case ComponentType.COMPONENT_TYPE_OS_PACKAGE:
+      return "COMPONENT_TYPE_OS_PACKAGE";
+    case ComponentType.COMPONENT_TYPE_BUNDLE:
+      return "COMPONENT_TYPE_BUNDLE";
+    case ComponentType.COMPONENT_TYPE_BINARY_EXECUTABLE:
+      return "COMPONENT_TYPE_BINARY_EXECUTABLE";
+    case ComponentType.COMPONENT_TYPE_MOBILE_APPLICATION:
+      return "COMPONENT_TYPE_MOBILE_APPLICATION";
+    case ComponentType.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
 export interface Component {
   uuid: string;
-  purl: string;
+  /** internal scanner component id */
+  scannerUid: string;
+  purl: PURL | undefined;
+  type: ComponentType;
   /** if component was obtained from public sources (npm, github etc.) */
   isPublic: boolean;
   repositoryUuid?: string | undefined;
   repositoryRef?: string | undefined;
   artifactUuid?: string | undefined;
-  defects: Defect[];
+  defectList: Defect[];
   createdAt?: Date | undefined;
   updatedAt?: Date | undefined;
 }
 
 export interface Components {
-  components: Component[];
+  componentList: Component[];
 }
 
 export interface ComponentsQueryFilter {
@@ -42,12 +109,14 @@ export interface ComponentsQueryFilter {
 function createBaseComponent(): Component {
   return {
     uuid: "",
-    purl: "",
+    scannerUid: "",
+    purl: undefined,
+    type: 0,
     isPublic: false,
     repositoryUuid: undefined,
     repositoryRef: undefined,
     artifactUuid: undefined,
-    defects: [],
+    defectList: [],
     createdAt: undefined,
     updatedAt: undefined,
   };
@@ -58,22 +127,28 @@ export const Component: MessageFns<Component> = {
     if (message.uuid !== "") {
       writer.uint32(10).string(message.uuid);
     }
-    if (message.purl !== "") {
-      writer.uint32(18).string(message.purl);
+    if (message.scannerUid !== "") {
+      writer.uint32(18).string(message.scannerUid);
+    }
+    if (message.purl !== undefined) {
+      PURL.encode(message.purl, writer.uint32(26).fork()).join();
+    }
+    if (message.type !== 0) {
+      writer.uint32(32).int32(message.type);
     }
     if (message.isPublic !== false) {
-      writer.uint32(24).bool(message.isPublic);
+      writer.uint32(40).bool(message.isPublic);
     }
     if (message.repositoryUuid !== undefined) {
-      writer.uint32(34).string(message.repositoryUuid);
+      writer.uint32(50).string(message.repositoryUuid);
     }
     if (message.repositoryRef !== undefined) {
-      writer.uint32(42).string(message.repositoryRef);
+      writer.uint32(58).string(message.repositoryRef);
     }
     if (message.artifactUuid !== undefined) {
-      writer.uint32(50).string(message.artifactUuid);
+      writer.uint32(66).string(message.artifactUuid);
     }
-    for (const v of message.defects) {
+    for (const v of message.defectList) {
       Defect.encode(v!, writer.uint32(82).fork()).join();
     }
     if (message.createdAt !== undefined) {
@@ -105,35 +180,51 @@ export const Component: MessageFns<Component> = {
             break;
           }
 
-          message.purl = reader.string();
+          message.scannerUid = reader.string();
           continue;
         }
         case 3: {
-          if (tag !== 24) {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.purl = PURL.decode(reader, reader.uint32());
+          continue;
+        }
+        case 4: {
+          if (tag !== 32) {
+            break;
+          }
+
+          message.type = reader.int32() as any;
+          continue;
+        }
+        case 5: {
+          if (tag !== 40) {
             break;
           }
 
           message.isPublic = reader.bool();
           continue;
         }
-        case 4: {
-          if (tag !== 34) {
+        case 6: {
+          if (tag !== 50) {
             break;
           }
 
           message.repositoryUuid = reader.string();
           continue;
         }
-        case 5: {
-          if (tag !== 42) {
+        case 7: {
+          if (tag !== 58) {
             break;
           }
 
           message.repositoryRef = reader.string();
           continue;
         }
-        case 6: {
-          if (tag !== 50) {
+        case 8: {
+          if (tag !== 66) {
             break;
           }
 
@@ -145,7 +236,7 @@ export const Component: MessageFns<Component> = {
             break;
           }
 
-          message.defects.push(Defect.decode(reader, reader.uint32()));
+          message.defectList.push(Defect.decode(reader, reader.uint32()));
           continue;
         }
         case 20: {
@@ -176,12 +267,16 @@ export const Component: MessageFns<Component> = {
   fromJSON(object: any): Component {
     return {
       uuid: isSet(object.uuid) ? globalThis.String(object.uuid) : "",
-      purl: isSet(object.purl) ? globalThis.String(object.purl) : "",
+      scannerUid: isSet(object.scannerUid) ? globalThis.String(object.scannerUid) : "",
+      purl: isSet(object.purl) ? PURL.fromJSON(object.purl) : undefined,
+      type: isSet(object.type) ? componentTypeFromJSON(object.type) : 0,
       isPublic: isSet(object.isPublic) ? globalThis.Boolean(object.isPublic) : false,
       repositoryUuid: isSet(object.repositoryUuid) ? globalThis.String(object.repositoryUuid) : undefined,
       repositoryRef: isSet(object.repositoryRef) ? globalThis.String(object.repositoryRef) : undefined,
       artifactUuid: isSet(object.artifactUuid) ? globalThis.String(object.artifactUuid) : undefined,
-      defects: globalThis.Array.isArray(object?.defects) ? object.defects.map((e: any) => Defect.fromJSON(e)) : [],
+      defectList: globalThis.Array.isArray(object?.defectList)
+        ? object.defectList.map((e: any) => Defect.fromJSON(e))
+        : [],
       createdAt: isSet(object.createdAt) ? fromJsonTimestamp(object.createdAt) : undefined,
       updatedAt: isSet(object.updatedAt) ? fromJsonTimestamp(object.updatedAt) : undefined,
     };
@@ -192,8 +287,14 @@ export const Component: MessageFns<Component> = {
     if (message.uuid !== "") {
       obj.uuid = message.uuid;
     }
-    if (message.purl !== "") {
-      obj.purl = message.purl;
+    if (message.scannerUid !== "") {
+      obj.scannerUid = message.scannerUid;
+    }
+    if (message.purl !== undefined) {
+      obj.purl = PURL.toJSON(message.purl);
+    }
+    if (message.type !== 0) {
+      obj.type = componentTypeToJSON(message.type);
     }
     if (message.isPublic !== false) {
       obj.isPublic = message.isPublic;
@@ -207,8 +308,8 @@ export const Component: MessageFns<Component> = {
     if (message.artifactUuid !== undefined) {
       obj.artifactUuid = message.artifactUuid;
     }
-    if (message.defects?.length) {
-      obj.defects = message.defects.map((e) => Defect.toJSON(e));
+    if (message.defectList?.length) {
+      obj.defectList = message.defectList.map((e) => Defect.toJSON(e));
     }
     if (message.createdAt !== undefined) {
       obj.createdAt = message.createdAt.toISOString();
@@ -225,12 +326,14 @@ export const Component: MessageFns<Component> = {
   fromPartial<I extends Exact<DeepPartial<Component>, I>>(object: I): Component {
     const message = createBaseComponent();
     message.uuid = object.uuid ?? "";
-    message.purl = object.purl ?? "";
+    message.scannerUid = object.scannerUid ?? "";
+    message.purl = (object.purl !== undefined && object.purl !== null) ? PURL.fromPartial(object.purl) : undefined;
+    message.type = object.type ?? 0;
     message.isPublic = object.isPublic ?? false;
     message.repositoryUuid = object.repositoryUuid ?? undefined;
     message.repositoryRef = object.repositoryRef ?? undefined;
     message.artifactUuid = object.artifactUuid ?? undefined;
-    message.defects = object.defects?.map((e) => Defect.fromPartial(e)) || [];
+    message.defectList = object.defectList?.map((e) => Defect.fromPartial(e)) || [];
     message.createdAt = object.createdAt ?? undefined;
     message.updatedAt = object.updatedAt ?? undefined;
     return message;
@@ -238,12 +341,12 @@ export const Component: MessageFns<Component> = {
 };
 
 function createBaseComponents(): Components {
-  return { components: [] };
+  return { componentList: [] };
 }
 
 export const Components: MessageFns<Components> = {
   encode(message: Components, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.components) {
+    for (const v of message.componentList) {
       Component.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
@@ -261,7 +364,7 @@ export const Components: MessageFns<Components> = {
             break;
           }
 
-          message.components.push(Component.decode(reader, reader.uint32()));
+          message.componentList.push(Component.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -275,16 +378,16 @@ export const Components: MessageFns<Components> = {
 
   fromJSON(object: any): Components {
     return {
-      components: globalThis.Array.isArray(object?.components)
-        ? object.components.map((e: any) => Component.fromJSON(e))
+      componentList: globalThis.Array.isArray(object?.componentList)
+        ? object.componentList.map((e: any) => Component.fromJSON(e))
         : [],
     };
   },
 
   toJSON(message: Components): unknown {
     const obj: any = {};
-    if (message.components?.length) {
-      obj.components = message.components.map((e) => Component.toJSON(e));
+    if (message.componentList?.length) {
+      obj.componentList = message.componentList.map((e) => Component.toJSON(e));
     }
     return obj;
   },
@@ -294,7 +397,7 @@ export const Components: MessageFns<Components> = {
   },
   fromPartial<I extends Exact<DeepPartial<Components>, I>>(object: I): Components {
     const message = createBaseComponents();
-    message.components = object.components?.map((e) => Component.fromPartial(e)) || [];
+    message.componentList = object.componentList?.map((e) => Component.fromPartial(e)) || [];
     return message;
   },
 };

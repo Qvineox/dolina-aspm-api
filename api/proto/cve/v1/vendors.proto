@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package dolina.cve.v1;
+
+option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/cve/v1;cve_v1";
+
+message Vendor {
+  uint32 id = 1;
+  string name = 2;
+
+  string url = 3;
+}
+
+message VendorScoring {
+  Vendor vendor = 1;
+
+  optional float score = 2;
+  optional string severity = 3;
+
+  optional string source_url = 4;
+}
+

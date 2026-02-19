@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package dolina.defects.v1;
+
+option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/defects/v1;defects_v1";
+
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+message FixInfo {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Fix Info"
+      description: "Contains information about fix options. Provides a set of version strings representing releases "
+          "where the vulnerability has been fixed. These versions may be higher (newer) or lower (older patched releases) "
+          "than the vulnerable version range, indicating all known unaffected versions."
+    }
+  };
+
+  string description = 1;
+
+  repeated FixedVersions update_versions = 2;
+  repeated FixedVersions downgrade_versions = 3;
+}
+
+message FixedVersions {
+  repeated string update_version_list = 1;
+}

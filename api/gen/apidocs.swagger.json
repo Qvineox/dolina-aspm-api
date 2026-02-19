@@ -1223,8 +1223,15 @@
         "uuid": {
           "type": "string"
         },
+        "scannerUid": {
+          "type": "string",
+          "title": "internal scanner component id"
+        },
         "purl": {
-          "type": "string"
+          "$ref": "#/definitions/v1PURL"
+        },
+        "type": {
+          "$ref": "#/definitions/v1ComponentType"
         },
         "isPublic": {
           "type": "boolean",
@@ -1239,7 +1246,7 @@
         "artifactUuid": {
           "type": "string"
         },
-        "defects": {
+        "defectList": {
           "type": "array",
           "items": {
             "type": "object",
@@ -1582,10 +1589,56 @@
       "description": "Contextual metadata accompanying a raw scanner report. It provides information about the environment in which the scan was executed, such as the repository URL, Git reference (branch, tag, commit), pipeline or build ID, and any other relevant deployment or runtime context. This data is used by Dolina ASPM to enrich, filter, and correlate findings with specific code versions or build stages.",
       "title": "Analyze options"
     },
+    "v1CVE": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "cvssScore": {
+          "type": "number",
+          "format": "float",
+          "title": "aggregated main cvss score"
+        },
+        "vendorScoringList": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1VendorScoring"
+          }
+        },
+        "referenceUrlList": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "additional information about vulnerability"
+        },
+        "cweList": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "v1ComponentType": {
+      "type": "string",
+      "enum": [
+        "COMPONENT_TYPE_UNSPECIFIED",
+        "COMPONENT_TYPE_LANGUAGE_PACKAGE",
+        "COMPONENT_TYPE_CONTAINER_IMAGE",
+        "COMPONENT_TYPE_OS_PACKAGE",
+        "COMPONENT_TYPE_BUNDLE",
+        "COMPONENT_TYPE_BINARY_EXECUTABLE",
+        "COMPONENT_TYPE_MOBILE_APPLICATION"
+      ],
+      "default": "COMPONENT_TYPE_UNSPECIFIED"
+    },
     "v1Components": {
       "type": "object",
       "properties": {
-        "components": {
+        "componentList": {
           "type": "array",
           "items": {
             "type": "object",
@@ -1627,14 +1680,26 @@
         "type": {
           "$ref": "#/definitions/v1DefectType"
         },
+        "status": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1DefectStatus"
+          }
+        },
         "appliedRiskScore": {
           "type": "integer",
           "format": "int64",
-          "title": "risk score is based on inputs from security scanners and applied ruleset"
+          "title": "applied risk score is based on inputs from security scanners and applied ruleset"
         },
         "cvssScore": {
-          "type": "integer",
-          "format": "int64"
+          "type": "number",
+          "format": "float"
+        },
+        "cve": {
+          "$ref": "#/definitions/v1CVE"
+        },
+        "cwe": {
+          "type": "string"
         },
         "isLatest": {
           "type": "boolean",
@@ -1648,7 +1713,7 @@
           }
         },
         "componentPurl": {
-          "type": "string",
+          "$ref": "#/definitions/v1PURL",
           "title": "membership attributes"
         },
         "applicationId": {
@@ -1659,6 +1724,16 @@
           "type": "string",
           "title": "git ref of an application to define where defect was found"
         },
+        "referenceUrlList": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "additional information about defect"
+        },
+        "fixInfo": {
+          "$ref": "#/definitions/v1FixInfo"
+        },
         "createdAt": {
           "type": "string",
           "format": "date-time"
@@ -1668,6 +1743,18 @@
           "format": "date-time"
         }
       }
+    },
+    "v1DefectStatus": {
+      "type": "string",
+      "enum": [
+        "DEFECT_STATUS_UNSPECIFIED",
+        "DEFECT_STATUS_FIXED_BY_UPDATE",
+        "DEFECT_STATUS_WILL_NOT_FIX",
+        "DEFECT_STATUS_HAS_EXPLOIT",
+        "DEFECT_STATUS_INDIRECT"
+      ],
+      "default": "DEFECT_STATUS_UNSPECIFIED",
+      "title": "- DEFECT_STATUS_FIXED_BY_UPDATE: defect is removed by library/package update\n - DEFECT_STATUS_WILL_NOT_FIX: defect is purposely left in code by distributor\n - DEFECT_STATUS_HAS_EXPLOIT: defect has known exploit\n - DEFECT_STATUS_INDIRECT: defect is indirect for scanner application"
     },
     "v1DefectType": {
       "type": "string",
@@ -1682,7 +1769,7 @@
     "v1Defects": {
       "type": "object",
       "properties": {
-        "defects": {
+        "defectList": {
           "type": "array",
           "items": {
             "type": "object",
@@ -1726,6 +1813,41 @@
         "totalSize": {
           "type": "string",
           "format": "uint64"
+        }
+      }
+    },
+    "v1FixInfo": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "updateVersions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1FixedVersions"
+          }
+        },
+        "downgradeVersions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1FixedVersions"
+          }
+        }
+      },
+      "description": "Contains information about fix options. Provides a set of version strings representing releases where the vulnerability has been fixed. These versions may be higher (newer) or lower (older patched releases) than the vulnerable version range, indicating all known unaffected versions.",
+      "title": "Fix Info"
+    },
+    "v1FixedVersions": {
+      "type": "object",
+      "properties": {
+        "updateVersionList": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
@@ -1782,6 +1904,39 @@
         "createdAt": {
           "type": "string",
           "format": "date-time"
+        }
+      }
+    },
+    "v1PURL": {
+      "type": "object",
+      "properties": {
+        "instance": {
+          "type": "string",
+          "title": "string representation of a purl"
+        },
+        "type": {
+          "type": "string",
+          "description": "the package \"type\" or package \"protocol\" such as maven, npm, nuget, gem, pypi, etc."
+        },
+        "namespace": {
+          "type": "string",
+          "description": "a name prefix such as a Maven group id, a Docker image owner, a GitHub user or organization. Namespace is type-specific."
+        },
+        "name": {
+          "type": "string",
+          "description": "the name of the package."
+        },
+        "version": {
+          "type": "string",
+          "description": "the name of the package."
+        },
+        "qualifiers": {
+          "type": "string",
+          "description": "qualifier data for a package such as OS, architecture, repository, etc. Qualifiers are type-specific."
+        },
+        "subpath": {
+          "type": "string",
+          "description": "subpath within a package, relative to the package root."
         }
       }
     },
@@ -2119,6 +2274,39 @@
         "receivedSize": {
           "type": "string",
           "format": "uint64"
+        }
+      }
+    },
+    "v1Vendor": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "v1VendorScoring": {
+      "type": "object",
+      "properties": {
+        "vendor": {
+          "$ref": "#/definitions/v1Vendor"
+        },
+        "score": {
+          "type": "number",
+          "format": "float"
+        },
+        "severity": {
+          "type": "string"
+        },
+        "sourceUrl": {
+          "type": "string"
         }
       }
     }

@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="protoc gen go all" type="MAKEFILE_TARGET_RUN_CONFIGURATION" factoryName="Makefile" focusToolWindowBeforeRun="true">
-    <makefile filename="$PROJECT_DIR$/scripts/makefile" target="all" workingDirectory="S:\Projects\dolina-aspm-api\api\proto" arguments="">
+    <makefile filename="$PROJECT_DIR$/scripts/makefile" target="all" workingDirectory="S:\Projects\dolina\dolina-aspm-api\api\proto" arguments="">
       <envs />
     </makefile>
     <method v="2" />

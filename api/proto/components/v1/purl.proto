@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package dolina.components.v1;
+
+option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/components/v1;components_v1";
+
+// ref: https://github.com/package-url/purl-spec
+// ref: https://tc54.org/purl/
+
+message PURL {
+  // string representation of a purl
+  string instance = 1;
+
+  // the package "type" or package "protocol" such as maven, npm, nuget, gem, pypi, etc.
+  string type = 2;
+
+  // a name prefix such as a Maven group id, a Docker image owner, a GitHub user or organization. Namespace is type-specific.
+  optional string namespace = 3;
+
+  // the name of the package.
+  string name = 4;
+
+  // the name of the package.
+  string version = 5;
+
+  // qualifier data for a package such as OS, architecture, repository, etc. Qualifiers are type-specific.
+  string qualifiers = 6;
+
+  // subpath within a package, relative to the package root.
+  string subpath = 7;
+}
