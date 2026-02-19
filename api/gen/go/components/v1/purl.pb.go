@@ -28,13 +28,13 @@ type PURL struct {
 	// the package "type" or package "protocol" such as maven, npm, nuget, gem, pypi, etc.
 	Type string `protobuf:"bytes,2,opt,name=type,proto3" json:"type,omitempty"`
 	// a name prefix such as a Maven group id, a Docker image owner, a GitHub user or organization. Namespace is type-specific.
-	Namespace *string `protobuf:"bytes,3,opt,name=namespace,proto3,oneof" json:"namespace,omitempty"`
+	Namespace string `protobuf:"bytes,3,opt,name=namespace,proto3" json:"namespace,omitempty"`
 	// the name of the package.
 	Name string `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
 	// the name of the package.
 	Version string `protobuf:"bytes,5,opt,name=version,proto3" json:"version,omitempty"`
 	// qualifier data for a package such as OS, architecture, repository, etc. Qualifiers are type-specific.
-	Qualifiers string `protobuf:"bytes,6,opt,name=qualifiers,proto3" json:"qualifiers,omitempty"`
+	Qualifiers map[string]string `protobuf:"bytes,6,rep,name=qualifiers,proto3" json:"qualifiers,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	// subpath within a package, relative to the package root.
 	Subpath       string `protobuf:"bytes,7,opt,name=subpath,proto3" json:"subpath,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -86,8 +86,8 @@ func (x *PURL) GetType() string {
 }
 
 func (x *PURL) GetNamespace() string {
-	if x != nil && x.Namespace != nil {
-		return *x.Namespace
+	if x != nil {
+		return x.Namespace
 	}
 	return ""
 }
@@ -106,11 +106,11 @@ func (x *PURL) GetVersion() string {
 	return ""
 }
 
-func (x *PURL) GetQualifiers() string {
+func (x *PURL) GetQualifiers() map[string]string {
 	if x != nil {
 		return x.Qualifiers
 	}
-	return ""
+	return nil
 }
 
 func (x *PURL) GetSubpath() string {
@@ -124,19 +124,20 @@ var File_components_v1_purl_proto protoreflect.FileDescriptor
 
 const file_components_v1_purl_proto_rawDesc = "" +
 	"\n" +
-	"\x18components/v1/purl.proto\x12\x14dolina.components.v1\"\xcf\x01\n" +
+	"\x18components/v1/purl.proto\x12\x14dolina.components.v1\"\xa7\x02\n" +
 	"\x04PURL\x12\x1a\n" +
 	"\binstance\x18\x01 \x01(\tR\binstance\x12\x12\n" +
-	"\x04type\x18\x02 \x01(\tR\x04type\x12!\n" +
-	"\tnamespace\x18\x03 \x01(\tH\x00R\tnamespace\x88\x01\x01\x12\x12\n" +
+	"\x04type\x18\x02 \x01(\tR\x04type\x12\x1c\n" +
+	"\tnamespace\x18\x03 \x01(\tR\tnamespace\x12\x12\n" +
 	"\x04name\x18\x04 \x01(\tR\x04name\x12\x18\n" +
-	"\aversion\x18\x05 \x01(\tR\aversion\x12\x1e\n" +
+	"\aversion\x18\x05 \x01(\tR\aversion\x12J\n" +
 	"\n" +
-	"qualifiers\x18\x06 \x01(\tR\n" +
+	"qualifiers\x18\x06 \x03(\v2*.dolina.components.v1.PURL.QualifiersEntryR\n" +
 	"qualifiers\x12\x18\n" +
-	"\asubpath\x18\a \x01(\tR\asubpathB\f\n" +
-	"\n" +
-	"_namespaceBRZPgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/components/v1;components_v1b\x06proto3"
+	"\asubpath\x18\a \x01(\tR\asubpath\x1a=\n" +
+	"\x0fQualifiersEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01BRZPgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/components/v1;components_v1b\x06proto3"
 
 var (
 	file_components_v1_purl_proto_rawDescOnce sync.Once
@@ -150,16 +151,18 @@ func file_components_v1_purl_proto_rawDescGZIP() []byte {
 	return file_components_v1_purl_proto_rawDescData
 }
 
-var file_components_v1_purl_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_components_v1_purl_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_components_v1_purl_proto_goTypes = []any{
 	(*PURL)(nil), // 0: dolina.components.v1.PURL
+	nil,          // 1: dolina.components.v1.PURL.QualifiersEntry
 }
 var file_components_v1_purl_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	1, // 0: dolina.components.v1.PURL.qualifiers:type_name -> dolina.components.v1.PURL.QualifiersEntry
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_components_v1_purl_proto_init() }
@@ -167,14 +170,13 @@ func file_components_v1_purl_proto_init() {
 	if File_components_v1_purl_proto != nil {
 		return
 	}
-	file_components_v1_purl_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_components_v1_purl_proto_rawDesc), len(file_components_v1_purl_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   1,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -7,8 +7,7 @@
 package defects_v1
 
 import (
-	v12 "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/common/v1"
-	v11 "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/components/v1"
+	v11 "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/common/v1"
 	v1 "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/cve/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -148,9 +147,9 @@ type Defect struct {
 	IsLatest         bool      `protobuf:"varint,10,opt,name=is_latest,json=isLatest,proto3" json:"is_latest,omitempty"`
 	DefectDuplicates []*Defect `protobuf:"bytes,11,rep,name=defect_duplicates,json=defectDuplicates,proto3" json:"defect_duplicates,omitempty"`
 	// membership attributes
-	ComponentPurl  *v11.PURL `protobuf:"bytes,20,opt,name=component_purl,json=componentPurl,proto3,oneof" json:"component_purl,omitempty"`
-	ApplicationId  *uint32   `protobuf:"varint,21,opt,name=application_id,json=applicationId,proto3,oneof" json:"application_id,omitempty"`
-	ApplicationRef *string   `protobuf:"bytes,22,opt,name=application_ref,json=applicationRef,proto3,oneof" json:"application_ref,omitempty"` // git ref of an application to define where defect was found
+	ComponentUuid  *string `protobuf:"bytes,20,opt,name=component_uuid,json=componentUuid,proto3,oneof" json:"component_uuid,omitempty"`
+	ApplicationId  *uint32 `protobuf:"varint,21,opt,name=application_id,json=applicationId,proto3,oneof" json:"application_id,omitempty"`
+	ApplicationRef *string `protobuf:"bytes,22,opt,name=application_ref,json=applicationRef,proto3,oneof" json:"application_ref,omitempty"` // git ref of an application to define where defect was found
 	// additional information about defect
 	ReferenceUrlList []string               `protobuf:"bytes,30,rep,name=reference_url_list,json=referenceUrlList,proto3" json:"reference_url_list,omitempty"`
 	FixInfo          *FixInfo               `protobuf:"bytes,31,opt,name=fix_info,json=fixInfo,proto3,oneof" json:"fix_info,omitempty"`
@@ -267,11 +266,11 @@ func (x *Defect) GetDefectDuplicates() []*Defect {
 	return nil
 }
 
-func (x *Defect) GetComponentPurl() *v11.PURL {
-	if x != nil {
-		return x.ComponentPurl
+func (x *Defect) GetComponentUuid() string {
+	if x != nil && x.ComponentUuid != nil {
+		return *x.ComponentUuid
 	}
-	return nil
+	return ""
 }
 
 func (x *Defect) GetApplicationId() uint32 {
@@ -366,8 +365,8 @@ type DefectsQueryFilter struct {
 	ComponentPurl  *string                `protobuf:"bytes,2,opt,name=component_purl,json=componentPurl,proto3,oneof" json:"component_purl,omitempty"`
 	ApplicationId  *uint32                `protobuf:"varint,5,opt,name=application_id,json=applicationId,proto3,oneof" json:"application_id,omitempty"`
 	ApplicationRef *string                `protobuf:"bytes,6,opt,name=application_ref,json=applicationRef,proto3,oneof" json:"application_ref,omitempty"`
-	Paging         *v12.Paging            `protobuf:"bytes,23,opt,name=paging,proto3" json:"paging,omitempty"`
-	Sort           *v12.Sort              `protobuf:"bytes,24,opt,name=sort,proto3" json:"sort,omitempty"`
+	Paging         *v11.Paging            `protobuf:"bytes,23,opt,name=paging,proto3" json:"paging,omitempty"`
+	Sort           *v11.Sort              `protobuf:"bytes,24,opt,name=sort,proto3" json:"sort,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -430,14 +429,14 @@ func (x *DefectsQueryFilter) GetApplicationRef() string {
 	return ""
 }
 
-func (x *DefectsQueryFilter) GetPaging() *v12.Paging {
+func (x *DefectsQueryFilter) GetPaging() *v11.Paging {
 	if x != nil {
 		return x.Paging
 	}
 	return nil
 }
 
-func (x *DefectsQueryFilter) GetSort() *v12.Sort {
+func (x *DefectsQueryFilter) GetSort() *v11.Sort {
 	if x != nil {
 		return x.Sort
 	}
@@ -448,7 +447,7 @@ var File_defects_v1_defect_proto protoreflect.FileDescriptor
 
 const file_defects_v1_defect_proto_rawDesc = "" +
 	"\n" +
-	"\x17defects/v1/defect.proto\x12\x11dolina.defects.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18components/v1/purl.proto\x1a\x16common/v1/paging.proto\x1a\x14common/v1/sort.proto\x1a\x14defects/v1/fix.proto\x1a\x10cve/v1/cve.proto\"\xb5\a\n" +
+	"\x17defects/v1/defect.proto\x12\x11dolina.defects.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x16common/v1/paging.proto\x1a\x14common/v1/sort.proto\x1a\x14defects/v1/fix.proto\x1a\x10cve/v1/cve.proto\"\x99\a\n" +
 	"\x06Defect\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12 \n" +
@@ -462,8 +461,8 @@ const file_defects_v1_defect_proto_rawDesc = "" +
 	"\x03cwe\x18\t \x01(\tH\x01R\x03cwe\x88\x01\x01\x12\x1b\n" +
 	"\tis_latest\x18\n" +
 	" \x01(\bR\bisLatest\x12F\n" +
-	"\x11defect_duplicates\x18\v \x03(\v2\x19.dolina.defects.v1.DefectR\x10defectDuplicates\x12F\n" +
-	"\x0ecomponent_purl\x18\x14 \x01(\v2\x1a.dolina.components.v1.PURLH\x02R\rcomponentPurl\x88\x01\x01\x12*\n" +
+	"\x11defect_duplicates\x18\v \x03(\v2\x19.dolina.defects.v1.DefectR\x10defectDuplicates\x12*\n" +
+	"\x0ecomponent_uuid\x18\x14 \x01(\tH\x02R\rcomponentUuid\x88\x01\x01\x12*\n" +
 	"\x0eapplication_id\x18\x15 \x01(\rH\x03R\rapplicationId\x88\x01\x01\x12,\n" +
 	"\x0fapplication_ref\x18\x16 \x01(\tH\x04R\x0eapplicationRef\x88\x01\x01\x12,\n" +
 	"\x12reference_url_list\x18\x1e \x03(\tR\x10referenceUrlList\x12:\n" +
@@ -474,7 +473,7 @@ const file_defects_v1_defect_proto_rawDesc = "" +
 	"updated_at\x18* \x01(\v2\x1a.google.protobuf.TimestampH\aR\tupdatedAt\x88\x01\x01B\x06\n" +
 	"\x04_cveB\x06\n" +
 	"\x04_cweB\x11\n" +
-	"\x0f_component_purlB\x11\n" +
+	"\x0f_component_uuidB\x11\n" +
 	"\x0f_application_idB\x12\n" +
 	"\x10_application_refB\v\n" +
 	"\t_fix_infoB\r\n" +
@@ -527,29 +526,27 @@ var file_defects_v1_defect_proto_goTypes = []any{
 	(*Defects)(nil),               // 3: dolina.defects.v1.Defects
 	(*DefectsQueryFilter)(nil),    // 4: dolina.defects.v1.DefectsQueryFilter
 	(*v1.CVE)(nil),                // 5: dolina.cve.v1.CVE
-	(*v11.PURL)(nil),              // 6: dolina.components.v1.PURL
-	(*FixInfo)(nil),               // 7: dolina.defects.v1.FixInfo
-	(*timestamppb.Timestamp)(nil), // 8: google.protobuf.Timestamp
-	(*v12.Paging)(nil),            // 9: dolina.common.v1.Paging
-	(*v12.Sort)(nil),              // 10: dolina.common.v1.Sort
+	(*FixInfo)(nil),               // 6: dolina.defects.v1.FixInfo
+	(*timestamppb.Timestamp)(nil), // 7: google.protobuf.Timestamp
+	(*v11.Paging)(nil),            // 8: dolina.common.v1.Paging
+	(*v11.Sort)(nil),              // 9: dolina.common.v1.Sort
 }
 var file_defects_v1_defect_proto_depIdxs = []int32{
 	0,  // 0: dolina.defects.v1.Defect.type:type_name -> dolina.defects.v1.DefectType
 	1,  // 1: dolina.defects.v1.Defect.status:type_name -> dolina.defects.v1.DefectStatus
 	5,  // 2: dolina.defects.v1.Defect.cve:type_name -> dolina.cve.v1.CVE
 	2,  // 3: dolina.defects.v1.Defect.defect_duplicates:type_name -> dolina.defects.v1.Defect
-	6,  // 4: dolina.defects.v1.Defect.component_purl:type_name -> dolina.components.v1.PURL
-	7,  // 5: dolina.defects.v1.Defect.fix_info:type_name -> dolina.defects.v1.FixInfo
-	8,  // 6: dolina.defects.v1.Defect.created_at:type_name -> google.protobuf.Timestamp
-	8,  // 7: dolina.defects.v1.Defect.updated_at:type_name -> google.protobuf.Timestamp
-	2,  // 8: dolina.defects.v1.Defects.defect_list:type_name -> dolina.defects.v1.Defect
-	9,  // 9: dolina.defects.v1.DefectsQueryFilter.paging:type_name -> dolina.common.v1.Paging
-	10, // 10: dolina.defects.v1.DefectsQueryFilter.sort:type_name -> dolina.common.v1.Sort
-	11, // [11:11] is the sub-list for method output_type
-	11, // [11:11] is the sub-list for method input_type
-	11, // [11:11] is the sub-list for extension type_name
-	11, // [11:11] is the sub-list for extension extendee
-	0,  // [0:11] is the sub-list for field type_name
+	6,  // 4: dolina.defects.v1.Defect.fix_info:type_name -> dolina.defects.v1.FixInfo
+	7,  // 5: dolina.defects.v1.Defect.created_at:type_name -> google.protobuf.Timestamp
+	7,  // 6: dolina.defects.v1.Defect.updated_at:type_name -> google.protobuf.Timestamp
+	2,  // 7: dolina.defects.v1.Defects.defect_list:type_name -> dolina.defects.v1.Defect
+	8,  // 8: dolina.defects.v1.DefectsQueryFilter.paging:type_name -> dolina.common.v1.Paging
+	9,  // 9: dolina.defects.v1.DefectsQueryFilter.sort:type_name -> dolina.common.v1.Sort
+	10, // [10:10] is the sub-list for method output_type
+	10, // [10:10] is the sub-list for method input_type
+	10, // [10:10] is the sub-list for extension type_name
+	10, // [10:10] is the sub-list for extension extendee
+	0,  // [0:10] is the sub-list for field type_name
 }
 
 func init() { file_defects_v1_defect_proto_init() }

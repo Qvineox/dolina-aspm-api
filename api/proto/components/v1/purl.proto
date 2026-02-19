@@ -15,7 +15,7 @@ message PURL {
   string type = 2;
 
   // a name prefix such as a Maven group id, a Docker image owner, a GitHub user or organization. Namespace is type-specific.
-  optional string namespace = 3;
+  string namespace = 3;
 
   // the name of the package.
   string name = 4;
@@ -24,7 +24,7 @@ message PURL {
   string version = 5;
 
   // qualifier data for a package such as OS, architecture, repository, etc. Qualifiers are type-specific.
-  string qualifiers = 6;
+  map<string, string> qualifiers = 6;
 
   // subpath within a package, relative to the package root.
   string subpath = 7;

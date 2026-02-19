@@ -8,7 +8,6 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Paging } from "../../common/v1/paging";
 import { Sort } from "../../common/v1/sort";
-import { PURL } from "../../components/v1/purl";
 import { CVE } from "../../cve/v1/cve";
 import { Timestamp } from "../../google/protobuf/timestamp";
 import { FixInfo } from "./fix";
@@ -132,7 +131,7 @@ export interface Defect {
   isLatest: boolean;
   defectDuplicates: Defect[];
   /** membership attributes */
-  componentPurl?: PURL | undefined;
+  componentUuid?: string | undefined;
   applicationId?:
     | number
     | undefined;
@@ -173,7 +172,7 @@ function createBaseDefect(): Defect {
     cwe: undefined,
     isLatest: false,
     defectDuplicates: [],
-    componentPurl: undefined,
+    componentUuid: undefined,
     applicationId: undefined,
     applicationRef: undefined,
     referenceUrlList: [],
@@ -220,8 +219,8 @@ export const Defect: MessageFns<Defect> = {
     for (const v of message.defectDuplicates) {
       Defect.encode(v!, writer.uint32(90).fork()).join();
     }
-    if (message.componentPurl !== undefined) {
-      PURL.encode(message.componentPurl, writer.uint32(162).fork()).join();
+    if (message.componentUuid !== undefined) {
+      writer.uint32(162).string(message.componentUuid);
     }
     if (message.applicationId !== undefined) {
       writer.uint32(168).uint32(message.applicationId);
@@ -354,7 +353,7 @@ export const Defect: MessageFns<Defect> = {
             break;
           }
 
-          message.componentPurl = PURL.decode(reader, reader.uint32());
+          message.componentUuid = reader.string();
           continue;
         }
         case 21: {
@@ -429,7 +428,7 @@ export const Defect: MessageFns<Defect> = {
       defectDuplicates: globalThis.Array.isArray(object?.defectDuplicates)
         ? object.defectDuplicates.map((e: any) => Defect.fromJSON(e))
         : [],
-      componentPurl: isSet(object.componentPurl) ? PURL.fromJSON(object.componentPurl) : undefined,
+      componentUuid: isSet(object.componentUuid) ? globalThis.String(object.componentUuid) : undefined,
       applicationId: isSet(object.applicationId) ? globalThis.Number(object.applicationId) : undefined,
       applicationRef: isSet(object.applicationRef) ? globalThis.String(object.applicationRef) : undefined,
       referenceUrlList: globalThis.Array.isArray(object?.referenceUrlList)
@@ -476,8 +475,8 @@ export const Defect: MessageFns<Defect> = {
     if (message.defectDuplicates?.length) {
       obj.defectDuplicates = message.defectDuplicates.map((e) => Defect.toJSON(e));
     }
-    if (message.componentPurl !== undefined) {
-      obj.componentPurl = PURL.toJSON(message.componentPurl);
+    if (message.componentUuid !== undefined) {
+      obj.componentUuid = message.componentUuid;
     }
     if (message.applicationId !== undefined) {
       obj.applicationId = Math.round(message.applicationId);
@@ -516,9 +515,7 @@ export const Defect: MessageFns<Defect> = {
     message.cwe = object.cwe ?? undefined;
     message.isLatest = object.isLatest ?? false;
     message.defectDuplicates = object.defectDuplicates?.map((e) => Defect.fromPartial(e)) || [];
-    message.componentPurl = (object.componentPurl !== undefined && object.componentPurl !== null)
-      ? PURL.fromPartial(object.componentPurl)
-      : undefined;
+    message.componentUuid = object.componentUuid ?? undefined;
     message.applicationId = object.applicationId ?? undefined;
     message.applicationRef = object.applicationRef ?? undefined;
     message.referenceUrlList = object.referenceUrlList?.map((e) => e) || [];

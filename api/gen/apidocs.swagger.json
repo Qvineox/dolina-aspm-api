@@ -1712,8 +1712,8 @@
             "$ref": "#/definitions/v1Defect"
           }
         },
-        "componentPurl": {
-          "$ref": "#/definitions/v1PURL",
+        "componentUuid": {
+          "type": "string",
           "title": "membership attributes"
         },
         "applicationId": {
@@ -1931,7 +1931,10 @@
           "description": "the name of the package."
         },
         "qualifiers": {
-          "type": "string",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
           "description": "qualifier data for a package such as OS, architecture, repository, etc. Qualifiers are type-specific."
         },
         "subpath": {

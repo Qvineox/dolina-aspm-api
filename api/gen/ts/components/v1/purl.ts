@@ -15,21 +15,24 @@ export interface PURL {
   /** the package "type" or package "protocol" such as maven, npm, nuget, gem, pypi, etc. */
   type: string;
   /** a name prefix such as a Maven group id, a Docker image owner, a GitHub user or organization. Namespace is type-specific. */
-  namespace?:
-    | string
-    | undefined;
+  namespace: string;
   /** the name of the package. */
   name: string;
   /** the name of the package. */
   version: string;
   /** qualifier data for a package such as OS, architecture, repository, etc. Qualifiers are type-specific. */
-  qualifiers: string;
+  qualifiers: { [key: string]: string };
   /** subpath within a package, relative to the package root. */
   subpath: string;
 }
 
+export interface PURL_QualifiersEntry {
+  key: string;
+  value: string;
+}
+
 function createBasePURL(): PURL {
-  return { instance: "", type: "", namespace: undefined, name: "", version: "", qualifiers: "", subpath: "" };
+  return { instance: "", type: "", namespace: "", name: "", version: "", qualifiers: {}, subpath: "" };
 }
 
 export const PURL: MessageFns<PURL> = {
@@ -40,7 +43,7 @@ export const PURL: MessageFns<PURL> = {
     if (message.type !== "") {
       writer.uint32(18).string(message.type);
     }
-    if (message.namespace !== undefined) {
+    if (message.namespace !== "") {
       writer.uint32(26).string(message.namespace);
     }
     if (message.name !== "") {
@@ -49,9 +52,9 @@ export const PURL: MessageFns<PURL> = {
     if (message.version !== "") {
       writer.uint32(42).string(message.version);
     }
-    if (message.qualifiers !== "") {
-      writer.uint32(50).string(message.qualifiers);
-    }
+    Object.entries(message.qualifiers).forEach(([key, value]) => {
+      PURL_QualifiersEntry.encode({ key: key as any, value }, writer.uint32(50).fork()).join();
+    });
     if (message.subpath !== "") {
       writer.uint32(58).string(message.subpath);
     }
@@ -110,7 +113,10 @@ export const PURL: MessageFns<PURL> = {
             break;
           }
 
-          message.qualifiers = reader.string();
+          const entry6 = PURL_QualifiersEntry.decode(reader, reader.uint32());
+          if (entry6.value !== undefined) {
+            message.qualifiers[entry6.key] = entry6.value;
+          }
           continue;
         }
         case 7: {
@@ -134,10 +140,15 @@ export const PURL: MessageFns<PURL> = {
     return {
       instance: isSet(object.instance) ? globalThis.String(object.instance) : "",
       type: isSet(object.type) ? globalThis.String(object.type) : "",
-      namespace: isSet(object.namespace) ? globalThis.String(object.namespace) : undefined,
+      namespace: isSet(object.namespace) ? globalThis.String(object.namespace) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       version: isSet(object.version) ? globalThis.String(object.version) : "",
-      qualifiers: isSet(object.qualifiers) ? globalThis.String(object.qualifiers) : "",
+      qualifiers: isObject(object.qualifiers)
+        ? Object.entries(object.qualifiers).reduce<{ [key: string]: string }>((acc, [key, value]) => {
+          acc[key] = String(value);
+          return acc;
+        }, {})
+        : {},
       subpath: isSet(object.subpath) ? globalThis.String(object.subpath) : "",
     };
   },
@@ -150,7 +161,7 @@ export const PURL: MessageFns<PURL> = {
     if (message.type !== "") {
       obj.type = message.type;
     }
-    if (message.namespace !== undefined) {
+    if (message.namespace !== "") {
       obj.namespace = message.namespace;
     }
     if (message.name !== "") {
@@ -159,8 +170,14 @@ export const PURL: MessageFns<PURL> = {
     if (message.version !== "") {
       obj.version = message.version;
     }
-    if (message.qualifiers !== "") {
-      obj.qualifiers = message.qualifiers;
+    if (message.qualifiers) {
+      const entries = Object.entries(message.qualifiers);
+      if (entries.length > 0) {
+        obj.qualifiers = {};
+        entries.forEach(([k, v]) => {
+          obj.qualifiers[k] = v;
+        });
+      }
     }
     if (message.subpath !== "") {
       obj.subpath = message.subpath;
@@ -175,11 +192,95 @@ export const PURL: MessageFns<PURL> = {
     const message = createBasePURL();
     message.instance = object.instance ?? "";
     message.type = object.type ?? "";
-    message.namespace = object.namespace ?? undefined;
+    message.namespace = object.namespace ?? "";
     message.name = object.name ?? "";
     message.version = object.version ?? "";
-    message.qualifiers = object.qualifiers ?? "";
+    message.qualifiers = Object.entries(object.qualifiers ?? {}).reduce<{ [key: string]: string }>(
+      (acc, [key, value]) => {
+        if (value !== undefined) {
+          acc[key] = globalThis.String(value);
+        }
+        return acc;
+      },
+      {},
+    );
     message.subpath = object.subpath ?? "";
+    return message;
+  },
+};
+
+function createBasePURL_QualifiersEntry(): PURL_QualifiersEntry {
+  return { key: "", value: "" };
+}
+
+export const PURL_QualifiersEntry: MessageFns<PURL_QualifiersEntry> = {
+  encode(message: PURL_QualifiersEntry, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.key !== "") {
+      writer.uint32(10).string(message.key);
+    }
+    if (message.value !== "") {
+      writer.uint32(18).string(message.value);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PURL_QualifiersEntry {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePURL_QualifiersEntry();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.key = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.value = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PURL_QualifiersEntry {
+    return {
+      key: isSet(object.key) ? globalThis.String(object.key) : "",
+      value: isSet(object.value) ? globalThis.String(object.value) : "",
+    };
+  },
+
+  toJSON(message: PURL_QualifiersEntry): unknown {
+    const obj: any = {};
+    if (message.key !== "") {
+      obj.key = message.key;
+    }
+    if (message.value !== "") {
+      obj.value = message.value;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PURL_QualifiersEntry>, I>>(base?: I): PURL_QualifiersEntry {
+    return PURL_QualifiersEntry.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<PURL_QualifiersEntry>, I>>(object: I): PURL_QualifiersEntry {
+    const message = createBasePURL_QualifiersEntry();
+    message.key = object.key ?? "";
+    message.value = object.value ?? "";
     return message;
   },
 };
@@ -195,6 +296,10 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function isObject(value: any): boolean {
+  return typeof value === "object" && value !== null;
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;
