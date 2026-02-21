@@ -80,27 +80,33 @@ type DefectStatus int32
 
 const (
 	DefectStatus_DEFECT_STATUS_UNSPECIFIED     DefectStatus = 0
-	DefectStatus_DEFECT_STATUS_FIXED_BY_UPDATE DefectStatus = 1 // defect is removed by library/package update
-	DefectStatus_DEFECT_STATUS_WILL_NOT_FIX    DefectStatus = 2 // defect is purposely left in code by distributor
-	DefectStatus_DEFECT_STATUS_HAS_EXPLOIT     DefectStatus = 3 // defect has known exploit
-	DefectStatus_DEFECT_STATUS_INDIRECT        DefectStatus = 4 // defect is indirect for scanner application
+	DefectStatus_DEFECT_STATUS_INDIRECT        DefectStatus = 1 // defect is indirect for scanner application
+	DefectStatus_DEFECT_STATUS_DIRECT          DefectStatus = 2 // defect is found directly in a scanned application
+	DefectStatus_DEFECT_STATUS_FIXED_BY_UPDATE DefectStatus = 3 // defect is removed by library/package update
+	DefectStatus_DEFECT_STATUS_WILL_NOT_FIX    DefectStatus = 4 // defect is purposely left in code by distributor
+	DefectStatus_DEFECT_STATUS_END_OF_LIFE     DefectStatus = 5 // defect is found in no longer supported (EOL) package
+	DefectStatus_DEFECT_STATUS_HAS_EXPLOIT     DefectStatus = 6 // defect has known exploit
 )
 
 // Enum value maps for DefectStatus.
 var (
 	DefectStatus_name = map[int32]string{
 		0: "DEFECT_STATUS_UNSPECIFIED",
-		1: "DEFECT_STATUS_FIXED_BY_UPDATE",
-		2: "DEFECT_STATUS_WILL_NOT_FIX",
-		3: "DEFECT_STATUS_HAS_EXPLOIT",
-		4: "DEFECT_STATUS_INDIRECT",
+		1: "DEFECT_STATUS_INDIRECT",
+		2: "DEFECT_STATUS_DIRECT",
+		3: "DEFECT_STATUS_FIXED_BY_UPDATE",
+		4: "DEFECT_STATUS_WILL_NOT_FIX",
+		5: "DEFECT_STATUS_END_OF_LIFE",
+		6: "DEFECT_STATUS_HAS_EXPLOIT",
 	}
 	DefectStatus_value = map[string]int32{
 		"DEFECT_STATUS_UNSPECIFIED":     0,
-		"DEFECT_STATUS_FIXED_BY_UPDATE": 1,
-		"DEFECT_STATUS_WILL_NOT_FIX":    2,
-		"DEFECT_STATUS_HAS_EXPLOIT":     3,
-		"DEFECT_STATUS_INDIRECT":        4,
+		"DEFECT_STATUS_INDIRECT":        1,
+		"DEFECT_STATUS_DIRECT":          2,
+		"DEFECT_STATUS_FIXED_BY_UPDATE": 3,
+		"DEFECT_STATUS_WILL_NOT_FIX":    4,
+		"DEFECT_STATUS_END_OF_LIFE":     5,
+		"DEFECT_STATUS_HAS_EXPLOIT":     6,
 	}
 )
 
@@ -137,12 +143,12 @@ type Defect struct {
 	Title       string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
 	Description string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
 	Type        DefectType             `protobuf:"varint,4,opt,name=type,proto3,enum=dolina.defects.v1.DefectType" json:"type,omitempty"`
-	Status      []DefectStatus         `protobuf:"varint,5,rep,packed,name=status,proto3,enum=dolina.defects.v1.DefectStatus" json:"status,omitempty"`
+	StatusList  []DefectStatus         `protobuf:"varint,5,rep,packed,name=status_list,json=statusList,proto3,enum=dolina.defects.v1.DefectStatus" json:"status_list,omitempty"`
 	// applied risk score is based on inputs from security scanners and applied ruleset
-	AppliedRiskScore uint32  `protobuf:"varint,6,opt,name=applied_risk_score,json=appliedRiskScore,proto3" json:"applied_risk_score,omitempty"`
-	CvssScore        float32 `protobuf:"fixed32,7,opt,name=cvss_score,json=cvssScore,proto3" json:"cvss_score,omitempty"`
-	Cve              *v1.CVE `protobuf:"bytes,8,opt,name=cve,proto3,oneof" json:"cve,omitempty"`
-	Cwe              *string `protobuf:"bytes,9,opt,name=cwe,proto3,oneof" json:"cwe,omitempty"`
+	AppliedRiskScore uint32   `protobuf:"varint,6,opt,name=applied_risk_score,json=appliedRiskScore,proto3" json:"applied_risk_score,omitempty"`
+	CvssScore        float32  `protobuf:"fixed32,7,opt,name=cvss_score,json=cvssScore,proto3" json:"cvss_score,omitempty"`
+	Cve              *v1.CVE  `protobuf:"bytes,8,opt,name=cve,proto3,oneof" json:"cve,omitempty"`
+	CweList          []string `protobuf:"bytes,9,rep,name=cwe_list,json=cweList,proto3" json:"cwe_list,omitempty"`
 	// deduplication
 	IsLatest         bool      `protobuf:"varint,10,opt,name=is_latest,json=isLatest,proto3" json:"is_latest,omitempty"`
 	DefectDuplicates []*Defect `protobuf:"bytes,11,rep,name=defect_duplicates,json=defectDuplicates,proto3" json:"defect_duplicates,omitempty"`
@@ -217,9 +223,9 @@ func (x *Defect) GetType() DefectType {
 	return DefectType_DEFECT_TYPE_UNSPECIFIED
 }
 
-func (x *Defect) GetStatus() []DefectStatus {
+func (x *Defect) GetStatusList() []DefectStatus {
 	if x != nil {
-		return x.Status
+		return x.StatusList
 	}
 	return nil
 }
@@ -245,11 +251,11 @@ func (x *Defect) GetCve() *v1.CVE {
 	return nil
 }
 
-func (x *Defect) GetCwe() string {
-	if x != nil && x.Cwe != nil {
-		return *x.Cwe
+func (x *Defect) GetCweList() []string {
+	if x != nil {
+		return x.CweList
 	}
-	return ""
+	return nil
 }
 
 func (x *Defect) GetIsLatest() bool {
@@ -447,32 +453,32 @@ var File_defects_v1_defect_proto protoreflect.FileDescriptor
 
 const file_defects_v1_defect_proto_rawDesc = "" +
 	"\n" +
-	"\x17defects/v1/defect.proto\x12\x11dolina.defects.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x16common/v1/paging.proto\x1a\x14common/v1/sort.proto\x1a\x14defects/v1/fix.proto\x1a\x10cve/v1/cve.proto\"\x99\a\n" +
+	"\x17defects/v1/defect.proto\x12\x11dolina.defects.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x16common/v1/paging.proto\x1a\x14common/v1/sort.proto\x1a\x14defects/v1/fix.proto\x1a\x10cve/v1/cve.proto\"\x9e\a\n" +
 	"\x06Defect\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12 \n" +
 	"\vdescription\x18\x03 \x01(\tR\vdescription\x121\n" +
-	"\x04type\x18\x04 \x01(\x0e2\x1d.dolina.defects.v1.DefectTypeR\x04type\x127\n" +
-	"\x06status\x18\x05 \x03(\x0e2\x1f.dolina.defects.v1.DefectStatusR\x06status\x12,\n" +
+	"\x04type\x18\x04 \x01(\x0e2\x1d.dolina.defects.v1.DefectTypeR\x04type\x12@\n" +
+	"\vstatus_list\x18\x05 \x03(\x0e2\x1f.dolina.defects.v1.DefectStatusR\n" +
+	"statusList\x12,\n" +
 	"\x12applied_risk_score\x18\x06 \x01(\rR\x10appliedRiskScore\x12\x1d\n" +
 	"\n" +
 	"cvss_score\x18\a \x01(\x02R\tcvssScore\x12)\n" +
-	"\x03cve\x18\b \x01(\v2\x12.dolina.cve.v1.CVEH\x00R\x03cve\x88\x01\x01\x12\x15\n" +
-	"\x03cwe\x18\t \x01(\tH\x01R\x03cwe\x88\x01\x01\x12\x1b\n" +
+	"\x03cve\x18\b \x01(\v2\x12.dolina.cve.v1.CVEH\x00R\x03cve\x88\x01\x01\x12\x19\n" +
+	"\bcwe_list\x18\t \x03(\tR\acweList\x12\x1b\n" +
 	"\tis_latest\x18\n" +
 	" \x01(\bR\bisLatest\x12F\n" +
 	"\x11defect_duplicates\x18\v \x03(\v2\x19.dolina.defects.v1.DefectR\x10defectDuplicates\x12*\n" +
-	"\x0ecomponent_uuid\x18\x14 \x01(\tH\x02R\rcomponentUuid\x88\x01\x01\x12*\n" +
-	"\x0eapplication_id\x18\x15 \x01(\rH\x03R\rapplicationId\x88\x01\x01\x12,\n" +
-	"\x0fapplication_ref\x18\x16 \x01(\tH\x04R\x0eapplicationRef\x88\x01\x01\x12,\n" +
+	"\x0ecomponent_uuid\x18\x14 \x01(\tH\x01R\rcomponentUuid\x88\x01\x01\x12*\n" +
+	"\x0eapplication_id\x18\x15 \x01(\rH\x02R\rapplicationId\x88\x01\x01\x12,\n" +
+	"\x0fapplication_ref\x18\x16 \x01(\tH\x03R\x0eapplicationRef\x88\x01\x01\x12,\n" +
 	"\x12reference_url_list\x18\x1e \x03(\tR\x10referenceUrlList\x12:\n" +
-	"\bfix_info\x18\x1f \x01(\v2\x1a.dolina.defects.v1.FixInfoH\x05R\afixInfo\x88\x01\x01\x12>\n" +
+	"\bfix_info\x18\x1f \x01(\v2\x1a.dolina.defects.v1.FixInfoH\x04R\afixInfo\x88\x01\x01\x12>\n" +
 	"\n" +
-	"created_at\x18) \x01(\v2\x1a.google.protobuf.TimestampH\x06R\tcreatedAt\x88\x01\x01\x12>\n" +
+	"created_at\x18) \x01(\v2\x1a.google.protobuf.TimestampH\x05R\tcreatedAt\x88\x01\x01\x12>\n" +
 	"\n" +
-	"updated_at\x18* \x01(\v2\x1a.google.protobuf.TimestampH\aR\tupdatedAt\x88\x01\x01B\x06\n" +
-	"\x04_cveB\x06\n" +
-	"\x04_cweB\x11\n" +
+	"updated_at\x18* \x01(\v2\x1a.google.protobuf.TimestampH\x06R\tupdatedAt\x88\x01\x01B\x06\n" +
+	"\x04_cveB\x11\n" +
 	"\x0f_component_uuidB\x11\n" +
 	"\x0f_application_idB\x12\n" +
 	"\x10_application_refB\v\n" +
@@ -497,13 +503,15 @@ const file_defects_v1_defect_proto_rawDesc = "" +
 	"\x17DEFECT_TYPE_UNSPECIFIED\x10\x00\x12\x14\n" +
 	"\x10DEFECT_TYPE_SAST\x10\x01\x12\x14\n" +
 	"\x10DEFECT_TYPE_DAST\x10\x02\x12\x13\n" +
-	"\x0fDEFECT_TYPE_SCA\x10\x03*\xab\x01\n" +
+	"\x0fDEFECT_TYPE_SCA\x10\x03*\xe4\x01\n" +
 	"\fDefectStatus\x12\x1d\n" +
-	"\x19DEFECT_STATUS_UNSPECIFIED\x10\x00\x12!\n" +
-	"\x1dDEFECT_STATUS_FIXED_BY_UPDATE\x10\x01\x12\x1e\n" +
-	"\x1aDEFECT_STATUS_WILL_NOT_FIX\x10\x02\x12\x1d\n" +
-	"\x19DEFECT_STATUS_HAS_EXPLOIT\x10\x03\x12\x1a\n" +
-	"\x16DEFECT_STATUS_INDIRECT\x10\x04BLZJgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/defects/v1;defects_v1b\x06proto3"
+	"\x19DEFECT_STATUS_UNSPECIFIED\x10\x00\x12\x1a\n" +
+	"\x16DEFECT_STATUS_INDIRECT\x10\x01\x12\x18\n" +
+	"\x14DEFECT_STATUS_DIRECT\x10\x02\x12!\n" +
+	"\x1dDEFECT_STATUS_FIXED_BY_UPDATE\x10\x03\x12\x1e\n" +
+	"\x1aDEFECT_STATUS_WILL_NOT_FIX\x10\x04\x12\x1d\n" +
+	"\x19DEFECT_STATUS_END_OF_LIFE\x10\x05\x12\x1d\n" +
+	"\x19DEFECT_STATUS_HAS_EXPLOIT\x10\x06BLZJgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/defects/v1;defects_v1b\x06proto3"
 
 var (
 	file_defects_v1_defect_proto_rawDescOnce sync.Once
@@ -533,7 +541,7 @@ var file_defects_v1_defect_proto_goTypes = []any{
 }
 var file_defects_v1_defect_proto_depIdxs = []int32{
 	0,  // 0: dolina.defects.v1.Defect.type:type_name -> dolina.defects.v1.DefectType
-	1,  // 1: dolina.defects.v1.Defect.status:type_name -> dolina.defects.v1.DefectStatus
+	1,  // 1: dolina.defects.v1.Defect.status_list:type_name -> dolina.defects.v1.DefectStatus
 	5,  // 2: dolina.defects.v1.Defect.cve:type_name -> dolina.cve.v1.CVE
 	2,  // 3: dolina.defects.v1.Defect.defect_duplicates:type_name -> dolina.defects.v1.Defect
 	6,  // 4: dolina.defects.v1.Defect.fix_info:type_name -> dolina.defects.v1.FixInfo

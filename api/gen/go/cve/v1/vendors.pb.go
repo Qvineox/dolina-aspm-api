@@ -7,6 +7,9 @@
 package cve_v1
 
 import (
+	v2 "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/cvss/v2"
+	v3 "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/cvss/v3"
+	v4 "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/cvss/v4"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,9 +87,11 @@ func (x *Vendor) GetUrl() string {
 type VendorScoring struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Vendor        *Vendor                `protobuf:"bytes,1,opt,name=vendor,proto3" json:"vendor,omitempty"`
-	Score         *float32               `protobuf:"fixed32,2,opt,name=score,proto3,oneof" json:"score,omitempty"`
-	Severity      *string                `protobuf:"bytes,3,opt,name=severity,proto3,oneof" json:"severity,omitempty"`
-	SourceUrl     *string                `protobuf:"bytes,4,opt,name=source_url,json=sourceUrl,proto3,oneof" json:"source_url,omitempty"`
+	Cvss2Score    *v2.Severity           `protobuf:"varint,2,opt,name=cvss2_score,json=cvss2Score,proto3,enum=dolina.cvss.v2.Severity,oneof" json:"cvss2_score,omitempty"`
+	Cvss3Score    *v3.Severity           `protobuf:"varint,3,opt,name=cvss3_score,json=cvss3Score,proto3,enum=dolina.cvss.v3.Severity,oneof" json:"cvss3_score,omitempty"`
+	Cvss4Score    *v4.Severity           `protobuf:"varint,4,opt,name=cvss4_score,json=cvss4Score,proto3,enum=dolina.cvss.v4.Severity,oneof" json:"cvss4_score,omitempty"`
+	Severity      *string                `protobuf:"bytes,5,opt,name=severity,proto3,oneof" json:"severity,omitempty"`
+	SourceUrl     *string                `protobuf:"bytes,6,opt,name=source_url,json=sourceUrl,proto3,oneof" json:"source_url,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -128,11 +133,25 @@ func (x *VendorScoring) GetVendor() *Vendor {
 	return nil
 }
 
-func (x *VendorScoring) GetScore() float32 {
-	if x != nil && x.Score != nil {
-		return *x.Score
+func (x *VendorScoring) GetCvss2Score() v2.Severity {
+	if x != nil && x.Cvss2Score != nil {
+		return *x.Cvss2Score
 	}
-	return 0
+	return v2.Severity(0)
+}
+
+func (x *VendorScoring) GetCvss3Score() v3.Severity {
+	if x != nil && x.Cvss3Score != nil {
+		return *x.Cvss3Score
+	}
+	return v3.Severity(0)
+}
+
+func (x *VendorScoring) GetCvss4Score() v4.Severity {
+	if x != nil && x.Cvss4Score != nil {
+		return *x.Cvss4Score
+	}
+	return v4.Severity(0)
 }
 
 func (x *VendorScoring) GetSeverity() string {
@@ -153,18 +172,25 @@ var File_cve_v1_vendors_proto protoreflect.FileDescriptor
 
 const file_cve_v1_vendors_proto_rawDesc = "" +
 	"\n" +
-	"\x14cve/v1/vendors.proto\x12\rdolina.cve.v1\">\n" +
+	"\x14cve/v1/vendors.proto\x12\rdolina.cve.v1\x1a\x16cvss/v2/severity.proto\x1a\x16cvss/v3/severity.proto\x1a\x16cvss/v4/severity.proto\">\n" +
 	"\x06Vendor\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x10\n" +
-	"\x03url\x18\x03 \x01(\tR\x03url\"\xc4\x01\n" +
+	"\x03url\x18\x03 \x01(\tR\x03url\"\x8f\x03\n" +
 	"\rVendorScoring\x12-\n" +
-	"\x06vendor\x18\x01 \x01(\v2\x15.dolina.cve.v1.VendorR\x06vendor\x12\x19\n" +
-	"\x05score\x18\x02 \x01(\x02H\x00R\x05score\x88\x01\x01\x12\x1f\n" +
-	"\bseverity\x18\x03 \x01(\tH\x01R\bseverity\x88\x01\x01\x12\"\n" +
+	"\x06vendor\x18\x01 \x01(\v2\x15.dolina.cve.v1.VendorR\x06vendor\x12>\n" +
+	"\vcvss2_score\x18\x02 \x01(\x0e2\x18.dolina.cvss.v2.SeverityH\x00R\n" +
+	"cvss2Score\x88\x01\x01\x12>\n" +
+	"\vcvss3_score\x18\x03 \x01(\x0e2\x18.dolina.cvss.v3.SeverityH\x01R\n" +
+	"cvss3Score\x88\x01\x01\x12>\n" +
+	"\vcvss4_score\x18\x04 \x01(\x0e2\x18.dolina.cvss.v4.SeverityH\x02R\n" +
+	"cvss4Score\x88\x01\x01\x12\x1f\n" +
+	"\bseverity\x18\x05 \x01(\tH\x03R\bseverity\x88\x01\x01\x12\"\n" +
 	"\n" +
-	"source_url\x18\x04 \x01(\tH\x02R\tsourceUrl\x88\x01\x01B\b\n" +
-	"\x06_scoreB\v\n" +
+	"source_url\x18\x06 \x01(\tH\x04R\tsourceUrl\x88\x01\x01B\x0e\n" +
+	"\f_cvss2_scoreB\x0e\n" +
+	"\f_cvss3_scoreB\x0e\n" +
+	"\f_cvss4_scoreB\v\n" +
 	"\t_severityB\r\n" +
 	"\v_source_urlBDZBgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/cve/v1;cve_v1b\x06proto3"
 
@@ -184,14 +210,20 @@ var file_cve_v1_vendors_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_cve_v1_vendors_proto_goTypes = []any{
 	(*Vendor)(nil),        // 0: dolina.cve.v1.Vendor
 	(*VendorScoring)(nil), // 1: dolina.cve.v1.VendorScoring
+	(v2.Severity)(0),      // 2: dolina.cvss.v2.Severity
+	(v3.Severity)(0),      // 3: dolina.cvss.v3.Severity
+	(v4.Severity)(0),      // 4: dolina.cvss.v4.Severity
 }
 var file_cve_v1_vendors_proto_depIdxs = []int32{
 	0, // 0: dolina.cve.v1.VendorScoring.vendor:type_name -> dolina.cve.v1.Vendor
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	2, // 1: dolina.cve.v1.VendorScoring.cvss2_score:type_name -> dolina.cvss.v2.Severity
+	3, // 2: dolina.cve.v1.VendorScoring.cvss3_score:type_name -> dolina.cvss.v3.Severity
+	4, // 3: dolina.cve.v1.VendorScoring.cvss4_score:type_name -> dolina.cvss.v4.Severity
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_cve_v1_vendors_proto_init() }

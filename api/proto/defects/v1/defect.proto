@@ -18,14 +18,14 @@ message Defect {
   string description = 3;
 
   DefectType type = 4;
-  repeated DefectStatus status = 5;
+  repeated DefectStatus status_list = 5;
 
   // applied risk score is based on inputs from security scanners and applied ruleset
   uint32 applied_risk_score = 6;
   float cvss_score = 7;
 
   optional cve.v1.CVE cve = 8;
-  optional string cwe = 9;
+  repeated string cwe_list = 9;
 
   // deduplication
   bool is_latest = 10;
@@ -59,10 +59,13 @@ enum DefectType {
 enum DefectStatus {
   DEFECT_STATUS_UNSPECIFIED = 0;
 
-  DEFECT_STATUS_FIXED_BY_UPDATE = 1; // defect is removed by library/package update
-  DEFECT_STATUS_WILL_NOT_FIX = 2; // defect is purposely left in code by distributor
-  DEFECT_STATUS_HAS_EXPLOIT = 3; // defect has known exploit
-  DEFECT_STATUS_INDIRECT = 4; // defect is indirect for scanner application
+  DEFECT_STATUS_INDIRECT = 1; // defect is indirect for scanner application
+  DEFECT_STATUS_DIRECT = 2; // defect is found directly in a scanned application
+
+  DEFECT_STATUS_FIXED_BY_UPDATE = 3; // defect is removed by library/package update
+  DEFECT_STATUS_WILL_NOT_FIX = 4; // defect is purposely left in code by distributor
+  DEFECT_STATUS_END_OF_LIFE = 5; // defect is found in no longer supported (EOL) package
+  DEFECT_STATUS_HAS_EXPLOIT = 6; // defect has known exploit
 }
 
 message DefectsQueryFilter {

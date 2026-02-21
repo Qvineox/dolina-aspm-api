@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package dolina.cve.v1;
+
+option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/cve/v1;cve_v1";
+
+enum Severity {
+  CVSS_SEVERITY_UNSPECIFIED = 0;
+
+  CVSS_SEVERITY_LOW = 1;
+  CVSS_SEVERITY_MEDIUM = 2;
+  CVSS_SEVERITY_HIGH = 3;
+  CVSS_SEVERITY_CRITICAL = 4;
+}
+

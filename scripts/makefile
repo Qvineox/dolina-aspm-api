@@ -5,7 +5,7 @@ GW_OPENAPI_OUT=../gen
 
 #PROTOC_INC=$(PROTO_BIN_INCLUDE_PATH)
 PROTOC_INC="C:\Users\ydlysak\protoc-33.5\include"
-PROTO_GRPC_GW_INC="C:\Users\YDLysak\go\pkg\mod\github.com\grpc-ecosystem\grpc-gateway\v2@v2.27.8"
+PROTO_GRPC_GW_INC="C:\Users\YDLysak\go\pkg\mod\github.com\grpc-ecosystem\grpc-gateway\v2@v2.28.0"
 #PROTO_GRPC_GW_INC=C:\Users\YDLysak\go\pkg\mod\github.com\grpc-ecosystem\grpc-gateway@v1.16.0\third_party\googleapis
 
 # C:\Users\YDLysak\protoc\include
@@ -28,6 +28,9 @@ go:
 		upload/v1/*.proto \
 		common/v1/*.proto \
 		sbom/v1/*.proto \
+		cvss/v2/*.proto \
+		cvss/v3/*.proto \
+		cvss/v4/*.proto \
 		cve/v1/*.proto
 
 # https://grpc-ecosystem.github.io/grpc-gateway/docs/mapping/customizing_openapi_output/
@@ -47,6 +50,9 @@ gateway:
 		upload/v1/*.proto \
 		common/v1/*.proto \
 		sbom/v1/*.proto \
+		cvss/v2/*.proto \
+		cvss/v3/*.proto \
+		cvss/v4/*.proto \
 		cve/v1/*.proto \
 		openapi.proto
 
@@ -65,6 +71,9 @@ ts:
 		upload/v1/*.proto \
 		common/v1/*.proto \
 		sbom/v1/*.proto \
+		cvss/v2/*.proto \
+		cvss/v3/*.proto \
+		cvss/v4/*.proto \
 		cve/v1/*.proto \
 		openapi.proto
 
