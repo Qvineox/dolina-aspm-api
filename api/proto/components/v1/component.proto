@@ -10,7 +10,7 @@ import "google/protobuf/timestamp.proto";
 
 import "components/v1/purl.proto";
 import "defects/v1/defect.proto";
-import "common/v1/paging.proto";
+import "common/v1/pagination.proto";
 import "common/v1/sort.proto";
 
 

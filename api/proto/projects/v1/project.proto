@@ -13,11 +13,11 @@ message Project {
   string slug = 3;
   optional string description = 4;
 
-  repeated string tags = 5;
+  repeated string tag_list = 5;
 
   optional string vcs_url = 6;
 
-  repeated dolina.project.v1.Project revisions = 7;
+  repeated dolina.project.v1.Project revision_list = 7;
 
   optional google.protobuf.Timestamp created_at = 8;
   optional google.protobuf.Timestamp updated_at = 9;

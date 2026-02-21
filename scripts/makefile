@@ -3,18 +3,14 @@ GO_OUT=../gen/go
 TS_OUT=../gen/ts
 GW_OPENAPI_OUT=../gen
 
-#PROTOC_INC=$(PROTO_BIN_INCLUDE_PATH)
-PROTOC_INC="C:\Users\ydlysak\protoc-33.5\include"
-PROTO_GRPC_GW_INC="C:\Users\YDLysak\go\pkg\mod\github.com\grpc-ecosystem\grpc-gateway\v2@v2.28.0"
-#PROTO_GRPC_GW_INC=C:\Users\YDLysak\go\pkg\mod\github.com\grpc-ecosystem\grpc-gateway@v1.16.0\third_party\googleapis
+all: protoc_gen_go protoc_gen_go_gw protoc_gen_ts
 
-# C:\Users\YDLysak\protoc\include
-# C:\Users\YDLysak\go\pkg\mod\github.com\grpc-ecosystem\grpc-gateway@v1.16.0\third_party\googleapis
+dump_variables:
+	echo "Using protoc include path: ${PROTOC_INC}" && \
+	echo "Using GRPC gateway include path: ${PROTO_GRPC_GW_INC}"
 
-all: go gateway ts
-
-go:
-	protoc -I . -I $(PROTOC_INC) -I $(PROTO_GRPC_GW_INC) \
+protoc_gen_go:
+	cd ../api/proto && protoc -I . -I $(PROTOC_INC) -I $(PROTO_GRPC_GW_INC) \
 		--go_out=$(GO_OUT) --go_opt=paths=source_relative \
 		--go-grpc_out=$(GO_OUT) --go-grpc_opt=paths=source_relative,require_unimplemented_servers=false \
 		applications/v1/*.proto \
@@ -35,8 +31,8 @@ go:
 
 # https://grpc-ecosystem.github.io/grpc-gateway/docs/mapping/customizing_openapi_output/
 
-gateway:
-	protoc -I . -I $(PROTOC_INC) -I $(PROTO_GRPC_GW_INC) \
+protoc_gen_go_gw:
+	cd ../api/proto && protoc -I . -I $(PROTOC_INC) -I $(PROTO_GRPC_GW_INC) \
 		--grpc-gateway_out=$(GO_OUT) --grpc-gateway_opt=paths=source_relative \
 		--openapiv2_out=$(GW_OPENAPI_OUT) --openapiv2_opt=allow_merge=true \
 		applications/v1/*.proto \
@@ -56,8 +52,8 @@ gateway:
 		cve/v1/*.proto \
 		openapi.proto
 
-ts:
-	protoc -I . -I $(PROTO_DIR) -I $(PROTOC_INC) -I $(PROTO_GRPC_GW_INC) \
+protoc_gen_ts:
+	cd ../api/proto && protoc -I . -I $(PROTO_DIR) -I $(PROTOC_INC) -I $(PROTO_GRPC_GW_INC) \
 		--ts_proto_out=$(TS_OUT) \
 		--ts_proto_opt=esModuleInterop=true,forceLong=string,outputServices=grpc-js \
 		applications/v1/*.proto \

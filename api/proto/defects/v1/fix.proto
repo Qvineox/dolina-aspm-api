@@ -18,8 +18,8 @@ message FixInfo {
 
   string description = 1;
 
-  repeated FixedVersions update_versions = 2;
-  repeated FixedVersions downgrade_versions = 3;
+  repeated FixedVersions update_version_list = 2;
+  repeated FixedVersions downgrade_version_list = 3;
 }
 
 message FixedVersions {

@@ -8,9 +8,9 @@ import "google/protobuf/timestamp.proto";
 
 message Revision {
   uint64 id = 1;
-  
+
   optional string name = 2;
-  repeated string tags = 3;
+  repeated string tag_list = 3;
 
   uint64 project_id = 4;
   string project_slug = 5; // used to create new projects

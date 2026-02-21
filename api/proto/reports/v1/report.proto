@@ -7,7 +7,7 @@ option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/report
 import "protoc-gen-openapiv2/options/annotations.proto";
 
 import "reports/v1/scanners.proto";
-import "common/v1/paging.proto";
+import "common/v1/pagination.proto";
 
 message Report {
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {

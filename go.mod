@@ -1,6 +1,6 @@
 module gitlab.domsnail.ru/dolina/dolina-aspm-api
 
-go 1.24.4
+go 1.25.7
 
 require (
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.28.0

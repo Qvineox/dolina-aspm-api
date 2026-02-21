@@ -8,6 +8,7 @@ import "google/api/annotations.proto";
 
 import "defects/v1/defect.proto";
 import "common/v1/uuid.proto";
+import "common/v1/pagination.proto";
 
 service DefectsService {
   rpc GetDefectByUUID(common.v1.UUID) returns (Defect) {
@@ -16,9 +17,15 @@ service DefectsService {
     };
   }
 
-  rpc GetDefectsByQueryFilter(DefectsQueryFilter) returns (Defects) {
+  rpc GetDefectsByQueryFilter(DefectsQueryFilter) returns (DefectsQueryResponse) {
     option (google.api.http) = {
       get: "/api/v1/defects"
     };
   }
+}
+
+message DefectsQueryResponse {
+  repeated Defect defects_list = 1;
+
+  common.v1.PaginationMetadata pagination = 2;
 }

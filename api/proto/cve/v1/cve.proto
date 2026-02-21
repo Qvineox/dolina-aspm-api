@@ -4,18 +4,36 @@ package dolina.cve.v1;
 
 option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/cve/v1;cve_v1";
 
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+import "exploits/v1/exploits.proto";
 import "cve/v1/vendors.proto";
 
 message CVE {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "CVE"
+      description: "Represents a standardized vulnerability entry from the Common Vulnerabilities and "
+          "Exposures (CVE) system. Contains core vulnerability metadata including CVE ID, description, "
+          "publication date, severity scores (CVSS), affected components, and remediation information. "
+          "Serves as the authoritative reference for tracking known security vulnerabilities in the Dolina ASPM system."
+    }
+  };
+
+  // cve identification, for example CVE-2024-3094
   string id = 1;
 
   // aggregated main cvss score
-  float cvss_score = 2;
+  float aggregated_cvss_score = 2;
   repeated VendorScoring vendor_scoring_list = 3;
 
   // additional information about vulnerability
   repeated string reference_url_list = 4;
 
-  repeated string cwe_list = 5;
+  repeated uint32 cwe_list = 5;
+
+  // exploits info
+  bool has_known_exploit = 6;
+  repeated exploits.v1.Exploit known_exploit_list = 7;
 }
 
