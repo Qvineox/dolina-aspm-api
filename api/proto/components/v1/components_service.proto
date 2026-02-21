@@ -7,7 +7,9 @@ option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/compon
 import "google/api/annotations.proto";
 
 import "components/v1/component.proto";
+import "common/v1/pagination.proto";
 import "common/v1/uuid.proto";
+import "common/v1/sort.proto";
 
 service ComponentsService {
   rpc GetComponentByUUID(common.v1.UUID) returns (Component) {
@@ -16,9 +18,26 @@ service ComponentsService {
     };
   };
 
-  rpc GetComponentsByQueryFilter(ComponentsQueryFilter) returns (Components) {
+  rpc GetComponentsByQueryFilter(ComponentsQueryFilter) returns (ComponentsQueryResponse) {
     option (google.api.http) = {
       get: "/api/v1/components"
     };
   };
+}
+
+message ComponentsQueryFilter {
+  string purl = 1;
+
+  optional string repository_uuid = 4;
+  optional string repository_ref = 5;
+  optional string artifact_uuid = 6;
+
+  common.v1.Pagination pagination = 20;
+  common.v1.Sort sort = 21;
+}
+
+message ComponentsQueryResponse {
+  repeated Component components_list = 1;
+
+  common.v1.PaginationMetadata pagination = 2;
 }

@@ -7,8 +7,6 @@ option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/defect
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "google/protobuf/timestamp.proto";
 
-import "common/v1/pagination.proto";
-import "common/v1/sort.proto";
 import "defects/v1/fix.proto";
 import "cve/v1/cve.proto";
 
@@ -90,16 +88,4 @@ enum DefectStatus {
   DEFECT_STATUS_WILL_NOT_FIX = 4; // defect is purposely left in code by distributor
   DEFECT_STATUS_END_OF_LIFE = 5; // defect is found in no longer supported (EOL) package
   DEFECT_STATUS_HAS_EXPLOIT = 6; // defect has known exploit
-}
-
-message DefectsQueryFilter {
-  string title = 1;
-
-  optional string component_purl = 2;
-
-  optional uint32 application_id = 5;
-  optional string application_ref = 6;
-
-  common.v1.Paging paging = 23;
-  common.v1.Sort sort = 24;
 }

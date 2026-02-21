@@ -6,9 +6,10 @@ option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/defect
 
 import "google/api/annotations.proto";
 
+import "common/v1/pagination.proto";
 import "defects/v1/defect.proto";
 import "common/v1/uuid.proto";
-import "common/v1/pagination.proto";
+import "common/v1/sort.proto";
 
 service DefectsService {
   rpc GetDefectByUUID(common.v1.UUID) returns (Defect) {
@@ -22,6 +23,18 @@ service DefectsService {
       get: "/api/v1/defects"
     };
   }
+}
+
+message DefectsQueryFilter {
+  string title = 1;
+
+  optional string component_purl = 2;
+
+  optional uint32 application_id = 5;
+  optional string application_ref = 6;
+
+  common.v1.Pagination paging = 23;
+  common.v1.Sort sort = 24;
 }
 
 message DefectsQueryResponse {

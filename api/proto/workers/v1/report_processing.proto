@@ -15,12 +15,24 @@ message AnalysisProcessStream {
   reports.v1.AnalysisState current_state = 3;
 
   oneof processed_artifacts {
-    components.v1.Components components = 4;
-    defects.v1.Defects defects = 5;
-    reports.v1.Report report = 6;
+    ComponentArtifacts components = 4;
+    DefectArtifacts defects = 5;
+    ReportArtifacts report = 6;
   }
 
   // worker_id, analysis_uuid, report_uuid must be added to metadata
+}
+
+message ComponentArtifacts {
+  repeated components.v1.Component component_list = 1;
+}
+
+message DefectArtifacts {
+  repeated defects.v1.Defect defect_list = 1;
+}
+
+message ReportArtifacts {
+  repeated reports.v1.Report report_list = 1;
 }
 
 message AnalysisProcessSummary {

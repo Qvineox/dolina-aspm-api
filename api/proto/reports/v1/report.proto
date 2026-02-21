@@ -7,7 +7,6 @@ option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/report
 import "protoc-gen-openapiv2/options/annotations.proto";
 
 import "reports/v1/scanners.proto";
-import "common/v1/pagination.proto";
 
 message Report {
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
@@ -38,33 +37,6 @@ message Report {
   // todo: report data
 }
 
-message Reports {
-  repeated Report reports = 1;
-}
-
 message ReportPatch {
   string uuid = 1;
-}
-
-message ReportsQueryFilter {
-  optional uint32 project_id = 2;
-  optional string project_slug = 3; // ignored if project_id is provided
-
-  optional uint32 application_id = 4;
-  optional string application_slug = 5; // ignored if application_id is provided
-
-  // create or update project repository by provided attributes
-  optional string repository_uuid = 6;
-  optional string repository_url = 7; // ignored if repository_uuid is provided
-
-  // create or update project artifact by provided attributes
-  optional string artifact_uuid = 8;
-  optional string artifact_purl = 9;
-
-  optional ScannerID scanner_id = 10;
-  optional ScannerFormat scanner_format = 11;
-
-  optional string pipeline_id = 12;
-
-  common.v1.Paging paging = 20;
 }

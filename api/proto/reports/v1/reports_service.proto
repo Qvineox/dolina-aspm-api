@@ -7,9 +7,10 @@ option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/report
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 
+import "reports/v1/scanners.proto";
 import "reports/v1/report.proto";
+import "common/v1/pagination.proto";
 import "common/v1/uuid.proto";
-
 
 service ReportsService {
   rpc GetReportByUUID(common.v1.UUID) returns (Report) {
@@ -18,7 +19,7 @@ service ReportsService {
     };
   }
 
-  rpc GetReportsByQueryFilter(ReportsQueryFilter) returns (Reports) {
+  rpc GetReportsByQueryFilter(ReportsQueryFilter) returns (ReportsQueryResponse) {
     option (google.api.http) = {
       get: "/api/v1/reports"
     };
@@ -36,4 +37,33 @@ service ReportsService {
       delete: "/api/v1/reports/{uuid}"
     };
   }
+}
+
+message ReportsQueryFilter {
+  optional uint32 project_id = 2;
+  optional string project_slug = 3; // ignored if project_id is provided
+
+  optional uint32 application_id = 4;
+  optional string application_slug = 5; // ignored if application_id is provided
+
+  // create or update project repository by provided attributes
+  optional string repository_uuid = 6;
+  optional string repository_url = 7; // ignored if repository_uuid is provided
+
+  // create or update project artifact by provided attributes
+  optional string artifact_uuid = 8;
+  optional string artifact_purl = 9;
+
+  optional ScannerID scanner_id = 10;
+  optional ScannerFormat scanner_format = 11;
+
+  optional string pipeline_id = 12;
+
+  common.v1.Pagination pagination = 20;
+}
+
+message ReportsQueryResponse {
+  repeated Report reports_list = 1;
+
+  common.v1.PaginationMetadata pagination = 2;
 }
