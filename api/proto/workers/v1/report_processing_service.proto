@@ -1,9 +1,12 @@
-syntax = "proto3";
+edition = "2023";
 
 package dolina.workers.v1;
 
 option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/workers.proto/v1;workers_v1";
+option features.(pb.go).api_level = API_OPAQUE;
+option features.field_presence = EXPLICIT;
 
+import "google/protobuf/go_features.proto";
 import "google/protobuf/empty.proto";
 
 import "workers/v1/report_processing.proto";

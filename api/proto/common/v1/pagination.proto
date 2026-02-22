@@ -1,12 +1,16 @@
-syntax = "proto3";
+edition = "2023";
 
 package dolina.common.v1;
 
 option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/common/v1;common_v1";
+option features.(pb.go).api_level = API_OPAQUE;
+option features.field_presence = EXPLICIT;
+
+import "google/protobuf/go_features.proto";
 
 message Pagination {
-  uint32 offset = 1;
-  uint32 limit = 2;
+  uint32 offset = 1 [default = 0];
+  uint32 limit = 2 [default = 100];
 }
 
 message PaginationMetadata {

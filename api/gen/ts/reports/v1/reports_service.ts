@@ -5,6 +5,7 @@
 // source: reports/v1/reports_service.proto
 
 /* eslint-disable */
+import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import {
   type CallOptions,
   type ChannelCredentials,
@@ -17,11 +18,386 @@ import {
   type ServiceError,
   type UntypedServiceImplementation,
 } from "@grpc/grpc-js";
+import { Pagination, PaginationMetadata } from "../../common/v1/pagination";
 import { UUID } from "../../common/v1/uuid";
 import { Empty } from "../../google/protobuf/empty";
-import { Report, ReportPatch, Reports, ReportsQueryFilter } from "./report";
+import { Report, ReportPatch } from "./report";
+import {
+  ScannerFormat,
+  scannerFormatFromJSON,
+  scannerFormatToJSON,
+  ScannerID,
+  scannerIDFromJSON,
+  scannerIDToJSON,
+} from "./scanners";
 
 export const protobufPackage = "dolina.reports.v1";
+
+export interface ReportsQueryFilter {
+  projectId?:
+    | number
+    | undefined;
+  /** ignored if project_id is provided */
+  projectSlug?: string | undefined;
+  applicationId?:
+    | number
+    | undefined;
+  /** ignored if application_id is provided */
+  applicationSlug?:
+    | string
+    | undefined;
+  /** create or update project repository by provided attributes */
+  repositoryUuid?:
+    | string
+    | undefined;
+  /** ignored if repository_uuid is provided */
+  repositoryUrl?:
+    | string
+    | undefined;
+  /** create or update project artifact by provided attributes */
+  artifactUuid?: string | undefined;
+  artifactPurl?: string | undefined;
+  scannerId?: ScannerID | undefined;
+  scannerFormat?: ScannerFormat | undefined;
+  pipelineId?: string | undefined;
+  pagination: Pagination | undefined;
+}
+
+export interface ReportsQueryResponse {
+  reportsList: Report[];
+  pagination: PaginationMetadata | undefined;
+}
+
+function createBaseReportsQueryFilter(): ReportsQueryFilter {
+  return {
+    projectId: undefined,
+    projectSlug: undefined,
+    applicationId: undefined,
+    applicationSlug: undefined,
+    repositoryUuid: undefined,
+    repositoryUrl: undefined,
+    artifactUuid: undefined,
+    artifactPurl: undefined,
+    scannerId: undefined,
+    scannerFormat: undefined,
+    pipelineId: undefined,
+    pagination: undefined,
+  };
+}
+
+export const ReportsQueryFilter: MessageFns<ReportsQueryFilter> = {
+  encode(message: ReportsQueryFilter, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.projectId !== undefined) {
+      writer.uint32(16).uint32(message.projectId);
+    }
+    if (message.projectSlug !== undefined) {
+      writer.uint32(26).string(message.projectSlug);
+    }
+    if (message.applicationId !== undefined) {
+      writer.uint32(32).uint32(message.applicationId);
+    }
+    if (message.applicationSlug !== undefined) {
+      writer.uint32(42).string(message.applicationSlug);
+    }
+    if (message.repositoryUuid !== undefined) {
+      writer.uint32(50).string(message.repositoryUuid);
+    }
+    if (message.repositoryUrl !== undefined) {
+      writer.uint32(58).string(message.repositoryUrl);
+    }
+    if (message.artifactUuid !== undefined) {
+      writer.uint32(66).string(message.artifactUuid);
+    }
+    if (message.artifactPurl !== undefined) {
+      writer.uint32(74).string(message.artifactPurl);
+    }
+    if (message.scannerId !== undefined) {
+      writer.uint32(80).int32(message.scannerId);
+    }
+    if (message.scannerFormat !== undefined) {
+      writer.uint32(88).int32(message.scannerFormat);
+    }
+    if (message.pipelineId !== undefined) {
+      writer.uint32(98).string(message.pipelineId);
+    }
+    if (message.pagination !== undefined) {
+      Pagination.encode(message.pagination, writer.uint32(162).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ReportsQueryFilter {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseReportsQueryFilter();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.projectId = reader.uint32();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.projectSlug = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 32) {
+            break;
+          }
+
+          message.applicationId = reader.uint32();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.applicationSlug = reader.string();
+          continue;
+        }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.repositoryUuid = reader.string();
+          continue;
+        }
+        case 7: {
+          if (tag !== 58) {
+            break;
+          }
+
+          message.repositoryUrl = reader.string();
+          continue;
+        }
+        case 8: {
+          if (tag !== 66) {
+            break;
+          }
+
+          message.artifactUuid = reader.string();
+          continue;
+        }
+        case 9: {
+          if (tag !== 74) {
+            break;
+          }
+
+          message.artifactPurl = reader.string();
+          continue;
+        }
+        case 10: {
+          if (tag !== 80) {
+            break;
+          }
+
+          message.scannerId = reader.int32() as any;
+          continue;
+        }
+        case 11: {
+          if (tag !== 88) {
+            break;
+          }
+
+          message.scannerFormat = reader.int32() as any;
+          continue;
+        }
+        case 12: {
+          if (tag !== 98) {
+            break;
+          }
+
+          message.pipelineId = reader.string();
+          continue;
+        }
+        case 20: {
+          if (tag !== 162) {
+            break;
+          }
+
+          message.pagination = Pagination.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ReportsQueryFilter {
+    return {
+      projectId: isSet(object.projectId) ? globalThis.Number(object.projectId) : undefined,
+      projectSlug: isSet(object.projectSlug) ? globalThis.String(object.projectSlug) : undefined,
+      applicationId: isSet(object.applicationId) ? globalThis.Number(object.applicationId) : undefined,
+      applicationSlug: isSet(object.applicationSlug) ? globalThis.String(object.applicationSlug) : undefined,
+      repositoryUuid: isSet(object.repositoryUuid) ? globalThis.String(object.repositoryUuid) : undefined,
+      repositoryUrl: isSet(object.repositoryUrl) ? globalThis.String(object.repositoryUrl) : undefined,
+      artifactUuid: isSet(object.artifactUuid) ? globalThis.String(object.artifactUuid) : undefined,
+      artifactPurl: isSet(object.artifactPurl) ? globalThis.String(object.artifactPurl) : undefined,
+      scannerId: isSet(object.scannerId) ? scannerIDFromJSON(object.scannerId) : undefined,
+      scannerFormat: isSet(object.scannerFormat) ? scannerFormatFromJSON(object.scannerFormat) : undefined,
+      pipelineId: isSet(object.pipelineId) ? globalThis.String(object.pipelineId) : undefined,
+      pagination: isSet(object.pagination) ? Pagination.fromJSON(object.pagination) : undefined,
+    };
+  },
+
+  toJSON(message: ReportsQueryFilter): unknown {
+    const obj: any = {};
+    if (message.projectId !== undefined) {
+      obj.projectId = Math.round(message.projectId);
+    }
+    if (message.projectSlug !== undefined) {
+      obj.projectSlug = message.projectSlug;
+    }
+    if (message.applicationId !== undefined) {
+      obj.applicationId = Math.round(message.applicationId);
+    }
+    if (message.applicationSlug !== undefined) {
+      obj.applicationSlug = message.applicationSlug;
+    }
+    if (message.repositoryUuid !== undefined) {
+      obj.repositoryUuid = message.repositoryUuid;
+    }
+    if (message.repositoryUrl !== undefined) {
+      obj.repositoryUrl = message.repositoryUrl;
+    }
+    if (message.artifactUuid !== undefined) {
+      obj.artifactUuid = message.artifactUuid;
+    }
+    if (message.artifactPurl !== undefined) {
+      obj.artifactPurl = message.artifactPurl;
+    }
+    if (message.scannerId !== undefined) {
+      obj.scannerId = scannerIDToJSON(message.scannerId);
+    }
+    if (message.scannerFormat !== undefined) {
+      obj.scannerFormat = scannerFormatToJSON(message.scannerFormat);
+    }
+    if (message.pipelineId !== undefined) {
+      obj.pipelineId = message.pipelineId;
+    }
+    if (message.pagination !== undefined) {
+      obj.pagination = Pagination.toJSON(message.pagination);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ReportsQueryFilter>, I>>(base?: I): ReportsQueryFilter {
+    return ReportsQueryFilter.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ReportsQueryFilter>, I>>(object: I): ReportsQueryFilter {
+    const message = createBaseReportsQueryFilter();
+    message.projectId = object.projectId ?? undefined;
+    message.projectSlug = object.projectSlug ?? undefined;
+    message.applicationId = object.applicationId ?? undefined;
+    message.applicationSlug = object.applicationSlug ?? undefined;
+    message.repositoryUuid = object.repositoryUuid ?? undefined;
+    message.repositoryUrl = object.repositoryUrl ?? undefined;
+    message.artifactUuid = object.artifactUuid ?? undefined;
+    message.artifactPurl = object.artifactPurl ?? undefined;
+    message.scannerId = object.scannerId ?? undefined;
+    message.scannerFormat = object.scannerFormat ?? undefined;
+    message.pipelineId = object.pipelineId ?? undefined;
+    message.pagination = (object.pagination !== undefined && object.pagination !== null)
+      ? Pagination.fromPartial(object.pagination)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseReportsQueryResponse(): ReportsQueryResponse {
+  return { reportsList: [], pagination: undefined };
+}
+
+export const ReportsQueryResponse: MessageFns<ReportsQueryResponse> = {
+  encode(message: ReportsQueryResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.reportsList) {
+      Report.encode(v!, writer.uint32(10).fork()).join();
+    }
+    if (message.pagination !== undefined) {
+      PaginationMetadata.encode(message.pagination, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ReportsQueryResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseReportsQueryResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.reportsList.push(Report.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.pagination = PaginationMetadata.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ReportsQueryResponse {
+    return {
+      reportsList: globalThis.Array.isArray(object?.reportsList)
+        ? object.reportsList.map((e: any) => Report.fromJSON(e))
+        : [],
+      pagination: isSet(object.pagination) ? PaginationMetadata.fromJSON(object.pagination) : undefined,
+    };
+  },
+
+  toJSON(message: ReportsQueryResponse): unknown {
+    const obj: any = {};
+    if (message.reportsList?.length) {
+      obj.reportsList = message.reportsList.map((e) => Report.toJSON(e));
+    }
+    if (message.pagination !== undefined) {
+      obj.pagination = PaginationMetadata.toJSON(message.pagination);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ReportsQueryResponse>, I>>(base?: I): ReportsQueryResponse {
+    return ReportsQueryResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ReportsQueryResponse>, I>>(object: I): ReportsQueryResponse {
+    const message = createBaseReportsQueryResponse();
+    message.reportsList = object.reportsList?.map((e) => Report.fromPartial(e)) || [];
+    message.pagination = (object.pagination !== undefined && object.pagination !== null)
+      ? PaginationMetadata.fromPartial(object.pagination)
+      : undefined;
+    return message;
+  },
+};
 
 export type ReportsServiceService = typeof ReportsServiceService;
 export const ReportsServiceService = {
@@ -40,8 +416,9 @@ export const ReportsServiceService = {
     responseStream: false,
     requestSerialize: (value: ReportsQueryFilter): Buffer => Buffer.from(ReportsQueryFilter.encode(value).finish()),
     requestDeserialize: (value: Buffer): ReportsQueryFilter => ReportsQueryFilter.decode(value),
-    responseSerialize: (value: Reports): Buffer => Buffer.from(Reports.encode(value).finish()),
-    responseDeserialize: (value: Buffer): Reports => Reports.decode(value),
+    responseSerialize: (value: ReportsQueryResponse): Buffer =>
+      Buffer.from(ReportsQueryResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): ReportsQueryResponse => ReportsQueryResponse.decode(value),
   },
   patchReport: {
     path: "/dolina.reports.v1.ReportsService/PatchReport",
@@ -65,7 +442,7 @@ export const ReportsServiceService = {
 
 export interface ReportsServiceServer extends UntypedServiceImplementation {
   getReportByUuid: handleUnaryCall<UUID, Report>;
-  getReportsByQueryFilter: handleUnaryCall<ReportsQueryFilter, Reports>;
+  getReportsByQueryFilter: handleUnaryCall<ReportsQueryFilter, ReportsQueryResponse>;
   patchReport: handleUnaryCall<ReportPatch, Report>;
   deleteReportByUuid: handleUnaryCall<UUID, Empty>;
 }
@@ -85,18 +462,18 @@ export interface ReportsServiceClient extends Client {
   ): ClientUnaryCall;
   getReportsByQueryFilter(
     request: ReportsQueryFilter,
-    callback: (error: ServiceError | null, response: Reports) => void,
+    callback: (error: ServiceError | null, response: ReportsQueryResponse) => void,
   ): ClientUnaryCall;
   getReportsByQueryFilter(
     request: ReportsQueryFilter,
     metadata: Metadata,
-    callback: (error: ServiceError | null, response: Reports) => void,
+    callback: (error: ServiceError | null, response: ReportsQueryResponse) => void,
   ): ClientUnaryCall;
   getReportsByQueryFilter(
     request: ReportsQueryFilter,
     metadata: Metadata,
     options: Partial<CallOptions>,
-    callback: (error: ServiceError | null, response: Reports) => void,
+    callback: (error: ServiceError | null, response: ReportsQueryResponse) => void,
   ): ClientUnaryCall;
   patchReport(request: ReportPatch, callback: (error: ServiceError | null, response: Report) => void): ClientUnaryCall;
   patchReport(
@@ -132,3 +509,28 @@ export const ReportsServiceClient = makeGenericClientConstructor(
   service: typeof ReportsServiceService;
   serviceName: string;
 };
+
+type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
+
+export type DeepPartial<T> = T extends Builtin ? T
+  : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
+  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
+  : Partial<T>;
+
+type KeysOfUnion<T> = T extends T ? keyof T : never;
+export type Exact<P, I extends P> = P extends Builtin ? P
+  : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function isSet(value: any): boolean {
+  return value !== null && value !== undefined;
+}
+
+export interface MessageFns<T> {
+  encode(message: T, writer?: BinaryWriter): BinaryWriter;
+  decode(input: BinaryReader | Uint8Array, length?: number): T;
+  fromJSON(object: any): T;
+  toJSON(message: T): unknown;
+  create<I extends Exact<DeepPartial<T>, I>>(base?: I): T;
+  fromPartial<I extends Exact<DeepPartial<T>, I>>(object: I): T;
+}

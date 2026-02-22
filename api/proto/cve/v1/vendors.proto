@@ -1,4 +1,4 @@
-syntax = "proto3";
+edition = "2023";
 
 package dolina.cve.v1;
 
@@ -18,12 +18,22 @@ message Vendor {
 message VendorScoring {
   Vendor vendor = 1;
 
-  optional cvss.v2.Severity cvss2_score = 2;
-  optional cvss.v3.Severity cvss3_score = 3;
-  optional cvss.v4.Severity cvss4_score = 4;
+  cvss.v2.Severity cvss2_score = 2;
+  cvss.v3.Severity cvss3_score = 3;
+  cvss.v4.Severity cvss4_score = 4;
 
-  optional string severity = 5;
+  //  optional string severity = 5;
 
-  optional string source_url = 6;
+  string source_url = 6 [features.field_presence = EXPLICIT];
 }
+
+//enum Severity {
+//  CVSS_SEVERITY_UNSPECIFIED = 0;
+//
+//  CVSS_SEVERITY_LOW = 1;
+//  CVSS_SEVERITY_MEDIUM = 2;
+//  CVSS_SEVERITY_HIGH = 3;
+//
+//  CVSS_SEVERITY_CRITICAL = 4;
+//}
 

@@ -15,9 +15,9 @@ export interface Project {
   name: string;
   slug: string;
   description?: string | undefined;
-  tags: string[];
+  tagList: string[];
   vcsUrl?: string | undefined;
-  revisions: Project[];
+  revisionList: Project[];
   createdAt?: Date | undefined;
   updatedAt?: Date | undefined;
 }
@@ -28,9 +28,9 @@ function createBaseProject(): Project {
     name: "",
     slug: "",
     description: undefined,
-    tags: [],
+    tagList: [],
     vcsUrl: undefined,
-    revisions: [],
+    revisionList: [],
     createdAt: undefined,
     updatedAt: undefined,
   };
@@ -50,13 +50,13 @@ export const Project: MessageFns<Project> = {
     if (message.description !== undefined) {
       writer.uint32(34).string(message.description);
     }
-    for (const v of message.tags) {
+    for (const v of message.tagList) {
       writer.uint32(42).string(v!);
     }
     if (message.vcsUrl !== undefined) {
       writer.uint32(50).string(message.vcsUrl);
     }
-    for (const v of message.revisions) {
+    for (const v of message.revisionList) {
       Project.encode(v!, writer.uint32(58).fork()).join();
     }
     if (message.createdAt !== undefined) {
@@ -112,7 +112,7 @@ export const Project: MessageFns<Project> = {
             break;
           }
 
-          message.tags.push(reader.string());
+          message.tagList.push(reader.string());
           continue;
         }
         case 6: {
@@ -128,7 +128,7 @@ export const Project: MessageFns<Project> = {
             break;
           }
 
-          message.revisions.push(Project.decode(reader, reader.uint32()));
+          message.revisionList.push(Project.decode(reader, reader.uint32()));
           continue;
         }
         case 8: {
@@ -162,10 +162,10 @@ export const Project: MessageFns<Project> = {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       slug: isSet(object.slug) ? globalThis.String(object.slug) : "",
       description: isSet(object.description) ? globalThis.String(object.description) : undefined,
-      tags: globalThis.Array.isArray(object?.tags) ? object.tags.map((e: any) => globalThis.String(e)) : [],
+      tagList: globalThis.Array.isArray(object?.tagList) ? object.tagList.map((e: any) => globalThis.String(e)) : [],
       vcsUrl: isSet(object.vcsUrl) ? globalThis.String(object.vcsUrl) : undefined,
-      revisions: globalThis.Array.isArray(object?.revisions)
-        ? object.revisions.map((e: any) => Project.fromJSON(e))
+      revisionList: globalThis.Array.isArray(object?.revisionList)
+        ? object.revisionList.map((e: any) => Project.fromJSON(e))
         : [],
       createdAt: isSet(object.createdAt) ? fromJsonTimestamp(object.createdAt) : undefined,
       updatedAt: isSet(object.updatedAt) ? fromJsonTimestamp(object.updatedAt) : undefined,
@@ -186,14 +186,14 @@ export const Project: MessageFns<Project> = {
     if (message.description !== undefined) {
       obj.description = message.description;
     }
-    if (message.tags?.length) {
-      obj.tags = message.tags;
+    if (message.tagList?.length) {
+      obj.tagList = message.tagList;
     }
     if (message.vcsUrl !== undefined) {
       obj.vcsUrl = message.vcsUrl;
     }
-    if (message.revisions?.length) {
-      obj.revisions = message.revisions.map((e) => Project.toJSON(e));
+    if (message.revisionList?.length) {
+      obj.revisionList = message.revisionList.map((e) => Project.toJSON(e));
     }
     if (message.createdAt !== undefined) {
       obj.createdAt = message.createdAt.toISOString();
@@ -213,9 +213,9 @@ export const Project: MessageFns<Project> = {
     message.name = object.name ?? "";
     message.slug = object.slug ?? "";
     message.description = object.description ?? undefined;
-    message.tags = object.tags?.map((e) => e) || [];
+    message.tagList = object.tagList?.map((e) => e) || [];
     message.vcsUrl = object.vcsUrl ?? undefined;
-    message.revisions = object.revisions?.map((e) => Project.fromPartial(e)) || [];
+    message.revisionList = object.revisionList?.map((e) => Project.fromPartial(e)) || [];
     message.createdAt = object.createdAt ?? undefined;
     message.updatedAt = object.updatedAt ?? undefined;
     return message;

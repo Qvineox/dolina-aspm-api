@@ -6,8 +6,8 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { Components } from "../../components/v1/component";
-import { Defects } from "../../defects/v1/defect";
+import { Component } from "../../components/v1/component";
+import { Defect } from "../../defects/v1/defect";
 import { AnalysisState, analysisStateFromJSON, analysisStateToJSON } from "../../reports/v1/analysis";
 import { Report } from "../../reports/v1/report";
 
@@ -16,9 +16,21 @@ export const protobufPackage = "dolina.workers.v1";
 export interface AnalysisProcessStream {
   reportUuid: string;
   currentState: AnalysisState;
-  components?: Components | undefined;
-  defects?: Defects | undefined;
-  report?: Report | undefined;
+  components?: ComponentArtifacts | undefined;
+  defects?: DefectArtifacts | undefined;
+  report?: ReportArtifacts | undefined;
+}
+
+export interface ComponentArtifacts {
+  componentList: Component[];
+}
+
+export interface DefectArtifacts {
+  defectList: Defect[];
+}
+
+export interface ReportArtifacts {
+  reportList: Report[];
 }
 
 export interface AnalysisProcessSummary {
@@ -37,13 +49,13 @@ export const AnalysisProcessStream: MessageFns<AnalysisProcessStream> = {
       writer.uint32(24).int32(message.currentState);
     }
     if (message.components !== undefined) {
-      Components.encode(message.components, writer.uint32(34).fork()).join();
+      ComponentArtifacts.encode(message.components, writer.uint32(34).fork()).join();
     }
     if (message.defects !== undefined) {
-      Defects.encode(message.defects, writer.uint32(42).fork()).join();
+      DefectArtifacts.encode(message.defects, writer.uint32(42).fork()).join();
     }
     if (message.report !== undefined) {
-      Report.encode(message.report, writer.uint32(50).fork()).join();
+      ReportArtifacts.encode(message.report, writer.uint32(50).fork()).join();
     }
     return writer;
   },
@@ -76,7 +88,7 @@ export const AnalysisProcessStream: MessageFns<AnalysisProcessStream> = {
             break;
           }
 
-          message.components = Components.decode(reader, reader.uint32());
+          message.components = ComponentArtifacts.decode(reader, reader.uint32());
           continue;
         }
         case 5: {
@@ -84,7 +96,7 @@ export const AnalysisProcessStream: MessageFns<AnalysisProcessStream> = {
             break;
           }
 
-          message.defects = Defects.decode(reader, reader.uint32());
+          message.defects = DefectArtifacts.decode(reader, reader.uint32());
           continue;
         }
         case 6: {
@@ -92,7 +104,7 @@ export const AnalysisProcessStream: MessageFns<AnalysisProcessStream> = {
             break;
           }
 
-          message.report = Report.decode(reader, reader.uint32());
+          message.report = ReportArtifacts.decode(reader, reader.uint32());
           continue;
         }
       }
@@ -108,9 +120,9 @@ export const AnalysisProcessStream: MessageFns<AnalysisProcessStream> = {
     return {
       reportUuid: isSet(object.reportUuid) ? globalThis.String(object.reportUuid) : "",
       currentState: isSet(object.currentState) ? analysisStateFromJSON(object.currentState) : 0,
-      components: isSet(object.components) ? Components.fromJSON(object.components) : undefined,
-      defects: isSet(object.defects) ? Defects.fromJSON(object.defects) : undefined,
-      report: isSet(object.report) ? Report.fromJSON(object.report) : undefined,
+      components: isSet(object.components) ? ComponentArtifacts.fromJSON(object.components) : undefined,
+      defects: isSet(object.defects) ? DefectArtifacts.fromJSON(object.defects) : undefined,
+      report: isSet(object.report) ? ReportArtifacts.fromJSON(object.report) : undefined,
     };
   },
 
@@ -123,13 +135,13 @@ export const AnalysisProcessStream: MessageFns<AnalysisProcessStream> = {
       obj.currentState = analysisStateToJSON(message.currentState);
     }
     if (message.components !== undefined) {
-      obj.components = Components.toJSON(message.components);
+      obj.components = ComponentArtifacts.toJSON(message.components);
     }
     if (message.defects !== undefined) {
-      obj.defects = Defects.toJSON(message.defects);
+      obj.defects = DefectArtifacts.toJSON(message.defects);
     }
     if (message.report !== undefined) {
-      obj.report = Report.toJSON(message.report);
+      obj.report = ReportArtifacts.toJSON(message.report);
     }
     return obj;
   },
@@ -142,14 +154,200 @@ export const AnalysisProcessStream: MessageFns<AnalysisProcessStream> = {
     message.reportUuid = object.reportUuid ?? "";
     message.currentState = object.currentState ?? 0;
     message.components = (object.components !== undefined && object.components !== null)
-      ? Components.fromPartial(object.components)
+      ? ComponentArtifacts.fromPartial(object.components)
       : undefined;
     message.defects = (object.defects !== undefined && object.defects !== null)
-      ? Defects.fromPartial(object.defects)
+      ? DefectArtifacts.fromPartial(object.defects)
       : undefined;
     message.report = (object.report !== undefined && object.report !== null)
-      ? Report.fromPartial(object.report)
+      ? ReportArtifacts.fromPartial(object.report)
       : undefined;
+    return message;
+  },
+};
+
+function createBaseComponentArtifacts(): ComponentArtifacts {
+  return { componentList: [] };
+}
+
+export const ComponentArtifacts: MessageFns<ComponentArtifacts> = {
+  encode(message: ComponentArtifacts, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.componentList) {
+      Component.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ComponentArtifacts {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseComponentArtifacts();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.componentList.push(Component.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ComponentArtifacts {
+    return {
+      componentList: globalThis.Array.isArray(object?.componentList)
+        ? object.componentList.map((e: any) => Component.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: ComponentArtifacts): unknown {
+    const obj: any = {};
+    if (message.componentList?.length) {
+      obj.componentList = message.componentList.map((e) => Component.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ComponentArtifacts>, I>>(base?: I): ComponentArtifacts {
+    return ComponentArtifacts.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ComponentArtifacts>, I>>(object: I): ComponentArtifacts {
+    const message = createBaseComponentArtifacts();
+    message.componentList = object.componentList?.map((e) => Component.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseDefectArtifacts(): DefectArtifacts {
+  return { defectList: [] };
+}
+
+export const DefectArtifacts: MessageFns<DefectArtifacts> = {
+  encode(message: DefectArtifacts, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.defectList) {
+      Defect.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DefectArtifacts {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDefectArtifacts();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.defectList.push(Defect.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DefectArtifacts {
+    return {
+      defectList: globalThis.Array.isArray(object?.defectList)
+        ? object.defectList.map((e: any) => Defect.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: DefectArtifacts): unknown {
+    const obj: any = {};
+    if (message.defectList?.length) {
+      obj.defectList = message.defectList.map((e) => Defect.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DefectArtifacts>, I>>(base?: I): DefectArtifacts {
+    return DefectArtifacts.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<DefectArtifacts>, I>>(object: I): DefectArtifacts {
+    const message = createBaseDefectArtifacts();
+    message.defectList = object.defectList?.map((e) => Defect.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseReportArtifacts(): ReportArtifacts {
+  return { reportList: [] };
+}
+
+export const ReportArtifacts: MessageFns<ReportArtifacts> = {
+  encode(message: ReportArtifacts, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.reportList) {
+      Report.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ReportArtifacts {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseReportArtifacts();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.reportList.push(Report.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ReportArtifacts {
+    return {
+      reportList: globalThis.Array.isArray(object?.reportList)
+        ? object.reportList.map((e: any) => Report.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: ReportArtifacts): unknown {
+    const obj: any = {};
+    if (message.reportList?.length) {
+      obj.reportList = message.reportList.map((e) => Report.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ReportArtifacts>, I>>(base?: I): ReportArtifacts {
+    return ReportArtifacts.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ReportArtifacts>, I>>(object: I): ReportArtifacts {
+    const message = createBaseReportArtifacts();
+    message.reportList = object.reportList?.map((e) => Report.fromPartial(e)) || [];
     return message;
   },
 };

@@ -13,7 +13,7 @@ export const protobufPackage = "dolina.project.v1";
 export interface Revision {
   id: string;
   name?: string | undefined;
-  tags: string[];
+  tagList: string[];
   projectId: string;
   /** used to create new projects */
   projectSlug: string;
@@ -31,7 +31,7 @@ function createBaseRevision(): Revision {
   return {
     id: "0",
     name: undefined,
-    tags: [],
+    tagList: [],
     projectId: "0",
     projectSlug: "",
     gitTags: [],
@@ -53,7 +53,7 @@ export const Revision: MessageFns<Revision> = {
     if (message.name !== undefined) {
       writer.uint32(18).string(message.name);
     }
-    for (const v of message.tags) {
+    for (const v of message.tagList) {
       writer.uint32(26).string(v!);
     }
     if (message.projectId !== "0") {
@@ -117,7 +117,7 @@ export const Revision: MessageFns<Revision> = {
             break;
           }
 
-          message.tags.push(reader.string());
+          message.tagList.push(reader.string());
           continue;
         }
         case 4: {
@@ -213,7 +213,7 @@ export const Revision: MessageFns<Revision> = {
     return {
       id: isSet(object.id) ? globalThis.String(object.id) : "0",
       name: isSet(object.name) ? globalThis.String(object.name) : undefined,
-      tags: globalThis.Array.isArray(object?.tags) ? object.tags.map((e: any) => globalThis.String(e)) : [],
+      tagList: globalThis.Array.isArray(object?.tagList) ? object.tagList.map((e: any) => globalThis.String(e)) : [],
       projectId: isSet(object.projectId) ? globalThis.String(object.projectId) : "0",
       projectSlug: isSet(object.projectSlug) ? globalThis.String(object.projectSlug) : "",
       gitTags: globalThis.Array.isArray(object?.gitTags) ? object.gitTags.map((e: any) => globalThis.String(e)) : [],
@@ -237,8 +237,8 @@ export const Revision: MessageFns<Revision> = {
     if (message.name !== undefined) {
       obj.name = message.name;
     }
-    if (message.tags?.length) {
-      obj.tags = message.tags;
+    if (message.tagList?.length) {
+      obj.tagList = message.tagList;
     }
     if (message.projectId !== "0") {
       obj.projectId = message.projectId;
@@ -280,7 +280,7 @@ export const Revision: MessageFns<Revision> = {
     const message = createBaseRevision();
     message.id = object.id ?? "0";
     message.name = object.name ?? undefined;
-    message.tags = object.tags?.map((e) => e) || [];
+    message.tagList = object.tagList?.map((e) => e) || [];
     message.projectId = object.projectId ?? "0";
     message.projectSlug = object.projectSlug ?? "";
     message.gitTags = object.gitTags?.map((e) => e) || [];

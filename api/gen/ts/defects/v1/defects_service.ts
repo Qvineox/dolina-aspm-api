@@ -5,6 +5,7 @@
 // source: defects/v1/defects_service.proto
 
 /* eslint-disable */
+import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import {
   type CallOptions,
   type ChannelCredentials,
@@ -17,10 +18,255 @@ import {
   type ServiceError,
   type UntypedServiceImplementation,
 } from "@grpc/grpc-js";
+import { Pagination, PaginationMetadata } from "../../common/v1/pagination";
+import { Sort } from "../../common/v1/sort";
 import { UUID } from "../../common/v1/uuid";
-import { Defect, Defects, DefectsQueryFilter } from "./defect";
+import { Defect } from "./defect";
 
 export const protobufPackage = "dolina.defects.v1";
+
+export interface DefectsQueryFilter {
+  title: string;
+  componentPurl?: string | undefined;
+  applicationId?: number | undefined;
+  applicationRef?: string | undefined;
+  paging: Pagination | undefined;
+  sort: Sort | undefined;
+}
+
+export interface DefectsQueryResponse {
+  defectsList: Defect[];
+  pagination: PaginationMetadata | undefined;
+}
+
+function createBaseDefectsQueryFilter(): DefectsQueryFilter {
+  return {
+    title: "",
+    componentPurl: undefined,
+    applicationId: undefined,
+    applicationRef: undefined,
+    paging: undefined,
+    sort: undefined,
+  };
+}
+
+export const DefectsQueryFilter: MessageFns<DefectsQueryFilter> = {
+  encode(message: DefectsQueryFilter, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.title !== "") {
+      writer.uint32(10).string(message.title);
+    }
+    if (message.componentPurl !== undefined) {
+      writer.uint32(18).string(message.componentPurl);
+    }
+    if (message.applicationId !== undefined) {
+      writer.uint32(40).uint32(message.applicationId);
+    }
+    if (message.applicationRef !== undefined) {
+      writer.uint32(50).string(message.applicationRef);
+    }
+    if (message.paging !== undefined) {
+      Pagination.encode(message.paging, writer.uint32(186).fork()).join();
+    }
+    if (message.sort !== undefined) {
+      Sort.encode(message.sort, writer.uint32(194).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DefectsQueryFilter {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDefectsQueryFilter();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.title = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.componentPurl = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 40) {
+            break;
+          }
+
+          message.applicationId = reader.uint32();
+          continue;
+        }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.applicationRef = reader.string();
+          continue;
+        }
+        case 23: {
+          if (tag !== 186) {
+            break;
+          }
+
+          message.paging = Pagination.decode(reader, reader.uint32());
+          continue;
+        }
+        case 24: {
+          if (tag !== 194) {
+            break;
+          }
+
+          message.sort = Sort.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DefectsQueryFilter {
+    return {
+      title: isSet(object.title) ? globalThis.String(object.title) : "",
+      componentPurl: isSet(object.componentPurl) ? globalThis.String(object.componentPurl) : undefined,
+      applicationId: isSet(object.applicationId) ? globalThis.Number(object.applicationId) : undefined,
+      applicationRef: isSet(object.applicationRef) ? globalThis.String(object.applicationRef) : undefined,
+      paging: isSet(object.paging) ? Pagination.fromJSON(object.paging) : undefined,
+      sort: isSet(object.sort) ? Sort.fromJSON(object.sort) : undefined,
+    };
+  },
+
+  toJSON(message: DefectsQueryFilter): unknown {
+    const obj: any = {};
+    if (message.title !== "") {
+      obj.title = message.title;
+    }
+    if (message.componentPurl !== undefined) {
+      obj.componentPurl = message.componentPurl;
+    }
+    if (message.applicationId !== undefined) {
+      obj.applicationId = Math.round(message.applicationId);
+    }
+    if (message.applicationRef !== undefined) {
+      obj.applicationRef = message.applicationRef;
+    }
+    if (message.paging !== undefined) {
+      obj.paging = Pagination.toJSON(message.paging);
+    }
+    if (message.sort !== undefined) {
+      obj.sort = Sort.toJSON(message.sort);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DefectsQueryFilter>, I>>(base?: I): DefectsQueryFilter {
+    return DefectsQueryFilter.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<DefectsQueryFilter>, I>>(object: I): DefectsQueryFilter {
+    const message = createBaseDefectsQueryFilter();
+    message.title = object.title ?? "";
+    message.componentPurl = object.componentPurl ?? undefined;
+    message.applicationId = object.applicationId ?? undefined;
+    message.applicationRef = object.applicationRef ?? undefined;
+    message.paging = (object.paging !== undefined && object.paging !== null)
+      ? Pagination.fromPartial(object.paging)
+      : undefined;
+    message.sort = (object.sort !== undefined && object.sort !== null) ? Sort.fromPartial(object.sort) : undefined;
+    return message;
+  },
+};
+
+function createBaseDefectsQueryResponse(): DefectsQueryResponse {
+  return { defectsList: [], pagination: undefined };
+}
+
+export const DefectsQueryResponse: MessageFns<DefectsQueryResponse> = {
+  encode(message: DefectsQueryResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.defectsList) {
+      Defect.encode(v!, writer.uint32(10).fork()).join();
+    }
+    if (message.pagination !== undefined) {
+      PaginationMetadata.encode(message.pagination, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DefectsQueryResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDefectsQueryResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.defectsList.push(Defect.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.pagination = PaginationMetadata.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DefectsQueryResponse {
+    return {
+      defectsList: globalThis.Array.isArray(object?.defectsList)
+        ? object.defectsList.map((e: any) => Defect.fromJSON(e))
+        : [],
+      pagination: isSet(object.pagination) ? PaginationMetadata.fromJSON(object.pagination) : undefined,
+    };
+  },
+
+  toJSON(message: DefectsQueryResponse): unknown {
+    const obj: any = {};
+    if (message.defectsList?.length) {
+      obj.defectsList = message.defectsList.map((e) => Defect.toJSON(e));
+    }
+    if (message.pagination !== undefined) {
+      obj.pagination = PaginationMetadata.toJSON(message.pagination);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DefectsQueryResponse>, I>>(base?: I): DefectsQueryResponse {
+    return DefectsQueryResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<DefectsQueryResponse>, I>>(object: I): DefectsQueryResponse {
+    const message = createBaseDefectsQueryResponse();
+    message.defectsList = object.defectsList?.map((e) => Defect.fromPartial(e)) || [];
+    message.pagination = (object.pagination !== undefined && object.pagination !== null)
+      ? PaginationMetadata.fromPartial(object.pagination)
+      : undefined;
+    return message;
+  },
+};
 
 export type DefectsServiceService = typeof DefectsServiceService;
 export const DefectsServiceService = {
@@ -39,14 +285,15 @@ export const DefectsServiceService = {
     responseStream: false,
     requestSerialize: (value: DefectsQueryFilter): Buffer => Buffer.from(DefectsQueryFilter.encode(value).finish()),
     requestDeserialize: (value: Buffer): DefectsQueryFilter => DefectsQueryFilter.decode(value),
-    responseSerialize: (value: Defects): Buffer => Buffer.from(Defects.encode(value).finish()),
-    responseDeserialize: (value: Buffer): Defects => Defects.decode(value),
+    responseSerialize: (value: DefectsQueryResponse): Buffer =>
+      Buffer.from(DefectsQueryResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): DefectsQueryResponse => DefectsQueryResponse.decode(value),
   },
 } as const;
 
 export interface DefectsServiceServer extends UntypedServiceImplementation {
   getDefectByUuid: handleUnaryCall<UUID, Defect>;
-  getDefectsByQueryFilter: handleUnaryCall<DefectsQueryFilter, Defects>;
+  getDefectsByQueryFilter: handleUnaryCall<DefectsQueryFilter, DefectsQueryResponse>;
 }
 
 export interface DefectsServiceClient extends Client {
@@ -64,18 +311,18 @@ export interface DefectsServiceClient extends Client {
   ): ClientUnaryCall;
   getDefectsByQueryFilter(
     request: DefectsQueryFilter,
-    callback: (error: ServiceError | null, response: Defects) => void,
+    callback: (error: ServiceError | null, response: DefectsQueryResponse) => void,
   ): ClientUnaryCall;
   getDefectsByQueryFilter(
     request: DefectsQueryFilter,
     metadata: Metadata,
-    callback: (error: ServiceError | null, response: Defects) => void,
+    callback: (error: ServiceError | null, response: DefectsQueryResponse) => void,
   ): ClientUnaryCall;
   getDefectsByQueryFilter(
     request: DefectsQueryFilter,
     metadata: Metadata,
     options: Partial<CallOptions>,
-    callback: (error: ServiceError | null, response: Defects) => void,
+    callback: (error: ServiceError | null, response: DefectsQueryResponse) => void,
   ): ClientUnaryCall;
 }
 
@@ -87,3 +334,28 @@ export const DefectsServiceClient = makeGenericClientConstructor(
   service: typeof DefectsServiceService;
   serviceName: string;
 };
+
+type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
+
+export type DeepPartial<T> = T extends Builtin ? T
+  : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
+  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
+  : Partial<T>;
+
+type KeysOfUnion<T> = T extends T ? keyof T : never;
+export type Exact<P, I extends P> = P extends Builtin ? P
+  : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function isSet(value: any): boolean {
+  return value !== null && value !== undefined;
+}
+
+export interface MessageFns<T> {
+  encode(message: T, writer?: BinaryWriter): BinaryWriter;
+  decode(input: BinaryReader | Uint8Array, length?: number): T;
+  fromJSON(object: any): T;
+  toJSON(message: T): unknown;
+  create<I extends Exact<DeepPartial<T>, I>>(base?: I): T;
+  fromPartial<I extends Exact<DeepPartial<T>, I>>(object: I): T;
+}

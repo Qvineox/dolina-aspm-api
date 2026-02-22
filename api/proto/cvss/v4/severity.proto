@@ -1,10 +1,12 @@
-syntax = "proto3";
+edition = "2023";
 
 package dolina.cvss.v4;
 
 option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/cvss/v4;cvss_v4";
 
 enum Severity {
+  option features.enum_type = CLOSED;
+
   CVSS4_SEVERITY_UNSPECIFIED = 0;
 
   CVSS4_SEVERITY_LOW = 1;

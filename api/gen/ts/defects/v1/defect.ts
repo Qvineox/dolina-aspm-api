@@ -6,8 +6,6 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { Paging } from "../../common/v1/paging";
-import { Sort } from "../../common/v1/sort";
 import { CVE } from "../../cve/v1/cve";
 import { Timestamp } from "../../google/protobuf/timestamp";
 import { FixInfo } from "./fix";
@@ -16,9 +14,28 @@ export const protobufPackage = "dolina.defects.v1";
 
 export enum DefectType {
   DEFECT_TYPE_UNSPECIFIED = 0,
+  /** DEFECT_TYPE_SAST - static source code analysis defects */
   DEFECT_TYPE_SAST = 1,
-  DEFECT_TYPE_DAST = 2,
-  DEFECT_TYPE_SCA = 3,
+  /** DEFECT_TYPE_SECRETS - found secrets (api keys, passwords) in source code or on host */
+  DEFECT_TYPE_SECRETS = 1,
+  /** DEFECT_TYPE_DAST - dynamic testing (dast) defects */
+  DEFECT_TYPE_DAST = 3,
+  /** DEFECT_TYPE_FUZZING - dynamic testing (fuzzing) defects */
+  DEFECT_TYPE_FUZZING = 3,
+  /** DEFECT_TYPE_MAST - mobile dynamic testing defects */
+  DEFECT_TYPE_MAST = 4,
+  /** DEFECT_TYPE_PENTEST - penetration testing defects */
+  DEFECT_TYPE_PENTEST = 6,
+  /** DEFECT_TYPE_OSA - defects found in open source packages */
+  DEFECT_TYPE_OSA = 7,
+  /** DEFECT_TYPE_SCA - software composition (packages and libraries) defects */
+  DEFECT_TYPE_SCA = 7,
+  /** DEFECT_TYPE_IAC - infrastructure as code configuration file defects (Dockerfiles, Terraform, Helm and others) */
+  DEFECT_TYPE_IAC = 8,
+  /** DEFECT_TYPE_ARCH - insecure architecture defect */
+  DEFECT_TYPE_ARCH = 9,
+  /** DEFECT_TYPE_CODE_REVIEW - security defect during code review */
+  DEFECT_TYPE_CODE_REVIEW = 10,
   UNRECOGNIZED = -1,
 }
 
@@ -30,12 +47,36 @@ export function defectTypeFromJSON(object: any): DefectType {
     case 1:
     case "DEFECT_TYPE_SAST":
       return DefectType.DEFECT_TYPE_SAST;
-    case 2:
+    case 1:
+    case "DEFECT_TYPE_SECRETS":
+      return DefectType.DEFECT_TYPE_SECRETS;
+    case 3:
     case "DEFECT_TYPE_DAST":
       return DefectType.DEFECT_TYPE_DAST;
     case 3:
+    case "DEFECT_TYPE_FUZZING":
+      return DefectType.DEFECT_TYPE_FUZZING;
+    case 4:
+    case "DEFECT_TYPE_MAST":
+      return DefectType.DEFECT_TYPE_MAST;
+    case 6:
+    case "DEFECT_TYPE_PENTEST":
+      return DefectType.DEFECT_TYPE_PENTEST;
+    case 7:
+    case "DEFECT_TYPE_OSA":
+      return DefectType.DEFECT_TYPE_OSA;
+    case 7:
     case "DEFECT_TYPE_SCA":
       return DefectType.DEFECT_TYPE_SCA;
+    case 8:
+    case "DEFECT_TYPE_IAC":
+      return DefectType.DEFECT_TYPE_IAC;
+    case 9:
+    case "DEFECT_TYPE_ARCH":
+      return DefectType.DEFECT_TYPE_ARCH;
+    case 10:
+    case "DEFECT_TYPE_CODE_REVIEW":
+      return DefectType.DEFECT_TYPE_CODE_REVIEW;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -49,10 +90,26 @@ export function defectTypeToJSON(object: DefectType): string {
       return "DEFECT_TYPE_UNSPECIFIED";
     case DefectType.DEFECT_TYPE_SAST:
       return "DEFECT_TYPE_SAST";
+    case DefectType.DEFECT_TYPE_SECRETS:
+      return "DEFECT_TYPE_SECRETS";
     case DefectType.DEFECT_TYPE_DAST:
       return "DEFECT_TYPE_DAST";
+    case DefectType.DEFECT_TYPE_FUZZING:
+      return "DEFECT_TYPE_FUZZING";
+    case DefectType.DEFECT_TYPE_MAST:
+      return "DEFECT_TYPE_MAST";
+    case DefectType.DEFECT_TYPE_PENTEST:
+      return "DEFECT_TYPE_PENTEST";
+    case DefectType.DEFECT_TYPE_OSA:
+      return "DEFECT_TYPE_OSA";
     case DefectType.DEFECT_TYPE_SCA:
       return "DEFECT_TYPE_SCA";
+    case DefectType.DEFECT_TYPE_IAC:
+      return "DEFECT_TYPE_IAC";
+    case DefectType.DEFECT_TYPE_ARCH:
+      return "DEFECT_TYPE_ARCH";
+    case DefectType.DEFECT_TYPE_CODE_REVIEW:
+      return "DEFECT_TYPE_CODE_REVIEW";
     case DefectType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -61,14 +118,18 @@ export function defectTypeToJSON(object: DefectType): string {
 
 export enum DefectStatus {
   DEFECT_STATUS_UNSPECIFIED = 0,
-  /** DEFECT_STATUS_FIXED_BY_UPDATE - defect is removed by library/package update */
-  DEFECT_STATUS_FIXED_BY_UPDATE = 1,
-  /** DEFECT_STATUS_WILL_NOT_FIX - defect is purposely left in code by distributor */
-  DEFECT_STATUS_WILL_NOT_FIX = 2,
-  /** DEFECT_STATUS_HAS_EXPLOIT - defect has known exploit */
-  DEFECT_STATUS_HAS_EXPLOIT = 3,
   /** DEFECT_STATUS_INDIRECT - defect is indirect for scanner application */
-  DEFECT_STATUS_INDIRECT = 4,
+  DEFECT_STATUS_INDIRECT = 1,
+  /** DEFECT_STATUS_DIRECT - defect is found directly in a scanned application */
+  DEFECT_STATUS_DIRECT = 2,
+  /** DEFECT_STATUS_FIXED_BY_UPDATE - defect is removed by library/package update */
+  DEFECT_STATUS_FIXED_BY_UPDATE = 3,
+  /** DEFECT_STATUS_WILL_NOT_FIX - defect is purposely left in code by distributor */
+  DEFECT_STATUS_WILL_NOT_FIX = 4,
+  /** DEFECT_STATUS_END_OF_LIFE - defect is found in no longer supported (EOL) package */
+  DEFECT_STATUS_END_OF_LIFE = 5,
+  /** DEFECT_STATUS_HAS_EXPLOIT - defect has known exploit */
+  DEFECT_STATUS_HAS_EXPLOIT = 6,
   UNRECOGNIZED = -1,
 }
 
@@ -78,17 +139,23 @@ export function defectStatusFromJSON(object: any): DefectStatus {
     case "DEFECT_STATUS_UNSPECIFIED":
       return DefectStatus.DEFECT_STATUS_UNSPECIFIED;
     case 1:
-    case "DEFECT_STATUS_FIXED_BY_UPDATE":
-      return DefectStatus.DEFECT_STATUS_FIXED_BY_UPDATE;
-    case 2:
-    case "DEFECT_STATUS_WILL_NOT_FIX":
-      return DefectStatus.DEFECT_STATUS_WILL_NOT_FIX;
-    case 3:
-    case "DEFECT_STATUS_HAS_EXPLOIT":
-      return DefectStatus.DEFECT_STATUS_HAS_EXPLOIT;
-    case 4:
     case "DEFECT_STATUS_INDIRECT":
       return DefectStatus.DEFECT_STATUS_INDIRECT;
+    case 2:
+    case "DEFECT_STATUS_DIRECT":
+      return DefectStatus.DEFECT_STATUS_DIRECT;
+    case 3:
+    case "DEFECT_STATUS_FIXED_BY_UPDATE":
+      return DefectStatus.DEFECT_STATUS_FIXED_BY_UPDATE;
+    case 4:
+    case "DEFECT_STATUS_WILL_NOT_FIX":
+      return DefectStatus.DEFECT_STATUS_WILL_NOT_FIX;
+    case 5:
+    case "DEFECT_STATUS_END_OF_LIFE":
+      return DefectStatus.DEFECT_STATUS_END_OF_LIFE;
+    case 6:
+    case "DEFECT_STATUS_HAS_EXPLOIT":
+      return DefectStatus.DEFECT_STATUS_HAS_EXPLOIT;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -100,14 +167,18 @@ export function defectStatusToJSON(object: DefectStatus): string {
   switch (object) {
     case DefectStatus.DEFECT_STATUS_UNSPECIFIED:
       return "DEFECT_STATUS_UNSPECIFIED";
+    case DefectStatus.DEFECT_STATUS_INDIRECT:
+      return "DEFECT_STATUS_INDIRECT";
+    case DefectStatus.DEFECT_STATUS_DIRECT:
+      return "DEFECT_STATUS_DIRECT";
     case DefectStatus.DEFECT_STATUS_FIXED_BY_UPDATE:
       return "DEFECT_STATUS_FIXED_BY_UPDATE";
     case DefectStatus.DEFECT_STATUS_WILL_NOT_FIX:
       return "DEFECT_STATUS_WILL_NOT_FIX";
+    case DefectStatus.DEFECT_STATUS_END_OF_LIFE:
+      return "DEFECT_STATUS_END_OF_LIFE";
     case DefectStatus.DEFECT_STATUS_HAS_EXPLOIT:
       return "DEFECT_STATUS_HAS_EXPLOIT";
-    case DefectStatus.DEFECT_STATUS_INDIRECT:
-      return "DEFECT_STATUS_INDIRECT";
     case DefectStatus.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -115,23 +186,22 @@ export function defectStatusToJSON(object: DefectStatus): string {
 }
 
 export interface Defect {
-  uuid: string;
+  /** internal aspm correlation uuid */
+  uuid: Uint8Array;
   title: string;
   description: string;
   type: DefectType;
-  status: DefectStatus[];
+  statusList: DefectStatus[];
   /** applied risk score is based on inputs from security scanners and applied ruleset */
   appliedRiskScore: number;
   cvssScore: number;
   cve?: CVE | undefined;
-  cwe?:
-    | string
-    | undefined;
+  cweList: string[];
   /** deduplication */
   isLatest: boolean;
   defectDuplicates: Defect[];
   /** membership attributes */
-  componentUuid?: string | undefined;
+  componentUuid?: Uint8Array | undefined;
   applicationId?:
     | number
     | undefined;
@@ -146,30 +216,17 @@ export interface Defect {
   updatedAt?: Date | undefined;
 }
 
-export interface Defects {
-  defectList: Defect[];
-}
-
-export interface DefectsQueryFilter {
-  title: string;
-  componentPurl?: string | undefined;
-  applicationId?: number | undefined;
-  applicationRef?: string | undefined;
-  paging: Paging | undefined;
-  sort: Sort | undefined;
-}
-
 function createBaseDefect(): Defect {
   return {
-    uuid: "",
+    uuid: new Uint8Array(0),
     title: "",
     description: "",
     type: 0,
-    status: [],
+    statusList: [],
     appliedRiskScore: 0,
     cvssScore: 0,
     cve: undefined,
-    cwe: undefined,
+    cweList: [],
     isLatest: false,
     defectDuplicates: [],
     componentUuid: undefined,
@@ -184,8 +241,8 @@ function createBaseDefect(): Defect {
 
 export const Defect: MessageFns<Defect> = {
   encode(message: Defect, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.uuid !== "") {
-      writer.uint32(10).string(message.uuid);
+    if (message.uuid.length !== 0) {
+      writer.uint32(10).bytes(message.uuid);
     }
     if (message.title !== "") {
       writer.uint32(18).string(message.title);
@@ -197,7 +254,7 @@ export const Defect: MessageFns<Defect> = {
       writer.uint32(32).int32(message.type);
     }
     writer.uint32(42).fork();
-    for (const v of message.status) {
+    for (const v of message.statusList) {
       writer.int32(v);
     }
     writer.join();
@@ -210,8 +267,8 @@ export const Defect: MessageFns<Defect> = {
     if (message.cve !== undefined) {
       CVE.encode(message.cve, writer.uint32(66).fork()).join();
     }
-    if (message.cwe !== undefined) {
-      writer.uint32(74).string(message.cwe);
+    for (const v of message.cweList) {
+      writer.uint32(74).string(v!);
     }
     if (message.isLatest !== false) {
       writer.uint32(80).bool(message.isLatest);
@@ -220,7 +277,7 @@ export const Defect: MessageFns<Defect> = {
       Defect.encode(v!, writer.uint32(90).fork()).join();
     }
     if (message.componentUuid !== undefined) {
-      writer.uint32(162).string(message.componentUuid);
+      writer.uint32(162).bytes(message.componentUuid);
     }
     if (message.applicationId !== undefined) {
       writer.uint32(168).uint32(message.applicationId);
@@ -255,7 +312,7 @@ export const Defect: MessageFns<Defect> = {
             break;
           }
 
-          message.uuid = reader.string();
+          message.uuid = reader.bytes();
           continue;
         }
         case 2: {
@@ -284,7 +341,7 @@ export const Defect: MessageFns<Defect> = {
         }
         case 5: {
           if (tag === 40) {
-            message.status.push(reader.int32() as any);
+            message.statusList.push(reader.int32() as any);
 
             continue;
           }
@@ -292,7 +349,7 @@ export const Defect: MessageFns<Defect> = {
           if (tag === 42) {
             const end2 = reader.uint32() + reader.pos;
             while (reader.pos < end2) {
-              message.status.push(reader.int32() as any);
+              message.statusList.push(reader.int32() as any);
             }
 
             continue;
@@ -329,7 +386,7 @@ export const Defect: MessageFns<Defect> = {
             break;
           }
 
-          message.cwe = reader.string();
+          message.cweList.push(reader.string());
           continue;
         }
         case 10: {
@@ -353,7 +410,7 @@ export const Defect: MessageFns<Defect> = {
             break;
           }
 
-          message.componentUuid = reader.string();
+          message.componentUuid = reader.bytes();
           continue;
         }
         case 21: {
@@ -415,20 +472,22 @@ export const Defect: MessageFns<Defect> = {
 
   fromJSON(object: any): Defect {
     return {
-      uuid: isSet(object.uuid) ? globalThis.String(object.uuid) : "",
+      uuid: isSet(object.uuid) ? bytesFromBase64(object.uuid) : new Uint8Array(0),
       title: isSet(object.title) ? globalThis.String(object.title) : "",
       description: isSet(object.description) ? globalThis.String(object.description) : "",
       type: isSet(object.type) ? defectTypeFromJSON(object.type) : 0,
-      status: globalThis.Array.isArray(object?.status) ? object.status.map((e: any) => defectStatusFromJSON(e)) : [],
+      statusList: globalThis.Array.isArray(object?.statusList)
+        ? object.statusList.map((e: any) => defectStatusFromJSON(e))
+        : [],
       appliedRiskScore: isSet(object.appliedRiskScore) ? globalThis.Number(object.appliedRiskScore) : 0,
       cvssScore: isSet(object.cvssScore) ? globalThis.Number(object.cvssScore) : 0,
       cve: isSet(object.cve) ? CVE.fromJSON(object.cve) : undefined,
-      cwe: isSet(object.cwe) ? globalThis.String(object.cwe) : undefined,
+      cweList: globalThis.Array.isArray(object?.cweList) ? object.cweList.map((e: any) => globalThis.String(e)) : [],
       isLatest: isSet(object.isLatest) ? globalThis.Boolean(object.isLatest) : false,
       defectDuplicates: globalThis.Array.isArray(object?.defectDuplicates)
         ? object.defectDuplicates.map((e: any) => Defect.fromJSON(e))
         : [],
-      componentUuid: isSet(object.componentUuid) ? globalThis.String(object.componentUuid) : undefined,
+      componentUuid: isSet(object.componentUuid) ? bytesFromBase64(object.componentUuid) : undefined,
       applicationId: isSet(object.applicationId) ? globalThis.Number(object.applicationId) : undefined,
       applicationRef: isSet(object.applicationRef) ? globalThis.String(object.applicationRef) : undefined,
       referenceUrlList: globalThis.Array.isArray(object?.referenceUrlList)
@@ -442,8 +501,8 @@ export const Defect: MessageFns<Defect> = {
 
   toJSON(message: Defect): unknown {
     const obj: any = {};
-    if (message.uuid !== "") {
-      obj.uuid = message.uuid;
+    if (message.uuid.length !== 0) {
+      obj.uuid = base64FromBytes(message.uuid);
     }
     if (message.title !== "") {
       obj.title = message.title;
@@ -454,8 +513,8 @@ export const Defect: MessageFns<Defect> = {
     if (message.type !== 0) {
       obj.type = defectTypeToJSON(message.type);
     }
-    if (message.status?.length) {
-      obj.status = message.status.map((e) => defectStatusToJSON(e));
+    if (message.statusList?.length) {
+      obj.statusList = message.statusList.map((e) => defectStatusToJSON(e));
     }
     if (message.appliedRiskScore !== 0) {
       obj.appliedRiskScore = Math.round(message.appliedRiskScore);
@@ -466,8 +525,8 @@ export const Defect: MessageFns<Defect> = {
     if (message.cve !== undefined) {
       obj.cve = CVE.toJSON(message.cve);
     }
-    if (message.cwe !== undefined) {
-      obj.cwe = message.cwe;
+    if (message.cweList?.length) {
+      obj.cweList = message.cweList;
     }
     if (message.isLatest !== false) {
       obj.isLatest = message.isLatest;
@@ -476,7 +535,7 @@ export const Defect: MessageFns<Defect> = {
       obj.defectDuplicates = message.defectDuplicates.map((e) => Defect.toJSON(e));
     }
     if (message.componentUuid !== undefined) {
-      obj.componentUuid = message.componentUuid;
+      obj.componentUuid = base64FromBytes(message.componentUuid);
     }
     if (message.applicationId !== undefined) {
       obj.applicationId = Math.round(message.applicationId);
@@ -504,15 +563,15 @@ export const Defect: MessageFns<Defect> = {
   },
   fromPartial<I extends Exact<DeepPartial<Defect>, I>>(object: I): Defect {
     const message = createBaseDefect();
-    message.uuid = object.uuid ?? "";
+    message.uuid = object.uuid ?? new Uint8Array(0);
     message.title = object.title ?? "";
     message.description = object.description ?? "";
     message.type = object.type ?? 0;
-    message.status = object.status?.map((e) => e) || [];
+    message.statusList = object.statusList?.map((e) => e) || [];
     message.appliedRiskScore = object.appliedRiskScore ?? 0;
     message.cvssScore = object.cvssScore ?? 0;
     message.cve = (object.cve !== undefined && object.cve !== null) ? CVE.fromPartial(object.cve) : undefined;
-    message.cwe = object.cwe ?? undefined;
+    message.cweList = object.cweList?.map((e) => e) || [];
     message.isLatest = object.isLatest ?? false;
     message.defectDuplicates = object.defectDuplicates?.map((e) => Defect.fromPartial(e)) || [];
     message.componentUuid = object.componentUuid ?? undefined;
@@ -528,216 +587,30 @@ export const Defect: MessageFns<Defect> = {
   },
 };
 
-function createBaseDefects(): Defects {
-  return { defectList: [] };
+function bytesFromBase64(b64: string): Uint8Array {
+  if ((globalThis as any).Buffer) {
+    return Uint8Array.from(globalThis.Buffer.from(b64, "base64"));
+  } else {
+    const bin = globalThis.atob(b64);
+    const arr = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; ++i) {
+      arr[i] = bin.charCodeAt(i);
+    }
+    return arr;
+  }
 }
 
-export const Defects: MessageFns<Defects> = {
-  encode(message: Defects, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.defectList) {
-      Defect.encode(v!, writer.uint32(10).fork()).join();
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): Defects {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseDefects();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1: {
-          if (tag !== 10) {
-            break;
-          }
-
-          message.defectList.push(Defect.decode(reader, reader.uint32()));
-          continue;
-        }
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): Defects {
-    return {
-      defectList: globalThis.Array.isArray(object?.defectList)
-        ? object.defectList.map((e: any) => Defect.fromJSON(e))
-        : [],
-    };
-  },
-
-  toJSON(message: Defects): unknown {
-    const obj: any = {};
-    if (message.defectList?.length) {
-      obj.defectList = message.defectList.map((e) => Defect.toJSON(e));
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<Defects>, I>>(base?: I): Defects {
-    return Defects.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<Defects>, I>>(object: I): Defects {
-    const message = createBaseDefects();
-    message.defectList = object.defectList?.map((e) => Defect.fromPartial(e)) || [];
-    return message;
-  },
-};
-
-function createBaseDefectsQueryFilter(): DefectsQueryFilter {
-  return {
-    title: "",
-    componentPurl: undefined,
-    applicationId: undefined,
-    applicationRef: undefined,
-    paging: undefined,
-    sort: undefined,
-  };
+function base64FromBytes(arr: Uint8Array): string {
+  if ((globalThis as any).Buffer) {
+    return globalThis.Buffer.from(arr).toString("base64");
+  } else {
+    const bin: string[] = [];
+    arr.forEach((byte) => {
+      bin.push(globalThis.String.fromCharCode(byte));
+    });
+    return globalThis.btoa(bin.join(""));
+  }
 }
-
-export const DefectsQueryFilter: MessageFns<DefectsQueryFilter> = {
-  encode(message: DefectsQueryFilter, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.title !== "") {
-      writer.uint32(10).string(message.title);
-    }
-    if (message.componentPurl !== undefined) {
-      writer.uint32(18).string(message.componentPurl);
-    }
-    if (message.applicationId !== undefined) {
-      writer.uint32(40).uint32(message.applicationId);
-    }
-    if (message.applicationRef !== undefined) {
-      writer.uint32(50).string(message.applicationRef);
-    }
-    if (message.paging !== undefined) {
-      Paging.encode(message.paging, writer.uint32(186).fork()).join();
-    }
-    if (message.sort !== undefined) {
-      Sort.encode(message.sort, writer.uint32(194).fork()).join();
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): DefectsQueryFilter {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseDefectsQueryFilter();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1: {
-          if (tag !== 10) {
-            break;
-          }
-
-          message.title = reader.string();
-          continue;
-        }
-        case 2: {
-          if (tag !== 18) {
-            break;
-          }
-
-          message.componentPurl = reader.string();
-          continue;
-        }
-        case 5: {
-          if (tag !== 40) {
-            break;
-          }
-
-          message.applicationId = reader.uint32();
-          continue;
-        }
-        case 6: {
-          if (tag !== 50) {
-            break;
-          }
-
-          message.applicationRef = reader.string();
-          continue;
-        }
-        case 23: {
-          if (tag !== 186) {
-            break;
-          }
-
-          message.paging = Paging.decode(reader, reader.uint32());
-          continue;
-        }
-        case 24: {
-          if (tag !== 194) {
-            break;
-          }
-
-          message.sort = Sort.decode(reader, reader.uint32());
-          continue;
-        }
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): DefectsQueryFilter {
-    return {
-      title: isSet(object.title) ? globalThis.String(object.title) : "",
-      componentPurl: isSet(object.componentPurl) ? globalThis.String(object.componentPurl) : undefined,
-      applicationId: isSet(object.applicationId) ? globalThis.Number(object.applicationId) : undefined,
-      applicationRef: isSet(object.applicationRef) ? globalThis.String(object.applicationRef) : undefined,
-      paging: isSet(object.paging) ? Paging.fromJSON(object.paging) : undefined,
-      sort: isSet(object.sort) ? Sort.fromJSON(object.sort) : undefined,
-    };
-  },
-
-  toJSON(message: DefectsQueryFilter): unknown {
-    const obj: any = {};
-    if (message.title !== "") {
-      obj.title = message.title;
-    }
-    if (message.componentPurl !== undefined) {
-      obj.componentPurl = message.componentPurl;
-    }
-    if (message.applicationId !== undefined) {
-      obj.applicationId = Math.round(message.applicationId);
-    }
-    if (message.applicationRef !== undefined) {
-      obj.applicationRef = message.applicationRef;
-    }
-    if (message.paging !== undefined) {
-      obj.paging = Paging.toJSON(message.paging);
-    }
-    if (message.sort !== undefined) {
-      obj.sort = Sort.toJSON(message.sort);
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<DefectsQueryFilter>, I>>(base?: I): DefectsQueryFilter {
-    return DefectsQueryFilter.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<DefectsQueryFilter>, I>>(object: I): DefectsQueryFilter {
-    const message = createBaseDefectsQueryFilter();
-    message.title = object.title ?? "";
-    message.componentPurl = object.componentPurl ?? undefined;
-    message.applicationId = object.applicationId ?? undefined;
-    message.applicationRef = object.applicationRef ?? undefined;
-    message.paging = (object.paging !== undefined && object.paging !== null)
-      ? Paging.fromPartial(object.paging)
-      : undefined;
-    message.sort = (object.sort !== undefined && object.sort !== null) ? Sort.fromPartial(object.sort) : undefined;
-    return message;
-  },
-};
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 

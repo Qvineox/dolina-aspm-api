@@ -49,10 +49,11 @@ func request_ComponentsService_GetComponentByUUID_0(ctx context.Context, marshal
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uuid")
 	}
-	protoReq.Uuid, err = runtime.String(val)
+	convertedUuid, err := runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uuid", err)
 	}
+	protoReq.SetUuid(convertedUuid)
 	msg, err := client.GetComponentByUUID(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 }
@@ -67,10 +68,11 @@ func local_request_ComponentsService_GetComponentByUUID_0(ctx context.Context, m
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uuid")
 	}
-	protoReq.Uuid, err = runtime.String(val)
+	convertedUuid, err := runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uuid", err)
 	}
+	protoReq.SetUuid(convertedUuid)
 	msg, err := server.GetComponentByUUID(ctx, &protoReq)
 	return msg, metadata, err
 }

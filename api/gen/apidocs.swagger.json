@@ -38,12 +38,6 @@
     },
     {
       "name": "WorkerQueueService"
-    },
-    {
-      "name": "UploadService"
-    },
-    {
-      "name": "SbomService"
     }
   ],
   "host": "0.0.0.0:80",
@@ -65,7 +59,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1Components"
+              "$ref": "#/definitions/v1ComponentsQueryResponse"
             }
           },
           "default": {
@@ -101,14 +95,14 @@
             "type": "string"
           },
           {
-            "name": "paging.offset",
+            "name": "pagination.offset",
             "in": "query",
             "required": false,
             "type": "integer",
             "format": "int64"
           },
           {
-            "name": "paging.limit",
+            "name": "pagination.limit",
             "in": "query",
             "required": false,
             "type": "integer",
@@ -127,7 +121,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/dolinaComponentsV1Component"
+              "$ref": "#/definitions/v1Component"
             }
           },
           "default": {
@@ -157,7 +151,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1Defects"
+              "$ref": "#/definitions/v1DefectsQueryResponse"
             }
           },
           "default": {
@@ -652,7 +646,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1Reports"
+              "$ref": "#/definitions/v1ReportsQueryResponse"
             }
           },
           "default": {
@@ -737,9 +731,10 @@
             "type": "string",
             "enum": [
               "SCANNER_FORMAT_UNSPECIFIED",
-              "SCANNER_TRIVY_FS",
+              "SCANNER_FORMAT_TRIVY_FS",
               "SCANNER_FORMAT_SARIF",
-              "SCANNER_FORMAT_SBOM"
+              "SCANNER_FORMAT_SBOM",
+              "SCANNER_FORMAT_GITLEAKS"
             ],
             "default": "SCANNER_FORMAT_UNSPECIFIED"
           },
@@ -750,14 +745,14 @@
             "type": "string"
           },
           {
-            "name": "paging.offset",
+            "name": "pagination.offset",
             "in": "query",
             "required": false,
             "type": "integer",
             "format": "int64"
           },
           {
-            "name": "paging.limit",
+            "name": "pagination.limit",
             "in": "query",
             "required": false,
             "type": "integer",
@@ -927,179 +922,6 @@
           "ReportsService"
         ]
       }
-    },
-    "/api/v1/sbom/decompose": {
-      "post": {
-        "operationId": "SbomService_Decompose",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1SBOMDecomposition"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1DecomposeOptions"
-            }
-          }
-        ],
-        "tags": [
-          "SbomService"
-        ]
-      }
-    },
-    "/api/v1/sbom/{fileUuid}/decompose": {
-      "post": {
-        "operationId": "SbomService_Decompose2",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1SBOMDecomposition"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "fileUuid",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/SbomServiceDecomposeBody"
-            }
-          }
-        ],
-        "tags": [
-          "SbomService"
-        ]
-      }
-    },
-    "/api/v1/sbom/{projectUid}/upload": {
-      "post": {
-        "operationId": "SbomService_Upload",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1Revision"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "projectUid",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/SbomServiceUploadBody"
-            }
-          }
-        ],
-        "tags": [
-          "SbomService"
-        ]
-      }
-    },
-    "/api/v1/upload": {
-      "post": {
-        "operationId": "UploadService_UploadUnary",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1UploadStatus"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1FileChunk"
-            }
-          }
-        ],
-        "tags": [
-          "UploadService"
-        ]
-      }
-    },
-    "/api/v1/upload/stream": {
-      "post": {
-        "operationId": "UploadService_UploadStream",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1UploadStatus"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "description": " (streaming inputs)",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1FileChunk"
-            }
-          }
-        ],
-        "tags": [
-          "UploadService"
-        ]
-      }
     }
   },
   "definitions": {
@@ -1115,7 +937,7 @@
         "description": {
           "type": "string"
         },
-        "tags": {
+        "tagList": {
           "type": "array",
           "items": {
             "type": "string"
@@ -1124,7 +946,7 @@
         "vcsUrl": {
           "type": "string"
         },
-        "revisions": {
+        "revisionList": {
           "type": "array",
           "items": {
             "type": "object",
@@ -1147,7 +969,7 @@
         "name": {
           "type": "string"
         },
-        "tags": {
+        "tagList": {
           "type": "array",
           "items": {
             "type": "string"
@@ -1194,131 +1016,37 @@
     "ReportsServicePatchReportBody": {
       "type": "object"
     },
-    "SbomServiceDecomposeBody": {
-      "type": "object",
-      "properties": {
-        "upload": {
-          "$ref": "#/definitions/v1SBOMFiles"
-        },
-        "maxDepth": {
-          "type": "string",
-          "format": "uint64"
-        },
-        "onlyVulnerable": {
-          "type": "boolean"
-        }
-      }
+    "cvssV2Severity": {
+      "type": "string",
+      "enum": [
+        "CVSS2_SEVERITY_UNSPECIFIED",
+        "CVSS2_SEVERITY_LOW",
+        "CVSS2_SEVERITY_MEDIUM",
+        "CVSS2_SEVERITY_HIGH"
+      ],
+      "default": "CVSS2_SEVERITY_UNSPECIFIED"
     },
-    "SbomServiceUploadBody": {
-      "type": "object",
-      "properties": {
-        "upload": {
-          "$ref": "#/definitions/v1SBOMFiles"
-        }
-      }
+    "cvssV3Severity": {
+      "type": "string",
+      "enum": [
+        "CVSS3_SEVERITY_UNSPECIFIED",
+        "CVSS3_SEVERITY_LOW",
+        "CVSS3_SEVERITY_MEDIUM",
+        "CVSS3_SEVERITY_HIGH",
+        "CVSS3_SEVERITY_CRITICAL"
+      ],
+      "default": "CVSS3_SEVERITY_UNSPECIFIED"
     },
-    "dolinaComponentsV1Component": {
-      "type": "object",
-      "properties": {
-        "uuid": {
-          "type": "string"
-        },
-        "scannerUid": {
-          "type": "string",
-          "title": "internal scanner component id"
-        },
-        "purl": {
-          "$ref": "#/definitions/v1PURL"
-        },
-        "type": {
-          "$ref": "#/definitions/v1ComponentType"
-        },
-        "isPublic": {
-          "type": "boolean",
-          "title": "if component was obtained from public sources (npm, github etc.)"
-        },
-        "repositoryUuid": {
-          "type": "string"
-        },
-        "repositoryRef": {
-          "type": "string"
-        },
-        "artifactUuid": {
-          "type": "string"
-        },
-        "defectList": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/v1Defect"
-          }
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "updatedAt": {
-          "type": "string",
-          "format": "date-time"
-        }
-      },
-      "description": "A software component that is part of an application's architecture.Components can include libraries, frameworks, services, containers or other artifacts. Each component tracks metadata such as name, version, type, and security‑relevant attributes like vulnerabilities, licenses, and dependencies. In Dolina ASPM, components are the primary units for assessing and managing application security posture.",
-      "title": "Component"
-    },
-    "dolinaSbomV1Component": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "group": {
-          "type": "string"
-        },
-        "version": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
-        "type": {
-          "type": "string"
-        },
-        "level": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "bomRef": {
-          "type": "string"
-        },
-        "purl": {
-          "type": "string"
-        },
-        "children": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/dolinaSbomV1Component"
-          }
-        },
-        "vulnerabilities": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/sbomV1Vulnerability"
-          }
-        },
-        "hasTransitiveVulns": {
-          "type": "boolean"
-        },
-        "maxSeverity": {
-          "type": "number",
-          "format": "float"
-        },
-        "totalCveCount": {
-          "type": "integer",
-          "format": "int32"
-        }
-      }
+    "cvssV4Severity": {
+      "type": "string",
+      "enum": [
+        "CVSS4_SEVERITY_UNSPECIFIED",
+        "CVSS4_SEVERITY_LOW",
+        "CVSS4_SEVERITY_MEDIUM",
+        "CVSS4_SEVERITY_HIGH",
+        "CVSS4_SEVERITY_CRITICAL"
+      ],
+      "default": "CVSS4_SEVERITY_UNSPECIFIED"
     },
     "protobufAny": {
       "type": "object",
@@ -1344,128 +1072,6 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/protobufAny"
-          }
-        }
-      }
-    },
-    "sbomV1Advisory": {
-      "type": "object",
-      "properties": {
-        "title": {
-          "type": "string"
-        },
-        "url": {
-          "type": "string"
-        }
-      }
-    },
-    "sbomV1Contact": {
-      "type": "object",
-      "properties": {
-        "email": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "phone": {
-          "type": "string"
-        },
-        "bomRef": {
-          "type": "string"
-        }
-      }
-    },
-    "sbomV1Source": {
-      "type": "object",
-      "properties": {
-        "source": {
-          "type": "string"
-        },
-        "url": {
-          "type": "string"
-        }
-      }
-    },
-    "sbomV1Vulnerability": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string"
-        },
-        "source": {
-          "$ref": "#/definitions/sbomV1Source"
-        },
-        "description": {
-          "type": "string"
-        },
-        "detail": {
-          "type": "string"
-        },
-        "recommendation": {
-          "type": "string"
-        },
-        "maxRating": {
-          "type": "number",
-          "format": "float"
-        },
-        "ratings": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/v1Rating"
-          }
-        },
-        "cwes": {
-          "type": "array",
-          "items": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "advisories": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/sbomV1Advisory"
-          }
-        },
-        "affects": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/v1Affect"
-          }
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "publishedAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "updatedAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "rejectedAt": {
-          "type": "string",
-          "format": "date-time"
-        }
-      }
-    },
-    "v1Affect": {
-      "type": "object",
-      "properties": {
-        "ref": {
-          "type": "string"
-        },
-        "ranges": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/v1Range"
           }
         }
       }
@@ -1593,9 +1199,10 @@
       "type": "object",
       "properties": {
         "id": {
-          "type": "string"
+          "type": "string",
+          "title": "cve identification, for example CVE-2024-3094"
         },
-        "cvssScore": {
+        "aggregatedCvssScore": {
           "type": "number",
           "format": "float",
           "title": "aggregated main cvss score"
@@ -1617,10 +1224,72 @@
         "cweList": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "hasKnownExploit": {
+          "type": "boolean",
+          "title": "exploits info"
+        },
+        "knownExploitList": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Exploit"
           }
         }
-      }
+      },
+      "description": "Represents a standardized vulnerability entry from the Common Vulnerabilities and Exposures (CVE) system. Contains core vulnerability metadata including CVE ID, description, publication date, severity scores (CVSS), affected components, and remediation information. Serves as the authoritative reference for tracking known security vulnerabilities in the Dolina ASPM system.",
+      "title": "CVE"
+    },
+    "v1Component": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string"
+        },
+        "scannerUid": {
+          "type": "string",
+          "title": "internal scanner component id"
+        },
+        "purl": {
+          "$ref": "#/definitions/v1PURL"
+        },
+        "type": {
+          "$ref": "#/definitions/v1ComponentType"
+        },
+        "isPublic": {
+          "type": "boolean",
+          "title": "if component was obtained from public sources (npm, github etc.)"
+        },
+        "repositoryUuid": {
+          "type": "string"
+        },
+        "repositoryRef": {
+          "type": "string"
+        },
+        "artifactUuid": {
+          "type": "string"
+        },
+        "defectList": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Defect"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "description": "A software component that is part of an application's architecture.Components can include libraries, frameworks, services, containers or other artifacts. Each component tracks metadata such as name, version, type, and security‑relevant attributes like vulnerabilities, licenses, and dependencies. In Dolina ASPM, components are the primary units for assessing and managing application security posture.",
+      "title": "Component"
     },
     "v1ComponentType": {
       "type": "string",
@@ -1635,33 +1304,18 @@
       ],
       "default": "COMPONENT_TYPE_UNSPECIFIED"
     },
-    "v1Components": {
+    "v1ComponentsQueryResponse": {
       "type": "object",
       "properties": {
-        "componentList": {
+        "componentsList": {
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/dolinaComponentsV1Component"
+            "$ref": "#/definitions/v1Component"
           }
-        }
-      }
-    },
-    "v1DecomposeOptions": {
-      "type": "object",
-      "properties": {
-        "fileUuid": {
-          "type": "string"
         },
-        "upload": {
-          "$ref": "#/definitions/v1SBOMFiles"
-        },
-        "maxDepth": {
-          "type": "string",
-          "format": "uint64"
-        },
-        "onlyVulnerable": {
-          "type": "boolean"
+        "pagination": {
+          "$ref": "#/definitions/v1PaginationMetadata"
         }
       }
     },
@@ -1669,7 +1323,9 @@
       "type": "object",
       "properties": {
         "uuid": {
-          "type": "string"
+          "type": "string",
+          "format": "byte",
+          "title": "internal aspm correlation uuid"
         },
         "title": {
           "type": "string"
@@ -1680,7 +1336,7 @@
         "type": {
           "$ref": "#/definitions/v1DefectType"
         },
-        "status": {
+        "statusList": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/v1DefectStatus"
@@ -1698,8 +1354,11 @@
         "cve": {
           "$ref": "#/definitions/v1CVE"
         },
-        "cwe": {
-          "type": "string"
+        "cweList": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         },
         "isLatest": {
           "type": "boolean",
@@ -1714,6 +1373,7 @@
         },
         "componentUuid": {
           "type": "string",
+          "format": "byte",
           "title": "membership attributes"
         },
         "applicationId": {
@@ -1742,79 +1402,87 @@
           "type": "string",
           "format": "date-time"
         }
-      }
+      },
+      "description": "Represents a security defect (vulnerability) identified and tracked within Dolina ASPM. This is the primary entity for managing vulnerabilities, containing enriched information including custom ASPM status, references (e.g., CVE, CWEs), known exploits, an activity log for audit trail, and various internal metadata generated by the ASPM engine during analysis and remediation workflows.",
+      "title": "Defect"
     },
     "v1DefectStatus": {
       "type": "string",
       "enum": [
         "DEFECT_STATUS_UNSPECIFIED",
+        "DEFECT_STATUS_INDIRECT",
+        "DEFECT_STATUS_DIRECT",
         "DEFECT_STATUS_FIXED_BY_UPDATE",
         "DEFECT_STATUS_WILL_NOT_FIX",
-        "DEFECT_STATUS_HAS_EXPLOIT",
-        "DEFECT_STATUS_INDIRECT"
+        "DEFECT_STATUS_END_OF_LIFE",
+        "DEFECT_STATUS_HAS_EXPLOIT"
       ],
       "default": "DEFECT_STATUS_UNSPECIFIED",
-      "title": "- DEFECT_STATUS_FIXED_BY_UPDATE: defect is removed by library/package update\n - DEFECT_STATUS_WILL_NOT_FIX: defect is purposely left in code by distributor\n - DEFECT_STATUS_HAS_EXPLOIT: defect has known exploit\n - DEFECT_STATUS_INDIRECT: defect is indirect for scanner application"
+      "title": "- DEFECT_STATUS_INDIRECT: defect is indirect for scanner application\n - DEFECT_STATUS_DIRECT: defect is found directly in a scanned application\n - DEFECT_STATUS_FIXED_BY_UPDATE: defect is removed by library/package update\n - DEFECT_STATUS_WILL_NOT_FIX: defect is purposely left in code by distributor\n - DEFECT_STATUS_END_OF_LIFE: defect is found in no longer supported (EOL) package\n - DEFECT_STATUS_HAS_EXPLOIT: defect has known exploit"
     },
     "v1DefectType": {
       "type": "string",
       "enum": [
         "DEFECT_TYPE_UNSPECIFIED",
         "DEFECT_TYPE_SAST",
+        "DEFECT_TYPE_SECRETS",
         "DEFECT_TYPE_DAST",
-        "DEFECT_TYPE_SCA"
+        "DEFECT_TYPE_FUZZING",
+        "DEFECT_TYPE_MAST",
+        "DEFECT_TYPE_PENTEST",
+        "DEFECT_TYPE_OSA",
+        "DEFECT_TYPE_SCA",
+        "DEFECT_TYPE_IAC",
+        "DEFECT_TYPE_ARCH",
+        "DEFECT_TYPE_CODE_REVIEW"
       ],
-      "default": "DEFECT_TYPE_UNSPECIFIED"
+      "default": "DEFECT_TYPE_UNSPECIFIED",
+      "title": "- DEFECT_TYPE_SAST: static source code analysis defects\n - DEFECT_TYPE_SECRETS: found secrets (api keys, passwords) in source code or on host\n - DEFECT_TYPE_DAST: dynamic testing (dast) defects\n - DEFECT_TYPE_FUZZING: dynamic testing (fuzzing) defects\n - DEFECT_TYPE_MAST: mobile dynamic testing defects\n - DEFECT_TYPE_PENTEST: penetration testing defects\n - DEFECT_TYPE_OSA: defects found in open source packages\n - DEFECT_TYPE_SCA: software composition (packages and libraries) defects\n - DEFECT_TYPE_IAC: infrastructure as code configuration file defects (Dockerfiles, Terraform, Helm and others)\n - DEFECT_TYPE_ARCH: insecure architecture defect\n - DEFECT_TYPE_CODE_REVIEW: security defect during code review"
     },
-    "v1Defects": {
+    "v1DefectsQueryResponse": {
       "type": "object",
       "properties": {
-        "defectList": {
+        "defectsList": {
           "type": "array",
           "items": {
             "type": "object",
             "$ref": "#/definitions/v1Defect"
           }
+        },
+        "pagination": {
+          "$ref": "#/definitions/v1PaginationMetadata"
         }
       }
     },
-    "v1DependencyCycle": {
+    "v1Exploit": {
       "type": "object",
       "properties": {
-        "path": {
+        "uuid": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "referenceUrlList": {
           "type": "array",
           "items": {
             "type": "string"
           }
-        }
-      }
-    },
-    "v1FileChunk": {
-      "type": "object",
-      "properties": {
-        "content": {
+        },
+        "createdAt": {
           "type": "string",
-          "format": "byte"
+          "format": "date-time"
         },
-        "metadata": {
-          "$ref": "#/definitions/v1FileMetadata"
-        }
-      }
-    },
-    "v1FileMetadata": {
-      "type": "object",
-      "properties": {
-        "fileName": {
-          "type": "string"
-        },
-        "mimeType": {
-          "type": "string"
-        },
-        "totalSize": {
+        "updatedAt": {
           "type": "string",
-          "format": "uint64"
+          "format": "date-time"
         }
-      }
+      },
+      "description": "Represents a security exploit with identifying information, description, and external references. Contains a unique identifier (UUID), title, detailed description, list of reference URLs to external resources (CVE, exploit databases, etc.), and optional creation/update timestamps for audit tracking.",
+      "title": "Exploit"
     },
     "v1FixInfo": {
       "type": "object",
@@ -1822,14 +1490,14 @@
         "description": {
           "type": "string"
         },
-        "updateVersions": {
+        "updateVersionList": {
           "type": "array",
           "items": {
             "type": "object",
             "$ref": "#/definitions/v1FixedVersions"
           }
         },
-        "downgradeVersions": {
+        "downgradeVersionList": {
           "type": "array",
           "items": {
             "type": "object",
@@ -1848,62 +1516,6 @@
           "items": {
             "type": "string"
           }
-        }
-      }
-    },
-    "v1Lifecycle": {
-      "type": "object",
-      "properties": {
-        "phase": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        }
-      }
-    },
-    "v1Meta": {
-      "type": "object",
-      "properties": {
-        "bomVersion": {
-          "type": "string"
-        },
-        "tools": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/dolinaSbomV1Component"
-          }
-        },
-        "project": {
-          "$ref": "#/definitions/dolinaSbomV1Component"
-        },
-        "authors": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/sbomV1Contact"
-          }
-        },
-        "lifecycles": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/v1Lifecycle"
-          }
-        },
-        "properties": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          }
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time"
         }
       }
     },
@@ -1943,7 +1555,7 @@
         }
       }
     },
-    "v1Paging": {
+    "v1Pagination": {
       "type": "object",
       "properties": {
         "offset": {
@@ -1953,6 +1565,24 @@
         "limit": {
           "type": "integer",
           "format": "int64"
+        }
+      }
+    },
+    "v1PaginationMetadata": {
+      "type": "object",
+      "properties": {
+        "totalCount": {
+          "type": "integer",
+          "format": "int64",
+          "title": "total number of matching items (if computed)"
+        },
+        "offset": {
+          "type": "integer",
+          "format": "int64",
+          "title": "current offset"
+        },
+        "hasNext": {
+          "type": "boolean"
         }
       }
     },
@@ -1972,7 +1602,7 @@
         "description": {
           "type": "string"
         },
-        "tags": {
+        "tagList": {
           "type": "array",
           "items": {
             "type": "string"
@@ -1981,7 +1611,7 @@
         "vcsUrl": {
           "type": "string"
         },
-        "revisions": {
+        "revisionList": {
           "type": "array",
           "items": {
             "type": "object",
@@ -2007,44 +1637,6 @@
             "type": "object",
             "$ref": "#/definitions/v1Project"
           }
-        }
-      }
-    },
-    "v1Range": {
-      "type": "object",
-      "properties": {
-        "version": {
-          "type": "string"
-        },
-        "range": {
-          "type": "string"
-        },
-        "status": {
-          "type": "string"
-        }
-      }
-    },
-    "v1Rating": {
-      "type": "object",
-      "properties": {
-        "source": {
-          "$ref": "#/definitions/sbomV1Source"
-        },
-        "score": {
-          "type": "number",
-          "format": "float"
-        },
-        "severity": {
-          "type": "string"
-        },
-        "method": {
-          "type": "string"
-        },
-        "vector": {
-          "type": "string"
-        },
-        "justification": {
-          "type": "string"
         }
       }
     },
@@ -2084,15 +1676,18 @@
       "description": "A comprehensive security assessment report generated by Dolina ASPM after analyzing one or more scanner reports. It contains normalized findings, risk scores, severity classifications, remediation recommendations, and contextual metadata (e.g., affected components, code locations). This report provides a unified view of the application's security posture, enabling prioritization and tracking of vulnerabilities across the software development lifecycle.",
       "title": "Report"
     },
-    "v1Reports": {
+    "v1ReportsQueryResponse": {
       "type": "object",
       "properties": {
-        "reports": {
+        "reportsList": {
           "type": "array",
           "items": {
             "type": "object",
             "$ref": "#/definitions/v1Report"
           }
+        },
+        "pagination": {
+          "$ref": "#/definitions/v1PaginationMetadata"
         }
       }
     },
@@ -2106,7 +1701,7 @@
         "name": {
           "type": "string"
         },
-        "tags": {
+        "tagList": {
           "type": "array",
           "items": {
             "type": "string"
@@ -2154,86 +1749,14 @@
         }
       }
     },
-    "v1SBOMDecomposition": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "format": "uint64"
-        },
-        "serialNumber": {
-          "type": "string"
-        },
-        "md5": {
-          "type": "string"
-        },
-        "metaData": {
-          "$ref": "#/definitions/v1Meta"
-        },
-        "graph": {
-          "$ref": "#/definitions/dolinaSbomV1Component"
-        },
-        "components": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/dolinaSbomV1Component"
-          }
-        },
-        "vulnerabilities": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/sbomV1Vulnerability"
-          }
-        },
-        "totalNodes": {
-          "type": "string",
-          "format": "uint64"
-        },
-        "dependencyCycles": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/v1DependencyCycle"
-          }
-        }
-      }
-    },
-    "v1SBOMFile": {
-      "type": "object",
-      "properties": {
-        "fileName": {
-          "type": "string"
-        },
-        "version": {
-          "type": "string"
-        },
-        "data": {
-          "type": "string",
-          "format": "byte"
-        }
-      }
-    },
-    "v1SBOMFiles": {
-      "type": "object",
-      "properties": {
-        "files": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/v1SBOMFile"
-          }
-        }
-      }
-    },
     "v1ScannerFormat": {
       "type": "string",
       "enum": [
         "SCANNER_FORMAT_UNSPECIFIED",
-        "SCANNER_TRIVY_FS",
+        "SCANNER_FORMAT_TRIVY_FS",
         "SCANNER_FORMAT_SARIF",
-        "SCANNER_FORMAT_SBOM"
+        "SCANNER_FORMAT_SBOM",
+        "SCANNER_FORMAT_GITLEAKS"
       ],
       "default": "SCANNER_FORMAT_UNSPECIFIED"
     },
@@ -2265,21 +1788,6 @@
     "v1Sort": {
       "type": "object"
     },
-    "v1UploadStatus": {
-      "type": "object",
-      "properties": {
-        "fileUuid": {
-          "type": "string"
-        },
-        "fileName": {
-          "type": "string"
-        },
-        "receivedSize": {
-          "type": "string",
-          "format": "uint64"
-        }
-      }
-    },
     "v1Vendor": {
       "type": "object",
       "properties": {
@@ -2301,12 +1809,14 @@
         "vendor": {
           "$ref": "#/definitions/v1Vendor"
         },
-        "score": {
-          "type": "number",
-          "format": "float"
+        "cvss2Score": {
+          "$ref": "#/definitions/cvssV2Severity"
         },
-        "severity": {
-          "type": "string"
+        "cvss3Score": {
+          "$ref": "#/definitions/cvssV3Severity"
+        },
+        "cvss4Score": {
+          "$ref": "#/definitions/cvssV4Severity"
         },
         "sourceUrl": {
           "type": "string"

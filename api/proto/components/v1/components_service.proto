@@ -1,9 +1,12 @@
-syntax = "proto3";
+edition = "2023";
 
 package dolina.components.v1;
 
 option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/components/v1;components_v1";
+option features.(pb.go).api_level = API_OPAQUE;
+option features.field_presence = EXPLICIT;
 
+import "google/protobuf/go_features.proto";
 import "google/api/annotations.proto";
 
 import "components/v1/component.proto";
@@ -28,9 +31,9 @@ service ComponentsService {
 message ComponentsQueryFilter {
   string purl = 1;
 
-  optional string repository_uuid = 4;
-  optional string repository_ref = 5;
-  optional string artifact_uuid = 6;
+  string repository_uuid = 4;
+  string repository_ref = 5;
+  string artifact_uuid = 6;
 
   common.v1.Pagination pagination = 20;
   common.v1.Sort sort = 21;

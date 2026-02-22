@@ -6,22 +6,35 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { Exploit } from "../../exploits/v1/exploits";
 import { VendorScoring } from "./vendors";
 
 export const protobufPackage = "dolina.cve.v1";
 
 export interface CVE {
+  /** cve identification, for example CVE-2024-3094 */
   id: string;
   /** aggregated main cvss score */
-  cvssScore: number;
+  aggregatedCvssScore: number;
   vendorScoringList: VendorScoring[];
   /** additional information about vulnerability */
   referenceUrlList: string[];
-  cweList: string[];
+  cweList: number[];
+  /** exploits info */
+  hasKnownExploit: boolean;
+  knownExploitList: Exploit[];
 }
 
 function createBaseCVE(): CVE {
-  return { id: "", cvssScore: 0, vendorScoringList: [], referenceUrlList: [], cweList: [] };
+  return {
+    id: "",
+    aggregatedCvssScore: 0,
+    vendorScoringList: [],
+    referenceUrlList: [],
+    cweList: [],
+    hasKnownExploit: false,
+    knownExploitList: [],
+  };
 }
 
 export const CVE: MessageFns<CVE> = {
@@ -29,8 +42,8 @@ export const CVE: MessageFns<CVE> = {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
     }
-    if (message.cvssScore !== 0) {
-      writer.uint32(21).float(message.cvssScore);
+    if (message.aggregatedCvssScore !== 0) {
+      writer.uint32(21).float(message.aggregatedCvssScore);
     }
     for (const v of message.vendorScoringList) {
       VendorScoring.encode(v!, writer.uint32(26).fork()).join();
@@ -38,8 +51,16 @@ export const CVE: MessageFns<CVE> = {
     for (const v of message.referenceUrlList) {
       writer.uint32(34).string(v!);
     }
+    writer.uint32(42).fork();
     for (const v of message.cweList) {
-      writer.uint32(42).string(v!);
+      writer.uint32(v);
+    }
+    writer.join();
+    if (message.hasKnownExploit !== false) {
+      writer.uint32(48).bool(message.hasKnownExploit);
+    }
+    for (const v of message.knownExploitList) {
+      Exploit.encode(v!, writer.uint32(58).fork()).join();
     }
     return writer;
   },
@@ -64,7 +85,7 @@ export const CVE: MessageFns<CVE> = {
             break;
           }
 
-          message.cvssScore = reader.float();
+          message.aggregatedCvssScore = reader.float();
           continue;
         }
         case 3: {
@@ -84,11 +105,37 @@ export const CVE: MessageFns<CVE> = {
           continue;
         }
         case 5: {
-          if (tag !== 42) {
+          if (tag === 40) {
+            message.cweList.push(reader.uint32());
+
+            continue;
+          }
+
+          if (tag === 42) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.cweList.push(reader.uint32());
+            }
+
+            continue;
+          }
+
+          break;
+        }
+        case 6: {
+          if (tag !== 48) {
             break;
           }
 
-          message.cweList.push(reader.string());
+          message.hasKnownExploit = reader.bool();
+          continue;
+        }
+        case 7: {
+          if (tag !== 58) {
+            break;
+          }
+
+          message.knownExploitList.push(Exploit.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -103,14 +150,18 @@ export const CVE: MessageFns<CVE> = {
   fromJSON(object: any): CVE {
     return {
       id: isSet(object.id) ? globalThis.String(object.id) : "",
-      cvssScore: isSet(object.cvssScore) ? globalThis.Number(object.cvssScore) : 0,
+      aggregatedCvssScore: isSet(object.aggregatedCvssScore) ? globalThis.Number(object.aggregatedCvssScore) : 0,
       vendorScoringList: globalThis.Array.isArray(object?.vendorScoringList)
         ? object.vendorScoringList.map((e: any) => VendorScoring.fromJSON(e))
         : [],
       referenceUrlList: globalThis.Array.isArray(object?.referenceUrlList)
         ? object.referenceUrlList.map((e: any) => globalThis.String(e))
         : [],
-      cweList: globalThis.Array.isArray(object?.cweList) ? object.cweList.map((e: any) => globalThis.String(e)) : [],
+      cweList: globalThis.Array.isArray(object?.cweList) ? object.cweList.map((e: any) => globalThis.Number(e)) : [],
+      hasKnownExploit: isSet(object.hasKnownExploit) ? globalThis.Boolean(object.hasKnownExploit) : false,
+      knownExploitList: globalThis.Array.isArray(object?.knownExploitList)
+        ? object.knownExploitList.map((e: any) => Exploit.fromJSON(e))
+        : [],
     };
   },
 
@@ -119,8 +170,8 @@ export const CVE: MessageFns<CVE> = {
     if (message.id !== "") {
       obj.id = message.id;
     }
-    if (message.cvssScore !== 0) {
-      obj.cvssScore = message.cvssScore;
+    if (message.aggregatedCvssScore !== 0) {
+      obj.aggregatedCvssScore = message.aggregatedCvssScore;
     }
     if (message.vendorScoringList?.length) {
       obj.vendorScoringList = message.vendorScoringList.map((e) => VendorScoring.toJSON(e));
@@ -129,7 +180,13 @@ export const CVE: MessageFns<CVE> = {
       obj.referenceUrlList = message.referenceUrlList;
     }
     if (message.cweList?.length) {
-      obj.cweList = message.cweList;
+      obj.cweList = message.cweList.map((e) => Math.round(e));
+    }
+    if (message.hasKnownExploit !== false) {
+      obj.hasKnownExploit = message.hasKnownExploit;
+    }
+    if (message.knownExploitList?.length) {
+      obj.knownExploitList = message.knownExploitList.map((e) => Exploit.toJSON(e));
     }
     return obj;
   },
@@ -140,10 +197,12 @@ export const CVE: MessageFns<CVE> = {
   fromPartial<I extends Exact<DeepPartial<CVE>, I>>(object: I): CVE {
     const message = createBaseCVE();
     message.id = object.id ?? "";
-    message.cvssScore = object.cvssScore ?? 0;
+    message.aggregatedCvssScore = object.aggregatedCvssScore ?? 0;
     message.vendorScoringList = object.vendorScoringList?.map((e) => VendorScoring.fromPartial(e)) || [];
     message.referenceUrlList = object.referenceUrlList?.map((e) => e) || [];
     message.cweList = object.cweList?.map((e) => e) || [];
+    message.hasKnownExploit = object.hasKnownExploit ?? false;
+    message.knownExploitList = object.knownExploitList?.map((e) => Exploit.fromPartial(e)) || [];
     return message;
   },
 };

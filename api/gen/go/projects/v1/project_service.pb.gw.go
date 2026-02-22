@@ -90,10 +90,11 @@ func request_ProjectService_GetProject_0(ctx context.Context, marshaler runtime.
 	} else if _, ok := protoReq.Uid.(*ProjectsQueryFilter_Id); !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "expect type: *ProjectsQueryFilter_Id, but: %t\n", protoReq.Uid)
 	}
-	protoReq.Uid.(*ProjectsQueryFilter_Id).Id, err = runtime.Uint64(val)
+	convertedId, err := runtime.Uint64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
+	protoReq.SetId(convertedId)
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
@@ -119,10 +120,11 @@ func local_request_ProjectService_GetProject_0(ctx context.Context, marshaler ru
 	} else if _, ok := protoReq.Uid.(*ProjectsQueryFilter_Id); !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "expect type: *ProjectsQueryFilter_Id, but: %t\n", protoReq.Uid)
 	}
-	protoReq.Uid.(*ProjectsQueryFilter_Id).Id, err = runtime.Uint64(val)
+	convertedId, err := runtime.Uint64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
+	protoReq.SetId(convertedId)
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
@@ -153,10 +155,11 @@ func request_ProjectService_GetProject_1(ctx context.Context, marshaler runtime.
 	} else if _, ok := protoReq.Uid.(*ProjectsQueryFilter_Slug); !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "expect type: *ProjectsQueryFilter_Slug, but: %t\n", protoReq.Uid)
 	}
-	protoReq.Uid.(*ProjectsQueryFilter_Slug).Slug, err = runtime.String(val)
+	convertedSlug, err := runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "slug", err)
 	}
+	protoReq.SetSlug(convertedSlug)
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
@@ -182,10 +185,11 @@ func local_request_ProjectService_GetProject_1(ctx context.Context, marshaler ru
 	} else if _, ok := protoReq.Uid.(*ProjectsQueryFilter_Slug); !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "expect type: *ProjectsQueryFilter_Slug, but: %t\n", protoReq.Uid)
 	}
-	protoReq.Uid.(*ProjectsQueryFilter_Slug).Slug, err = runtime.String(val)
+	convertedSlug, err := runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "slug", err)
 	}
+	protoReq.SetSlug(convertedSlug)
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
@@ -201,9 +205,11 @@ func request_ProjectService_CreateProject_0(ctx context.Context, marshaler runti
 		protoReq Project
 		metadata runtime.ServerMetadata
 	)
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+	var bodyData Project
+	if err := marshaler.NewDecoder(req.Body).Decode(&bodyData); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
+	protoReq = bodyData
 	if req.Body != nil {
 		_, _ = io.Copy(io.Discard, req.Body)
 	}
@@ -216,9 +222,11 @@ func local_request_ProjectService_CreateProject_0(ctx context.Context, marshaler
 		protoReq Project
 		metadata runtime.ServerMetadata
 	)
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+	var bodyData Project
+	if err := marshaler.NewDecoder(req.Body).Decode(&bodyData); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
+	protoReq = bodyData
 	msg, err := server.CreateProject(ctx, &protoReq)
 	return msg, metadata, err
 }
@@ -229,9 +237,11 @@ func request_ProjectService_UpdateProject_0(ctx context.Context, marshaler runti
 		metadata runtime.ServerMetadata
 		err      error
 	)
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+	var bodyData Project
+	if err := marshaler.NewDecoder(req.Body).Decode(&bodyData); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
+	protoReq = bodyData
 	if req.Body != nil {
 		_, _ = io.Copy(io.Discard, req.Body)
 	}
@@ -239,10 +249,11 @@ func request_ProjectService_UpdateProject_0(ctx context.Context, marshaler runti
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
 	}
-	protoReq.Id, err = runtime.Uint64(val)
+	convertedId, err := runtime.Uint64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
+	protoReq.SetId(convertedId)
 	msg, err := client.UpdateProject(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 }
@@ -253,17 +264,20 @@ func local_request_ProjectService_UpdateProject_0(ctx context.Context, marshaler
 		metadata runtime.ServerMetadata
 		err      error
 	)
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+	var bodyData Project
+	if err := marshaler.NewDecoder(req.Body).Decode(&bodyData); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
+	protoReq = bodyData
 	val, ok := pathParams["id"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
 	}
-	protoReq.Id, err = runtime.Uint64(val)
+	convertedId, err := runtime.Uint64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
+	protoReq.SetId(convertedId)
 	msg, err := server.UpdateProject(ctx, &protoReq)
 	return msg, metadata, err
 }
@@ -288,18 +302,20 @@ func request_ProjectService_GetProjectRevision_0(ctx context.Context, marshaler 
 	} else if _, ok := protoReq.ProjectUid.(*ProjectRevisionQuery_ProjectId); !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "expect type: *ProjectRevisionQuery_ProjectId, but: %t\n", protoReq.ProjectUid)
 	}
-	protoReq.ProjectUid.(*ProjectRevisionQuery_ProjectId).ProjectId, err = runtime.Uint64(val)
+	convertedProjectId, err := runtime.Uint64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "project_id", err)
 	}
+	protoReq.SetProjectId(convertedProjectId)
 	val, ok = pathParams["revision_id"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "revision_id")
 	}
-	protoReq.RevisionId, err = runtime.Uint64(val)
+	convertedRevisionId, err := runtime.Uint64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "revision_id", err)
 	}
+	protoReq.SetRevisionId(convertedRevisionId)
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
@@ -325,18 +341,20 @@ func local_request_ProjectService_GetProjectRevision_0(ctx context.Context, mars
 	} else if _, ok := protoReq.ProjectUid.(*ProjectRevisionQuery_ProjectId); !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "expect type: *ProjectRevisionQuery_ProjectId, but: %t\n", protoReq.ProjectUid)
 	}
-	protoReq.ProjectUid.(*ProjectRevisionQuery_ProjectId).ProjectId, err = runtime.Uint64(val)
+	convertedProjectId, err := runtime.Uint64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "project_id", err)
 	}
+	protoReq.SetProjectId(convertedProjectId)
 	val, ok = pathParams["revision_id"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "revision_id")
 	}
-	protoReq.RevisionId, err = runtime.Uint64(val)
+	convertedRevisionId, err := runtime.Uint64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "revision_id", err)
 	}
+	protoReq.SetRevisionId(convertedRevisionId)
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
@@ -367,18 +385,20 @@ func request_ProjectService_GetProjectRevision_1(ctx context.Context, marshaler 
 	} else if _, ok := protoReq.ProjectUid.(*ProjectRevisionQuery_ProjectSlug); !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "expect type: *ProjectRevisionQuery_ProjectSlug, but: %t\n", protoReq.ProjectUid)
 	}
-	protoReq.ProjectUid.(*ProjectRevisionQuery_ProjectSlug).ProjectSlug, err = runtime.String(val)
+	convertedProjectSlug, err := runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "project_slug", err)
 	}
+	protoReq.SetProjectSlug(convertedProjectSlug)
 	val, ok = pathParams["revision_id"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "revision_id")
 	}
-	protoReq.RevisionId, err = runtime.Uint64(val)
+	convertedRevisionId, err := runtime.Uint64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "revision_id", err)
 	}
+	protoReq.SetRevisionId(convertedRevisionId)
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
@@ -404,18 +424,20 @@ func local_request_ProjectService_GetProjectRevision_1(ctx context.Context, mars
 	} else if _, ok := protoReq.ProjectUid.(*ProjectRevisionQuery_ProjectSlug); !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "expect type: *ProjectRevisionQuery_ProjectSlug, but: %t\n", protoReq.ProjectUid)
 	}
-	protoReq.ProjectUid.(*ProjectRevisionQuery_ProjectSlug).ProjectSlug, err = runtime.String(val)
+	convertedProjectSlug, err := runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "project_slug", err)
 	}
+	protoReq.SetProjectSlug(convertedProjectSlug)
 	val, ok = pathParams["revision_id"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "revision_id")
 	}
-	protoReq.RevisionId, err = runtime.Uint64(val)
+	convertedRevisionId, err := runtime.Uint64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "revision_id", err)
 	}
+	protoReq.SetRevisionId(convertedRevisionId)
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
@@ -432,9 +454,11 @@ func request_ProjectService_UpdateProjectRevision_0(ctx context.Context, marshal
 		metadata runtime.ServerMetadata
 		err      error
 	)
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+	var bodyData Revision
+	if err := marshaler.NewDecoder(req.Body).Decode(&bodyData); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
+	protoReq = bodyData
 	if req.Body != nil {
 		_, _ = io.Copy(io.Discard, req.Body)
 	}
@@ -442,18 +466,20 @@ func request_ProjectService_UpdateProjectRevision_0(ctx context.Context, marshal
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "project_id")
 	}
-	protoReq.ProjectId, err = runtime.Uint64(val)
+	convertedProjectId, err := runtime.Uint64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "project_id", err)
 	}
+	protoReq.SetProjectId(convertedProjectId)
 	val, ok = pathParams["id"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
 	}
-	protoReq.Id, err = runtime.Uint64(val)
+	convertedId, err := runtime.Uint64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
+	protoReq.SetId(convertedId)
 	msg, err := client.UpdateProjectRevision(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 }
@@ -464,25 +490,29 @@ func local_request_ProjectService_UpdateProjectRevision_0(ctx context.Context, m
 		metadata runtime.ServerMetadata
 		err      error
 	)
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+	var bodyData Revision
+	if err := marshaler.NewDecoder(req.Body).Decode(&bodyData); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
+	protoReq = bodyData
 	val, ok := pathParams["project_id"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "project_id")
 	}
-	protoReq.ProjectId, err = runtime.Uint64(val)
+	convertedProjectId, err := runtime.Uint64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "project_id", err)
 	}
+	protoReq.SetProjectId(convertedProjectId)
 	val, ok = pathParams["id"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
 	}
-	protoReq.Id, err = runtime.Uint64(val)
+	convertedId, err := runtime.Uint64(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
+	protoReq.SetId(convertedId)
 	msg, err := server.UpdateProjectRevision(ctx, &protoReq)
 	return msg, metadata, err
 }

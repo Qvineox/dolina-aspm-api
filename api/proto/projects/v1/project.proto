@@ -1,9 +1,12 @@
-syntax = "proto3";
+edition = "2023";
 
 package dolina.project.v1;
 
 option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/projects/v1;project_v1";
+option features.(pb.go).api_level = API_OPAQUE;
+option features.field_presence = IMPLICIT;
 
+import "google/protobuf/go_features.proto";
 import "google/protobuf/timestamp.proto";
 
 message Project {
@@ -11,14 +14,14 @@ message Project {
 
   string name = 2;
   string slug = 3;
-  optional string description = 4;
+  string description = 4;
 
   repeated string tag_list = 5;
 
-  optional string vcs_url = 6;
+  string vcs_url = 6 [features.field_presence = EXPLICIT];
 
   repeated dolina.project.v1.Project revision_list = 7;
 
-  optional google.protobuf.Timestamp created_at = 8;
-  optional google.protobuf.Timestamp updated_at = 9;
+  google.protobuf.Timestamp created_at = 8 [features.field_presence = EXPLICIT];
+  google.protobuf.Timestamp updated_at = 9 [features.field_presence = EXPLICIT];
 }

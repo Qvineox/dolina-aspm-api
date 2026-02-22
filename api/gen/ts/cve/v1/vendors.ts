@@ -9,6 +9,57 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 
 export const protobufPackage = "dolina.cve.v1";
 
+export enum Severity {
+  CVSS_SEVERITY_UNSPECIFIED = 0,
+  CVSS_SEVERITY_LOW = 1,
+  CVSS_SEVERITY_MEDIUM = 2,
+  CVSS_SEVERITY_HIGH = 3,
+  CVSS_SEVERITY_CRITICAL = 4,
+  UNRECOGNIZED = -1,
+}
+
+export function severityFromJSON(object: any): Severity {
+  switch (object) {
+    case 0:
+    case "CVSS_SEVERITY_UNSPECIFIED":
+      return Severity.CVSS_SEVERITY_UNSPECIFIED;
+    case 1:
+    case "CVSS_SEVERITY_LOW":
+      return Severity.CVSS_SEVERITY_LOW;
+    case 2:
+    case "CVSS_SEVERITY_MEDIUM":
+      return Severity.CVSS_SEVERITY_MEDIUM;
+    case 3:
+    case "CVSS_SEVERITY_HIGH":
+      return Severity.CVSS_SEVERITY_HIGH;
+    case 4:
+    case "CVSS_SEVERITY_CRITICAL":
+      return Severity.CVSS_SEVERITY_CRITICAL;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return Severity.UNRECOGNIZED;
+  }
+}
+
+export function severityToJSON(object: Severity): string {
+  switch (object) {
+    case Severity.CVSS_SEVERITY_UNSPECIFIED:
+      return "CVSS_SEVERITY_UNSPECIFIED";
+    case Severity.CVSS_SEVERITY_LOW:
+      return "CVSS_SEVERITY_LOW";
+    case Severity.CVSS_SEVERITY_MEDIUM:
+      return "CVSS_SEVERITY_MEDIUM";
+    case Severity.CVSS_SEVERITY_HIGH:
+      return "CVSS_SEVERITY_HIGH";
+    case Severity.CVSS_SEVERITY_CRITICAL:
+      return "CVSS_SEVERITY_CRITICAL";
+    case Severity.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
 export interface Vendor {
   id: number;
   name: string;
@@ -17,8 +68,6 @@ export interface Vendor {
 
 export interface VendorScoring {
   vendor: Vendor | undefined;
-  score?: number | undefined;
-  severity?: string | undefined;
   sourceUrl?: string | undefined;
 }
 
@@ -115,7 +164,7 @@ export const Vendor: MessageFns<Vendor> = {
 };
 
 function createBaseVendorScoring(): VendorScoring {
-  return { vendor: undefined, score: undefined, severity: undefined, sourceUrl: undefined };
+  return { vendor: undefined, sourceUrl: undefined };
 }
 
 export const VendorScoring: MessageFns<VendorScoring> = {
@@ -123,14 +172,8 @@ export const VendorScoring: MessageFns<VendorScoring> = {
     if (message.vendor !== undefined) {
       Vendor.encode(message.vendor, writer.uint32(10).fork()).join();
     }
-    if (message.score !== undefined) {
-      writer.uint32(21).float(message.score);
-    }
-    if (message.severity !== undefined) {
-      writer.uint32(26).string(message.severity);
-    }
     if (message.sourceUrl !== undefined) {
-      writer.uint32(34).string(message.sourceUrl);
+      writer.uint32(50).string(message.sourceUrl);
     }
     return writer;
   },
@@ -150,24 +193,8 @@ export const VendorScoring: MessageFns<VendorScoring> = {
           message.vendor = Vendor.decode(reader, reader.uint32());
           continue;
         }
-        case 2: {
-          if (tag !== 21) {
-            break;
-          }
-
-          message.score = reader.float();
-          continue;
-        }
-        case 3: {
-          if (tag !== 26) {
-            break;
-          }
-
-          message.severity = reader.string();
-          continue;
-        }
-        case 4: {
-          if (tag !== 34) {
+        case 6: {
+          if (tag !== 50) {
             break;
           }
 
@@ -186,8 +213,6 @@ export const VendorScoring: MessageFns<VendorScoring> = {
   fromJSON(object: any): VendorScoring {
     return {
       vendor: isSet(object.vendor) ? Vendor.fromJSON(object.vendor) : undefined,
-      score: isSet(object.score) ? globalThis.Number(object.score) : undefined,
-      severity: isSet(object.severity) ? globalThis.String(object.severity) : undefined,
       sourceUrl: isSet(object.sourceUrl) ? globalThis.String(object.sourceUrl) : undefined,
     };
   },
@@ -196,12 +221,6 @@ export const VendorScoring: MessageFns<VendorScoring> = {
     const obj: any = {};
     if (message.vendor !== undefined) {
       obj.vendor = Vendor.toJSON(message.vendor);
-    }
-    if (message.score !== undefined) {
-      obj.score = message.score;
-    }
-    if (message.severity !== undefined) {
-      obj.severity = message.severity;
     }
     if (message.sourceUrl !== undefined) {
       obj.sourceUrl = message.sourceUrl;
@@ -217,8 +236,6 @@ export const VendorScoring: MessageFns<VendorScoring> = {
     message.vendor = (object.vendor !== undefined && object.vendor !== null)
       ? Vendor.fromPartial(object.vendor)
       : undefined;
-    message.score = object.score ?? undefined;
-    message.severity = object.severity ?? undefined;
     message.sourceUrl = object.sourceUrl ?? undefined;
     return message;
   },

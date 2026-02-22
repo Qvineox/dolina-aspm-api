@@ -1,10 +1,13 @@
-syntax = "proto3";
+edition = "2023";
 
 package dolina.defects.v1;
 
 option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/defects/v1;defects_v1";
+option features.(pb.go).api_level = API_OPAQUE;
+option features.field_presence = EXPLICIT;
 
 import "google/api/annotations.proto";
+import "google/protobuf/go_features.proto";
 
 import "common/v1/pagination.proto";
 import "defects/v1/defect.proto";
@@ -28,10 +31,10 @@ service DefectsService {
 message DefectsQueryFilter {
   string title = 1;
 
-  optional string component_purl = 2;
+  string component_purl = 2;
 
-  optional uint32 application_id = 5;
-  optional string application_ref = 6;
+  uint32 application_id = 5;
+  string application_ref = 6;
 
   common.v1.Pagination paging = 23;
   common.v1.Sort sort = 24;

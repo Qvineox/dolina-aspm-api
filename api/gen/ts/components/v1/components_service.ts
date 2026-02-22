@@ -5,6 +5,7 @@
 // source: components/v1/components_service.proto
 
 /* eslint-disable */
+import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import {
   type CallOptions,
   type ChannelCredentials,
@@ -17,10 +18,255 @@ import {
   type ServiceError,
   type UntypedServiceImplementation,
 } from "@grpc/grpc-js";
+import { Pagination, PaginationMetadata } from "../../common/v1/pagination";
+import { Sort } from "../../common/v1/sort";
 import { UUID } from "../../common/v1/uuid";
-import { Component, Components, ComponentsQueryFilter } from "./component";
+import { Component } from "./component";
 
 export const protobufPackage = "dolina.components.v1";
+
+export interface ComponentsQueryFilter {
+  purl: string;
+  repositoryUuid?: string | undefined;
+  repositoryRef?: string | undefined;
+  artifactUuid?: string | undefined;
+  pagination: Pagination | undefined;
+  sort: Sort | undefined;
+}
+
+export interface ComponentsQueryResponse {
+  componentsList: Component[];
+  pagination: PaginationMetadata | undefined;
+}
+
+function createBaseComponentsQueryFilter(): ComponentsQueryFilter {
+  return {
+    purl: "",
+    repositoryUuid: undefined,
+    repositoryRef: undefined,
+    artifactUuid: undefined,
+    pagination: undefined,
+    sort: undefined,
+  };
+}
+
+export const ComponentsQueryFilter: MessageFns<ComponentsQueryFilter> = {
+  encode(message: ComponentsQueryFilter, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.purl !== "") {
+      writer.uint32(10).string(message.purl);
+    }
+    if (message.repositoryUuid !== undefined) {
+      writer.uint32(34).string(message.repositoryUuid);
+    }
+    if (message.repositoryRef !== undefined) {
+      writer.uint32(42).string(message.repositoryRef);
+    }
+    if (message.artifactUuid !== undefined) {
+      writer.uint32(50).string(message.artifactUuid);
+    }
+    if (message.pagination !== undefined) {
+      Pagination.encode(message.pagination, writer.uint32(162).fork()).join();
+    }
+    if (message.sort !== undefined) {
+      Sort.encode(message.sort, writer.uint32(170).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ComponentsQueryFilter {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseComponentsQueryFilter();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.purl = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.repositoryUuid = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.repositoryRef = reader.string();
+          continue;
+        }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.artifactUuid = reader.string();
+          continue;
+        }
+        case 20: {
+          if (tag !== 162) {
+            break;
+          }
+
+          message.pagination = Pagination.decode(reader, reader.uint32());
+          continue;
+        }
+        case 21: {
+          if (tag !== 170) {
+            break;
+          }
+
+          message.sort = Sort.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ComponentsQueryFilter {
+    return {
+      purl: isSet(object.purl) ? globalThis.String(object.purl) : "",
+      repositoryUuid: isSet(object.repositoryUuid) ? globalThis.String(object.repositoryUuid) : undefined,
+      repositoryRef: isSet(object.repositoryRef) ? globalThis.String(object.repositoryRef) : undefined,
+      artifactUuid: isSet(object.artifactUuid) ? globalThis.String(object.artifactUuid) : undefined,
+      pagination: isSet(object.pagination) ? Pagination.fromJSON(object.pagination) : undefined,
+      sort: isSet(object.sort) ? Sort.fromJSON(object.sort) : undefined,
+    };
+  },
+
+  toJSON(message: ComponentsQueryFilter): unknown {
+    const obj: any = {};
+    if (message.purl !== "") {
+      obj.purl = message.purl;
+    }
+    if (message.repositoryUuid !== undefined) {
+      obj.repositoryUuid = message.repositoryUuid;
+    }
+    if (message.repositoryRef !== undefined) {
+      obj.repositoryRef = message.repositoryRef;
+    }
+    if (message.artifactUuid !== undefined) {
+      obj.artifactUuid = message.artifactUuid;
+    }
+    if (message.pagination !== undefined) {
+      obj.pagination = Pagination.toJSON(message.pagination);
+    }
+    if (message.sort !== undefined) {
+      obj.sort = Sort.toJSON(message.sort);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ComponentsQueryFilter>, I>>(base?: I): ComponentsQueryFilter {
+    return ComponentsQueryFilter.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ComponentsQueryFilter>, I>>(object: I): ComponentsQueryFilter {
+    const message = createBaseComponentsQueryFilter();
+    message.purl = object.purl ?? "";
+    message.repositoryUuid = object.repositoryUuid ?? undefined;
+    message.repositoryRef = object.repositoryRef ?? undefined;
+    message.artifactUuid = object.artifactUuid ?? undefined;
+    message.pagination = (object.pagination !== undefined && object.pagination !== null)
+      ? Pagination.fromPartial(object.pagination)
+      : undefined;
+    message.sort = (object.sort !== undefined && object.sort !== null) ? Sort.fromPartial(object.sort) : undefined;
+    return message;
+  },
+};
+
+function createBaseComponentsQueryResponse(): ComponentsQueryResponse {
+  return { componentsList: [], pagination: undefined };
+}
+
+export const ComponentsQueryResponse: MessageFns<ComponentsQueryResponse> = {
+  encode(message: ComponentsQueryResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.componentsList) {
+      Component.encode(v!, writer.uint32(10).fork()).join();
+    }
+    if (message.pagination !== undefined) {
+      PaginationMetadata.encode(message.pagination, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ComponentsQueryResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseComponentsQueryResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.componentsList.push(Component.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.pagination = PaginationMetadata.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ComponentsQueryResponse {
+    return {
+      componentsList: globalThis.Array.isArray(object?.componentsList)
+        ? object.componentsList.map((e: any) => Component.fromJSON(e))
+        : [],
+      pagination: isSet(object.pagination) ? PaginationMetadata.fromJSON(object.pagination) : undefined,
+    };
+  },
+
+  toJSON(message: ComponentsQueryResponse): unknown {
+    const obj: any = {};
+    if (message.componentsList?.length) {
+      obj.componentsList = message.componentsList.map((e) => Component.toJSON(e));
+    }
+    if (message.pagination !== undefined) {
+      obj.pagination = PaginationMetadata.toJSON(message.pagination);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ComponentsQueryResponse>, I>>(base?: I): ComponentsQueryResponse {
+    return ComponentsQueryResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ComponentsQueryResponse>, I>>(object: I): ComponentsQueryResponse {
+    const message = createBaseComponentsQueryResponse();
+    message.componentsList = object.componentsList?.map((e) => Component.fromPartial(e)) || [];
+    message.pagination = (object.pagination !== undefined && object.pagination !== null)
+      ? PaginationMetadata.fromPartial(object.pagination)
+      : undefined;
+    return message;
+  },
+};
 
 export type ComponentsServiceService = typeof ComponentsServiceService;
 export const ComponentsServiceService = {
@@ -40,14 +286,15 @@ export const ComponentsServiceService = {
     requestSerialize: (value: ComponentsQueryFilter): Buffer =>
       Buffer.from(ComponentsQueryFilter.encode(value).finish()),
     requestDeserialize: (value: Buffer): ComponentsQueryFilter => ComponentsQueryFilter.decode(value),
-    responseSerialize: (value: Components): Buffer => Buffer.from(Components.encode(value).finish()),
-    responseDeserialize: (value: Buffer): Components => Components.decode(value),
+    responseSerialize: (value: ComponentsQueryResponse): Buffer =>
+      Buffer.from(ComponentsQueryResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): ComponentsQueryResponse => ComponentsQueryResponse.decode(value),
   },
 } as const;
 
 export interface ComponentsServiceServer extends UntypedServiceImplementation {
   getComponentByUuid: handleUnaryCall<UUID, Component>;
-  getComponentsByQueryFilter: handleUnaryCall<ComponentsQueryFilter, Components>;
+  getComponentsByQueryFilter: handleUnaryCall<ComponentsQueryFilter, ComponentsQueryResponse>;
 }
 
 export interface ComponentsServiceClient extends Client {
@@ -68,18 +315,18 @@ export interface ComponentsServiceClient extends Client {
   ): ClientUnaryCall;
   getComponentsByQueryFilter(
     request: ComponentsQueryFilter,
-    callback: (error: ServiceError | null, response: Components) => void,
+    callback: (error: ServiceError | null, response: ComponentsQueryResponse) => void,
   ): ClientUnaryCall;
   getComponentsByQueryFilter(
     request: ComponentsQueryFilter,
     metadata: Metadata,
-    callback: (error: ServiceError | null, response: Components) => void,
+    callback: (error: ServiceError | null, response: ComponentsQueryResponse) => void,
   ): ClientUnaryCall;
   getComponentsByQueryFilter(
     request: ComponentsQueryFilter,
     metadata: Metadata,
     options: Partial<CallOptions>,
-    callback: (error: ServiceError | null, response: Components) => void,
+    callback: (error: ServiceError | null, response: ComponentsQueryResponse) => void,
   ): ClientUnaryCall;
 }
 
@@ -91,3 +338,28 @@ export const ComponentsServiceClient = makeGenericClientConstructor(
   service: typeof ComponentsServiceService;
   serviceName: string;
 };
+
+type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
+
+export type DeepPartial<T> = T extends Builtin ? T
+  : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
+  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
+  : Partial<T>;
+
+type KeysOfUnion<T> = T extends T ? keyof T : never;
+export type Exact<P, I extends P> = P extends Builtin ? P
+  : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function isSet(value: any): boolean {
+  return value !== null && value !== undefined;
+}
+
+export interface MessageFns<T> {
+  encode(message: T, writer?: BinaryWriter): BinaryWriter;
+  decode(input: BinaryReader | Uint8Array, length?: number): T;
+  fromJSON(object: any): T;
+  toJSON(message: T): unknown;
+  create<I extends Exact<DeepPartial<T>, I>>(base?: I): T;
+  fromPartial<I extends Exact<DeepPartial<T>, I>>(object: I): T;
+}

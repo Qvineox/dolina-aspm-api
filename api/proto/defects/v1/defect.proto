@@ -1,11 +1,14 @@
-syntax = "proto3";
+edition = "2023";
 
 package dolina.defects.v1;
 
 option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/defects/v1;defects_v1";
+option features.(pb.go).api_level = API_OPAQUE;
+option features.field_presence = IMPLICIT;
 
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/go_features.proto";
 
 import "defects/v1/fix.proto";
 import "cve/v1/cve.proto";
@@ -34,7 +37,7 @@ message Defect {
   uint32 applied_risk_score = 6;
   float cvss_score = 7;
 
-  optional cve.v1.CVE cve = 8;
+  cve.v1.CVE cve = 8 [features.field_presence = EXPLICIT];
   repeated string cwe_list = 9;
 
   // deduplication
@@ -42,16 +45,18 @@ message Defect {
   repeated Defect defect_duplicates = 11;
 
   // membership attributes
-  optional bytes component_uuid = 20;
-  optional uint32 application_id = 21;
-  optional string application_ref = 22; // git ref of an application to define where defect was found
+  bytes component_uuid = 20 [features.field_presence = EXPLICIT];
+  uint32 application_id = 21 [features.field_presence = EXPLICIT];
+
+  // git ref of an application to define where defect was found
+  string application_ref = 22 [features.field_presence = EXPLICIT];
 
   // additional information about defect
   repeated string reference_url_list = 30;
-  optional FixInfo fix_info = 31;
+  FixInfo fix_info = 31 [features.field_presence = EXPLICIT];
 
-  optional google.protobuf.Timestamp created_at = 41;
-  optional google.protobuf.Timestamp updated_at = 42;
+  google.protobuf.Timestamp created_at = 41 [features.field_presence = EXPLICIT];
+  google.protobuf.Timestamp updated_at = 42 [features.field_presence = EXPLICIT];
 }
 
 enum DefectType {

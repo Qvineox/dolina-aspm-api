@@ -1,16 +1,17 @@
-syntax = "proto3";
+edition = "2023";
 
 package dolina.components.v1;
 
 option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/components/v1;components_v1";
+option features.(pb.go).api_level = API_OPAQUE;
+option features.field_presence = IMPLICIT;
 
 import "protoc-gen-openapiv2/options/annotations.proto";
-
+import "google/protobuf/go_features.proto";
 import "google/protobuf/timestamp.proto";
 
 import "components/v1/purl.proto";
 import "defects/v1/defect.proto";
-
 
 message Component {
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
@@ -32,15 +33,15 @@ message Component {
 
   bool is_public = 5; // if component was obtained from public sources (npm, github etc.)
 
-  optional string repository_uuid = 6;
-  optional string repository_ref = 7;
+  string repository_uuid = 6 [features.field_presence = EXPLICIT];
+  string repository_ref = 7 [features.field_presence = EXPLICIT];
 
-  optional string artifact_uuid = 8;
+  string artifact_uuid = 8 [features.field_presence = EXPLICIT];
 
   repeated defects.v1.Defect defect_list = 10;
 
-  optional google.protobuf.Timestamp created_at = 20;
-  optional google.protobuf.Timestamp updated_at = 21;
+  google.protobuf.Timestamp created_at = 20 [features.field_presence = EXPLICIT];
+  google.protobuf.Timestamp updated_at = 21 [features.field_presence = EXPLICIT];
 }
 
 enum ComponentType {

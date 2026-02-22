@@ -11,8 +11,8 @@ export const protobufPackage = "dolina.defects.v1";
 
 export interface FixInfo {
   description: string;
-  updateVersions: FixedVersions[];
-  downgradeVersions: FixedVersions[];
+  updateVersionList: FixedVersions[];
+  downgradeVersionList: FixedVersions[];
 }
 
 export interface FixedVersions {
@@ -20,7 +20,7 @@ export interface FixedVersions {
 }
 
 function createBaseFixInfo(): FixInfo {
-  return { description: "", updateVersions: [], downgradeVersions: [] };
+  return { description: "", updateVersionList: [], downgradeVersionList: [] };
 }
 
 export const FixInfo: MessageFns<FixInfo> = {
@@ -28,10 +28,10 @@ export const FixInfo: MessageFns<FixInfo> = {
     if (message.description !== "") {
       writer.uint32(10).string(message.description);
     }
-    for (const v of message.updateVersions) {
+    for (const v of message.updateVersionList) {
       FixedVersions.encode(v!, writer.uint32(18).fork()).join();
     }
-    for (const v of message.downgradeVersions) {
+    for (const v of message.downgradeVersionList) {
       FixedVersions.encode(v!, writer.uint32(26).fork()).join();
     }
     return writer;
@@ -57,7 +57,7 @@ export const FixInfo: MessageFns<FixInfo> = {
             break;
           }
 
-          message.updateVersions.push(FixedVersions.decode(reader, reader.uint32()));
+          message.updateVersionList.push(FixedVersions.decode(reader, reader.uint32()));
           continue;
         }
         case 3: {
@@ -65,7 +65,7 @@ export const FixInfo: MessageFns<FixInfo> = {
             break;
           }
 
-          message.downgradeVersions.push(FixedVersions.decode(reader, reader.uint32()));
+          message.downgradeVersionList.push(FixedVersions.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -80,11 +80,11 @@ export const FixInfo: MessageFns<FixInfo> = {
   fromJSON(object: any): FixInfo {
     return {
       description: isSet(object.description) ? globalThis.String(object.description) : "",
-      updateVersions: globalThis.Array.isArray(object?.updateVersions)
-        ? object.updateVersions.map((e: any) => FixedVersions.fromJSON(e))
+      updateVersionList: globalThis.Array.isArray(object?.updateVersionList)
+        ? object.updateVersionList.map((e: any) => FixedVersions.fromJSON(e))
         : [],
-      downgradeVersions: globalThis.Array.isArray(object?.downgradeVersions)
-        ? object.downgradeVersions.map((e: any) => FixedVersions.fromJSON(e))
+      downgradeVersionList: globalThis.Array.isArray(object?.downgradeVersionList)
+        ? object.downgradeVersionList.map((e: any) => FixedVersions.fromJSON(e))
         : [],
     };
   },
@@ -94,11 +94,11 @@ export const FixInfo: MessageFns<FixInfo> = {
     if (message.description !== "") {
       obj.description = message.description;
     }
-    if (message.updateVersions?.length) {
-      obj.updateVersions = message.updateVersions.map((e) => FixedVersions.toJSON(e));
+    if (message.updateVersionList?.length) {
+      obj.updateVersionList = message.updateVersionList.map((e) => FixedVersions.toJSON(e));
     }
-    if (message.downgradeVersions?.length) {
-      obj.downgradeVersions = message.downgradeVersions.map((e) => FixedVersions.toJSON(e));
+    if (message.downgradeVersionList?.length) {
+      obj.downgradeVersionList = message.downgradeVersionList.map((e) => FixedVersions.toJSON(e));
     }
     return obj;
   },
@@ -109,8 +109,8 @@ export const FixInfo: MessageFns<FixInfo> = {
   fromPartial<I extends Exact<DeepPartial<FixInfo>, I>>(object: I): FixInfo {
     const message = createBaseFixInfo();
     message.description = object.description ?? "";
-    message.updateVersions = object.updateVersions?.map((e) => FixedVersions.fromPartial(e)) || [];
-    message.downgradeVersions = object.downgradeVersions?.map((e) => FixedVersions.fromPartial(e)) || [];
+    message.updateVersionList = object.updateVersionList?.map((e) => FixedVersions.fromPartial(e)) || [];
+    message.downgradeVersionList = object.downgradeVersionList?.map((e) => FixedVersions.fromPartial(e)) || [];
     return message;
   },
 };
