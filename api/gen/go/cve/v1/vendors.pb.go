@@ -7,6 +7,7 @@
 package cve_v1
 
 import (
+	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
 	v2 "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/cvss/v2"
 	v3 "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/cvss/v3"
 	v4 "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/cvss/v4"
@@ -458,11 +459,12 @@ var File_cve_v1_vendors_proto protoreflect.FileDescriptor
 
 const file_cve_v1_vendors_proto_rawDesc = "" +
 	"\n" +
-	"\x14cve/v1/vendors.proto\x12\rdolina.cve.v1\x1a!google/protobuf/go_features.proto\x1a\x16cvss/v2/severity.proto\x1a\x16cvss/v3/severity.proto\x1a\x16cvss/v4/severity.proto\">\n" +
+	"\x14cve/v1/vendors.proto\x12\rdolina.cve.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a!google/protobuf/go_features.proto\x1a\x16cvss/v2/severity.proto\x1a\x16cvss/v3/severity.proto\x1a\x16cvss/v4/severity.proto\"\x9f\x02\n" +
 	"\x06Vendor\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x10\n" +
-	"\x03url\x18\x03 \x01(\tR\x03url\"\x83\x03\n" +
+	"\x03url\x18\x03 \x01(\tR\x03url:\xde\x01\x92A\xda\x01\n" +
+	"\xd7\x01*\x06Vendor2\xcc\x01Vendor entity representing a software or service provider in the ASPM system. Includes identification details, name, description, external references, and audit timestamps for tracking vendor information.\"\xdb\x04\n" +
 	"\rVendorScoring\x12-\n" +
 	"\x06vendor\x18\x01 \x01(\v2\x15.dolina.cve.v1.VendorR\x06vendor\x12?\n" +
 	"\x0ecvss2_severity\x18\x02 \x01(\x0e2\x18.dolina.cvss.v2.SeverityR\rcvss2Severity\x12?\n" +
@@ -475,7 +477,8 @@ const file_cve_v1_vendors_proto_rawDesc = "" +
 	"\vcvss4_score\x18\a \x01(\x02R\n" +
 	"cvss4Score\x12\x1d\n" +
 	"\n" +
-	"source_url\x18\b \x01(\tR\tsourceUrlBNZBgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/cve/v1;cve_v1\x92\x03\a\xd2>\x02\x10\x03\b\x01b\beditionsp\xe8\a"
+	"source_url\x18\b \x01(\tR\tsourceUrl:\xd5\x01\x92A\xd1\x01\n" +
+	"\xce\x01*\x0eVendor scoring2\xbb\x01Vendor risk assessment and scoring model. Contains vendor identifier, computed security score, risk factors, assessment methodology details, and timestamps for score validity and updates.BNZBgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/cve/v1;cve_v1\x92\x03\a\xd2>\x02\x10\x03\b\x01b\beditionsp\xe8\a"
 
 var file_cve_v1_vendors_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_cve_v1_vendors_proto_goTypes = []any{

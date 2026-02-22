@@ -6,6 +6,7 @@ option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/cve/v1
 option features.(pb.go).api_level = API_OPAQUE;
 option features.field_presence = EXPLICIT;
 
+import "protoc-gen-openapiv2/options/annotations.proto";
 import "google/protobuf/go_features.proto";
 
 import "cvss/v2/severity.proto";
@@ -13,6 +14,15 @@ import "cvss/v3/severity.proto";
 import "cvss/v4/severity.proto";
 
 message Vendor {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Vendor"
+      description: "Vendor entity representing a software or service provider in the ASPM system. "
+          "Includes identification details, name, description, external references, and audit timestamps for "
+          "tracking vendor information."
+    }
+  };
+
   uint32 id = 1;
   string name = 2;
 
@@ -20,6 +30,14 @@ message Vendor {
 }
 
 message VendorScoring {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Vendor scoring"
+      description: "Vendor risk assessment and scoring model. Contains vendor identifier, computed security score, "
+          "risk factors, assessment methodology details, and timestamps for score validity and updates."
+    }
+  };
+
   Vendor vendor = 1;
 
   cvss.v2.Severity cvss2_severity = 2;
@@ -33,6 +51,8 @@ message VendorScoring {
   //  optional string severity = 5;
 
   string source_url = 8;
+
+
 }
 
 //enum Severity {

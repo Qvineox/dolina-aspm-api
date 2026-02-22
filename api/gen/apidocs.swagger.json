@@ -1801,7 +1801,9 @@
         "url": {
           "type": "string"
         }
-      }
+      },
+      "description": "Vendor entity representing a software or service provider in the ASPM system. Includes identification details, name, description, external references, and audit timestamps for tracking vendor information.",
+      "title": "Vendor"
     },
     "v1VendorScoring": {
       "type": "object",
@@ -1833,7 +1835,9 @@
         "sourceUrl": {
           "type": "string"
         }
-      }
+      },
+      "description": "Vendor risk assessment and scoring model. Contains vendor identifier, computed security score, risk factors, assessment methodology details, and timestamps for score validity and updates.",
+      "title": "Vendor scoring"
     }
   }
 }
