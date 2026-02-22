@@ -10,8 +10,8 @@ import "protoc-gen-openapiv2/options/annotations.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/go_features.proto";
 
+import "vulnerability/v1/vulnerability.proto";
 import "defects/v1/fix.proto";
-import "cve/v1/cve.proto";
 
 message Defect {
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
@@ -37,7 +37,7 @@ message Defect {
   uint32 applied_risk_score = 6;
   float cvss_score = 7;
 
-  cve.v1.CVE cve = 8 [features.field_presence = EXPLICIT];
+  cve.v1.Vulnerability cve = 8 [features.field_presence = EXPLICIT];
   repeated string cwe_list = 9;
 
   // deduplication

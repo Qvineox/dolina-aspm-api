@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        v6.32.0
-// source: cve/v1/cvss.proto
+// source: vulnerability/v1/cvss.proto
 
 package cve_v1
 
@@ -80,13 +80,13 @@ var File_cve_v1_cvss_proto protoreflect.FileDescriptor
 
 const file_cve_v1_cvss_proto_rawDesc = "" +
 	"\n" +
-	"\x11cve/v1/cvss.proto\x12\rdolina.cve.v1*\x8e\x01\n" +
+	"\x11cve/v1/cvss.proto\x12\rdolina.vulnerability.v1*\x8e\x01\n" +
 	"\bSeverity\x12\x1d\n" +
 	"\x19CVSS_SEVERITY_UNSPECIFIED\x10\x00\x12\x15\n" +
 	"\x11CVSS_SEVERITY_LOW\x10\x01\x12\x18\n" +
 	"\x14CVSS_SEVERITY_MEDIUM\x10\x02\x12\x16\n" +
 	"\x12CVSS_SEVERITY_HIGH\x10\x03\x12\x1a\n" +
-	"\x16CVSS_SEVERITY_CRITICAL\x10\x04BDZBgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/cve/v1;cve_v1b\x06proto3"
+	"\x16CVSS_SEVERITY_CRITICAL\x10\x04BDZBgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/vulnerability/v1;cve_v1b\x06proto3"
 
 var (
 	file_cve_v1_cvss_proto_rawDescOnce sync.Once
@@ -102,7 +102,7 @@ func file_cve_v1_cvss_proto_rawDescGZIP() []byte {
 
 var file_cve_v1_cvss_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_cve_v1_cvss_proto_goTypes = []any{
-	(Severity)(0), // 0: dolina.cve.v1.Severity
+	(Severity)(0), // 0: dolina.vulnerability.v1.Severity
 }
 var file_cve_v1_cvss_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

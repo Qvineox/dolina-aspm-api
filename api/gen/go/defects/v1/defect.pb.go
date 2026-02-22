@@ -8,7 +8,7 @@ package defects_v1
 
 import (
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
-	v1 "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/cve/v1"
+	v1 "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/vulnerability/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	_ "google.golang.org/protobuf/types/gofeaturespb"
@@ -160,7 +160,7 @@ type Defect struct {
 	xxx_hidden_StatusList       []DefectStatus         `protobuf:"varint,5,rep,packed,name=status_list,json=statusList,enum=dolina.defects.v1.DefectStatus"`
 	xxx_hidden_AppliedRiskScore uint32                 `protobuf:"varint,6,opt,name=applied_risk_score,json=appliedRiskScore"`
 	xxx_hidden_CvssScore        float32                `protobuf:"fixed32,7,opt,name=cvss_score,json=cvssScore"`
-	xxx_hidden_Cve              *v1.CVE                `protobuf:"bytes,8,opt,name=cve"`
+	xxx_hidden_Cve              *v1.Vulnerability      `protobuf:"bytes,8,opt,name=cve"`
 	xxx_hidden_CweList          []string               `protobuf:"bytes,9,rep,name=cwe_list,json=cweList"`
 	xxx_hidden_IsLatest         bool                   `protobuf:"varint,10,opt,name=is_latest,json=isLatest"`
 	xxx_hidden_DefectDuplicates *[]*Defect             `protobuf:"bytes,11,rep,name=defect_duplicates,json=defectDuplicates"`
@@ -251,7 +251,7 @@ func (x *Defect) GetCvssScore() float32 {
 	return 0
 }
 
-func (x *Defect) GetCve() *v1.CVE {
+func (x *Defect) GetCve() *v1.Vulnerability {
 	if x != nil {
 		return x.xxx_hidden_Cve
 	}
@@ -364,7 +364,7 @@ func (x *Defect) SetCvssScore(v float32) {
 	x.xxx_hidden_CvssScore = v
 }
 
-func (x *Defect) SetCve(v *v1.CVE) {
+func (x *Defect) SetCve(v *v1.Vulnerability) {
 	x.xxx_hidden_Cve = v
 }
 
@@ -505,7 +505,7 @@ type Defect_builder struct {
 	// applied risk score is based on inputs from security scanners and applied ruleset
 	AppliedRiskScore uint32
 	CvssScore        float32
-	Cve              *v1.CVE
+	Cve              *v1.Vulnerability
 	CweList          []string
 	// deduplication
 	IsLatest         bool
@@ -560,7 +560,7 @@ var File_defects_v1_defect_proto protoreflect.FileDescriptor
 
 const file_defects_v1_defect_proto_rawDesc = "" +
 	"\n" +
-	"\x17defects/v1/defect.proto\x12\x11dolina.defects.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a!google/protobuf/go_features.proto\x1a\x14defects/v1/fix.proto\x1a\x10cve/v1/cve.proto\"\xd7\t\n" +
+	"\x17defects/v1/defect.proto\x12\x11dolina.defects.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a!google/protobuf/go_features.proto\x1a$vulnerability/v1/vulnerability.proto\x1a\x14defects/v1/fix.proto\"\xe1\t\n" +
 	"\x06Defect\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\fR\x04uuid\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12 \n" +
@@ -570,8 +570,8 @@ const file_defects_v1_defect_proto_rawDesc = "" +
 	"statusList\x12,\n" +
 	"\x12applied_risk_score\x18\x06 \x01(\rR\x10appliedRiskScore\x12\x1d\n" +
 	"\n" +
-	"cvss_score\x18\a \x01(\x02R\tcvssScore\x12+\n" +
-	"\x03cve\x18\b \x01(\v2\x12.dolina.cve.v1.CVEB\x05\xaa\x01\x02\b\x01R\x03cve\x12\x19\n" +
+	"cvss_score\x18\a \x01(\x02R\tcvssScore\x125\n" +
+	"\x03cve\x18\b \x01(\v2\x1c.dolina.cve.v1.VulnerabilityB\x05\xaa\x01\x02\b\x01R\x03cve\x12\x19\n" +
 	"\bcwe_list\x18\t \x03(\tR\acweList\x12\x1b\n" +
 	"\tis_latest\x18\n" +
 	" \x01(\bR\bisLatest\x12F\n" +
@@ -616,14 +616,14 @@ var file_defects_v1_defect_proto_goTypes = []any{
 	(DefectType)(0),               // 0: dolina.defects.v1.DefectType
 	(DefectStatus)(0),             // 1: dolina.defects.v1.DefectStatus
 	(*Defect)(nil),                // 2: dolina.defects.v1.Defect
-	(*v1.CVE)(nil),                // 3: dolina.cve.v1.CVE
+	(*v1.Vulnerability)(nil),      // 3: dolina.cve.v1.Vulnerability
 	(*FixInfo)(nil),               // 4: dolina.defects.v1.FixInfo
 	(*timestamppb.Timestamp)(nil), // 5: google.protobuf.Timestamp
 }
 var file_defects_v1_defect_proto_depIdxs = []int32{
 	0, // 0: dolina.defects.v1.Defect.type:type_name -> dolina.defects.v1.DefectType
 	1, // 1: dolina.defects.v1.Defect.status_list:type_name -> dolina.defects.v1.DefectStatus
-	3, // 2: dolina.defects.v1.Defect.cve:type_name -> dolina.cve.v1.CVE
+	3, // 2: dolina.defects.v1.Defect.cve:type_name -> dolina.cve.v1.Vulnerability
 	2, // 3: dolina.defects.v1.Defect.defect_duplicates:type_name -> dolina.defects.v1.Defect
 	4, // 4: dolina.defects.v1.Defect.fix_info:type_name -> dolina.defects.v1.FixInfo
 	5, // 5: dolina.defects.v1.Defect.created_at:type_name -> google.protobuf.Timestamp

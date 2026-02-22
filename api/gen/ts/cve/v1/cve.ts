@@ -2,17 +2,17 @@
 // versions:
 //   protoc-gen-ts_proto  v2.7.7
 //   protoc               v6.32.0
-// source: cve/v1/cve.proto
+// source: vulnerability/v1/vulnerability.proto
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Exploit } from "../../exploits/v1/exploits";
 import { VendorScoring } from "./vendors";
 
-export const protobufPackage = "dolina.cve.v1";
+export const protobufPackage = "dolina.vulnerability.v1";
 
 export interface CVE {
-  /** cve identification, for example CVE-2024-3094 */
+  /** vulnerability identification, for example CVE-2024-3094 */
   id: string;
   /** aggregated main cvss score */
   aggregatedCvssScore: number;

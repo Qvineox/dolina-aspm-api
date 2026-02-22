@@ -2,12 +2,12 @@
 // versions:
 //   protoc-gen-ts_proto  v2.7.7
 //   protoc               v6.32.0
-// source: cve/v1/vendors.proto
+// source: vulnerability/v1/vendors.proto
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 
-export const protobufPackage = "dolina.cve.v1";
+export const protobufPackage = "dolina.vulnerability.v1";
 
 export enum Severity {
   CVSS_SEVERITY_UNSPECIFIED = 0,
