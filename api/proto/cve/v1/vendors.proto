@@ -3,13 +3,16 @@ edition = "2023";
 package dolina.cve.v1;
 
 option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/cve/v1;cve_v1";
+option features.(pb.go).api_level = API_OPAQUE;
+
+import "google/protobuf/go_features.proto";
 
 import "cvss/v2/severity.proto";
 import "cvss/v3/severity.proto";
 import "cvss/v4/severity.proto";
 
 message Vendor {
-  uint32 id = 1;
+  uint32 id = 1 [features.field_presence = EXPLICIT];
   string name = 2;
 
   string url = 3;
