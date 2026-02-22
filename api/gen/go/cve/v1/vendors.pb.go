@@ -166,16 +166,19 @@ func (b0 Vendor_builder) Build() *Vendor {
 }
 
 type VendorScoring struct {
-	state                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Vendor      *Vendor                `protobuf:"bytes,1,opt,name=vendor"`
-	xxx_hidden_Cvss2Score  v2.Severity            `protobuf:"varint,2,opt,name=cvss2_score,json=cvss2Score,enum=dolina.cvss.v2.Severity"`
-	xxx_hidden_Cvss3Score  v3.Severity            `protobuf:"varint,3,opt,name=cvss3_score,json=cvss3Score,enum=dolina.cvss.v3.Severity"`
-	xxx_hidden_Cvss4Score  v4.Severity            `protobuf:"varint,4,opt,name=cvss4_score,json=cvss4Score,enum=dolina.cvss.v4.Severity"`
-	xxx_hidden_SourceUrl   *string                `protobuf:"bytes,6,opt,name=source_url,json=sourceUrl"`
-	XXX_raceDetectHookData protoimpl.RaceDetectHookData
-	XXX_presence           [1]uint32
-	unknownFields          protoimpl.UnknownFields
-	sizeCache              protoimpl.SizeCache
+	state                    protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Vendor        *Vendor                `protobuf:"bytes,1,opt,name=vendor"`
+	xxx_hidden_Cvss2Severity v2.Severity            `protobuf:"varint,2,opt,name=cvss2_severity,json=cvss2Severity,enum=dolina.cvss.v2.Severity"`
+	xxx_hidden_Cvss3Severity v3.Severity            `protobuf:"varint,3,opt,name=cvss3_severity,json=cvss3Severity,enum=dolina.cvss.v3.Severity"`
+	xxx_hidden_Cvss4Severity v4.Severity            `protobuf:"varint,4,opt,name=cvss4_severity,json=cvss4Severity,enum=dolina.cvss.v4.Severity"`
+	xxx_hidden_Cvss2Score    float32                `protobuf:"fixed32,5,opt,name=cvss2_score,json=cvss2Score"`
+	xxx_hidden_Cvss3Score    float32                `protobuf:"fixed32,6,opt,name=cvss3_score,json=cvss3Score"`
+	xxx_hidden_Cvss4Score    float32                `protobuf:"fixed32,7,opt,name=cvss4_score,json=cvss4Score"`
+	xxx_hidden_SourceUrl     *string                `protobuf:"bytes,8,opt,name=source_url,json=sourceUrl"`
+	XXX_raceDetectHookData   protoimpl.RaceDetectHookData
+	XXX_presence             [1]uint32
+	unknownFields            protoimpl.UnknownFields
+	sizeCache                protoimpl.SizeCache
 }
 
 func (x *VendorScoring) Reset() {
@@ -210,31 +213,52 @@ func (x *VendorScoring) GetVendor() *Vendor {
 	return nil
 }
 
-func (x *VendorScoring) GetCvss2Score() v2.Severity {
+func (x *VendorScoring) GetCvss2Severity() v2.Severity {
 	if x != nil {
 		if protoimpl.X.Present(&(x.XXX_presence[0]), 1) {
-			return x.xxx_hidden_Cvss2Score
+			return x.xxx_hidden_Cvss2Severity
 		}
 	}
 	return v2.Severity(0)
 }
 
-func (x *VendorScoring) GetCvss3Score() v3.Severity {
+func (x *VendorScoring) GetCvss3Severity() v3.Severity {
 	if x != nil {
 		if protoimpl.X.Present(&(x.XXX_presence[0]), 2) {
-			return x.xxx_hidden_Cvss3Score
+			return x.xxx_hidden_Cvss3Severity
 		}
 	}
 	return v3.Severity(0)
 }
 
-func (x *VendorScoring) GetCvss4Score() v4.Severity {
+func (x *VendorScoring) GetCvss4Severity() v4.Severity {
 	if x != nil {
 		if protoimpl.X.Present(&(x.XXX_presence[0]), 3) {
-			return x.xxx_hidden_Cvss4Score
+			return x.xxx_hidden_Cvss4Severity
 		}
 	}
 	return v4.Severity(0)
+}
+
+func (x *VendorScoring) GetCvss2Score() float32 {
+	if x != nil {
+		return x.xxx_hidden_Cvss2Score
+	}
+	return 0
+}
+
+func (x *VendorScoring) GetCvss3Score() float32 {
+	if x != nil {
+		return x.xxx_hidden_Cvss3Score
+	}
+	return 0
+}
+
+func (x *VendorScoring) GetCvss4Score() float32 {
+	if x != nil {
+		return x.xxx_hidden_Cvss4Score
+	}
+	return 0
 }
 
 func (x *VendorScoring) GetSourceUrl() string {
@@ -251,24 +275,39 @@ func (x *VendorScoring) SetVendor(v *Vendor) {
 	x.xxx_hidden_Vendor = v
 }
 
-func (x *VendorScoring) SetCvss2Score(v v2.Severity) {
+func (x *VendorScoring) SetCvss2Severity(v v2.Severity) {
+	x.xxx_hidden_Cvss2Severity = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 8)
+}
+
+func (x *VendorScoring) SetCvss3Severity(v v3.Severity) {
+	x.xxx_hidden_Cvss3Severity = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 8)
+}
+
+func (x *VendorScoring) SetCvss4Severity(v v4.Severity) {
+	x.xxx_hidden_Cvss4Severity = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 8)
+}
+
+func (x *VendorScoring) SetCvss2Score(v float32) {
 	x.xxx_hidden_Cvss2Score = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 5)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 8)
 }
 
-func (x *VendorScoring) SetCvss3Score(v v3.Severity) {
+func (x *VendorScoring) SetCvss3Score(v float32) {
 	x.xxx_hidden_Cvss3Score = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 5)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 8)
 }
 
-func (x *VendorScoring) SetCvss4Score(v v4.Severity) {
+func (x *VendorScoring) SetCvss4Score(v float32) {
 	x.xxx_hidden_Cvss4Score = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 5)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 8)
 }
 
 func (x *VendorScoring) SetSourceUrl(v string) {
 	x.xxx_hidden_SourceUrl = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 5)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 8)
 }
 
 func (x *VendorScoring) HasVendor() bool {
@@ -278,66 +317,105 @@ func (x *VendorScoring) HasVendor() bool {
 	return x.xxx_hidden_Vendor != nil
 }
 
-func (x *VendorScoring) HasCvss2Score() bool {
+func (x *VendorScoring) HasCvss2Severity() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
-func (x *VendorScoring) HasCvss3Score() bool {
+func (x *VendorScoring) HasCvss3Severity() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
 }
 
-func (x *VendorScoring) HasCvss4Score() bool {
+func (x *VendorScoring) HasCvss4Severity() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
 }
 
-func (x *VendorScoring) HasSourceUrl() bool {
+func (x *VendorScoring) HasCvss2Score() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
 }
 
+func (x *VendorScoring) HasCvss3Score() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
+}
+
+func (x *VendorScoring) HasCvss4Score() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 6)
+}
+
+func (x *VendorScoring) HasSourceUrl() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 7)
+}
+
 func (x *VendorScoring) ClearVendor() {
 	x.xxx_hidden_Vendor = nil
 }
 
-func (x *VendorScoring) ClearCvss2Score() {
+func (x *VendorScoring) ClearCvss2Severity() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_Cvss2Score = v2.Severity_CVSS2_SEVERITY_UNSPECIFIED
+	x.xxx_hidden_Cvss2Severity = v2.Severity_CVSS2_SEVERITY_UNSPECIFIED
+}
+
+func (x *VendorScoring) ClearCvss3Severity() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_Cvss3Severity = v3.Severity_CVSS3_SEVERITY_UNSPECIFIED
+}
+
+func (x *VendorScoring) ClearCvss4Severity() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
+	x.xxx_hidden_Cvss4Severity = v4.Severity_CVSS4_SEVERITY_UNSPECIFIED
+}
+
+func (x *VendorScoring) ClearCvss2Score() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
+	x.xxx_hidden_Cvss2Score = 0
 }
 
 func (x *VendorScoring) ClearCvss3Score() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
-	x.xxx_hidden_Cvss3Score = v3.Severity_CVSS3_SEVERITY_UNSPECIFIED
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
+	x.xxx_hidden_Cvss3Score = 0
 }
 
 func (x *VendorScoring) ClearCvss4Score() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
-	x.xxx_hidden_Cvss4Score = v4.Severity_CVSS4_SEVERITY_UNSPECIFIED
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 6)
+	x.xxx_hidden_Cvss4Score = 0
 }
 
 func (x *VendorScoring) ClearSourceUrl() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 7)
 	x.xxx_hidden_SourceUrl = nil
 }
 
 type VendorScoring_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	Vendor     *Vendor
-	Cvss2Score *v2.Severity
-	Cvss3Score *v3.Severity
-	Cvss4Score *v4.Severity
-	SourceUrl  *string
+	Vendor        *Vendor
+	Cvss2Severity *v2.Severity
+	Cvss3Severity *v3.Severity
+	Cvss4Severity *v4.Severity
+	Cvss2Score    *float32
+	Cvss3Score    *float32
+	Cvss4Score    *float32
+	SourceUrl     *string
 }
 
 func (b0 VendorScoring_builder) Build() *VendorScoring {
@@ -345,20 +423,32 @@ func (b0 VendorScoring_builder) Build() *VendorScoring {
 	b, x := &b0, m0
 	_, _ = b, x
 	x.xxx_hidden_Vendor = b.Vendor
+	if b.Cvss2Severity != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 8)
+		x.xxx_hidden_Cvss2Severity = *b.Cvss2Severity
+	}
+	if b.Cvss3Severity != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 8)
+		x.xxx_hidden_Cvss3Severity = *b.Cvss3Severity
+	}
+	if b.Cvss4Severity != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 8)
+		x.xxx_hidden_Cvss4Severity = *b.Cvss4Severity
+	}
 	if b.Cvss2Score != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 5)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 8)
 		x.xxx_hidden_Cvss2Score = *b.Cvss2Score
 	}
 	if b.Cvss3Score != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 5)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 8)
 		x.xxx_hidden_Cvss3Score = *b.Cvss3Score
 	}
 	if b.Cvss4Score != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 5)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 8)
 		x.xxx_hidden_Cvss4Score = *b.Cvss4Score
 	}
 	if b.SourceUrl != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 5)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 8)
 		x.xxx_hidden_SourceUrl = b.SourceUrl
 	}
 	return m0
@@ -368,21 +458,24 @@ var File_cve_v1_vendors_proto protoreflect.FileDescriptor
 
 const file_cve_v1_vendors_proto_rawDesc = "" +
 	"\n" +
-	"\x14cve/v1/vendors.proto\x12\rdolina.cve.v1\x1a!google/protobuf/go_features.proto\x1a\x16cvss/v2/severity.proto\x1a\x16cvss/v3/severity.proto\x1a\x16cvss/v4/severity.proto\"E\n" +
-	"\x06Vendor\x12\x15\n" +
-	"\x02id\x18\x01 \x01(\rB\x05\xaa\x01\x02\b\x01R\x02id\x12\x12\n" +
+	"\x14cve/v1/vendors.proto\x12\rdolina.cve.v1\x1a!google/protobuf/go_features.proto\x1a\x16cvss/v2/severity.proto\x1a\x16cvss/v3/severity.proto\x1a\x16cvss/v4/severity.proto\">\n" +
+	"\x06Vendor\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\rR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x10\n" +
-	"\x03url\x18\x03 \x01(\tR\x03url\"\x95\x02\n" +
+	"\x03url\x18\x03 \x01(\tR\x03url\"\x83\x03\n" +
 	"\rVendorScoring\x12-\n" +
-	"\x06vendor\x18\x01 \x01(\v2\x15.dolina.cve.v1.VendorR\x06vendor\x129\n" +
-	"\vcvss2_score\x18\x02 \x01(\x0e2\x18.dolina.cvss.v2.SeverityR\n" +
-	"cvss2Score\x129\n" +
-	"\vcvss3_score\x18\x03 \x01(\x0e2\x18.dolina.cvss.v3.SeverityR\n" +
-	"cvss3Score\x129\n" +
-	"\vcvss4_score\x18\x04 \x01(\x0e2\x18.dolina.cvss.v4.SeverityR\n" +
-	"cvss4Score\x12$\n" +
+	"\x06vendor\x18\x01 \x01(\v2\x15.dolina.cve.v1.VendorR\x06vendor\x12?\n" +
+	"\x0ecvss2_severity\x18\x02 \x01(\x0e2\x18.dolina.cvss.v2.SeverityR\rcvss2Severity\x12?\n" +
+	"\x0ecvss3_severity\x18\x03 \x01(\x0e2\x18.dolina.cvss.v3.SeverityR\rcvss3Severity\x12?\n" +
+	"\x0ecvss4_severity\x18\x04 \x01(\x0e2\x18.dolina.cvss.v4.SeverityR\rcvss4Severity\x12\x1f\n" +
+	"\vcvss2_score\x18\x05 \x01(\x02R\n" +
+	"cvss2Score\x12\x1f\n" +
+	"\vcvss3_score\x18\x06 \x01(\x02R\n" +
+	"cvss3Score\x12\x1f\n" +
+	"\vcvss4_score\x18\a \x01(\x02R\n" +
+	"cvss4Score\x12\x1d\n" +
 	"\n" +
-	"source_url\x18\x06 \x01(\tB\x05\xaa\x01\x02\b\x01R\tsourceUrlBLZBgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/cve/v1;cve_v1\x92\x03\x05\xd2>\x02\x10\x03b\beditionsp\xe8\a"
+	"source_url\x18\b \x01(\tR\tsourceUrlBNZBgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/cve/v1;cve_v1\x92\x03\a\xd2>\x02\x10\x03\b\x01b\beditionsp\xe8\a"
 
 var file_cve_v1_vendors_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_cve_v1_vendors_proto_goTypes = []any{
@@ -394,9 +487,9 @@ var file_cve_v1_vendors_proto_goTypes = []any{
 }
 var file_cve_v1_vendors_proto_depIdxs = []int32{
 	0, // 0: dolina.cve.v1.VendorScoring.vendor:type_name -> dolina.cve.v1.Vendor
-	2, // 1: dolina.cve.v1.VendorScoring.cvss2_score:type_name -> dolina.cvss.v2.Severity
-	3, // 2: dolina.cve.v1.VendorScoring.cvss3_score:type_name -> dolina.cvss.v3.Severity
-	4, // 3: dolina.cve.v1.VendorScoring.cvss4_score:type_name -> dolina.cvss.v4.Severity
+	2, // 1: dolina.cve.v1.VendorScoring.cvss2_severity:type_name -> dolina.cvss.v2.Severity
+	3, // 2: dolina.cve.v1.VendorScoring.cvss3_severity:type_name -> dolina.cvss.v3.Severity
+	4, // 3: dolina.cve.v1.VendorScoring.cvss4_severity:type_name -> dolina.cvss.v4.Severity
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name

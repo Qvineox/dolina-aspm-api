@@ -4,6 +4,7 @@ package dolina.cve.v1;
 
 option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/cve/v1;cve_v1";
 option features.(pb.go).api_level = API_OPAQUE;
+option features.field_presence = EXPLICIT;
 
 import "google/protobuf/go_features.proto";
 
@@ -12,7 +13,7 @@ import "cvss/v3/severity.proto";
 import "cvss/v4/severity.proto";
 
 message Vendor {
-  uint32 id = 1 [features.field_presence = EXPLICIT];
+  uint32 id = 1;
   string name = 2;
 
   string url = 3;
@@ -21,13 +22,17 @@ message Vendor {
 message VendorScoring {
   Vendor vendor = 1;
 
-  cvss.v2.Severity cvss2_score = 2;
-  cvss.v3.Severity cvss3_score = 3;
-  cvss.v4.Severity cvss4_score = 4;
+  cvss.v2.Severity cvss2_severity = 2;
+  cvss.v3.Severity cvss3_severity = 3;
+  cvss.v4.Severity cvss4_severity = 4;
+
+  float cvss2_score = 5;
+  float cvss3_score = 6;
+  float cvss4_score = 7;
 
   //  optional string severity = 5;
 
-  string source_url = 6 [features.field_presence = EXPLICIT];
+  string source_url = 8;
 }
 
 //enum Severity {

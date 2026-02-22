@@ -1809,14 +1809,26 @@
         "vendor": {
           "$ref": "#/definitions/v1Vendor"
         },
-        "cvss2Score": {
+        "cvss2Severity": {
           "$ref": "#/definitions/cvssV2Severity"
         },
-        "cvss3Score": {
+        "cvss3Severity": {
           "$ref": "#/definitions/cvssV3Severity"
         },
-        "cvss4Score": {
+        "cvss4Severity": {
           "$ref": "#/definitions/cvssV4Severity"
+        },
+        "cvss2Score": {
+          "type": "number",
+          "format": "float"
+        },
+        "cvss3Score": {
+          "type": "number",
+          "format": "float"
+        },
+        "cvss4Score": {
+          "type": "number",
+          "format": "float"
         },
         "sourceUrl": {
           "type": "string"
