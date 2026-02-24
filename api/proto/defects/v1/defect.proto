@@ -37,7 +37,7 @@ message Defect {
   uint32 applied_risk_score = 6;
   float cvss_score = 7;
 
-  vulnerability.v1.Vulnerability cve = 8 [features.field_presence = EXPLICIT];
+  vulnerability.v1.Vulnerability vulnerability = 8 [features.field_presence = EXPLICIT];
   repeated string cwe_list = 9;
 
   // deduplication
