@@ -160,7 +160,7 @@ type Defect struct {
 	xxx_hidden_StatusList       []DefectStatus         `protobuf:"varint,5,rep,packed,name=status_list,json=statusList,enum=dolina.defects.v1.DefectStatus"`
 	xxx_hidden_AppliedRiskScore uint32                 `protobuf:"varint,6,opt,name=applied_risk_score,json=appliedRiskScore"`
 	xxx_hidden_CvssScore        float32                `protobuf:"fixed32,7,opt,name=cvss_score,json=cvssScore"`
-	xxx_hidden_Cve              *v1.Vulnerability      `protobuf:"bytes,8,opt,name=cve"`
+	xxx_hidden_Vulnerability    *v1.Vulnerability      `protobuf:"bytes,8,opt,name=vulnerability"`
 	xxx_hidden_CweList          []string               `protobuf:"bytes,9,rep,name=cwe_list,json=cweList"`
 	xxx_hidden_IsLatest         bool                   `protobuf:"varint,10,opt,name=is_latest,json=isLatest"`
 	xxx_hidden_DefectDuplicates *[]*Defect             `protobuf:"bytes,11,rep,name=defect_duplicates,json=defectDuplicates"`
@@ -251,9 +251,9 @@ func (x *Defect) GetCvssScore() float32 {
 	return 0
 }
 
-func (x *Defect) GetCve() *v1.Vulnerability {
+func (x *Defect) GetVulnerability() *v1.Vulnerability {
 	if x != nil {
-		return x.xxx_hidden_Cve
+		return x.xxx_hidden_Vulnerability
 	}
 	return nil
 }
@@ -364,8 +364,8 @@ func (x *Defect) SetCvssScore(v float32) {
 	x.xxx_hidden_CvssScore = v
 }
 
-func (x *Defect) SetCve(v *v1.Vulnerability) {
-	x.xxx_hidden_Cve = v
+func (x *Defect) SetVulnerability(v *v1.Vulnerability) {
+	x.xxx_hidden_Vulnerability = v
 }
 
 func (x *Defect) SetCweList(v []string) {
@@ -414,11 +414,11 @@ func (x *Defect) SetUpdatedAt(v *timestamppb.Timestamp) {
 	x.xxx_hidden_UpdatedAt = v
 }
 
-func (x *Defect) HasCve() bool {
+func (x *Defect) HasVulnerability() bool {
 	if x == nil {
 		return false
 	}
-	return x.xxx_hidden_Cve != nil
+	return x.xxx_hidden_Vulnerability != nil
 }
 
 func (x *Defect) HasComponentUuid() bool {
@@ -463,8 +463,8 @@ func (x *Defect) HasUpdatedAt() bool {
 	return x.xxx_hidden_UpdatedAt != nil
 }
 
-func (x *Defect) ClearCve() {
-	x.xxx_hidden_Cve = nil
+func (x *Defect) ClearVulnerability() {
+	x.xxx_hidden_Vulnerability = nil
 }
 
 func (x *Defect) ClearComponentUuid() {
@@ -505,7 +505,7 @@ type Defect_builder struct {
 	// applied risk score is based on inputs from security scanners and applied ruleset
 	AppliedRiskScore uint32
 	CvssScore        float32
-	Cve              *v1.Vulnerability
+	Vulnerability    *v1.Vulnerability
 	CweList          []string
 	// deduplication
 	IsLatest         bool
@@ -533,7 +533,7 @@ func (b0 Defect_builder) Build() *Defect {
 	x.xxx_hidden_StatusList = b.StatusList
 	x.xxx_hidden_AppliedRiskScore = b.AppliedRiskScore
 	x.xxx_hidden_CvssScore = b.CvssScore
-	x.xxx_hidden_Cve = b.Cve
+	x.xxx_hidden_Vulnerability = b.Vulnerability
 	x.xxx_hidden_CweList = b.CweList
 	x.xxx_hidden_IsLatest = b.IsLatest
 	x.xxx_hidden_DefectDuplicates = &b.DefectDuplicates
@@ -560,7 +560,7 @@ var File_defects_v1_defect_proto protoreflect.FileDescriptor
 
 const file_defects_v1_defect_proto_rawDesc = "" +
 	"\n" +
-	"\x17defects/v1/defect.proto\x12\x11dolina.defects.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a!google/protobuf/go_features.proto\x1a$vulnerability/v1/vulnerability.proto\x1a\x14defects/v1/fix.proto\"\xeb\t\n" +
+	"\x17defects/v1/defect.proto\x12\x11dolina.defects.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a!google/protobuf/go_features.proto\x1a$vulnerability/v1/vulnerability.proto\x1a\x14defects/v1/fix.proto\"\xff\t\n" +
 	"\x06Defect\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\fR\x04uuid\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12 \n" +
@@ -570,8 +570,8 @@ const file_defects_v1_defect_proto_rawDesc = "" +
 	"statusList\x12,\n" +
 	"\x12applied_risk_score\x18\x06 \x01(\rR\x10appliedRiskScore\x12\x1d\n" +
 	"\n" +
-	"cvss_score\x18\a \x01(\x02R\tcvssScore\x12?\n" +
-	"\x03cve\x18\b \x01(\v2&.dolina.vulnerability.v1.VulnerabilityB\x05\xaa\x01\x02\b\x01R\x03cve\x12\x19\n" +
+	"cvss_score\x18\a \x01(\x02R\tcvssScore\x12S\n" +
+	"\rvulnerability\x18\b \x01(\v2&.dolina.vulnerability.v1.VulnerabilityB\x05\xaa\x01\x02\b\x01R\rvulnerability\x12\x19\n" +
 	"\bcwe_list\x18\t \x03(\tR\acweList\x12\x1b\n" +
 	"\tis_latest\x18\n" +
 	" \x01(\bR\bisLatest\x12F\n" +
@@ -623,7 +623,7 @@ var file_defects_v1_defect_proto_goTypes = []any{
 var file_defects_v1_defect_proto_depIdxs = []int32{
 	0, // 0: dolina.defects.v1.Defect.type:type_name -> dolina.defects.v1.DefectType
 	1, // 1: dolina.defects.v1.Defect.status_list:type_name -> dolina.defects.v1.DefectStatus
-	3, // 2: dolina.defects.v1.Defect.cve:type_name -> dolina.vulnerability.v1.Vulnerability
+	3, // 2: dolina.defects.v1.Defect.vulnerability:type_name -> dolina.vulnerability.v1.Vulnerability
 	2, // 3: dolina.defects.v1.Defect.defect_duplicates:type_name -> dolina.defects.v1.Defect
 	4, // 4: dolina.defects.v1.Defect.fix_info:type_name -> dolina.defects.v1.FixInfo
 	5, // 5: dolina.defects.v1.Defect.created_at:type_name -> google.protobuf.Timestamp

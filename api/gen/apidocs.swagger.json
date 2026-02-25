@@ -1303,7 +1303,7 @@
           "type": "number",
           "format": "float"
         },
-        "cve": {
+        "vulnerability": {
           "$ref": "#/definitions/v1Vulnerability"
         },
         "cweList": {
@@ -1798,6 +1798,12 @@
           "type": "string",
           "title": "cve identification, for example CVE-2024-3094, GHSA-cxpw-2g23-2vgw"
         },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
         "aggregatedCvssScore": {
           "type": "number",
           "format": "float",
@@ -1824,6 +1830,9 @@
             "format": "int64"
           }
         },
+        "vector": {
+          "type": "string"
+        },
         "hasKnownExploit": {
           "type": "boolean",
           "title": "exploits info"
@@ -1837,6 +1846,15 @@
         },
         "source": {
           "type": "string"
+        },
+        "publishedAt": {
+          "type": "string",
+          "format": "date-time",
+          "title": "timestamps"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
         }
       },
       "description": "Represents a standardized vulnerability entry from and Advisory (CVE, NVD or other). Contains core vulnerability metadata including CVE ID, description, publication date, severity scores (CVSS), affected components, and remediation information. Serves as the authoritative reference for tracking known security vulnerabilities in the Dolina ASPM system.",
