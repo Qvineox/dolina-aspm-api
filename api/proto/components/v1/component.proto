@@ -39,6 +39,7 @@ message Component {
   string artifact_uuid = 8 [features.field_presence = EXPLICIT];
 
   repeated defects.v1.Defect defect_list = 10;
+  repeated string dependency_purl_list = 11; // list of component dependencies
 
   google.protobuf.Timestamp created_at = 20 [features.field_presence = EXPLICIT];
   google.protobuf.Timestamp updated_at = 21 [features.field_presence = EXPLICIT];

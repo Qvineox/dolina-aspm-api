@@ -1231,6 +1231,13 @@
             "$ref": "#/definitions/v1Defect"
           }
         },
+        "dependencyPurlList": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "list of component dependencies"
+        },
         "createdAt": {
           "type": "string",
           "format": "date-time"

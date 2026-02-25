@@ -81,22 +81,23 @@ func (x ComponentType) Number() protoreflect.EnumNumber {
 }
 
 type Component struct {
-	state                     protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Uuid           string                 `protobuf:"bytes,1,opt,name=uuid"`
-	xxx_hidden_ScannerUid     string                 `protobuf:"bytes,2,opt,name=scanner_uid,json=scannerUid"`
-	xxx_hidden_Purl           *PURL                  `protobuf:"bytes,3,opt,name=purl"`
-	xxx_hidden_Type           ComponentType          `protobuf:"varint,4,opt,name=type,enum=dolina.components.v1.ComponentType"`
-	xxx_hidden_IsPublic       bool                   `protobuf:"varint,5,opt,name=is_public,json=isPublic"`
-	xxx_hidden_RepositoryUuid *string                `protobuf:"bytes,6,opt,name=repository_uuid,json=repositoryUuid"`
-	xxx_hidden_RepositoryRef  *string                `protobuf:"bytes,7,opt,name=repository_ref,json=repositoryRef"`
-	xxx_hidden_ArtifactUuid   *string                `protobuf:"bytes,8,opt,name=artifact_uuid,json=artifactUuid"`
-	xxx_hidden_DefectList     *[]*v1.Defect          `protobuf:"bytes,10,rep,name=defect_list,json=defectList"`
-	xxx_hidden_CreatedAt      *timestamppb.Timestamp `protobuf:"bytes,20,opt,name=created_at,json=createdAt"`
-	xxx_hidden_UpdatedAt      *timestamppb.Timestamp `protobuf:"bytes,21,opt,name=updated_at,json=updatedAt"`
-	XXX_raceDetectHookData    protoimpl.RaceDetectHookData
-	XXX_presence              [1]uint32
-	unknownFields             protoimpl.UnknownFields
-	sizeCache                 protoimpl.SizeCache
+	state                         protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Uuid               string                 `protobuf:"bytes,1,opt,name=uuid"`
+	xxx_hidden_ScannerUid         string                 `protobuf:"bytes,2,opt,name=scanner_uid,json=scannerUid"`
+	xxx_hidden_Purl               *PURL                  `protobuf:"bytes,3,opt,name=purl"`
+	xxx_hidden_Type               ComponentType          `protobuf:"varint,4,opt,name=type,enum=dolina.components.v1.ComponentType"`
+	xxx_hidden_IsPublic           bool                   `protobuf:"varint,5,opt,name=is_public,json=isPublic"`
+	xxx_hidden_RepositoryUuid     *string                `protobuf:"bytes,6,opt,name=repository_uuid,json=repositoryUuid"`
+	xxx_hidden_RepositoryRef      *string                `protobuf:"bytes,7,opt,name=repository_ref,json=repositoryRef"`
+	xxx_hidden_ArtifactUuid       *string                `protobuf:"bytes,8,opt,name=artifact_uuid,json=artifactUuid"`
+	xxx_hidden_DefectList         *[]*v1.Defect          `protobuf:"bytes,10,rep,name=defect_list,json=defectList"`
+	xxx_hidden_DependencyPurlList []string               `protobuf:"bytes,11,rep,name=dependency_purl_list,json=dependencyPurlList"`
+	xxx_hidden_CreatedAt          *timestamppb.Timestamp `protobuf:"bytes,20,opt,name=created_at,json=createdAt"`
+	xxx_hidden_UpdatedAt          *timestamppb.Timestamp `protobuf:"bytes,21,opt,name=updated_at,json=updatedAt"`
+	XXX_raceDetectHookData        protoimpl.RaceDetectHookData
+	XXX_presence                  [1]uint32
+	unknownFields                 protoimpl.UnknownFields
+	sizeCache                     protoimpl.SizeCache
 }
 
 func (x *Component) Reset() {
@@ -198,6 +199,13 @@ func (x *Component) GetDefectList() []*v1.Defect {
 	return nil
 }
 
+func (x *Component) GetDependencyPurlList() []string {
+	if x != nil {
+		return x.xxx_hidden_DependencyPurlList
+	}
+	return nil
+}
+
 func (x *Component) GetCreatedAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.xxx_hidden_CreatedAt
@@ -234,21 +242,25 @@ func (x *Component) SetIsPublic(v bool) {
 
 func (x *Component) SetRepositoryUuid(v string) {
 	x.xxx_hidden_RepositoryUuid = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 11)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 12)
 }
 
 func (x *Component) SetRepositoryRef(v string) {
 	x.xxx_hidden_RepositoryRef = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 11)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 12)
 }
 
 func (x *Component) SetArtifactUuid(v string) {
 	x.xxx_hidden_ArtifactUuid = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 11)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 12)
 }
 
 func (x *Component) SetDefectList(v []*v1.Defect) {
 	x.xxx_hidden_DefectList = &v
+}
+
+func (x *Component) SetDependencyPurlList(v []string) {
+	x.xxx_hidden_DependencyPurlList = v
 }
 
 func (x *Component) SetCreatedAt(v *timestamppb.Timestamp) {
@@ -331,17 +343,18 @@ func (x *Component) ClearUpdatedAt() {
 type Component_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	Uuid           string
-	ScannerUid     string
-	Purl           *PURL
-	Type           ComponentType
-	IsPublic       bool
-	RepositoryUuid *string
-	RepositoryRef  *string
-	ArtifactUuid   *string
-	DefectList     []*v1.Defect
-	CreatedAt      *timestamppb.Timestamp
-	UpdatedAt      *timestamppb.Timestamp
+	Uuid               string
+	ScannerUid         string
+	Purl               *PURL
+	Type               ComponentType
+	IsPublic           bool
+	RepositoryUuid     *string
+	RepositoryRef      *string
+	ArtifactUuid       *string
+	DefectList         []*v1.Defect
+	DependencyPurlList []string
+	CreatedAt          *timestamppb.Timestamp
+	UpdatedAt          *timestamppb.Timestamp
 }
 
 func (b0 Component_builder) Build() *Component {
@@ -354,18 +367,19 @@ func (b0 Component_builder) Build() *Component {
 	x.xxx_hidden_Type = b.Type
 	x.xxx_hidden_IsPublic = b.IsPublic
 	if b.RepositoryUuid != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 11)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 12)
 		x.xxx_hidden_RepositoryUuid = b.RepositoryUuid
 	}
 	if b.RepositoryRef != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 11)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 12)
 		x.xxx_hidden_RepositoryRef = b.RepositoryRef
 	}
 	if b.ArtifactUuid != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 11)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 12)
 		x.xxx_hidden_ArtifactUuid = b.ArtifactUuid
 	}
 	x.xxx_hidden_DefectList = &b.DefectList
+	x.xxx_hidden_DependencyPurlList = b.DependencyPurlList
 	x.xxx_hidden_CreatedAt = b.CreatedAt
 	x.xxx_hidden_UpdatedAt = b.UpdatedAt
 	return m0
@@ -375,7 +389,7 @@ var File_components_v1_component_proto protoreflect.FileDescriptor
 
 const file_components_v1_component_proto_rawDesc = "" +
 	"\n" +
-	"\x1dcomponents/v1/component.proto\x12\x14dolina.components.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a!google/protobuf/go_features.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18components/v1/purl.proto\x1a\x17defects/v1/defect.proto\"\xbc\a\n" +
+	"\x1dcomponents/v1/component.proto\x12\x14dolina.components.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a!google/protobuf/go_features.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18components/v1/purl.proto\x1a\x17defects/v1/defect.proto\"\xee\a\n" +
 	"\tComponent\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x1f\n" +
 	"\vscanner_uid\x18\x02 \x01(\tR\n" +
@@ -388,7 +402,8 @@ const file_components_v1_component_proto_rawDesc = "" +
 	"\rartifact_uuid\x18\b \x01(\tB\x05\xaa\x01\x02\b\x01R\fartifactUuid\x12:\n" +
 	"\vdefect_list\x18\n" +
 	" \x03(\v2\x19.dolina.defects.v1.DefectR\n" +
-	"defectList\x12@\n" +
+	"defectList\x120\n" +
+	"\x14dependency_purl_list\x18\v \x03(\tR\x12dependencyPurlList\x12@\n" +
 	"\n" +
 	"created_at\x18\x14 \x01(\v2\x1a.google.protobuf.TimestampB\x05\xaa\x01\x02\b\x01R\tcreatedAt\x12@\n" +
 	"\n" +
