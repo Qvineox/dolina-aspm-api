@@ -3,10 +3,10 @@ stages:
 
 bump tag:
   stage: publish
-  image: alpine/git:latest
-  rules:
-    - changes:
-        - api/**/*
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/alpine/git:latest
+#  rules:
+#    - changes:
+#        - api/**/*
   before_script:
     - AUTHOR_NAME="${GITLAB_USER_NAME:-$(git log -1 --pretty='%an')}"
     - AUTHOR_EMAIL="${GITLAB_USER_EMAIL:-$(git log -1 --pretty='%ae')}"
