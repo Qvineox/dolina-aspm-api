@@ -1,14 +1,15 @@
 stages:
   - publish
+  - prettify
 
 bump tag:
   stage: publish
   image:
-    name: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/alpine/git:latest
+    name: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/alpine/git:v2.52.0
     entrypoint: [ "" ]
-#  rules:
-#    - changes:
-#        - api/**/*
+  #  rules:
+  #    - changes:
+  #        - api/**/*
   before_script:
     - AUTHOR_NAME="${GITLAB_USER_NAME:-$(git log -1 --pretty='%an')}"
     - AUTHOR_EMAIL="${GITLAB_USER_EMAIL:-$(git log -1 --pretty='%ae')}"
@@ -38,3 +39,31 @@ bump tag:
   tags:
     - docker
 
+set tag badge:
+  stage: prettify
+  image:
+    name: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/alpine/curl:8.17.0
+    entrypoint: [""]
+  rules:
+    - changes:
+        - api/gen/**/*
+  script:
+    # Get latest tag using git (host-mounted)
+    - latest_tag=$(git tag --list 'v*' --sort=-version:refname | head -n1 || echo "none")
+    - echo "Latest Go package tag = $latest_tag"
+
+    # Create badge via GitLab API (pure curl, no jq)
+    - |
+      curl --silent --request PUT \
+        --header "PRIVATE-TOKEN: $CI_JOB_TOKEN" \
+        --header "Content-Type: application/x-www-form-urlencoded" \
+        --data-urlencode "name=Golang%20Package%20Version" \
+        --data-urlencode "link_url=https://$CI_SERVER_HOST/$CI_PROJECT_PATH/-/releases" \
+        --data-urlencode "image_url=https://$CI_SERVER_HOST/$CI_PROJECT_PATH/badges/${CI_PIPELINE_ID}/go-tag.svg?style=flat-square&label=go%20pkg&message=${latest_tag}&color=teal&labelColor=blueviolet" \
+        "https://$CI_SERVER_HOST/api/v4/projects/$CI_PROJECT_ID/badges/${CI_PIPELINE_ID}" \
+        >/dev/null
+
+    - echo "✅ Badge = https://$CI_SERVER_HOST/$CI_PROJECT_PATH/badges/${CI_PIPELINE_ID}/go-tag.svg"
+  artifacts:
+    reports:
+      dotenv: badge-url.env
