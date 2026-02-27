@@ -1,0 +1,34 @@
+stages:
+  - publish
+
+bump tag:
+  stage: publish
+  image: alpine/git:latest
+  rules:
+    - changes:
+        - api/**/*
+  before_script:
+    - AUTHOR_NAME="${GITLAB_USER_NAME:-$(git log -1 --pretty='%an')}"
+    - AUTHOR_EMAIL="${GITLAB_USER_EMAIL:-$(git log -1 --pretty='%ae')}"
+    - git config --global user.name "${AUTHOR_NAME}"
+    - git config --global user.email "${AUTHOR_EMAIL}"
+    - echo "Using Git identity = ${AUTHOR_NAME} <${AUTHOR_EMAIL}>"
+
+    - git fetch --unshallow || true
+    - git fetch --tags
+  script:
+    # get latest tag, default to 0.0.0 if none
+    - LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "0.0.0")
+    - echo "Latest tag = $LATEST_TAG"
+
+    # simple patch bump: X.Y.Z -> X.Y.(Z+1)
+    - IFS='.' read -r MAJOR_VER MINOR_VER PATCH_VER <<< "$LATEST_TAG"
+    - PATCH_VER=$((PATCH_VER + 1))
+    - NEW_TAG="${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}"
+    - echo "New tag = ${NEW_TAG}"
+
+    - git tag -a "${NEW_TAG}" -m "Auto-bump tag ${NEW_TAG} on commit $(git rev-parse HEAD)"
+    - git push "https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git" "${NEW_TAG}"
+  tags:
+    - docker
+
