@@ -9,6 +9,7 @@ bump tag:
     entrypoint: [ "" ]
   rules:
     - changes:
+        - build/*
         - api/**/*
   before_script:
     - AUTHOR_NAME="${GITLAB_USER_NAME:-$(git log -1 --pretty='%an')}"
