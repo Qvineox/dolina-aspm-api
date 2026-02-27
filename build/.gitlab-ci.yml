@@ -7,9 +7,6 @@ bump tag:
   image:
     name: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/alpine/git:v2.52.0
     entrypoint: [ "" ]
-  rules:
-    - changes:
-        - api/**/*
   before_script:
     - AUTHOR_NAME="${GITLAB_USER_NAME:-$(git log -1 --pretty='%an')}"
     - AUTHOR_EMAIL="${GITLAB_USER_EMAIL:-$(git log -1 --pretty='%ae')}"
