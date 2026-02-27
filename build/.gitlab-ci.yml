@@ -25,12 +25,12 @@ bump tag:
 
     # simple patch bump: X.Y.Z -> X.Y.(Z+1)
     - LATEST_VER=$(echo "$LATEST_TAG" | sed 's/^v//')
-    - set -- $(echo "$LATEST_VER" | tr '.' ' ')        # Split on dots into positional params
+    - set -- $(echo "$LATEST_VER" | tr '.' ' ')
     - MAJOR_VER="$1"
     - MINOR_VER="$2"
     - PATCH_VER="$3"
     - PATCH_VER=$((PATCH_VER + 1))
-    - NEW_TAG="${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}"
+    - NEW_TAG="v${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}"
     - echo "New tag = ${NEW_TAG}"
 
     - git tag -a "${NEW_TAG}" -m "Auto-bump tag ${NEW_TAG} on commit $(git rev-parse HEAD)"
