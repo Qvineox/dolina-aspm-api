@@ -36,6 +36,8 @@ bump tag:
 
     - git tag -a "${NEW_TAG}" -m "Auto-bump tag ${NEW_TAG} on commit $(git rev-parse HEAD)"
     - git push "https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git" "${NEW_TAG}"
+
+    - echo "LATEST_TAG=${NEW_TAG}" >> latest_tag.env
   tags:
     - docker
   artifacts:
@@ -47,12 +49,11 @@ set tag badge:
   image:
     name: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/alpine/curl:8.17.0
     entrypoint: [ "" ]
+  needs:
+    - job: bump tag
+      artifacts: true
   script:
-    - |
-      latest_tag=$(curl --silent --header "PRIVATE-TOKEN: $CI_JOB_TOKEN" \
-        "https://$CI_SERVER_HOST/api/v4/projects/$CI_PROJECT_ID/repository/tags?order_by=updated&sort=desc" \
-        | grep -o '"name":"v[0-9]\+\.[0-9]\+\.[0-9]\+"' | head -1 | cut -d'"' -f4 || echo "none")
-    - echo "Latest Go tag = $latest_tag"
+    - echo "Latest Go tag = $LATEST_TAG"
 
     # Create badge via GitLab API (pure curl, no jq)
     - |
@@ -61,10 +62,8 @@ set tag badge:
         --header "Content-Type: application/x-www-form-urlencoded" \
         --data-urlencode "name=Golang%20Package%20Version" \
         --data-urlencode "link_url=https://$CI_SERVER_HOST/$CI_PROJECT_PATH/-/releases" \
-        --data-urlencode "image_url=https://$CI_SERVER_HOST/$CI_PROJECT_PATH/badges/${CI_PIPELINE_ID}/go-tag.svg?style=flat-square&label=go%20pkg&message=${latest_tag}&color=teal&labelColor=blueviolet" \
+        --data-urlencode "image_url=https://$CI_SERVER_HOST/$CI_PROJECT_PATH/badges/${CI_PIPELINE_ID}/go-tag.svg?style=flat-square&label=go%20pkg&message=${LATEST_TAG}&color=teal&labelColor=blueviolet" \
         "https://$CI_SERVER_HOST/api/v4/projects/$CI_PROJECT_ID/badges/${CI_PIPELINE_ID}"
-
-    - echo "✅ Badge = https://$CI_SERVER_HOST/$CI_PROJECT_PATH/badges/${CI_PIPELINE_ID}/go-tag.svg"
   artifacts:
     reports:
       dotenv: badge-url.env
