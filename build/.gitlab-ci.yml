@@ -24,8 +24,11 @@ bump tag:
     - echo "Latest tag = $LATEST_TAG"
 
     # simple patch bump: X.Y.Z -> X.Y.(Z+1)
-    - LATEST_VER="${LATEST_TAG#v}"
-    - IFS='.' read -r MAJOR_VER MINOR_VER PATCH_VER <<< "$LATEST_VER"
+    - LATEST_VER=$(echo "$LATEST_TAG" | sed 's/^v//')
+    - set -- $(echo "$LATEST_VER" | tr '.' ' ')        # Split on dots into positional params
+    - MAJOR_VER="$1"
+    - MINOR_VER="$2"
+    - PATCH_VER="$3"
     - PATCH_VER=$((PATCH_VER + 1))
     - NEW_TAG="${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}"
     - echo "New tag = ${NEW_TAG}"
