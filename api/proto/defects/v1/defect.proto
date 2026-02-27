@@ -45,6 +45,7 @@ message Defect {
   repeated Defect defect_duplicates = 11;
 
   // membership attributes
+  string component_purl = 19 [features.field_presence = EXPLICIT];
   bytes component_uuid = 20 [features.field_presence = EXPLICIT];
   uint32 application_id = 21 [features.field_presence = EXPLICIT];
 

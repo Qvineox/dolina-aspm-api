@@ -164,6 +164,7 @@ type Defect struct {
 	xxx_hidden_CweList          []uint32               `protobuf:"varint,9,rep,packed,name=cwe_list,json=cweList"`
 	xxx_hidden_IsLatest         bool                   `protobuf:"varint,10,opt,name=is_latest,json=isLatest"`
 	xxx_hidden_DefectDuplicates *[]*Defect             `protobuf:"bytes,11,rep,name=defect_duplicates,json=defectDuplicates"`
+	xxx_hidden_ComponentPurl    *string                `protobuf:"bytes,19,opt,name=component_purl,json=componentPurl"`
 	xxx_hidden_ComponentUuid    []byte                 `protobuf:"bytes,20,opt,name=component_uuid,json=componentUuid"`
 	xxx_hidden_ApplicationId    uint32                 `protobuf:"varint,21,opt,name=application_id,json=applicationId"`
 	xxx_hidden_ApplicationRef   *string                `protobuf:"bytes,22,opt,name=application_ref,json=applicationRef"`
@@ -281,6 +282,16 @@ func (x *Defect) GetDefectDuplicates() []*Defect {
 	return nil
 }
 
+func (x *Defect) GetComponentPurl() string {
+	if x != nil {
+		if x.xxx_hidden_ComponentPurl != nil {
+			return *x.xxx_hidden_ComponentPurl
+		}
+		return ""
+	}
+	return ""
+}
+
 func (x *Defect) GetComponentUuid() []byte {
 	if x != nil {
 		return x.xxx_hidden_ComponentUuid
@@ -380,22 +391,27 @@ func (x *Defect) SetDefectDuplicates(v []*Defect) {
 	x.xxx_hidden_DefectDuplicates = &v
 }
 
+func (x *Defect) SetComponentPurl(v string) {
+	x.xxx_hidden_ComponentPurl = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 11, 19)
+}
+
 func (x *Defect) SetComponentUuid(v []byte) {
 	if v == nil {
 		v = []byte{}
 	}
 	x.xxx_hidden_ComponentUuid = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 11, 18)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 12, 19)
 }
 
 func (x *Defect) SetApplicationId(v uint32) {
 	x.xxx_hidden_ApplicationId = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 12, 18)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 13, 19)
 }
 
 func (x *Defect) SetApplicationRef(v string) {
 	x.xxx_hidden_ApplicationRef = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 13, 18)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 14, 19)
 }
 
 func (x *Defect) SetReferenceUrlList(v []string) {
@@ -421,25 +437,32 @@ func (x *Defect) HasVulnerability() bool {
 	return x.xxx_hidden_Vulnerability != nil
 }
 
-func (x *Defect) HasComponentUuid() bool {
+func (x *Defect) HasComponentPurl() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 11)
 }
 
-func (x *Defect) HasApplicationId() bool {
+func (x *Defect) HasComponentUuid() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 12)
 }
 
-func (x *Defect) HasApplicationRef() bool {
+func (x *Defect) HasApplicationId() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 13)
+}
+
+func (x *Defect) HasApplicationRef() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 14)
 }
 
 func (x *Defect) HasFixInfo() bool {
@@ -467,18 +490,23 @@ func (x *Defect) ClearVulnerability() {
 	x.xxx_hidden_Vulnerability = nil
 }
 
-func (x *Defect) ClearComponentUuid() {
+func (x *Defect) ClearComponentPurl() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 11)
+	x.xxx_hidden_ComponentPurl = nil
+}
+
+func (x *Defect) ClearComponentUuid() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 12)
 	x.xxx_hidden_ComponentUuid = nil
 }
 
 func (x *Defect) ClearApplicationId() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 12)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 13)
 	x.xxx_hidden_ApplicationId = 0
 }
 
 func (x *Defect) ClearApplicationRef() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 13)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 14)
 	x.xxx_hidden_ApplicationRef = nil
 }
 
@@ -511,6 +539,7 @@ type Defect_builder struct {
 	IsLatest         bool
 	DefectDuplicates []*Defect
 	// membership attributes
+	ComponentPurl *string
 	ComponentUuid []byte
 	ApplicationId *uint32
 	// git ref of an application to define where defect was found
@@ -537,16 +566,20 @@ func (b0 Defect_builder) Build() *Defect {
 	x.xxx_hidden_CweList = b.CweList
 	x.xxx_hidden_IsLatest = b.IsLatest
 	x.xxx_hidden_DefectDuplicates = &b.DefectDuplicates
+	if b.ComponentPurl != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 11, 19)
+		x.xxx_hidden_ComponentPurl = b.ComponentPurl
+	}
 	if b.ComponentUuid != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 11, 18)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 12, 19)
 		x.xxx_hidden_ComponentUuid = b.ComponentUuid
 	}
 	if b.ApplicationId != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 12, 18)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 13, 19)
 		x.xxx_hidden_ApplicationId = *b.ApplicationId
 	}
 	if b.ApplicationRef != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 13, 18)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 14, 19)
 		x.xxx_hidden_ApplicationRef = b.ApplicationRef
 	}
 	x.xxx_hidden_ReferenceUrlList = b.ReferenceUrlList
@@ -560,7 +593,8 @@ var File_defects_v1_defect_proto protoreflect.FileDescriptor
 
 const file_defects_v1_defect_proto_rawDesc = "" +
 	"\n" +
-	"\x17defects/v1/defect.proto\x12\x11dolina.defects.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a!google/protobuf/go_features.proto\x1a$vulnerability/v1/vulnerability.proto\x1a\x14defects/v1/fix.proto\"\xff\t\n" +
+	"\x17defects/v1/defect.proto\x12\x11dolina.defects.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a!google/protobuf/go_features.proto\x1a$vulnerability/v1/vulnerability.proto\x1a\x14defects/v1/fix.proto\"\xad\n" +
+	"\n" +
 	"\x06Defect\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\fR\x04uuid\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12 \n" +
@@ -576,6 +610,7 @@ const file_defects_v1_defect_proto_rawDesc = "" +
 	"\tis_latest\x18\n" +
 	" \x01(\bR\bisLatest\x12F\n" +
 	"\x11defect_duplicates\x18\v \x03(\v2\x19.dolina.defects.v1.DefectR\x10defectDuplicates\x12,\n" +
+	"\x0ecomponent_purl\x18\x13 \x01(\tB\x05\xaa\x01\x02\b\x01R\rcomponentPurl\x12,\n" +
 	"\x0ecomponent_uuid\x18\x14 \x01(\fB\x05\xaa\x01\x02\b\x01R\rcomponentUuid\x12,\n" +
 	"\x0eapplication_id\x18\x15 \x01(\rB\x05\xaa\x01\x02\b\x01R\rapplicationId\x12.\n" +
 	"\x0fapplication_ref\x18\x16 \x01(\tB\x05\xaa\x01\x02\b\x01R\x0eapplicationRef\x12,\n" +

@@ -1331,10 +1331,13 @@
             "$ref": "#/definitions/v1Defect"
           }
         },
+        "componentPurl": {
+          "type": "string",
+          "title": "membership attributes"
+        },
         "componentUuid": {
           "type": "string",
-          "format": "byte",
-          "title": "membership attributes"
+          "format": "byte"
         },
         "applicationId": {
           "type": "integer",
@@ -1792,7 +1795,13 @@
           "type": "number",
           "format": "float"
         },
-        "vector": {
+        "cvss2Vector": {
+          "type": "string"
+        },
+        "cvss3Vector": {
+          "type": "string"
+        },
+        "cvss4Vector": {
           "type": "string"
         },
         "sourceUrl": {
