@@ -20,11 +20,12 @@ bump tag:
     - git fetch --tags
   script:
     # get latest tag, default to 0.0.0 if none
-    - LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "0.0.0")
+    - LATEST_TAG=$(git tag --list 'v*' --sort=-version:refname | head -n1 || echo "v0.0.0")
     - echo "Latest tag = $LATEST_TAG"
 
     # simple patch bump: X.Y.Z -> X.Y.(Z+1)
-    - IFS='.' read -r MAJOR_VER MINOR_VER PATCH_VER <<< "$LATEST_TAG"
+    - LATEST_VER="${LATEST_TAG#v}"
+    - IFS='.' read -r MAJOR_VER MINOR_VER PATCH_VER <<< "$LATEST_VER"
     - PATCH_VER=$((PATCH_VER + 1))
     - NEW_TAG="${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}"
     - echo "New tag = ${NEW_TAG}"
