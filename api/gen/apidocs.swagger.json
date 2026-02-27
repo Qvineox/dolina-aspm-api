@@ -1316,7 +1316,8 @@
         "cweList": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": "integer",
+            "format": "int64"
           }
         },
         "isLatest": {
@@ -1790,6 +1791,9 @@
         "cvss4Score": {
           "type": "number",
           "format": "float"
+        },
+        "vector": {
+          "type": "string"
         },
         "sourceUrl": {
           "type": "string"

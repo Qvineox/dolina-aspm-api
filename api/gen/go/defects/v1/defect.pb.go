@@ -161,7 +161,7 @@ type Defect struct {
 	xxx_hidden_AppliedRiskScore uint32                 `protobuf:"varint,6,opt,name=applied_risk_score,json=appliedRiskScore"`
 	xxx_hidden_CvssScore        float32                `protobuf:"fixed32,7,opt,name=cvss_score,json=cvssScore"`
 	xxx_hidden_Vulnerability    *v1.Vulnerability      `protobuf:"bytes,8,opt,name=vulnerability"`
-	xxx_hidden_CweList          []string               `protobuf:"bytes,9,rep,name=cwe_list,json=cweList"`
+	xxx_hidden_CweList          []uint32               `protobuf:"varint,9,rep,packed,name=cwe_list,json=cweList"`
 	xxx_hidden_IsLatest         bool                   `protobuf:"varint,10,opt,name=is_latest,json=isLatest"`
 	xxx_hidden_DefectDuplicates *[]*Defect             `protobuf:"bytes,11,rep,name=defect_duplicates,json=defectDuplicates"`
 	xxx_hidden_ComponentUuid    []byte                 `protobuf:"bytes,20,opt,name=component_uuid,json=componentUuid"`
@@ -258,7 +258,7 @@ func (x *Defect) GetVulnerability() *v1.Vulnerability {
 	return nil
 }
 
-func (x *Defect) GetCweList() []string {
+func (x *Defect) GetCweList() []uint32 {
 	if x != nil {
 		return x.xxx_hidden_CweList
 	}
@@ -368,7 +368,7 @@ func (x *Defect) SetVulnerability(v *v1.Vulnerability) {
 	x.xxx_hidden_Vulnerability = v
 }
 
-func (x *Defect) SetCweList(v []string) {
+func (x *Defect) SetCweList(v []uint32) {
 	x.xxx_hidden_CweList = v
 }
 
@@ -506,7 +506,7 @@ type Defect_builder struct {
 	AppliedRiskScore uint32
 	CvssScore        float32
 	Vulnerability    *v1.Vulnerability
-	CweList          []string
+	CweList          []uint32
 	// deduplication
 	IsLatest         bool
 	DefectDuplicates []*Defect
@@ -572,7 +572,7 @@ const file_defects_v1_defect_proto_rawDesc = "" +
 	"\n" +
 	"cvss_score\x18\a \x01(\x02R\tcvssScore\x12S\n" +
 	"\rvulnerability\x18\b \x01(\v2&.dolina.vulnerability.v1.VulnerabilityB\x05\xaa\x01\x02\b\x01R\rvulnerability\x12\x19\n" +
-	"\bcwe_list\x18\t \x03(\tR\acweList\x12\x1b\n" +
+	"\bcwe_list\x18\t \x03(\rR\acweList\x12\x1b\n" +
 	"\tis_latest\x18\n" +
 	" \x01(\bR\bisLatest\x12F\n" +
 	"\x11defect_duplicates\x18\v \x03(\v2\x19.dolina.defects.v1.DefectR\x10defectDuplicates\x12,\n" +

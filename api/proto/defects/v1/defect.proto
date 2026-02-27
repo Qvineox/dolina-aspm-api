@@ -38,7 +38,7 @@ message Defect {
   float cvss_score = 7;
 
   vulnerability.v1.Vulnerability vulnerability = 8 [features.field_presence = EXPLICIT];
-  repeated string cwe_list = 9;
+  repeated uint32 cwe_list = 9;
 
   // deduplication
   bool is_latest = 10;
