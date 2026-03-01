@@ -31,7 +31,8 @@ type Application struct {
 	xxx_hidden_Name        string                 `protobuf:"bytes,3,opt,name=name"`
 	xxx_hidden_Description string                 `protobuf:"bytes,4,opt,name=description"`
 	xxx_hidden_Url         string                 `protobuf:"bytes,5,opt,name=url"`
-	xxx_hidden_Purl        *v1.PURL               `protobuf:"bytes,6,opt,name=purl"`
+	xxx_hidden_LabelList   []string               `protobuf:"bytes,6,rep,name=label_list,json=labelList"`
+	xxx_hidden_Purl        *v1.PURL               `protobuf:"bytes,7,opt,name=purl"`
 	xxx_hidden_CreatedAt   *timestamppb.Timestamp `protobuf:"bytes,20,opt,name=created_at,json=createdAt"`
 	xxx_hidden_UpdatedAt   *timestamppb.Timestamp `protobuf:"bytes,21,opt,name=updated_at,json=updatedAt"`
 	unknownFields          protoimpl.UnknownFields
@@ -98,6 +99,13 @@ func (x *Application) GetUrl() string {
 	return ""
 }
 
+func (x *Application) GetLabelList() []string {
+	if x != nil {
+		return x.xxx_hidden_LabelList
+	}
+	return nil
+}
+
 func (x *Application) GetPurl() *v1.PURL {
 	if x != nil {
 		return x.xxx_hidden_Purl
@@ -137,6 +145,10 @@ func (x *Application) SetDescription(v string) {
 
 func (x *Application) SetUrl(v string) {
 	x.xxx_hidden_Url = v
+}
+
+func (x *Application) SetLabelList(v []string) {
+	x.xxx_hidden_LabelList = v
 }
 
 func (x *Application) SetPurl(v *v1.PURL) {
@@ -192,6 +204,8 @@ type Application_builder struct {
 	Name        string
 	Description string
 	Url         string
+	// user-defined text labels to categorize applications, e.g. backend/frontend and others
+	LabelList []string
 	// application component purl
 	Purl      *v1.PURL
 	CreatedAt *timestamppb.Timestamp
@@ -207,6 +221,7 @@ func (b0 Application_builder) Build() *Application {
 	x.xxx_hidden_Name = b.Name
 	x.xxx_hidden_Description = b.Description
 	x.xxx_hidden_Url = b.Url
+	x.xxx_hidden_LabelList = b.LabelList
 	x.xxx_hidden_Purl = b.Purl
 	x.xxx_hidden_CreatedAt = b.CreatedAt
 	x.xxx_hidden_UpdatedAt = b.UpdatedAt
@@ -217,14 +232,16 @@ var File_applications_v1_application_proto protoreflect.FileDescriptor
 
 const file_applications_v1_application_proto_rawDesc = "" +
 	"\n" +
-	"!applications/v1/application.proto\x12\x15dolina.application.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a!google/protobuf/go_features.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18components/v1/purl.proto\"\xae\x05\n" +
+	"!applications/v1/application.proto\x12\x15dolina.application.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a!google/protobuf/go_features.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18components/v1/purl.proto\"\xcd\x05\n" +
 	"\vApplication\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x12\n" +
 	"\x04suid\x18\x02 \x01(\tR\x04suid\x12\x12\n" +
 	"\x04name\x18\x03 \x01(\tR\x04name\x12 \n" +
 	"\vdescription\x18\x04 \x01(\tR\vdescription\x12\x10\n" +
-	"\x03url\x18\x05 \x01(\tR\x03url\x125\n" +
-	"\x04purl\x18\x06 \x01(\v2\x1a.dolina.components.v1.PURLB\x05\xaa\x01\x02\b\x01R\x04purl\x12@\n" +
+	"\x03url\x18\x05 \x01(\tR\x03url\x12\x1d\n" +
+	"\n" +
+	"label_list\x18\x06 \x03(\tR\tlabelList\x125\n" +
+	"\x04purl\x18\a \x01(\v2\x1a.dolina.components.v1.PURLB\x05\xaa\x01\x02\b\x01R\x04purl\x12@\n" +
 	"\n" +
 	"created_at\x18\x14 \x01(\v2\x1a.google.protobuf.TimestampB\x05\xaa\x01\x02\b\x01R\tcreatedAt\x12@\n" +
 	"\n" +

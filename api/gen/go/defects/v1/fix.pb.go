@@ -10,8 +10,8 @@ import (
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	_ "google.golang.org/protobuf/types/gofeaturespb"
 	reflect "reflect"
-	sync "sync"
 	unsafe "unsafe"
 )
 
@@ -23,12 +23,12 @@ const (
 )
 
 type FixInfo struct {
-	state                protoimpl.MessageState `protogen:"open.v1"`
-	Description          string                 `protobuf:"bytes,1,opt,name=description,proto3" json:"description,omitempty"`
-	UpdateVersionList    []*FixedVersions       `protobuf:"bytes,2,rep,name=update_version_list,json=updateVersionList,proto3" json:"update_version_list,omitempty"`
-	DowngradeVersionList []*FixedVersions       `protobuf:"bytes,3,rep,name=downgrade_version_list,json=downgradeVersionList,proto3" json:"downgrade_version_list,omitempty"`
-	unknownFields        protoimpl.UnknownFields
-	sizeCache            protoimpl.SizeCache
+	state                           protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Description          string                 `protobuf:"bytes,1,opt,name=description"`
+	xxx_hidden_UpdateVersionList    *[]*FixedVersions      `protobuf:"bytes,2,rep,name=update_version_list,json=updateVersionList"`
+	xxx_hidden_DowngradeVersionList *[]*FixedVersions      `protobuf:"bytes,3,rep,name=downgrade_version_list,json=downgradeVersionList"`
+	unknownFields                   protoimpl.UnknownFields
+	sizeCache                       protoimpl.SizeCache
 }
 
 func (x *FixInfo) Reset() {
@@ -56,37 +56,66 @@ func (x *FixInfo) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use FixInfo.ProtoReflect.Descriptor instead.
-func (*FixInfo) Descriptor() ([]byte, []int) {
-	return file_defects_v1_fix_proto_rawDescGZIP(), []int{0}
-}
-
 func (x *FixInfo) GetDescription() string {
 	if x != nil {
-		return x.Description
+		return x.xxx_hidden_Description
 	}
 	return ""
 }
 
 func (x *FixInfo) GetUpdateVersionList() []*FixedVersions {
 	if x != nil {
-		return x.UpdateVersionList
+		if x.xxx_hidden_UpdateVersionList != nil {
+			return *x.xxx_hidden_UpdateVersionList
+		}
 	}
 	return nil
 }
 
 func (x *FixInfo) GetDowngradeVersionList() []*FixedVersions {
 	if x != nil {
-		return x.DowngradeVersionList
+		if x.xxx_hidden_DowngradeVersionList != nil {
+			return *x.xxx_hidden_DowngradeVersionList
+		}
 	}
 	return nil
 }
 
+func (x *FixInfo) SetDescription(v string) {
+	x.xxx_hidden_Description = v
+}
+
+func (x *FixInfo) SetUpdateVersionList(v []*FixedVersions) {
+	x.xxx_hidden_UpdateVersionList = &v
+}
+
+func (x *FixInfo) SetDowngradeVersionList(v []*FixedVersions) {
+	x.xxx_hidden_DowngradeVersionList = &v
+}
+
+type FixInfo_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	Description          string
+	UpdateVersionList    []*FixedVersions
+	DowngradeVersionList []*FixedVersions
+}
+
+func (b0 FixInfo_builder) Build() *FixInfo {
+	m0 := &FixInfo{}
+	b, x := &b0, m0
+	_, _ = b, x
+	x.xxx_hidden_Description = b.Description
+	x.xxx_hidden_UpdateVersionList = &b.UpdateVersionList
+	x.xxx_hidden_DowngradeVersionList = &b.DowngradeVersionList
+	return m0
+}
+
 type FixedVersions struct {
-	state             protoimpl.MessageState `protogen:"open.v1"`
-	UpdateVersionList []string               `protobuf:"bytes,1,rep,name=update_version_list,json=updateVersionList,proto3" json:"update_version_list,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
+	state                        protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_UpdateVersionList []string               `protobuf:"bytes,1,rep,name=update_version_list,json=updateVersionList"`
+	unknownFields                protoimpl.UnknownFields
+	sizeCache                    protoimpl.SizeCache
 }
 
 func (x *FixedVersions) Reset() {
@@ -114,42 +143,43 @@ func (x *FixedVersions) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use FixedVersions.ProtoReflect.Descriptor instead.
-func (*FixedVersions) Descriptor() ([]byte, []int) {
-	return file_defects_v1_fix_proto_rawDescGZIP(), []int{1}
-}
-
 func (x *FixedVersions) GetUpdateVersionList() []string {
 	if x != nil {
-		return x.UpdateVersionList
+		return x.xxx_hidden_UpdateVersionList
 	}
 	return nil
+}
+
+func (x *FixedVersions) SetUpdateVersionList(v []string) {
+	x.xxx_hidden_UpdateVersionList = v
+}
+
+type FixedVersions_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	UpdateVersionList []string
+}
+
+func (b0 FixedVersions_builder) Build() *FixedVersions {
+	m0 := &FixedVersions{}
+	b, x := &b0, m0
+	_, _ = b, x
+	x.xxx_hidden_UpdateVersionList = b.UpdateVersionList
+	return m0
 }
 
 var File_defects_v1_fix_proto protoreflect.FileDescriptor
 
 const file_defects_v1_fix_proto_rawDesc = "" +
 	"\n" +
-	"\x14defects/v1/fix.proto\x12\x11dolina.defects.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\"\x87\x04\n" +
+	"\x14defects/v1/fix.proto\x12\x11dolina.defects.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a!google/protobuf/go_features.proto\"\x87\x04\n" +
 	"\aFixInfo\x12 \n" +
 	"\vdescription\x18\x01 \x01(\tR\vdescription\x12P\n" +
 	"\x13update_version_list\x18\x02 \x03(\v2 .dolina.defects.v1.FixedVersionsR\x11updateVersionList\x12V\n" +
 	"\x16downgrade_version_list\x18\x03 \x03(\v2 .dolina.defects.v1.FixedVersionsR\x14downgradeVersionList:\xaf\x02\x92A\xab\x02\n" +
 	"\xa8\x02*\bFix Info2\x9b\x02Contains information about fix options. Provides a set of version strings representing releases where the vulnerability has been fixed. These versions may be higher (newer) or lower (older patched releases) than the vulnerable version range, indicating all known unaffected versions.\"?\n" +
 	"\rFixedVersions\x12.\n" +
-	"\x13update_version_list\x18\x01 \x03(\tR\x11updateVersionListBLZJgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/defects/v1;defects_v1b\x06proto3"
-
-var (
-	file_defects_v1_fix_proto_rawDescOnce sync.Once
-	file_defects_v1_fix_proto_rawDescData []byte
-)
-
-func file_defects_v1_fix_proto_rawDescGZIP() []byte {
-	file_defects_v1_fix_proto_rawDescOnce.Do(func() {
-		file_defects_v1_fix_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_defects_v1_fix_proto_rawDesc), len(file_defects_v1_fix_proto_rawDesc)))
-	})
-	return file_defects_v1_fix_proto_rawDescData
-}
+	"\x13update_version_list\x18\x01 \x03(\tR\x11updateVersionListBVZJgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/defects/v1;defects_v1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
 
 var file_defects_v1_fix_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_defects_v1_fix_proto_goTypes = []any{

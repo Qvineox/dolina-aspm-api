@@ -1195,6 +1195,45 @@
       "description": "Contextual metadata accompanying a raw scanner report. It provides information about the environment in which the scan was executed, such as the repository URL, Git reference (branch, tag, commit), pipeline or build ID, and any other relevant deployment or runtime context. This data is used by Dolina ASPM to enrich, filter, and correlate findings with specific code versions or build stages.",
       "title": "Analyze options"
     },
+    "v1CodeFragment": {
+      "type": "object",
+      "properties": {
+        "fileName": {
+          "type": "string"
+        },
+        "filePath": {
+          "type": "string"
+        },
+        "lineStart": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "lineEnd": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "content": {
+          "type": "string"
+        },
+        "maskedSegmentsList": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1LineSegment"
+          },
+          "title": "hidden segments offsets (also for secret masking)"
+        },
+        "highlightedSegmentsList": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1LineSegment"
+          }
+        }
+      },
+      "description": "Source code fragment representation capturing vulnerable code snippets, secrets, or defects within files. Contains line numbers (start/end ranges), extracted code content, surrounding context lines, file path reference, and metadata about the detected issue type, severity, and detection source for remediation tracking in the ASPM system.",
+      "title": "Code fragment"
+    },
     "v1Component": {
       "type": "object",
       "properties": {
@@ -1323,6 +1362,14 @@
             "type": "integer",
             "format": "int64"
           }
+        },
+        "codeFragmentsList": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1CodeFragment"
+          },
+          "title": "code fragment"
         },
         "isLatest": {
           "type": "boolean",
@@ -1483,6 +1530,19 @@
           "items": {
             "type": "string"
           }
+        }
+      }
+    },
+    "v1LineSegment": {
+      "type": "object",
+      "properties": {
+        "byteStart": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "byteEnd": {
+          "type": "integer",
+          "format": "int64"
         }
       }
     },

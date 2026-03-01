@@ -152,30 +152,31 @@ func (x DefectStatus) Number() protoreflect.EnumNumber {
 }
 
 type Defect struct {
-	state                       protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Uuid             []byte                 `protobuf:"bytes,1,opt,name=uuid"`
-	xxx_hidden_Title            string                 `protobuf:"bytes,2,opt,name=title"`
-	xxx_hidden_Description      string                 `protobuf:"bytes,3,opt,name=description"`
-	xxx_hidden_Type             DefectType             `protobuf:"varint,4,opt,name=type,enum=dolina.defects.v1.DefectType"`
-	xxx_hidden_StatusList       []DefectStatus         `protobuf:"varint,5,rep,packed,name=status_list,json=statusList,enum=dolina.defects.v1.DefectStatus"`
-	xxx_hidden_AppliedRiskScore uint32                 `protobuf:"varint,6,opt,name=applied_risk_score,json=appliedRiskScore"`
-	xxx_hidden_CvssScore        float32                `protobuf:"fixed32,7,opt,name=cvss_score,json=cvssScore"`
-	xxx_hidden_Vulnerability    *v1.Vulnerability      `protobuf:"bytes,8,opt,name=vulnerability"`
-	xxx_hidden_CweList          []uint32               `protobuf:"varint,9,rep,packed,name=cwe_list,json=cweList"`
-	xxx_hidden_IsLatest         bool                   `protobuf:"varint,10,opt,name=is_latest,json=isLatest"`
-	xxx_hidden_DefectDuplicates *[]*Defect             `protobuf:"bytes,11,rep,name=defect_duplicates,json=defectDuplicates"`
-	xxx_hidden_ComponentPurl    *string                `protobuf:"bytes,19,opt,name=component_purl,json=componentPurl"`
-	xxx_hidden_ComponentUuid    []byte                 `protobuf:"bytes,20,opt,name=component_uuid,json=componentUuid"`
-	xxx_hidden_ApplicationId    uint32                 `protobuf:"varint,21,opt,name=application_id,json=applicationId"`
-	xxx_hidden_ApplicationRef   *string                `protobuf:"bytes,22,opt,name=application_ref,json=applicationRef"`
-	xxx_hidden_ReferenceUrlList []string               `protobuf:"bytes,30,rep,name=reference_url_list,json=referenceUrlList"`
-	xxx_hidden_FixInfo          *FixInfo               `protobuf:"bytes,31,opt,name=fix_info,json=fixInfo"`
-	xxx_hidden_CreatedAt        *timestamppb.Timestamp `protobuf:"bytes,41,opt,name=created_at,json=createdAt"`
-	xxx_hidden_UpdatedAt        *timestamppb.Timestamp `protobuf:"bytes,42,opt,name=updated_at,json=updatedAt"`
-	XXX_raceDetectHookData      protoimpl.RaceDetectHookData
-	XXX_presence                [1]uint32
-	unknownFields               protoimpl.UnknownFields
-	sizeCache                   protoimpl.SizeCache
+	state                        protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Uuid              []byte                 `protobuf:"bytes,1,opt,name=uuid"`
+	xxx_hidden_Title             string                 `protobuf:"bytes,2,opt,name=title"`
+	xxx_hidden_Description       string                 `protobuf:"bytes,3,opt,name=description"`
+	xxx_hidden_Type              DefectType             `protobuf:"varint,4,opt,name=type,enum=dolina.defects.v1.DefectType"`
+	xxx_hidden_StatusList        []DefectStatus         `protobuf:"varint,5,rep,packed,name=status_list,json=statusList,enum=dolina.defects.v1.DefectStatus"`
+	xxx_hidden_AppliedRiskScore  uint32                 `protobuf:"varint,6,opt,name=applied_risk_score,json=appliedRiskScore"`
+	xxx_hidden_CvssScore         float32                `protobuf:"fixed32,7,opt,name=cvss_score,json=cvssScore"`
+	xxx_hidden_Vulnerability     *v1.Vulnerability      `protobuf:"bytes,8,opt,name=vulnerability"`
+	xxx_hidden_CweList           []uint32               `protobuf:"varint,9,rep,packed,name=cwe_list,json=cweList"`
+	xxx_hidden_CodeFragmentsList *[]*CodeFragment       `protobuf:"bytes,10,rep,name=code_fragments_list,json=codeFragmentsList"`
+	xxx_hidden_IsLatest          bool                   `protobuf:"varint,11,opt,name=is_latest,json=isLatest"`
+	xxx_hidden_DefectDuplicates  *[]*Defect             `protobuf:"bytes,12,rep,name=defect_duplicates,json=defectDuplicates"`
+	xxx_hidden_ComponentPurl     *string                `protobuf:"bytes,19,opt,name=component_purl,json=componentPurl"`
+	xxx_hidden_ComponentUuid     []byte                 `protobuf:"bytes,20,opt,name=component_uuid,json=componentUuid"`
+	xxx_hidden_ApplicationId     uint32                 `protobuf:"varint,21,opt,name=application_id,json=applicationId"`
+	xxx_hidden_ApplicationRef    *string                `protobuf:"bytes,22,opt,name=application_ref,json=applicationRef"`
+	xxx_hidden_ReferenceUrlList  []string               `protobuf:"bytes,30,rep,name=reference_url_list,json=referenceUrlList"`
+	xxx_hidden_FixInfo           *FixInfo               `protobuf:"bytes,31,opt,name=fix_info,json=fixInfo"`
+	xxx_hidden_CreatedAt         *timestamppb.Timestamp `protobuf:"bytes,41,opt,name=created_at,json=createdAt"`
+	xxx_hidden_UpdatedAt         *timestamppb.Timestamp `protobuf:"bytes,42,opt,name=updated_at,json=updatedAt"`
+	XXX_raceDetectHookData       protoimpl.RaceDetectHookData
+	XXX_presence                 [1]uint32
+	unknownFields                protoimpl.UnknownFields
+	sizeCache                    protoimpl.SizeCache
 }
 
 func (x *Defect) Reset() {
@@ -262,6 +263,15 @@ func (x *Defect) GetVulnerability() *v1.Vulnerability {
 func (x *Defect) GetCweList() []uint32 {
 	if x != nil {
 		return x.xxx_hidden_CweList
+	}
+	return nil
+}
+
+func (x *Defect) GetCodeFragmentsList() []*CodeFragment {
+	if x != nil {
+		if x.xxx_hidden_CodeFragmentsList != nil {
+			return *x.xxx_hidden_CodeFragmentsList
+		}
 	}
 	return nil
 }
@@ -383,6 +393,10 @@ func (x *Defect) SetCweList(v []uint32) {
 	x.xxx_hidden_CweList = v
 }
 
+func (x *Defect) SetCodeFragmentsList(v []*CodeFragment) {
+	x.xxx_hidden_CodeFragmentsList = &v
+}
+
 func (x *Defect) SetIsLatest(v bool) {
 	x.xxx_hidden_IsLatest = v
 }
@@ -393,7 +407,7 @@ func (x *Defect) SetDefectDuplicates(v []*Defect) {
 
 func (x *Defect) SetComponentPurl(v string) {
 	x.xxx_hidden_ComponentPurl = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 11, 19)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 12, 20)
 }
 
 func (x *Defect) SetComponentUuid(v []byte) {
@@ -401,17 +415,17 @@ func (x *Defect) SetComponentUuid(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_ComponentUuid = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 12, 19)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 13, 20)
 }
 
 func (x *Defect) SetApplicationId(v uint32) {
 	x.xxx_hidden_ApplicationId = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 13, 19)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 14, 20)
 }
 
 func (x *Defect) SetApplicationRef(v string) {
 	x.xxx_hidden_ApplicationRef = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 14, 19)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 15, 20)
 }
 
 func (x *Defect) SetReferenceUrlList(v []string) {
@@ -441,28 +455,28 @@ func (x *Defect) HasComponentPurl() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 11)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 12)
 }
 
 func (x *Defect) HasComponentUuid() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 12)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 13)
 }
 
 func (x *Defect) HasApplicationId() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 13)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 14)
 }
 
 func (x *Defect) HasApplicationRef() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 14)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 15)
 }
 
 func (x *Defect) HasFixInfo() bool {
@@ -491,22 +505,22 @@ func (x *Defect) ClearVulnerability() {
 }
 
 func (x *Defect) ClearComponentPurl() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 11)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 12)
 	x.xxx_hidden_ComponentPurl = nil
 }
 
 func (x *Defect) ClearComponentUuid() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 12)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 13)
 	x.xxx_hidden_ComponentUuid = nil
 }
 
 func (x *Defect) ClearApplicationId() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 13)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 14)
 	x.xxx_hidden_ApplicationId = 0
 }
 
 func (x *Defect) ClearApplicationRef() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 14)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 15)
 	x.xxx_hidden_ApplicationRef = nil
 }
 
@@ -535,6 +549,8 @@ type Defect_builder struct {
 	CvssScore        float32
 	Vulnerability    *v1.Vulnerability
 	CweList          []uint32
+	// code fragment
+	CodeFragmentsList []*CodeFragment
 	// deduplication
 	IsLatest         bool
 	DefectDuplicates []*Defect
@@ -564,22 +580,23 @@ func (b0 Defect_builder) Build() *Defect {
 	x.xxx_hidden_CvssScore = b.CvssScore
 	x.xxx_hidden_Vulnerability = b.Vulnerability
 	x.xxx_hidden_CweList = b.CweList
+	x.xxx_hidden_CodeFragmentsList = &b.CodeFragmentsList
 	x.xxx_hidden_IsLatest = b.IsLatest
 	x.xxx_hidden_DefectDuplicates = &b.DefectDuplicates
 	if b.ComponentPurl != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 11, 19)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 12, 20)
 		x.xxx_hidden_ComponentPurl = b.ComponentPurl
 	}
 	if b.ComponentUuid != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 12, 19)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 13, 20)
 		x.xxx_hidden_ComponentUuid = b.ComponentUuid
 	}
 	if b.ApplicationId != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 13, 19)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 14, 20)
 		x.xxx_hidden_ApplicationId = *b.ApplicationId
 	}
 	if b.ApplicationRef != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 14, 19)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 15, 20)
 		x.xxx_hidden_ApplicationRef = b.ApplicationRef
 	}
 	x.xxx_hidden_ReferenceUrlList = b.ReferenceUrlList
@@ -593,7 +610,7 @@ var File_defects_v1_defect_proto protoreflect.FileDescriptor
 
 const file_defects_v1_defect_proto_rawDesc = "" +
 	"\n" +
-	"\x17defects/v1/defect.proto\x12\x11dolina.defects.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a!google/protobuf/go_features.proto\x1a$vulnerability/v1/vulnerability.proto\x1a\x14defects/v1/fix.proto\"\xad\n" +
+	"\x17defects/v1/defect.proto\x12\x11dolina.defects.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a!google/protobuf/go_features.proto\x1a$vulnerability/v1/vulnerability.proto\x1a\x1edefects/v1/code_fragment.proto\x1a\x14defects/v1/fix.proto\"\xfe\n" +
 	"\n" +
 	"\x06Defect\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\fR\x04uuid\x12\x14\n" +
@@ -606,10 +623,11 @@ const file_defects_v1_defect_proto_rawDesc = "" +
 	"\n" +
 	"cvss_score\x18\a \x01(\x02R\tcvssScore\x12S\n" +
 	"\rvulnerability\x18\b \x01(\v2&.dolina.vulnerability.v1.VulnerabilityB\x05\xaa\x01\x02\b\x01R\rvulnerability\x12\x19\n" +
-	"\bcwe_list\x18\t \x03(\rR\acweList\x12\x1b\n" +
-	"\tis_latest\x18\n" +
-	" \x01(\bR\bisLatest\x12F\n" +
-	"\x11defect_duplicates\x18\v \x03(\v2\x19.dolina.defects.v1.DefectR\x10defectDuplicates\x12,\n" +
+	"\bcwe_list\x18\t \x03(\rR\acweList\x12O\n" +
+	"\x13code_fragments_list\x18\n" +
+	" \x03(\v2\x1f.dolina.defects.v1.CodeFragmentR\x11codeFragmentsList\x12\x1b\n" +
+	"\tis_latest\x18\v \x01(\bR\bisLatest\x12F\n" +
+	"\x11defect_duplicates\x18\f \x03(\v2\x19.dolina.defects.v1.DefectR\x10defectDuplicates\x12,\n" +
 	"\x0ecomponent_purl\x18\x13 \x01(\tB\x05\xaa\x01\x02\b\x01R\rcomponentPurl\x12,\n" +
 	"\x0ecomponent_uuid\x18\x14 \x01(\fB\x05\xaa\x01\x02\b\x01R\rcomponentUuid\x12,\n" +
 	"\x0eapplication_id\x18\x15 \x01(\rB\x05\xaa\x01\x02\b\x01R\rapplicationId\x12.\n" +
@@ -652,22 +670,24 @@ var file_defects_v1_defect_proto_goTypes = []any{
 	(DefectStatus)(0),             // 1: dolina.defects.v1.DefectStatus
 	(*Defect)(nil),                // 2: dolina.defects.v1.Defect
 	(*v1.Vulnerability)(nil),      // 3: dolina.vulnerability.v1.Vulnerability
-	(*FixInfo)(nil),               // 4: dolina.defects.v1.FixInfo
-	(*timestamppb.Timestamp)(nil), // 5: google.protobuf.Timestamp
+	(*CodeFragment)(nil),          // 4: dolina.defects.v1.CodeFragment
+	(*FixInfo)(nil),               // 5: dolina.defects.v1.FixInfo
+	(*timestamppb.Timestamp)(nil), // 6: google.protobuf.Timestamp
 }
 var file_defects_v1_defect_proto_depIdxs = []int32{
 	0, // 0: dolina.defects.v1.Defect.type:type_name -> dolina.defects.v1.DefectType
 	1, // 1: dolina.defects.v1.Defect.status_list:type_name -> dolina.defects.v1.DefectStatus
 	3, // 2: dolina.defects.v1.Defect.vulnerability:type_name -> dolina.vulnerability.v1.Vulnerability
-	2, // 3: dolina.defects.v1.Defect.defect_duplicates:type_name -> dolina.defects.v1.Defect
-	4, // 4: dolina.defects.v1.Defect.fix_info:type_name -> dolina.defects.v1.FixInfo
-	5, // 5: dolina.defects.v1.Defect.created_at:type_name -> google.protobuf.Timestamp
-	5, // 6: dolina.defects.v1.Defect.updated_at:type_name -> google.protobuf.Timestamp
-	7, // [7:7] is the sub-list for method output_type
-	7, // [7:7] is the sub-list for method input_type
-	7, // [7:7] is the sub-list for extension type_name
-	7, // [7:7] is the sub-list for extension extendee
-	0, // [0:7] is the sub-list for field type_name
+	4, // 3: dolina.defects.v1.Defect.code_fragments_list:type_name -> dolina.defects.v1.CodeFragment
+	2, // 4: dolina.defects.v1.Defect.defect_duplicates:type_name -> dolina.defects.v1.Defect
+	5, // 5: dolina.defects.v1.Defect.fix_info:type_name -> dolina.defects.v1.FixInfo
+	6, // 6: dolina.defects.v1.Defect.created_at:type_name -> google.protobuf.Timestamp
+	6, // 7: dolina.defects.v1.Defect.updated_at:type_name -> google.protobuf.Timestamp
+	8, // [8:8] is the sub-list for method output_type
+	8, // [8:8] is the sub-list for method input_type
+	8, // [8:8] is the sub-list for extension type_name
+	8, // [8:8] is the sub-list for extension extendee
+	0, // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_defects_v1_defect_proto_init() }
@@ -675,6 +695,7 @@ func file_defects_v1_defect_proto_init() {
 	if File_defects_v1_defect_proto != nil {
 		return
 	}
+	file_defects_v1_code_fragment_proto_init()
 	file_defects_v1_fix_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{

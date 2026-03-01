@@ -11,6 +11,7 @@ import "google/protobuf/timestamp.proto";
 import "google/protobuf/go_features.proto";
 
 import "vulnerability/v1/vulnerability.proto";
+import "defects/v1/code_fragment.proto";
 import "defects/v1/fix.proto";
 
 message Defect {
@@ -40,9 +41,12 @@ message Defect {
   vulnerability.v1.Vulnerability vulnerability = 8 [features.field_presence = EXPLICIT];
   repeated uint32 cwe_list = 9;
 
+  // code fragment
+  repeated CodeFragment code_fragments_list = 10;
+
   // deduplication
-  bool is_latest = 10;
-  repeated Defect defect_duplicates = 11;
+  bool is_latest = 11;
+  repeated Defect defect_duplicates = 12;
 
   // membership attributes
   string component_purl = 19 [features.field_presence = EXPLICIT];

@@ -1,10 +1,13 @@
-syntax = "proto3";
+edition = "2023";
 
 package dolina.defects.v1;
 
 option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/defects/v1;defects_v1";
+option features.(pb.go).api_level = API_OPAQUE;
+option features.field_presence = IMPLICIT;
 
 import "protoc-gen-openapiv2/options/annotations.proto";
+import "google/protobuf/go_features.proto";
 
 message FixInfo {
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
