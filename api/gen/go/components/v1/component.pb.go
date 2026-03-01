@@ -87,9 +87,10 @@ type Component struct {
 	xxx_hidden_Purl               *PURL                  `protobuf:"bytes,3,opt,name=purl"`
 	xxx_hidden_Type               ComponentType          `protobuf:"varint,4,opt,name=type,enum=dolina.components.v1.ComponentType"`
 	xxx_hidden_IsPublic           bool                   `protobuf:"varint,5,opt,name=is_public,json=isPublic"`
-	xxx_hidden_RepositoryUuid     *string                `protobuf:"bytes,6,opt,name=repository_uuid,json=repositoryUuid"`
-	xxx_hidden_RepositoryRef      *string                `protobuf:"bytes,7,opt,name=repository_ref,json=repositoryRef"`
-	xxx_hidden_ArtifactUuid       *string                `protobuf:"bytes,8,opt,name=artifact_uuid,json=artifactUuid"`
+	xxx_hidden_ApplicationId      uint32                 `protobuf:"varint,6,opt,name=application_id,json=applicationId"`
+	xxx_hidden_RepositoryUuid     *string                `protobuf:"bytes,7,opt,name=repository_uuid,json=repositoryUuid"`
+	xxx_hidden_RepositoryRef      *string                `protobuf:"bytes,8,opt,name=repository_ref,json=repositoryRef"`
+	xxx_hidden_ArtifactUuid       *string                `protobuf:"bytes,9,opt,name=artifact_uuid,json=artifactUuid"`
 	xxx_hidden_DefectList         *[]*v1.Defect          `protobuf:"bytes,10,rep,name=defect_list,json=defectList"`
 	xxx_hidden_DependencyPurlList []string               `protobuf:"bytes,11,rep,name=dependency_purl_list,json=dependencyPurlList"`
 	xxx_hidden_CreatedAt          *timestamppb.Timestamp `protobuf:"bytes,20,opt,name=created_at,json=createdAt"`
@@ -158,6 +159,13 @@ func (x *Component) GetIsPublic() bool {
 		return x.xxx_hidden_IsPublic
 	}
 	return false
+}
+
+func (x *Component) GetApplicationId() uint32 {
+	if x != nil {
+		return x.xxx_hidden_ApplicationId
+	}
+	return 0
 }
 
 func (x *Component) GetRepositoryUuid() string {
@@ -240,19 +248,23 @@ func (x *Component) SetIsPublic(v bool) {
 	x.xxx_hidden_IsPublic = v
 }
 
+func (x *Component) SetApplicationId(v uint32) {
+	x.xxx_hidden_ApplicationId = v
+}
+
 func (x *Component) SetRepositoryUuid(v string) {
 	x.xxx_hidden_RepositoryUuid = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 12)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 13)
 }
 
 func (x *Component) SetRepositoryRef(v string) {
 	x.xxx_hidden_RepositoryRef = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 12)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 13)
 }
 
 func (x *Component) SetArtifactUuid(v string) {
 	x.xxx_hidden_ArtifactUuid = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 12)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 8, 13)
 }
 
 func (x *Component) SetDefectList(v []*v1.Defect) {
@@ -282,21 +294,21 @@ func (x *Component) HasRepositoryUuid() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 6)
 }
 
 func (x *Component) HasRepositoryRef() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 6)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 7)
 }
 
 func (x *Component) HasArtifactUuid() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 7)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 8)
 }
 
 func (x *Component) HasCreatedAt() bool {
@@ -318,17 +330,17 @@ func (x *Component) ClearPurl() {
 }
 
 func (x *Component) ClearRepositoryUuid() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 6)
 	x.xxx_hidden_RepositoryUuid = nil
 }
 
 func (x *Component) ClearRepositoryRef() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 6)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 7)
 	x.xxx_hidden_RepositoryRef = nil
 }
 
 func (x *Component) ClearArtifactUuid() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 7)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 8)
 	x.xxx_hidden_ArtifactUuid = nil
 }
 
@@ -348,6 +360,7 @@ type Component_builder struct {
 	Purl               *PURL
 	Type               ComponentType
 	IsPublic           bool
+	ApplicationId      uint32
 	RepositoryUuid     *string
 	RepositoryRef      *string
 	ArtifactUuid       *string
@@ -366,16 +379,17 @@ func (b0 Component_builder) Build() *Component {
 	x.xxx_hidden_Purl = b.Purl
 	x.xxx_hidden_Type = b.Type
 	x.xxx_hidden_IsPublic = b.IsPublic
+	x.xxx_hidden_ApplicationId = b.ApplicationId
 	if b.RepositoryUuid != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 12)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 13)
 		x.xxx_hidden_RepositoryUuid = b.RepositoryUuid
 	}
 	if b.RepositoryRef != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 12)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 13)
 		x.xxx_hidden_RepositoryRef = b.RepositoryRef
 	}
 	if b.ArtifactUuid != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 12)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 8, 13)
 		x.xxx_hidden_ArtifactUuid = b.ArtifactUuid
 	}
 	x.xxx_hidden_DefectList = &b.DefectList
@@ -389,17 +403,18 @@ var File_components_v1_component_proto protoreflect.FileDescriptor
 
 const file_components_v1_component_proto_rawDesc = "" +
 	"\n" +
-	"\x1dcomponents/v1/component.proto\x12\x14dolina.components.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a!google/protobuf/go_features.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18components/v1/purl.proto\x1a\x17defects/v1/defect.proto\"\xee\a\n" +
+	"\x1dcomponents/v1/component.proto\x12\x14dolina.components.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a!google/protobuf/go_features.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18components/v1/purl.proto\x1a\x17defects/v1/defect.proto\"\x95\b\n" +
 	"\tComponent\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x1f\n" +
 	"\vscanner_uid\x18\x02 \x01(\tR\n" +
 	"scannerUid\x12.\n" +
 	"\x04purl\x18\x03 \x01(\v2\x1a.dolina.components.v1.PURLR\x04purl\x127\n" +
 	"\x04type\x18\x04 \x01(\x0e2#.dolina.components.v1.ComponentTypeR\x04type\x12\x1b\n" +
-	"\tis_public\x18\x05 \x01(\bR\bisPublic\x12.\n" +
-	"\x0frepository_uuid\x18\x06 \x01(\tB\x05\xaa\x01\x02\b\x01R\x0erepositoryUuid\x12,\n" +
-	"\x0erepository_ref\x18\a \x01(\tB\x05\xaa\x01\x02\b\x01R\rrepositoryRef\x12*\n" +
-	"\rartifact_uuid\x18\b \x01(\tB\x05\xaa\x01\x02\b\x01R\fartifactUuid\x12:\n" +
+	"\tis_public\x18\x05 \x01(\bR\bisPublic\x12%\n" +
+	"\x0eapplication_id\x18\x06 \x01(\rR\rapplicationId\x12.\n" +
+	"\x0frepository_uuid\x18\a \x01(\tB\x05\xaa\x01\x02\b\x01R\x0erepositoryUuid\x12,\n" +
+	"\x0erepository_ref\x18\b \x01(\tB\x05\xaa\x01\x02\b\x01R\rrepositoryRef\x12*\n" +
+	"\rartifact_uuid\x18\t \x01(\tB\x05\xaa\x01\x02\b\x01R\fartifactUuid\x12:\n" +
 	"\vdefect_list\x18\n" +
 	" \x03(\v2\x19.dolina.defects.v1.DefectR\n" +
 	"defectList\x120\n" +

@@ -4,10 +4,43 @@ package dolina.application.v1;
 
 option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/applications/v1;application_v1";
 option features.(pb.go).api_level = API_OPAQUE;
-option features.field_presence = EXPLICIT;
+option features.field_presence = IMPLICIT;
 
+import "protoc-gen-openapiv2/options/annotations.proto";
 import "google/protobuf/go_features.proto";
+import "google/protobuf/timestamp.proto";
+
+import "components/v1/purl.proto";
 
 message Application {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Vendor"
+      description: "Software application entity in the ASPM system containing comprehensive metadata about the "
+          "application and its components. Includes identifiers (ID/UUID), naming information, version details, "
+          "component inventories (libraries, modules, services), ownership metadata, deployment characteristics, and "
+          "audit timestamps for tracking application security posture."
+    }
+  };
+
   uint32 id = 1;
+  string suid = 2; // string unique identifier
+
+  string name = 3;
+  string description = 4;
+
+  string url = 5;
+
+  // user-defined text labels to categorize applications, e.g. backend/frontend and others
+  repeated string label_list = 6;
+
+  // application component purl
+  components.v1.PURL purl = 7 [features.field_presence = EXPLICIT];
+
+  // vsc links
+  // gitlab/github integration
+
+  google.protobuf.Timestamp created_at = 20 [features.field_presence = EXPLICIT];
+  google.protobuf.Timestamp updated_at = 21 [features.field_presence = EXPLICIT];
 }
+

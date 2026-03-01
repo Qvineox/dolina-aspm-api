@@ -1215,6 +1215,10 @@
           "type": "boolean",
           "title": "if component was obtained from public sources (npm, github etc.)"
         },
+        "applicationId": {
+          "type": "integer",
+          "format": "int64"
+        },
         "repositoryUuid": {
           "type": "string"
         },

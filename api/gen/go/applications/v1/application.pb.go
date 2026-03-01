@@ -7,9 +7,12 @@
 package application_v1
 
 import (
+	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
+	v1 "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/components/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	_ "google.golang.org/protobuf/types/gofeaturespb"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	unsafe "unsafe"
 )
@@ -24,8 +27,13 @@ const (
 type Application struct {
 	state                  protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_Id          uint32                 `protobuf:"varint,1,opt,name=id"`
-	XXX_raceDetectHookData protoimpl.RaceDetectHookData
-	XXX_presence           [1]uint32
+	xxx_hidden_Suid        string                 `protobuf:"bytes,2,opt,name=suid"`
+	xxx_hidden_Name        string                 `protobuf:"bytes,3,opt,name=name"`
+	xxx_hidden_Description string                 `protobuf:"bytes,4,opt,name=description"`
+	xxx_hidden_Url         string                 `protobuf:"bytes,5,opt,name=url"`
+	xxx_hidden_Purl        *v1.PURL               `protobuf:"bytes,6,opt,name=purl"`
+	xxx_hidden_CreatedAt   *timestamppb.Timestamp `protobuf:"bytes,20,opt,name=created_at,json=createdAt"`
+	xxx_hidden_UpdatedAt   *timestamppb.Timestamp `protobuf:"bytes,21,opt,name=updated_at,json=updatedAt"`
 	unknownFields          protoimpl.UnknownFields
 	sizeCache              protoimpl.SizeCache
 }
@@ -62,37 +70,146 @@ func (x *Application) GetId() uint32 {
 	return 0
 }
 
-func (x *Application) SetId(v uint32) {
-	x.xxx_hidden_Id = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 1)
+func (x *Application) GetSuid() string {
+	if x != nil {
+		return x.xxx_hidden_Suid
+	}
+	return ""
 }
 
-func (x *Application) HasId() bool {
+func (x *Application) GetName() string {
+	if x != nil {
+		return x.xxx_hidden_Name
+	}
+	return ""
+}
+
+func (x *Application) GetDescription() string {
+	if x != nil {
+		return x.xxx_hidden_Description
+	}
+	return ""
+}
+
+func (x *Application) GetUrl() string {
+	if x != nil {
+		return x.xxx_hidden_Url
+	}
+	return ""
+}
+
+func (x *Application) GetPurl() *v1.PURL {
+	if x != nil {
+		return x.xxx_hidden_Purl
+	}
+	return nil
+}
+
+func (x *Application) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.xxx_hidden_CreatedAt
+	}
+	return nil
+}
+
+func (x *Application) GetUpdatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.xxx_hidden_UpdatedAt
+	}
+	return nil
+}
+
+func (x *Application) SetId(v uint32) {
+	x.xxx_hidden_Id = v
+}
+
+func (x *Application) SetSuid(v string) {
+	x.xxx_hidden_Suid = v
+}
+
+func (x *Application) SetName(v string) {
+	x.xxx_hidden_Name = v
+}
+
+func (x *Application) SetDescription(v string) {
+	x.xxx_hidden_Description = v
+}
+
+func (x *Application) SetUrl(v string) {
+	x.xxx_hidden_Url = v
+}
+
+func (x *Application) SetPurl(v *v1.PURL) {
+	x.xxx_hidden_Purl = v
+}
+
+func (x *Application) SetCreatedAt(v *timestamppb.Timestamp) {
+	x.xxx_hidden_CreatedAt = v
+}
+
+func (x *Application) SetUpdatedAt(v *timestamppb.Timestamp) {
+	x.xxx_hidden_UpdatedAt = v
+}
+
+func (x *Application) HasPurl() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+	return x.xxx_hidden_Purl != nil
 }
 
-func (x *Application) ClearId() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
-	x.xxx_hidden_Id = 0
+func (x *Application) HasCreatedAt() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_CreatedAt != nil
+}
+
+func (x *Application) HasUpdatedAt() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_UpdatedAt != nil
+}
+
+func (x *Application) ClearPurl() {
+	x.xxx_hidden_Purl = nil
+}
+
+func (x *Application) ClearCreatedAt() {
+	x.xxx_hidden_CreatedAt = nil
+}
+
+func (x *Application) ClearUpdatedAt() {
+	x.xxx_hidden_UpdatedAt = nil
 }
 
 type Application_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	Id *uint32
+	Id          uint32
+	Suid        string
+	Name        string
+	Description string
+	Url         string
+	// application component purl
+	Purl      *v1.PURL
+	CreatedAt *timestamppb.Timestamp
+	UpdatedAt *timestamppb.Timestamp
 }
 
 func (b0 Application_builder) Build() *Application {
 	m0 := &Application{}
 	b, x := &b0, m0
 	_, _ = b, x
-	if b.Id != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 1)
-		x.xxx_hidden_Id = *b.Id
-	}
+	x.xxx_hidden_Id = b.Id
+	x.xxx_hidden_Suid = b.Suid
+	x.xxx_hidden_Name = b.Name
+	x.xxx_hidden_Description = b.Description
+	x.xxx_hidden_Url = b.Url
+	x.xxx_hidden_Purl = b.Purl
+	x.xxx_hidden_CreatedAt = b.CreatedAt
+	x.xxx_hidden_UpdatedAt = b.UpdatedAt
 	return m0
 }
 
@@ -100,20 +217,35 @@ var File_applications_v1_application_proto protoreflect.FileDescriptor
 
 const file_applications_v1_application_proto_rawDesc = "" +
 	"\n" +
-	"!applications/v1/application.proto\x12\x15dolina.application.v1\x1a!google/protobuf/go_features.proto\"\x1d\n" +
+	"!applications/v1/application.proto\x12\x15dolina.application.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a!google/protobuf/go_features.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18components/v1/purl.proto\"\xae\x05\n" +
 	"\vApplication\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\rR\x02idB_ZSgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/applications/v1;application_v1\x92\x03\a\xd2>\x02\x10\x03\b\x01b\beditionsp\xe8\a"
+	"\x02id\x18\x01 \x01(\rR\x02id\x12\x12\n" +
+	"\x04suid\x18\x02 \x01(\tR\x04suid\x12\x12\n" +
+	"\x04name\x18\x03 \x01(\tR\x04name\x12 \n" +
+	"\vdescription\x18\x04 \x01(\tR\vdescription\x12\x10\n" +
+	"\x03url\x18\x05 \x01(\tR\x03url\x125\n" +
+	"\x04purl\x18\x06 \x01(\v2\x1a.dolina.components.v1.PURLB\x05\xaa\x01\x02\b\x01R\x04purl\x12@\n" +
+	"\n" +
+	"created_at\x18\x14 \x01(\v2\x1a.google.protobuf.TimestampB\x05\xaa\x01\x02\b\x01R\tcreatedAt\x12@\n" +
+	"\n" +
+	"updated_at\x18\x15 \x01(\v2\x1a.google.protobuf.TimestampB\x05\xaa\x01\x02\b\x01R\tupdatedAt:\xf7\x02\x92A\xf3\x02\n" +
+	"\xf0\x02*\x06Vendor2\xe5\x02Software application entity in the ASPM system containing comprehensive metadata about the application and its components. Includes identifiers (ID/UUID), naming information, version details, component inventories (libraries, modules, services), ownership metadata, deployment characteristics, and audit timestamps for tracking application security posture.B_ZSgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/applications/v1;application_v1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
 
 var file_applications_v1_application_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_applications_v1_application_proto_goTypes = []any{
-	(*Application)(nil), // 0: dolina.application.v1.Application
+	(*Application)(nil),           // 0: dolina.application.v1.Application
+	(*v1.PURL)(nil),               // 1: dolina.components.v1.PURL
+	(*timestamppb.Timestamp)(nil), // 2: google.protobuf.Timestamp
 }
 var file_applications_v1_application_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	1, // 0: dolina.application.v1.Application.purl:type_name -> dolina.components.v1.PURL
+	2, // 1: dolina.application.v1.Application.created_at:type_name -> google.protobuf.Timestamp
+	2, // 2: dolina.application.v1.Application.updated_at:type_name -> google.protobuf.Timestamp
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_applications_v1_application_proto_init() }

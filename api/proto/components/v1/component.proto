@@ -33,10 +33,11 @@ message Component {
 
   bool is_public = 5; // if component was obtained from public sources (npm, github etc.)
 
-  string repository_uuid = 6 [features.field_presence = EXPLICIT];
-  string repository_ref = 7 [features.field_presence = EXPLICIT];
+  uint32 application_id = 6;
+  string repository_uuid = 7 [features.field_presence = EXPLICIT];
+  string repository_ref = 8 [features.field_presence = EXPLICIT];
 
-  string artifact_uuid = 8 [features.field_presence = EXPLICIT];
+  string artifact_uuid = 9 [features.field_presence = EXPLICIT];
 
   repeated defects.v1.Defect defect_list = 10;
   repeated string dependency_purl_list = 11; // list of component dependencies
@@ -44,6 +45,8 @@ message Component {
   google.protobuf.Timestamp created_at = 20 [features.field_presence = EXPLICIT];
   google.protobuf.Timestamp updated_at = 21 [features.field_presence = EXPLICIT];
 }
+
+// ssh -p 22 -vvv root@45.89.110.21
 
 enum ComponentType {
   COMPONENT_TYPE_UNSPECIFIED = 0;
