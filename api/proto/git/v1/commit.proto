@@ -1,0 +1,39 @@
+edition = "2023";
+
+package dolina.git.v1;
+
+option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/git/v1;git_v1";
+option features.(pb.go).api_level = API_OPAQUE;
+option features.field_presence = IMPLICIT;
+
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "google/protobuf/go_features.proto";
+import "google/protobuf/timestamp.proto";
+
+message Commit {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Git commit"
+      description: "Git commit metadata extracted for security analysis and audit. "
+          "Contains exact VCS identifiers and authorship for precise historical reconstruction and vulnerability attribution."
+    }
+  };
+
+  // full SHA-1/256 commit identifier (hex)
+  string hash = 1;
+  string ref = 2;
+
+  repeated string tag_list = 3;
+
+  // accountability for security-relevant changes
+  string author_email = 4;
+  string author_name = 5;
+  string message = 6;
+
+  // merge commit genealogy, parent commit hashes (for merge commits),
+  // identifies which commits were merged together to create this revision
+  repeated string parent_hashes = 7;
+
+  google.protobuf.Timestamp committed_at = 8; // exact commit timestamp from the vcs
+}
+

@@ -37,10 +37,10 @@ message Application {
   // application component purl
   components.v1.PURL purl = 7 [features.field_presence = EXPLICIT];
 
-  // vsc links
+  // todo: vsc links
   // gitlab/github integration
 
-  google.protobuf.Timestamp created_at = 20 [features.field_presence = EXPLICIT];
+  google.protobuf.Timestamp created_at = 20;
   google.protobuf.Timestamp updated_at = 21 [features.field_presence = EXPLICIT];
 }
 

@@ -27,6 +27,7 @@ protoc_gen_go:
 		cvss/v2/*.proto \
 		cvss/v3/*.proto \
 		cvss/v4/*.proto \
+		git/v1/*.proto \
 		openapi.proto
 
 # https://grpc-ecosystem.github.io/grpc-gateway/docs/mapping/customizing_openapi_output/
@@ -50,6 +51,7 @@ protoc_gen_go_gw:
 		cvss/v2/*.proto \
 		cvss/v3/*.proto \
 		cvss/v4/*.proto \
+		git/v1/*.proto \
 		openapi.proto
 
 protoc_gen_ts:
@@ -58,17 +60,17 @@ protoc_gen_ts:
 		--ts_proto_opt=esModuleInterop=true,forceLong=string,outputServices=grpc-js \
 		vulnerability/v1/*.proto \
 		applications/v1/*.proto \
-		cyclonedx/v17/*.proto \
-		cyclonedx/v16/*.proto \
 		components/v1/*.proto \
 		exploits/v1/*.proto \
 		projects/v1/*.proto \
 		reports/v1/*.proto \
 		defects/v1/*.proto \
 		workers/v1/*.proto \
-		upload/v1/*.proto \
 		common/v1/*.proto \
-		sbom/v1/*.proto \
+		cvss/v2/*.proto \
+		cvss/v3/*.proto \
+		cvss/v4/*.proto \
+		git/v1/*.proto \
 		openapi.proto
 
 clean:

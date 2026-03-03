@@ -1,0 +1,47 @@
+edition = "2023";
+
+package dolina.application.v1;
+
+option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/applications/v1;application_v1";
+option features.(pb.go).api_level = API_OPAQUE;
+option features.field_presence = IMPLICIT;
+
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "google/protobuf/go_features.proto";
+import "google/protobuf/timestamp.proto";
+
+import "git/v1/repository.proto";
+import "git/v1/commit.proto";
+
+message Revision {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Revision"
+      description: "Application revision representing a specific historical state in the application's version control "
+          "history. Contains exact commit hash, branch/tag reference, commit timestamp, optional author metadata, and change "
+          "summary for tracking security posture evolution across application versions in the ASPM system."
+    }
+  };
+
+  // sequential internal revision number
+  // there can be multiple revisions from same git ref
+  uint32 revision_id = 1 [features.field_presence = EXPLICIT];
+
+  uint32 application_id = 2;
+
+  // application_id + (repository_uuid + ref) + artifact_uuid? ==> unique revision identifier
+
+  // branch name, tag, or ref/spec (e.g., "main", "v1.2.3"),
+  // contextual branch/tag showing deployment context.
+  string ref = 3;
+
+  string repository_uuid = 4 [features.field_presence = EXPLICIT];
+  string artifact_uuid = 5 [features.field_presence = EXPLICIT];
+
+  git.v1.Commit commit = 6 [features.field_presence = EXPLICIT];
+  git.v1.Repository repository = 7 [features.field_presence = EXPLICIT];
+
+  google.protobuf.Timestamp created_at = 10;
+  google.protobuf.Timestamp updated_at = 11 [features.field_presence = EXPLICIT];
+}
+

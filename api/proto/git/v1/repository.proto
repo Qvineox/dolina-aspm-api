@@ -1,0 +1,49 @@
+edition = "2023";
+
+package dolina.git.v1;
+
+option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/git/v1;git_v1";
+option features.(pb.go).api_level = API_OPAQUE;
+option features.field_presence = IMPLICIT;
+
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "google/protobuf/go_features.proto";
+import "google/protobuf/timestamp.proto";
+
+message Repository {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Git repository"
+      description: "Git repository configuration defining the source code origin for application revisions. "
+          "Contains repository identification, clone URL, authentication details (masked), branch/tag defaults, "
+          "and metadata for ASPM scanning and historical analysis."
+    }
+  };
+
+  string uuid = 1;
+
+  string name = 2;
+  string full_path = 3;
+
+  // git clone url (https/ssh)
+  string clone_url = 4;
+  string default_branch = 5;
+
+  VCSProvider provider = 6;
+
+  string owner = 7;
+
+  // membership attributes
+  uint32 application_id = 8 [features.field_presence = EXPLICIT];
+
+  google.protobuf.Timestamp created_at = 10;
+  google.protobuf.Timestamp updated_at = 11 [features.field_presence = EXPLICIT];
+}
+
+enum VCSProvider {
+  VCS_PROVIDER_UNSPECIFIED = 0;
+
+  VCS_PROVIDER_GITHUB = 1;
+  VCS_PROVIDER_GITLAB = 2;
+  VCS_PROVIDER_BITBUCKET = 3;
+}

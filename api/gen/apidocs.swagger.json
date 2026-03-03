@@ -445,7 +445,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1Revision"
+              "$ref": "#/definitions/dolinaProjectV1Revision"
             }
           },
           "default": {
@@ -491,7 +491,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1Revision"
+              "$ref": "#/definitions/dolinaProjectV1Revision"
             }
           },
           "default": {
@@ -535,7 +535,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1Revision"
+              "$ref": "#/definitions/dolinaProjectV1Revision"
             }
           },
           "default": {
@@ -1047,6 +1047,64 @@
         "CVSS4_SEVERITY_CRITICAL"
       ],
       "default": "CVSS4_SEVERITY_UNSPECIFIED"
+    },
+    "dolinaProjectV1Revision": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "tagList": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "projectId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "projectSlug": {
+          "type": "string",
+          "title": "used to create new projects"
+        },
+        "gitTags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "gitBranches": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "gitCommitHash": {
+          "type": "string"
+        },
+        "vcsUrl": {
+          "type": "string"
+        },
+        "createdBy": {
+          "type": "string"
+        },
+        "sbomFileUuid": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
     },
     "protobufAny": {
       "type": "object",
@@ -1715,64 +1773,6 @@
         },
         "pagination": {
           "$ref": "#/definitions/v1PaginationMetadata"
-        }
-      }
-    },
-    "v1Revision": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "format": "uint64"
-        },
-        "name": {
-          "type": "string"
-        },
-        "tagList": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "projectId": {
-          "type": "string",
-          "format": "uint64"
-        },
-        "projectSlug": {
-          "type": "string",
-          "title": "used to create new projects"
-        },
-        "gitTags": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "gitBranches": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "gitCommitHash": {
-          "type": "string"
-        },
-        "vcsUrl": {
-          "type": "string"
-        },
-        "createdBy": {
-          "type": "string"
-        },
-        "sbomFileUuid": {
-          "type": "string"
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "updatedAt": {
-          "type": "string",
-          "format": "date-time"
         }
       }
     },
