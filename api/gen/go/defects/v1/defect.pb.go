@@ -101,10 +101,12 @@ const (
 	DefectStatus_DEFECT_STATUS_UNSPECIFIED     DefectStatus = 0
 	DefectStatus_DEFECT_STATUS_INDIRECT        DefectStatus = 1 // defect is indirect for scanner application
 	DefectStatus_DEFECT_STATUS_DIRECT          DefectStatus = 2 // defect is found directly in a scanned application
-	DefectStatus_DEFECT_STATUS_FIXED_BY_UPDATE DefectStatus = 3 // defect is removed by library/package update
-	DefectStatus_DEFECT_STATUS_WILL_NOT_FIX    DefectStatus = 4 // defect is purposely left in code by distributor
-	DefectStatus_DEFECT_STATUS_END_OF_LIFE     DefectStatus = 5 // defect is found in no longer supported (EOL) package
-	DefectStatus_DEFECT_STATUS_HAS_EXPLOIT     DefectStatus = 6 // defect has known exploit
+	DefectStatus_DEFECT_STATUS_DEV_ONLY        DefectStatus = 3 // defect is found in development-only (workspace) runtime package
+	DefectStatus_DEFECT_STATUS_CI_ONLY         DefectStatus = 4 // defect is found in pre-deploy steps
+	DefectStatus_DEFECT_STATUS_FIXED_BY_UPDATE DefectStatus = 5 // defect is removed by library/package update
+	DefectStatus_DEFECT_STATUS_WILL_NOT_FIX    DefectStatus = 6 // defect is purposely left in code by distributor
+	DefectStatus_DEFECT_STATUS_END_OF_LIFE     DefectStatus = 7 // defect is found in no longer supported (EOL) package
+	DefectStatus_DEFECT_STATUS_HAS_EXPLOIT     DefectStatus = 8 // defect has known exploit
 )
 
 // Enum value maps for DefectStatus.
@@ -113,19 +115,23 @@ var (
 		0: "DEFECT_STATUS_UNSPECIFIED",
 		1: "DEFECT_STATUS_INDIRECT",
 		2: "DEFECT_STATUS_DIRECT",
-		3: "DEFECT_STATUS_FIXED_BY_UPDATE",
-		4: "DEFECT_STATUS_WILL_NOT_FIX",
-		5: "DEFECT_STATUS_END_OF_LIFE",
-		6: "DEFECT_STATUS_HAS_EXPLOIT",
+		3: "DEFECT_STATUS_DEV_ONLY",
+		4: "DEFECT_STATUS_CI_ONLY",
+		5: "DEFECT_STATUS_FIXED_BY_UPDATE",
+		6: "DEFECT_STATUS_WILL_NOT_FIX",
+		7: "DEFECT_STATUS_END_OF_LIFE",
+		8: "DEFECT_STATUS_HAS_EXPLOIT",
 	}
 	DefectStatus_value = map[string]int32{
 		"DEFECT_STATUS_UNSPECIFIED":     0,
 		"DEFECT_STATUS_INDIRECT":        1,
 		"DEFECT_STATUS_DIRECT":          2,
-		"DEFECT_STATUS_FIXED_BY_UPDATE": 3,
-		"DEFECT_STATUS_WILL_NOT_FIX":    4,
-		"DEFECT_STATUS_END_OF_LIFE":     5,
-		"DEFECT_STATUS_HAS_EXPLOIT":     6,
+		"DEFECT_STATUS_DEV_ONLY":        3,
+		"DEFECT_STATUS_CI_ONLY":         4,
+		"DEFECT_STATUS_FIXED_BY_UPDATE": 5,
+		"DEFECT_STATUS_WILL_NOT_FIX":    6,
+		"DEFECT_STATUS_END_OF_LIFE":     7,
+		"DEFECT_STATUS_HAS_EXPLOIT":     8,
 	}
 )
 
@@ -653,15 +659,17 @@ const file_defects_v1_defect_proto_rawDesc = "" +
 	"\x0fDEFECT_TYPE_IAC\x10\b\x12\x14\n" +
 	"\x10DEFECT_TYPE_ARCH\x10\t\x12\x1b\n" +
 	"\x17DEFECT_TYPE_CODE_REVIEW\x10\n" +
-	"\x1a\x02\x10\x01*\xe4\x01\n" +
+	"\x1a\x02\x10\x01*\x9b\x02\n" +
 	"\fDefectStatus\x12\x1d\n" +
 	"\x19DEFECT_STATUS_UNSPECIFIED\x10\x00\x12\x1a\n" +
 	"\x16DEFECT_STATUS_INDIRECT\x10\x01\x12\x18\n" +
-	"\x14DEFECT_STATUS_DIRECT\x10\x02\x12!\n" +
-	"\x1dDEFECT_STATUS_FIXED_BY_UPDATE\x10\x03\x12\x1e\n" +
-	"\x1aDEFECT_STATUS_WILL_NOT_FIX\x10\x04\x12\x1d\n" +
-	"\x19DEFECT_STATUS_END_OF_LIFE\x10\x05\x12\x1d\n" +
-	"\x19DEFECT_STATUS_HAS_EXPLOIT\x10\x06BVZJgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/defects/v1;defects_v1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
+	"\x14DEFECT_STATUS_DIRECT\x10\x02\x12\x1a\n" +
+	"\x16DEFECT_STATUS_DEV_ONLY\x10\x03\x12\x19\n" +
+	"\x15DEFECT_STATUS_CI_ONLY\x10\x04\x12!\n" +
+	"\x1dDEFECT_STATUS_FIXED_BY_UPDATE\x10\x05\x12\x1e\n" +
+	"\x1aDEFECT_STATUS_WILL_NOT_FIX\x10\x06\x12\x1d\n" +
+	"\x19DEFECT_STATUS_END_OF_LIFE\x10\a\x12\x1d\n" +
+	"\x19DEFECT_STATUS_HAS_EXPLOIT\x10\bBVZJgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/defects/v1;defects_v1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
 
 var file_defects_v1_defect_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_defects_v1_defect_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
