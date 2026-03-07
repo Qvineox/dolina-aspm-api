@@ -15,7 +15,7 @@ import "components/v1/purl.proto";
 message Application {
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
     json_schema: {
-      title: "Vendor"
+      title: "Application"
       description: "Software application entity in the ASPM system containing comprehensive metadata about the "
           "application and its components. Includes identifiers (ID/UUID), naming information, version details, "
           "component inventories (libraries, modules, services), ownership metadata, deployment characteristics, and "

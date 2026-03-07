@@ -20,7 +20,6 @@ message ScannerReport {
     }
   };
 
-
   string uploaded_file_uuid = 1;
 
   ScannerID scanner_id = 2 [features.field_presence = EXPLICIT];

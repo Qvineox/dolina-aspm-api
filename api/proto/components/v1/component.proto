@@ -46,8 +46,6 @@ message Component {
   google.protobuf.Timestamp updated_at = 21 [features.field_presence = EXPLICIT];
 }
 
-// ssh -p 22 -vvv root@45.89.110.21
-
 enum ComponentType {
   COMPONENT_TYPE_UNSPECIFIED = 0;
 

@@ -35,7 +35,7 @@ message Defect {
   repeated DefectStatus status_list = 5;
 
   // applied risk score is based on inputs from security scanners and applied ruleset
-  uint32 applied_risk_score = 6;
+  float applied_risk_score = 6;
   float cvss_score = 7;
 
   vulnerability.v1.Vulnerability vulnerability = 8 [features.field_presence = EXPLICIT];
@@ -52,9 +52,10 @@ message Defect {
   string component_purl = 19 [features.field_presence = EXPLICIT];
   bytes component_uuid = 20 [features.field_presence = EXPLICIT];
   uint32 application_id = 21 [features.field_presence = EXPLICIT];
+  bytes artifact_uuid = 22 [features.field_presence = EXPLICIT];
 
   // git ref of an application to define where defect was found
-  string application_ref = 22 [features.field_presence = EXPLICIT];
+  string application_ref = 23 [features.field_presence = EXPLICIT];
 
   // additional information about defect
   repeated string reference_url_list = 30;
@@ -70,22 +71,22 @@ enum DefectType {
   DEFECT_TYPE_UNSPECIFIED = 0;
 
   DEFECT_TYPE_SAST = 1; // static source code analysis defects
-  DEFECT_TYPE_SECRETS = 1; // found secrets (api keys, passwords) in source code or on host
+  DEFECT_TYPE_SECRETS = 2; // found secrets (api keys, passwords) in source code or on host
 
   DEFECT_TYPE_DAST = 3; // dynamic testing (dast) defects
   DEFECT_TYPE_FUZZING = 3; // dynamic testing (fuzzing) defects
 
   DEFECT_TYPE_MAST = 4; // mobile dynamic testing defects
 
-  DEFECT_TYPE_PENTEST = 6; // penetration testing defects
+  DEFECT_TYPE_PENTEST = 4; // penetration testing defects
 
-  DEFECT_TYPE_OSA = 7; // defects found in open source packages
-  DEFECT_TYPE_SCA = 7; // software composition (packages and libraries) defects
+  DEFECT_TYPE_OSA = 6; // defects found in open source packages
+  DEFECT_TYPE_SCA = 6; // software composition (packages and libraries) defects
 
-  DEFECT_TYPE_IAC = 8; // infrastructure as code configuration file defects (Dockerfiles, Terraform, Helm and others)
+  DEFECT_TYPE_IAC = 7; // infrastructure as code configuration file defects (Dockerfiles, Terraform, Helm and others)
 
-  DEFECT_TYPE_ARCH = 9; // insecure architecture defect
-  DEFECT_TYPE_CODE_REVIEW = 10; // security defect during code review
+  DEFECT_TYPE_ARCH = 8; // insecure architecture defect
+  DEFECT_TYPE_CODE_REVIEW = 9; // security defect during code review
 }
 
 enum DefectStatus {
