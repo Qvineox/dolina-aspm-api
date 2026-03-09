@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/google/uuid"
@@ -9,17 +10,17 @@ import (
 )
 
 type ApplicationAsset struct {
-	UUID     uuid.UUID `gorm:"column:uuid; primaryKey; type:uuid; default:uuid_generate_v7()"`
-	SUID     string    `gorm:"column:suid; uniqueIndex:uidx_asset_ref; not null"`
-	Revision string    `gorm:"column:revision; uniqueIndex:uidx_asset_ref; not null"` // e.g. ref, tag, branch
+	UUID     uuid.UUID `gorm:"column:uuid; primaryKey; type:uuid; default:uuid_generate_v7()" validate:"required,uuid"`
+	SUID     string    `gorm:"column:suid; uniqueIndex:uidx_asset_ref; not null" validate:"required"`
+	Revision string    `gorm:"column:revision; uniqueIndex:uidx_asset_ref; not null" validate:"required"` // e.g. ref, tag, branch
 
-	Name        string `gorm:"column:name; index; not null"`
+	Name        string `gorm:"column:name; index; not null" validate:"required"`
 	Description string `gorm:"column:description"`
-	URL         string `gorm:"column:url"`
+	URL         string `gorm:"column:url" validate:"omitempty,url"`
 
-	AssetType AssetType `gorm:"column:type; type:asset_type"`
+	AssetType AssetType `gorm:"column:type; type:asset_type" validate:"required,oneof=repository image executable"`
 
-	Labels datatypes.JSONSlice[string] `gorm:"column:labels; type:jsonb"`
+	Labels datatypes.JSONSlice[string] `gorm:"column:labels; type:jsonb; default:'[]'"`
 
 	ComponentPURL *string   `gorm:"column:component_purl; uniqueIndex"`
 	Component     Component `gorm:"foreignKey:PURL; references:ComponentPURL"`
@@ -35,12 +36,73 @@ type ApplicationAsset struct {
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 
-func (a ApplicationAsset) TableName() string {
+func (a *ApplicationAsset) BeforeCreate(tx *gorm.DB) error {
+	err := validate.Struct(a)
+	if err != nil {
+		return fmt.Errorf("validation error: %w", err)
+	}
+
+	return nil
+}
+
+func (a *ApplicationAsset) BeforeUpdate(tx *gorm.DB) error {
+	err := validate.Struct(a)
+	if err != nil {
+		return fmt.Errorf("validation error: %w", err)
+	}
+
+	return nil
+}
+
+func (a *ApplicationAsset) TableName() string {
 	return "application_assets"
 }
 
-func (a ApplicationAsset) Validate() bool {
-	return true
+type ApplicationAssetOptions struct {
+	SUID     string
+	Revision string
+
+	Name        string
+	Description string
+	AssetType   AssetType
+
+	URL    string
+	Labels []string
+
+	ComponentPURL *string
+	ApplicationID *uint32
+}
+
+func NewApplicationAsset(opts ApplicationAssetOptions) (*ApplicationAsset, error) {
+	uid, err := uuid.NewV7()
+	if err != nil {
+		return nil, fmt.Errorf("error generating uuid: %w", err)
+	}
+
+	app := &ApplicationAsset{
+		UUID:          uid,
+		Name:          opts.Name,
+		Description:   opts.Description,
+		Revision:      opts.Revision,
+		ApplicationID: opts.ApplicationID,
+		AssetType:     opts.AssetType,
+		URL:           opts.URL,
+		Labels:        opts.Labels,
+		ComponentPURL: opts.ComponentPURL,
+	}
+
+	if opts.SUID != "" {
+		app.SUID = opts.SUID
+	} else {
+		app.SUID = generateSUID(opts.Name)
+	}
+
+	err = validate.Struct(app)
+	if err != nil {
+		return nil, fmt.Errorf("validation error: %w", err)
+	}
+
+	return app, nil
 }
 
 type AssetType string

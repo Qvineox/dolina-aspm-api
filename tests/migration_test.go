@@ -36,18 +36,7 @@ func TestMigrations(t *testing.T) {
 	})
 
 	t.Run("schema migration test", func(t *testing.T) {
-		err = orm.AutoMigrate(
-			&models.Application{},
-			&models.Component{},
-			&models.ApplicationAsset{},
-			&models.Vulnerability{},
-			&models.AssetDefect{},
-			&models.Vendor{},
-			&models.VendorScoring{},
-			&models.Exploit{},
-		)
-
-		require.NoError(t, err)
+		AutoMigrate(t, orm)
 	})
 }
 
@@ -70,5 +59,22 @@ func MigrateTypes(t *testing.T, orm *gorm.DB) {
 	require.NoError(t, err)
 
 	err = db.MigrateCVSSSeverities(orm)
+	require.NoError(t, err)
+}
+
+func AutoMigrate(t *testing.T, orm *gorm.DB) {
+	var err error
+
+	err = orm.AutoMigrate(
+		&models.Application{},
+		&models.Component{},
+		&models.ApplicationAsset{},
+		&models.Vulnerability{},
+		&models.AssetDefect{},
+		&models.Vendor{},
+		&models.VendorScoring{},
+		&models.Exploit{},
+	)
+
 	require.NoError(t, err)
 }
