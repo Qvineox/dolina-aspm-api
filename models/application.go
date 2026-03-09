@@ -15,28 +15,24 @@ type Application struct {
 	Description string `gorm:"column:description"`
 	URL         string `gorm:"column:url"`
 
-	Labels datatypes.JSONSlice[string] `gorm:"column:labels; type:json"`
+	Labels datatypes.JSONSlice[string] `gorm:"column:labels; type:jsonb"`
 
 	ComponentPURL *string   `gorm:"column:component_purl; uniqueIndex"`
 	Component     Component `gorm:"foreignKey:PURL; references:ComponentPURL"`
 
-	Defects []Defect `gorm:"foreignKey:ApplicationID; references:ID; constraint:OnUpdate:CASCADE, OnDelete:SET NULL;"`
+	// Defects []Defect `gorm:"foreignKey:ApplicationID; references:ID; constraint:OnUpdate:CASCADE, OnDelete:SET NULL;"`
 
-	Components []Component `gorm:"many2many:application_components"`
-	Artifacts  []Component `gorm:"many2many:application_components"`
+	// RiskProfile // todo: add application risk profile
 
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 
-func (a Application) Validate() bool {
-	return true
+func (a Application) TableName() string {
+	return "applications"
 }
 
-// todo: db.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
-
-type ApplicationComponent struct {
-	ApplicationID uint32 `gorm:"column:application_id; primaryKey"`
-	ComponentID   uint32 `gorm:"column:component_id; primaryKey"`
+func (a Application) Validate() bool {
+	return true
 }
