@@ -1,0 +1,5 @@
+database:
+  user: test_user
+  pass: test_pass
+logging:
+  level: 45

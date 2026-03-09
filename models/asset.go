@@ -24,7 +24,9 @@ type ApplicationAsset struct {
 	ComponentPURL *string   `gorm:"column:component_purl; uniqueIndex"`
 	Component     Component `gorm:"foreignKey:PURL; references:ComponentPURL"`
 
-	// Defects []Defect `gorm:"foreignKey:ApplicationID; references:ID; constraint:OnUpdate:CASCADE, OnDelete:SET NULL;"`
+	ApplicationID *uint32 `gorm:"column:application_id; index"`
+
+	Defects []AssetDefect `gorm:"foreignKey:AssetUUID; references:UUID; constraint:OnUpdate:CASCADE, OnDelete:SET NULL;"`
 
 	Components []Component `gorm:"many2many:asset_components"`
 
@@ -41,15 +43,30 @@ func (a ApplicationAsset) Validate() bool {
 	return true
 }
 
-type AssetType uint32
+type AssetType string
 
 const (
-	AssetType_Unknown AssetType = iota
+	AssetType_Unknown AssetType = "unknown"
 
-	AssetType_Repository
-	AssetType_Image
-	AssetType_Executable
+	AssetType_Repository AssetType = "repository"
+	AssetType_Image      AssetType = "image"
+	AssetType_Executable AssetType = "executable"
 )
+
+var AssetTypes = [...]AssetType{
+	AssetType_Unknown,
+	AssetType_Repository,
+	AssetType_Image,
+	AssetType_Executable,
+}
+
+var AssetTypesEnums = map[AssetType]int32{
+	AssetType_Unknown: 0,
+
+	AssetType_Repository: 1,
+	AssetType_Image:      2,
+	AssetType_Executable: 3,
+}
 
 // todo: db.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
 

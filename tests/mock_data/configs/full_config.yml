@@ -1,0 +1,8 @@
+database:
+  host: 1.2.3.4
+  port: 5432
+  user: test_user1
+  pass: test_pass2
+  timezone: Europe/Moscow
+logging:
+  level: 4
