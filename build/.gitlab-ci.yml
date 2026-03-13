@@ -1,6 +1,35 @@
 stages:
+  - lint
   - publish
   - prettify
+
+golangci lint:
+  stage: lint
+  allow_failure: true
+  image:
+    name: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/golangci/golangci-lint:v2.11.3
+    entrypoint: [ "" ]
+  variables:
+    GOLANGCI_LINT_CACHE: /root/.cache/golangci-lint
+    GOCACHE: /root/.cache/go-build
+    GOPATH: $CI_PROJECT_DIR/.go
+  cache:
+    key:
+      files:
+        - go.sum
+        - .golangci.yml
+    paths:
+      - .go/pkg/mod/
+      - ~/.cache/go-build/
+      - ~/.cache/golangci-lint/
+  script:
+    - golangci-lint run ./... --output.code-climate.path gl-code-quality-report.json
+  artifacts:
+    reports:
+      codequality: gl-code-quality-report.json
+    when: always
+    expire_in: 1 week
+
 
 bump tag:
   stage: publish
