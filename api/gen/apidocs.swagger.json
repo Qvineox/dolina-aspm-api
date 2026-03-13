@@ -283,20 +283,6 @@
               "type": "string"
             },
             "collectionFormat": "multi"
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "uint64"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "uint64"
           }
         ],
         "tags": [
@@ -380,20 +366,6 @@
               "type": "string"
             },
             "collectionFormat": "multi"
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "uint64"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "uint64"
           }
         ],
         "tags": [
@@ -445,7 +417,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/dolinaProjectV1Revision"
+              "$ref": "#/definitions/dolinaProjectsV1Revision"
             }
           },
           "default": {
@@ -491,7 +463,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/dolinaProjectV1Revision"
+              "$ref": "#/definitions/dolinaProjectsV1Revision"
             }
           },
           "default": {
@@ -535,7 +507,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/dolinaProjectV1Revision"
+              "$ref": "#/definitions/dolinaProjectsV1Revision"
             }
           },
           "default": {
@@ -618,20 +590,6 @@
               "type": "string"
             },
             "collectionFormat": "multi"
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "uint64"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "uint64"
           }
         ],
         "tags": [
@@ -1048,7 +1006,7 @@
       ],
       "default": "CVSS4_SEVERITY_UNSPECIFIED"
     },
-    "dolinaProjectV1Revision": {
+    "dolinaProjectsV1Revision": {
       "type": "object",
       "properties": {
         "id": {
@@ -1403,8 +1361,8 @@
           }
         },
         "appliedRiskScore": {
-          "type": "integer",
-          "format": "int64",
+          "type": "number",
+          "format": "float",
           "title": "applied risk score is based on inputs from security scanners and applied ruleset"
         },
         "cvssScore": {
@@ -1451,6 +1409,10 @@
         "applicationId": {
           "type": "integer",
           "format": "int64"
+        },
+        "artifactUuid": {
+          "type": "string",
+          "format": "byte"
         },
         "applicationRef": {
           "type": "string",

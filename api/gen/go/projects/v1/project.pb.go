@@ -4,7 +4,7 @@
 // 	protoc        v6.33.5
 // source: projects/v1/project.proto
 
-package project_v1
+package projects_v1
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -240,29 +240,29 @@ var File_projects_v1_project_proto protoreflect.FileDescriptor
 
 const file_projects_v1_project_proto_rawDesc = "" +
 	"\n" +
-	"\x19projects/v1/project.proto\x12\x11dolina.project.v1\x1a!google/protobuf/go_features.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xe3\x02\n" +
+	"\x19projects/v1/project.proto\x12\x12dolina.projects.v1\x1a!google/protobuf/go_features.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xe4\x02\n" +
 	"\aProject\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x12\n" +
 	"\x04slug\x18\x03 \x01(\tR\x04slug\x12 \n" +
 	"\vdescription\x18\x04 \x01(\tR\vdescription\x12\x19\n" +
 	"\btag_list\x18\x05 \x03(\tR\atagList\x12\x1e\n" +
-	"\avcs_url\x18\x06 \x01(\tB\x05\xaa\x01\x02\b\x01R\x06vcsUrl\x12?\n" +
-	"\rrevision_list\x18\a \x03(\v2\x1a.dolina.project.v1.ProjectR\frevisionList\x12@\n" +
+	"\avcs_url\x18\x06 \x01(\tB\x05\xaa\x01\x02\b\x01R\x06vcsUrl\x12@\n" +
+	"\rrevision_list\x18\a \x03(\v2\x1b.dolina.projects.v1.ProjectR\frevisionList\x12@\n" +
 	"\n" +
 	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampB\x05\xaa\x01\x02\b\x01R\tcreatedAt\x12@\n" +
 	"\n" +
-	"updated_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampB\x05\xaa\x01\x02\b\x01R\tupdatedAtBWZKgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/projects/v1;project_v1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
+	"updated_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampB\x05\xaa\x01\x02\b\x01R\tupdatedAtBXZLgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/projects/v1;projects_v1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
 
 var file_projects_v1_project_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_projects_v1_project_proto_goTypes = []any{
-	(*Project)(nil),               // 0: dolina.project.v1.Project
+	(*Project)(nil),               // 0: dolina.projects.v1.Project
 	(*timestamppb.Timestamp)(nil), // 1: google.protobuf.Timestamp
 }
 var file_projects_v1_project_proto_depIdxs = []int32{
-	0, // 0: dolina.project.v1.Project.revision_list:type_name -> dolina.project.v1.Project
-	1, // 1: dolina.project.v1.Project.created_at:type_name -> google.protobuf.Timestamp
-	1, // 2: dolina.project.v1.Project.updated_at:type_name -> google.protobuf.Timestamp
+	0, // 0: dolina.projects.v1.Project.revision_list:type_name -> dolina.projects.v1.Project
+	1, // 1: dolina.projects.v1.Project.created_at:type_name -> google.protobuf.Timestamp
+	1, // 2: dolina.projects.v1.Project.updated_at:type_name -> google.protobuf.Timestamp
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name

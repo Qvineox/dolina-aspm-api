@@ -4,14 +4,14 @@
 // 	protoc        v6.33.5
 // source: projects/v1/revision.proto
 
-package project_v1
+package projects_v1
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	_ "google.golang.org/protobuf/types/gofeaturespb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
-	sync "sync"
 	unsafe "unsafe"
 )
 
@@ -23,22 +23,24 @@ const (
 )
 
 type Revision struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Name          *string                `protobuf:"bytes,2,opt,name=name,proto3,oneof" json:"name,omitempty"`
-	TagList       []string               `protobuf:"bytes,3,rep,name=tag_list,json=tagList,proto3" json:"tag_list,omitempty"`
-	ProjectId     uint64                 `protobuf:"varint,4,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
-	ProjectSlug   string                 `protobuf:"bytes,5,opt,name=project_slug,json=projectSlug,proto3" json:"project_slug,omitempty"` // used to create new projects
-	GitTags       []string               `protobuf:"bytes,6,rep,name=git_tags,json=gitTags,proto3" json:"git_tags,omitempty"`
-	GitBranches   []string               `protobuf:"bytes,7,rep,name=git_branches,json=gitBranches,proto3" json:"git_branches,omitempty"`
-	GitCommitHash *string                `protobuf:"bytes,8,opt,name=git_commit_hash,json=gitCommitHash,proto3,oneof" json:"git_commit_hash,omitempty"`
-	VcsUrl        *string                `protobuf:"bytes,9,opt,name=vcs_url,json=vcsUrl,proto3,oneof" json:"vcs_url,omitempty"`
-	CreatedBy     *string                `protobuf:"bytes,10,opt,name=created_by,json=createdBy,proto3,oneof" json:"created_by,omitempty"`
-	SbomFileUuid  *string                `protobuf:"bytes,11,opt,name=sbom_file_uuid,json=sbomFileUuid,proto3,oneof" json:"sbom_file_uuid,omitempty"`
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,12,opt,name=created_at,json=createdAt,proto3,oneof" json:"created_at,omitempty"`
-	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,13,opt,name=updated_at,json=updatedAt,proto3,oneof" json:"updated_at,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                    protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Id            uint64                 `protobuf:"varint,1,opt,name=id"`
+	xxx_hidden_Name          *string                `protobuf:"bytes,2,opt,name=name"`
+	xxx_hidden_TagList       []string               `protobuf:"bytes,3,rep,name=tag_list,json=tagList"`
+	xxx_hidden_ProjectId     uint64                 `protobuf:"varint,4,opt,name=project_id,json=projectId"`
+	xxx_hidden_ProjectSlug   *string                `protobuf:"bytes,5,opt,name=project_slug,json=projectSlug"`
+	xxx_hidden_GitTags       []string               `protobuf:"bytes,6,rep,name=git_tags,json=gitTags"`
+	xxx_hidden_GitBranches   []string               `protobuf:"bytes,7,rep,name=git_branches,json=gitBranches"`
+	xxx_hidden_GitCommitHash *string                `protobuf:"bytes,8,opt,name=git_commit_hash,json=gitCommitHash"`
+	xxx_hidden_VcsUrl        *string                `protobuf:"bytes,9,opt,name=vcs_url,json=vcsUrl"`
+	xxx_hidden_CreatedBy     *string                `protobuf:"bytes,10,opt,name=created_by,json=createdBy"`
+	xxx_hidden_SbomFileUuid  *string                `protobuf:"bytes,11,opt,name=sbom_file_uuid,json=sbomFileUuid"`
+	xxx_hidden_CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,12,opt,name=created_at,json=createdAt"`
+	xxx_hidden_UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,13,opt,name=updated_at,json=updatedAt"`
+	XXX_raceDetectHookData   protoimpl.RaceDetectHookData
+	XXX_presence             [1]uint32
+	unknownFields            protoimpl.UnknownFields
+	sizeCache                protoimpl.SizeCache
 }
 
 func (x *Revision) Reset() {
@@ -66,155 +68,388 @@ func (x *Revision) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Revision.ProtoReflect.Descriptor instead.
-func (*Revision) Descriptor() ([]byte, []int) {
-	return file_projects_v1_revision_proto_rawDescGZIP(), []int{0}
-}
-
 func (x *Revision) GetId() uint64 {
 	if x != nil {
-		return x.Id
+		return x.xxx_hidden_Id
 	}
 	return 0
 }
 
 func (x *Revision) GetName() string {
-	if x != nil && x.Name != nil {
-		return *x.Name
+	if x != nil {
+		if x.xxx_hidden_Name != nil {
+			return *x.xxx_hidden_Name
+		}
+		return ""
 	}
 	return ""
 }
 
 func (x *Revision) GetTagList() []string {
 	if x != nil {
-		return x.TagList
+		return x.xxx_hidden_TagList
 	}
 	return nil
 }
 
 func (x *Revision) GetProjectId() uint64 {
 	if x != nil {
-		return x.ProjectId
+		return x.xxx_hidden_ProjectId
 	}
 	return 0
 }
 
 func (x *Revision) GetProjectSlug() string {
 	if x != nil {
-		return x.ProjectSlug
+		if x.xxx_hidden_ProjectSlug != nil {
+			return *x.xxx_hidden_ProjectSlug
+		}
+		return ""
 	}
 	return ""
 }
 
 func (x *Revision) GetGitTags() []string {
 	if x != nil {
-		return x.GitTags
+		return x.xxx_hidden_GitTags
 	}
 	return nil
 }
 
 func (x *Revision) GetGitBranches() []string {
 	if x != nil {
-		return x.GitBranches
+		return x.xxx_hidden_GitBranches
 	}
 	return nil
 }
 
 func (x *Revision) GetGitCommitHash() string {
-	if x != nil && x.GitCommitHash != nil {
-		return *x.GitCommitHash
+	if x != nil {
+		if x.xxx_hidden_GitCommitHash != nil {
+			return *x.xxx_hidden_GitCommitHash
+		}
+		return ""
 	}
 	return ""
 }
 
 func (x *Revision) GetVcsUrl() string {
-	if x != nil && x.VcsUrl != nil {
-		return *x.VcsUrl
+	if x != nil {
+		if x.xxx_hidden_VcsUrl != nil {
+			return *x.xxx_hidden_VcsUrl
+		}
+		return ""
 	}
 	return ""
 }
 
 func (x *Revision) GetCreatedBy() string {
-	if x != nil && x.CreatedBy != nil {
-		return *x.CreatedBy
+	if x != nil {
+		if x.xxx_hidden_CreatedBy != nil {
+			return *x.xxx_hidden_CreatedBy
+		}
+		return ""
 	}
 	return ""
 }
 
 func (x *Revision) GetSbomFileUuid() string {
-	if x != nil && x.SbomFileUuid != nil {
-		return *x.SbomFileUuid
+	if x != nil {
+		if x.xxx_hidden_SbomFileUuid != nil {
+			return *x.xxx_hidden_SbomFileUuid
+		}
+		return ""
 	}
 	return ""
 }
 
 func (x *Revision) GetCreatedAt() *timestamppb.Timestamp {
 	if x != nil {
-		return x.CreatedAt
+		return x.xxx_hidden_CreatedAt
 	}
 	return nil
 }
 
 func (x *Revision) GetUpdatedAt() *timestamppb.Timestamp {
 	if x != nil {
-		return x.UpdatedAt
+		return x.xxx_hidden_UpdatedAt
 	}
 	return nil
+}
+
+func (x *Revision) SetId(v uint64) {
+	x.xxx_hidden_Id = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 13)
+}
+
+func (x *Revision) SetName(v string) {
+	x.xxx_hidden_Name = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 13)
+}
+
+func (x *Revision) SetTagList(v []string) {
+	x.xxx_hidden_TagList = v
+}
+
+func (x *Revision) SetProjectId(v uint64) {
+	x.xxx_hidden_ProjectId = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 13)
+}
+
+func (x *Revision) SetProjectSlug(v string) {
+	x.xxx_hidden_ProjectSlug = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 13)
+}
+
+func (x *Revision) SetGitTags(v []string) {
+	x.xxx_hidden_GitTags = v
+}
+
+func (x *Revision) SetGitBranches(v []string) {
+	x.xxx_hidden_GitBranches = v
+}
+
+func (x *Revision) SetGitCommitHash(v string) {
+	x.xxx_hidden_GitCommitHash = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 13)
+}
+
+func (x *Revision) SetVcsUrl(v string) {
+	x.xxx_hidden_VcsUrl = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 8, 13)
+}
+
+func (x *Revision) SetCreatedBy(v string) {
+	x.xxx_hidden_CreatedBy = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 9, 13)
+}
+
+func (x *Revision) SetSbomFileUuid(v string) {
+	x.xxx_hidden_SbomFileUuid = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 10, 13)
+}
+
+func (x *Revision) SetCreatedAt(v *timestamppb.Timestamp) {
+	x.xxx_hidden_CreatedAt = v
+}
+
+func (x *Revision) SetUpdatedAt(v *timestamppb.Timestamp) {
+	x.xxx_hidden_UpdatedAt = v
+}
+
+func (x *Revision) HasId() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+}
+
+func (x *Revision) HasName() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+}
+
+func (x *Revision) HasProjectId() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
+}
+
+func (x *Revision) HasProjectSlug() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
+}
+
+func (x *Revision) HasGitCommitHash() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 7)
+}
+
+func (x *Revision) HasVcsUrl() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 8)
+}
+
+func (x *Revision) HasCreatedBy() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 9)
+}
+
+func (x *Revision) HasSbomFileUuid() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 10)
+}
+
+func (x *Revision) HasCreatedAt() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_CreatedAt != nil
+}
+
+func (x *Revision) HasUpdatedAt() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_UpdatedAt != nil
+}
+
+func (x *Revision) ClearId() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
+	x.xxx_hidden_Id = 0
+}
+
+func (x *Revision) ClearName() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	x.xxx_hidden_Name = nil
+}
+
+func (x *Revision) ClearProjectId() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
+	x.xxx_hidden_ProjectId = 0
+}
+
+func (x *Revision) ClearProjectSlug() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
+	x.xxx_hidden_ProjectSlug = nil
+}
+
+func (x *Revision) ClearGitCommitHash() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 7)
+	x.xxx_hidden_GitCommitHash = nil
+}
+
+func (x *Revision) ClearVcsUrl() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 8)
+	x.xxx_hidden_VcsUrl = nil
+}
+
+func (x *Revision) ClearCreatedBy() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 9)
+	x.xxx_hidden_CreatedBy = nil
+}
+
+func (x *Revision) ClearSbomFileUuid() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 10)
+	x.xxx_hidden_SbomFileUuid = nil
+}
+
+func (x *Revision) ClearCreatedAt() {
+	x.xxx_hidden_CreatedAt = nil
+}
+
+func (x *Revision) ClearUpdatedAt() {
+	x.xxx_hidden_UpdatedAt = nil
+}
+
+type Revision_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	Id            *uint64
+	Name          *string
+	TagList       []string
+	ProjectId     *uint64
+	ProjectSlug   *string
+	GitTags       []string
+	GitBranches   []string
+	GitCommitHash *string
+	VcsUrl        *string
+	CreatedBy     *string
+	SbomFileUuid  *string
+	CreatedAt     *timestamppb.Timestamp
+	UpdatedAt     *timestamppb.Timestamp
+}
+
+func (b0 Revision_builder) Build() *Revision {
+	m0 := &Revision{}
+	b, x := &b0, m0
+	_, _ = b, x
+	if b.Id != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 13)
+		x.xxx_hidden_Id = *b.Id
+	}
+	if b.Name != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 13)
+		x.xxx_hidden_Name = b.Name
+	}
+	x.xxx_hidden_TagList = b.TagList
+	if b.ProjectId != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 13)
+		x.xxx_hidden_ProjectId = *b.ProjectId
+	}
+	if b.ProjectSlug != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 13)
+		x.xxx_hidden_ProjectSlug = b.ProjectSlug
+	}
+	x.xxx_hidden_GitTags = b.GitTags
+	x.xxx_hidden_GitBranches = b.GitBranches
+	if b.GitCommitHash != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 13)
+		x.xxx_hidden_GitCommitHash = b.GitCommitHash
+	}
+	if b.VcsUrl != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 8, 13)
+		x.xxx_hidden_VcsUrl = b.VcsUrl
+	}
+	if b.CreatedBy != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 9, 13)
+		x.xxx_hidden_CreatedBy = b.CreatedBy
+	}
+	if b.SbomFileUuid != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 10, 13)
+		x.xxx_hidden_SbomFileUuid = b.SbomFileUuid
+	}
+	x.xxx_hidden_CreatedAt = b.CreatedAt
+	x.xxx_hidden_UpdatedAt = b.UpdatedAt
+	return m0
 }
 
 var File_projects_v1_revision_proto protoreflect.FileDescriptor
 
 const file_projects_v1_revision_proto_rawDesc = "" +
 	"\n" +
-	"\x1aprojects/v1/revision.proto\x12\x11dolina.project.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xd1\x04\n" +
+	"\x1aprojects/v1/revision.proto\x12\x12dolina.projects.v1\x1a!google/protobuf/go_features.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xf6\x03\n" +
 	"\bRevision\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x17\n" +
-	"\x04name\x18\x02 \x01(\tH\x00R\x04name\x88\x01\x01\x12\x19\n" +
+	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x19\n" +
+	"\x04name\x18\x02 \x01(\tB\x05\xaa\x01\x02\b\x01R\x04name\x12\x19\n" +
 	"\btag_list\x18\x03 \x03(\tR\atagList\x12\x1d\n" +
 	"\n" +
 	"project_id\x18\x04 \x01(\x04R\tprojectId\x12!\n" +
 	"\fproject_slug\x18\x05 \x01(\tR\vprojectSlug\x12\x19\n" +
 	"\bgit_tags\x18\x06 \x03(\tR\agitTags\x12!\n" +
-	"\fgit_branches\x18\a \x03(\tR\vgitBranches\x12+\n" +
-	"\x0fgit_commit_hash\x18\b \x01(\tH\x01R\rgitCommitHash\x88\x01\x01\x12\x1c\n" +
-	"\avcs_url\x18\t \x01(\tH\x02R\x06vcsUrl\x88\x01\x01\x12\"\n" +
+	"\fgit_branches\x18\a \x03(\tR\vgitBranches\x12-\n" +
+	"\x0fgit_commit_hash\x18\b \x01(\tB\x05\xaa\x01\x02\b\x01R\rgitCommitHash\x12\x1e\n" +
+	"\avcs_url\x18\t \x01(\tB\x05\xaa\x01\x02\b\x01R\x06vcsUrl\x12$\n" +
 	"\n" +
 	"created_by\x18\n" +
-	" \x01(\tH\x03R\tcreatedBy\x88\x01\x01\x12)\n" +
-	"\x0esbom_file_uuid\x18\v \x01(\tH\x04R\fsbomFileUuid\x88\x01\x01\x12>\n" +
+	" \x01(\tB\x05\xaa\x01\x02\b\x01R\tcreatedBy\x12+\n" +
+	"\x0esbom_file_uuid\x18\v \x01(\tB\x05\xaa\x01\x02\b\x01R\fsbomFileUuid\x12@\n" +
 	"\n" +
-	"created_at\x18\f \x01(\v2\x1a.google.protobuf.TimestampH\x05R\tcreatedAt\x88\x01\x01\x12>\n" +
+	"created_at\x18\f \x01(\v2\x1a.google.protobuf.TimestampB\x05\xaa\x01\x02\b\x01R\tcreatedAt\x12@\n" +
 	"\n" +
-	"updated_at\x18\r \x01(\v2\x1a.google.protobuf.TimestampH\x06R\tupdatedAt\x88\x01\x01B\a\n" +
-	"\x05_nameB\x12\n" +
-	"\x10_git_commit_hashB\n" +
-	"\n" +
-	"\b_vcs_urlB\r\n" +
-	"\v_created_byB\x11\n" +
-	"\x0f_sbom_file_uuidB\r\n" +
-	"\v_created_atB\r\n" +
-	"\v_updated_atBMZKgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/projects/v1;project_v1b\x06proto3"
-
-var (
-	file_projects_v1_revision_proto_rawDescOnce sync.Once
-	file_projects_v1_revision_proto_rawDescData []byte
-)
-
-func file_projects_v1_revision_proto_rawDescGZIP() []byte {
-	file_projects_v1_revision_proto_rawDescOnce.Do(func() {
-		file_projects_v1_revision_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_projects_v1_revision_proto_rawDesc), len(file_projects_v1_revision_proto_rawDesc)))
-	})
-	return file_projects_v1_revision_proto_rawDescData
-}
+	"updated_at\x18\r \x01(\v2\x1a.google.protobuf.TimestampB\x05\xaa\x01\x02\b\x01R\tupdatedAtBXZLgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/projects/v1;projects_v1\x92\x03\a\xd2>\x02\x10\x03\b\x01b\beditionsp\xe8\a"
 
 var file_projects_v1_revision_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_projects_v1_revision_proto_goTypes = []any{
-	(*Revision)(nil),              // 0: dolina.project.v1.Revision
+	(*Revision)(nil),              // 0: dolina.projects.v1.Revision
 	(*timestamppb.Timestamp)(nil), // 1: google.protobuf.Timestamp
 }
 var file_projects_v1_revision_proto_depIdxs = []int32{
-	1, // 0: dolina.project.v1.Revision.created_at:type_name -> google.protobuf.Timestamp
-	1, // 1: dolina.project.v1.Revision.updated_at:type_name -> google.protobuf.Timestamp
+	1, // 0: dolina.projects.v1.Revision.created_at:type_name -> google.protobuf.Timestamp
+	1, // 1: dolina.projects.v1.Revision.updated_at:type_name -> google.protobuf.Timestamp
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name
@@ -227,7 +462,6 @@ func file_projects_v1_revision_proto_init() {
 	if File_projects_v1_revision_proto != nil {
 		return
 	}
-	file_projects_v1_revision_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

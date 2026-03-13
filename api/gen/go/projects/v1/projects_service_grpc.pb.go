@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-go-grpc v1.6.1
 // - protoc             v6.33.5
-// source: projects/v1/project_service.proto
+// source: projects/v1/projects_service.proto
 
-package project_v1
+package projects_v1
 
 import (
 	context "context"
@@ -19,12 +19,12 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	ProjectService_GetProjectsByQueryFilter_FullMethodName = "/dolina.project.v1.ProjectService/GetProjectsByQueryFilter"
-	ProjectService_GetProject_FullMethodName               = "/dolina.project.v1.ProjectService/GetProject"
-	ProjectService_CreateProject_FullMethodName            = "/dolina.project.v1.ProjectService/CreateProject"
-	ProjectService_UpdateProject_FullMethodName            = "/dolina.project.v1.ProjectService/UpdateProject"
-	ProjectService_GetProjectRevision_FullMethodName       = "/dolina.project.v1.ProjectService/GetProjectRevision"
-	ProjectService_UpdateProjectRevision_FullMethodName    = "/dolina.project.v1.ProjectService/UpdateProjectRevision"
+	ProjectService_GetProjectsByQueryFilter_FullMethodName = "/dolina.projects.v1.ProjectService/GetProjectsByQueryFilter"
+	ProjectService_GetProject_FullMethodName               = "/dolina.projects.v1.ProjectService/GetProject"
+	ProjectService_CreateProject_FullMethodName            = "/dolina.projects.v1.ProjectService/CreateProject"
+	ProjectService_UpdateProject_FullMethodName            = "/dolina.projects.v1.ProjectService/UpdateProject"
+	ProjectService_GetProjectRevision_FullMethodName       = "/dolina.projects.v1.ProjectService/GetProjectRevision"
+	ProjectService_UpdateProjectRevision_FullMethodName    = "/dolina.projects.v1.ProjectService/UpdateProjectRevision"
 )
 
 // ProjectServiceClient is the client API for ProjectService service.
@@ -276,7 +276,7 @@ func _ProjectService_UpdateProjectRevision_Handler(srv interface{}, ctx context.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ProjectService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "dolina.project.v1.ProjectService",
+	ServiceName: "dolina.projects.v1.ProjectService",
 	HandlerType: (*ProjectServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -305,5 +305,5 @@ var ProjectService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "projects/v1/project_service.proto",
+	Metadata: "projects/v1/projects_service.proto",
 }

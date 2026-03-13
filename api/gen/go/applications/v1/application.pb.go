@@ -232,7 +232,7 @@ var File_applications_v1_application_proto protoreflect.FileDescriptor
 
 const file_applications_v1_application_proto_rawDesc = "" +
 	"\n" +
-	"!applications/v1/application.proto\x12\x15dolina.application.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a!google/protobuf/go_features.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18components/v1/purl.proto\"\xc6\x05\n" +
+	"!applications/v1/application.proto\x12\x15dolina.application.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a!google/protobuf/go_features.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18components/v1/purl.proto\"\xcb\x05\n" +
 	"\vApplication\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x12\n" +
 	"\x04suid\x18\x02 \x01(\tR\x04suid\x12\x12\n" +
@@ -245,8 +245,8 @@ const file_applications_v1_application_proto_rawDesc = "" +
 	"\n" +
 	"created_at\x18\x14 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12@\n" +
 	"\n" +
-	"updated_at\x18\x15 \x01(\v2\x1a.google.protobuf.TimestampB\x05\xaa\x01\x02\b\x01R\tupdatedAt:\xf7\x02\x92A\xf3\x02\n" +
-	"\xf0\x02*\x06Vendor2\xe5\x02Software application entity in the ASPM system containing comprehensive metadata about the application and its components. Includes identifiers (ID/UUID), naming information, version details, component inventories (libraries, modules, services), ownership metadata, deployment characteristics, and audit timestamps for tracking application security posture.B_ZSgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/applications/v1;application_v1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
+	"updated_at\x18\x15 \x01(\v2\x1a.google.protobuf.TimestampB\x05\xaa\x01\x02\b\x01R\tupdatedAt:\xfc\x02\x92A\xf8\x02\n" +
+	"\xf5\x02*\vApplication2\xe5\x02Software application entity in the ASPM system containing comprehensive metadata about the application and its components. Includes identifiers (ID/UUID), naming information, version details, component inventories (libraries, modules, services), ownership metadata, deployment characteristics, and audit timestamps for tracking application security posture.B_ZSgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/applications/v1;application_v1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
 
 var file_applications_v1_application_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_applications_v1_application_proto_goTypes = []any{

@@ -1,15 +1,18 @@
-syntax = "proto3";
+edition = "2023";
 
-package dolina.project.v1;
+package dolina.projects.v1;
 
-option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/projects/v1;project_v1";
+option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/projects/v1;projects_v1";
+option features.(pb.go).api_level = API_OPAQUE;
+option features.field_presence = EXPLICIT;
 
+import "google/protobuf/go_features.proto";
 import "google/protobuf/timestamp.proto";
 
 message Revision {
   uint64 id = 1;
 
-  optional string name = 2;
+  string name = 2 [features.field_presence = EXPLICIT];
   repeated string tag_list = 3;
 
   uint64 project_id = 4;
@@ -17,14 +20,14 @@ message Revision {
 
   repeated string git_tags = 6;
   repeated string git_branches = 7;
-  optional string git_commit_hash = 8;
+  string git_commit_hash = 8 [features.field_presence = EXPLICIT];
 
-  optional string vcs_url = 9;
-  optional string created_by = 10;
+  string vcs_url = 9 [features.field_presence = EXPLICIT];
+  string created_by = 10 [features.field_presence = EXPLICIT];
 
-  optional string sbom_file_uuid = 11;
+  string sbom_file_uuid = 11 [features.field_presence = EXPLICIT];
 
-  optional google.protobuf.Timestamp created_at = 12;
-  optional google.protobuf.Timestamp updated_at = 13;
+  google.protobuf.Timestamp created_at = 12 [features.field_presence = EXPLICIT];
+  google.protobuf.Timestamp updated_at = 13 [features.field_presence = EXPLICIT];
 }
 

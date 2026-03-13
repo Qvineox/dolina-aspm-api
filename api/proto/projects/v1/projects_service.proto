@@ -1,9 +1,12 @@
-syntax = "proto3";
+edition = "2023";
 
-package dolina.project.v1;
+package dolina.projects.v1;
 
-option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/projects/v1;project_v1";
+option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/projects/v1;projects_v1";
+option features.(pb.go).api_level = API_OPAQUE;
+option features.field_presence = IMPLICIT;
 
+import "google/protobuf/go_features.proto";
 import "google/api/annotations.proto";
 
 import "projects/v1/project.proto";
@@ -61,17 +64,12 @@ service ProjectService {
 }
 
 message ProjectsQueryFilter {
-  oneof uid {
-    uint64 id = 1;
-    string slug = 2;
-  }
+  uint64 id = 1;
+  string slug = 2;
 
   string name = 3;
 
   repeated string tags = 4;
-
-  optional uint64 offset = 5;
-  optional uint64 limit = 6;
 }
 
 message ProjectsList {
@@ -79,10 +77,8 @@ message ProjectsList {
 }
 
 message ProjectRevisionQuery {
-  oneof project_uid {
-    uint64 project_id = 1;
-    string project_slug = 2;
-  }
+  uint64 project_id = 1;
+  string project_slug = 2;
 
   uint64 revision_id = 3;
 }

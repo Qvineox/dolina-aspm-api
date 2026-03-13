@@ -28,17 +28,17 @@ type DefectType int32
 
 const (
 	DefectType_DEFECT_TYPE_UNSPECIFIED DefectType = 0
-	DefectType_DEFECT_TYPE_SAST        DefectType = 1  // static source code analysis defects
-	DefectType_DEFECT_TYPE_SECRETS     DefectType = 1  // found secrets (api keys, passwords) in source code or on host
-	DefectType_DEFECT_TYPE_DAST        DefectType = 3  // dynamic testing (dast) defects
-	DefectType_DEFECT_TYPE_FUZZING     DefectType = 3  // dynamic testing (fuzzing) defects
-	DefectType_DEFECT_TYPE_MAST        DefectType = 4  // mobile dynamic testing defects
-	DefectType_DEFECT_TYPE_PENTEST     DefectType = 6  // penetration testing defects
-	DefectType_DEFECT_TYPE_OSA         DefectType = 7  // defects found in open source packages
-	DefectType_DEFECT_TYPE_SCA         DefectType = 7  // software composition (packages and libraries) defects
-	DefectType_DEFECT_TYPE_IAC         DefectType = 8  // infrastructure as code configuration file defects (Dockerfiles, Terraform, Helm and others)
-	DefectType_DEFECT_TYPE_ARCH        DefectType = 9  // insecure architecture defect
-	DefectType_DEFECT_TYPE_CODE_REVIEW DefectType = 10 // security defect during code review
+	DefectType_DEFECT_TYPE_SAST        DefectType = 1 // static source code analysis defects
+	DefectType_DEFECT_TYPE_SECRETS     DefectType = 2 // found secrets (api keys, passwords) in source code or on host
+	DefectType_DEFECT_TYPE_DAST        DefectType = 3 // dynamic testing (dast) defects
+	DefectType_DEFECT_TYPE_FUZZING     DefectType = 3 // dynamic testing (fuzzing) defects
+	DefectType_DEFECT_TYPE_MAST        DefectType = 4 // mobile dynamic testing defects
+	DefectType_DEFECT_TYPE_PENTEST     DefectType = 4 // penetration testing defects
+	DefectType_DEFECT_TYPE_OSA         DefectType = 6 // defects found in open source packages
+	DefectType_DEFECT_TYPE_SCA         DefectType = 6 // software composition (packages and libraries) defects
+	DefectType_DEFECT_TYPE_IAC         DefectType = 7 // infrastructure as code configuration file defects (Dockerfiles, Terraform, Helm and others)
+	DefectType_DEFECT_TYPE_ARCH        DefectType = 8 // insecure architecture defect
+	DefectType_DEFECT_TYPE_CODE_REVIEW DefectType = 9 // security defect during code review
 )
 
 // Enum value maps for DefectType.
@@ -46,30 +46,30 @@ var (
 	DefectType_name = map[int32]string{
 		0: "DEFECT_TYPE_UNSPECIFIED",
 		1: "DEFECT_TYPE_SAST",
-		// Duplicate value: 1: "DEFECT_TYPE_SECRETS",
+		2: "DEFECT_TYPE_SECRETS",
 		3: "DEFECT_TYPE_DAST",
 		// Duplicate value: 3: "DEFECT_TYPE_FUZZING",
 		4: "DEFECT_TYPE_MAST",
-		6: "DEFECT_TYPE_PENTEST",
-		7: "DEFECT_TYPE_OSA",
-		// Duplicate value: 7: "DEFECT_TYPE_SCA",
-		8:  "DEFECT_TYPE_IAC",
-		9:  "DEFECT_TYPE_ARCH",
-		10: "DEFECT_TYPE_CODE_REVIEW",
+		// Duplicate value: 4: "DEFECT_TYPE_PENTEST",
+		6: "DEFECT_TYPE_OSA",
+		// Duplicate value: 6: "DEFECT_TYPE_SCA",
+		7: "DEFECT_TYPE_IAC",
+		8: "DEFECT_TYPE_ARCH",
+		9: "DEFECT_TYPE_CODE_REVIEW",
 	}
 	DefectType_value = map[string]int32{
 		"DEFECT_TYPE_UNSPECIFIED": 0,
 		"DEFECT_TYPE_SAST":        1,
-		"DEFECT_TYPE_SECRETS":     1,
+		"DEFECT_TYPE_SECRETS":     2,
 		"DEFECT_TYPE_DAST":        3,
 		"DEFECT_TYPE_FUZZING":     3,
 		"DEFECT_TYPE_MAST":        4,
-		"DEFECT_TYPE_PENTEST":     6,
-		"DEFECT_TYPE_OSA":         7,
-		"DEFECT_TYPE_SCA":         7,
-		"DEFECT_TYPE_IAC":         8,
-		"DEFECT_TYPE_ARCH":        9,
-		"DEFECT_TYPE_CODE_REVIEW": 10,
+		"DEFECT_TYPE_PENTEST":     4,
+		"DEFECT_TYPE_OSA":         6,
+		"DEFECT_TYPE_SCA":         6,
+		"DEFECT_TYPE_IAC":         7,
+		"DEFECT_TYPE_ARCH":        8,
+		"DEFECT_TYPE_CODE_REVIEW": 9,
 	}
 )
 
@@ -164,7 +164,7 @@ type Defect struct {
 	xxx_hidden_Description       string                 `protobuf:"bytes,3,opt,name=description"`
 	xxx_hidden_Type              DefectType             `protobuf:"varint,4,opt,name=type,enum=dolina.defects.v1.DefectType"`
 	xxx_hidden_StatusList        []DefectStatus         `protobuf:"varint,5,rep,packed,name=status_list,json=statusList,enum=dolina.defects.v1.DefectStatus"`
-	xxx_hidden_AppliedRiskScore  uint32                 `protobuf:"varint,6,opt,name=applied_risk_score,json=appliedRiskScore"`
+	xxx_hidden_AppliedRiskScore  float32                `protobuf:"fixed32,6,opt,name=applied_risk_score,json=appliedRiskScore"`
 	xxx_hidden_CvssScore         float32                `protobuf:"fixed32,7,opt,name=cvss_score,json=cvssScore"`
 	xxx_hidden_Vulnerability     *v1.Vulnerability      `protobuf:"bytes,8,opt,name=vulnerability"`
 	xxx_hidden_CweList           []uint32               `protobuf:"varint,9,rep,packed,name=cwe_list,json=cweList"`
@@ -174,7 +174,8 @@ type Defect struct {
 	xxx_hidden_ComponentPurl     *string                `protobuf:"bytes,19,opt,name=component_purl,json=componentPurl"`
 	xxx_hidden_ComponentUuid     []byte                 `protobuf:"bytes,20,opt,name=component_uuid,json=componentUuid"`
 	xxx_hidden_ApplicationId     uint32                 `protobuf:"varint,21,opt,name=application_id,json=applicationId"`
-	xxx_hidden_ApplicationRef    *string                `protobuf:"bytes,22,opt,name=application_ref,json=applicationRef"`
+	xxx_hidden_ArtifactUuid      []byte                 `protobuf:"bytes,22,opt,name=artifact_uuid,json=artifactUuid"`
+	xxx_hidden_ApplicationRef    *string                `protobuf:"bytes,23,opt,name=application_ref,json=applicationRef"`
 	xxx_hidden_ReferenceUrlList  []string               `protobuf:"bytes,30,rep,name=reference_url_list,json=referenceUrlList"`
 	xxx_hidden_FixInfo           *FixInfo               `protobuf:"bytes,31,opt,name=fix_info,json=fixInfo"`
 	xxx_hidden_CreatedAt         *timestamppb.Timestamp `protobuf:"bytes,41,opt,name=created_at,json=createdAt"`
@@ -245,7 +246,7 @@ func (x *Defect) GetStatusList() []DefectStatus {
 	return nil
 }
 
-func (x *Defect) GetAppliedRiskScore() uint32 {
+func (x *Defect) GetAppliedRiskScore() float32 {
 	if x != nil {
 		return x.xxx_hidden_AppliedRiskScore
 	}
@@ -322,6 +323,13 @@ func (x *Defect) GetApplicationId() uint32 {
 	return 0
 }
 
+func (x *Defect) GetArtifactUuid() []byte {
+	if x != nil {
+		return x.xxx_hidden_ArtifactUuid
+	}
+	return nil
+}
+
 func (x *Defect) GetApplicationRef() string {
 	if x != nil {
 		if x.xxx_hidden_ApplicationRef != nil {
@@ -383,7 +391,7 @@ func (x *Defect) SetStatusList(v []DefectStatus) {
 	x.xxx_hidden_StatusList = v
 }
 
-func (x *Defect) SetAppliedRiskScore(v uint32) {
+func (x *Defect) SetAppliedRiskScore(v float32) {
 	x.xxx_hidden_AppliedRiskScore = v
 }
 
@@ -413,7 +421,7 @@ func (x *Defect) SetDefectDuplicates(v []*Defect) {
 
 func (x *Defect) SetComponentPurl(v string) {
 	x.xxx_hidden_ComponentPurl = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 12, 20)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 12, 21)
 }
 
 func (x *Defect) SetComponentUuid(v []byte) {
@@ -421,17 +429,25 @@ func (x *Defect) SetComponentUuid(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_ComponentUuid = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 13, 20)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 13, 21)
 }
 
 func (x *Defect) SetApplicationId(v uint32) {
 	x.xxx_hidden_ApplicationId = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 14, 20)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 14, 21)
+}
+
+func (x *Defect) SetArtifactUuid(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_ArtifactUuid = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 15, 21)
 }
 
 func (x *Defect) SetApplicationRef(v string) {
 	x.xxx_hidden_ApplicationRef = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 15, 20)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 16, 21)
 }
 
 func (x *Defect) SetReferenceUrlList(v []string) {
@@ -478,11 +494,18 @@ func (x *Defect) HasApplicationId() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 14)
 }
 
-func (x *Defect) HasApplicationRef() bool {
+func (x *Defect) HasArtifactUuid() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 15)
+}
+
+func (x *Defect) HasApplicationRef() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 16)
 }
 
 func (x *Defect) HasFixInfo() bool {
@@ -525,8 +548,13 @@ func (x *Defect) ClearApplicationId() {
 	x.xxx_hidden_ApplicationId = 0
 }
 
-func (x *Defect) ClearApplicationRef() {
+func (x *Defect) ClearArtifactUuid() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 15)
+	x.xxx_hidden_ArtifactUuid = nil
+}
+
+func (x *Defect) ClearApplicationRef() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 16)
 	x.xxx_hidden_ApplicationRef = nil
 }
 
@@ -551,7 +579,7 @@ type Defect_builder struct {
 	Type        DefectType
 	StatusList  []DefectStatus
 	// applied risk score is based on inputs from security scanners and applied ruleset
-	AppliedRiskScore uint32
+	AppliedRiskScore float32
 	CvssScore        float32
 	Vulnerability    *v1.Vulnerability
 	CweList          []uint32
@@ -564,6 +592,7 @@ type Defect_builder struct {
 	ComponentPurl *string
 	ComponentUuid []byte
 	ApplicationId *uint32
+	ArtifactUuid  []byte
 	// git ref of an application to define where defect was found
 	ApplicationRef *string
 	// additional information about defect
@@ -590,19 +619,23 @@ func (b0 Defect_builder) Build() *Defect {
 	x.xxx_hidden_IsLatest = b.IsLatest
 	x.xxx_hidden_DefectDuplicates = &b.DefectDuplicates
 	if b.ComponentPurl != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 12, 20)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 12, 21)
 		x.xxx_hidden_ComponentPurl = b.ComponentPurl
 	}
 	if b.ComponentUuid != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 13, 20)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 13, 21)
 		x.xxx_hidden_ComponentUuid = b.ComponentUuid
 	}
 	if b.ApplicationId != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 14, 20)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 14, 21)
 		x.xxx_hidden_ApplicationId = *b.ApplicationId
 	}
+	if b.ArtifactUuid != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 15, 21)
+		x.xxx_hidden_ArtifactUuid = b.ArtifactUuid
+	}
 	if b.ApplicationRef != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 15, 20)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 16, 21)
 		x.xxx_hidden_ApplicationRef = b.ApplicationRef
 	}
 	x.xxx_hidden_ReferenceUrlList = b.ReferenceUrlList
@@ -616,8 +649,7 @@ var File_defects_v1_defect_proto protoreflect.FileDescriptor
 
 const file_defects_v1_defect_proto_rawDesc = "" +
 	"\n" +
-	"\x17defects/v1/defect.proto\x12\x11dolina.defects.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a!google/protobuf/go_features.proto\x1a$vulnerability/v1/vulnerability.proto\x1a\x1edefects/v1/code_fragment.proto\x1a\x14defects/v1/fix.proto\"\xfe\n" +
-	"\n" +
+	"\x17defects/v1/defect.proto\x12\x11dolina.defects.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a!google/protobuf/go_features.proto\x1a$vulnerability/v1/vulnerability.proto\x1a\x1edefects/v1/code_fragment.proto\x1a\x14defects/v1/fix.proto\"\xaa\v\n" +
 	"\x06Defect\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\fR\x04uuid\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12 \n" +
@@ -625,7 +657,7 @@ const file_defects_v1_defect_proto_rawDesc = "" +
 	"\x04type\x18\x04 \x01(\x0e2\x1d.dolina.defects.v1.DefectTypeR\x04type\x12@\n" +
 	"\vstatus_list\x18\x05 \x03(\x0e2\x1f.dolina.defects.v1.DefectStatusR\n" +
 	"statusList\x12,\n" +
-	"\x12applied_risk_score\x18\x06 \x01(\rR\x10appliedRiskScore\x12\x1d\n" +
+	"\x12applied_risk_score\x18\x06 \x01(\x02R\x10appliedRiskScore\x12\x1d\n" +
 	"\n" +
 	"cvss_score\x18\a \x01(\x02R\tcvssScore\x12S\n" +
 	"\rvulnerability\x18\b \x01(\v2&.dolina.vulnerability.v1.VulnerabilityB\x05\xaa\x01\x02\b\x01R\rvulnerability\x12\x19\n" +
@@ -636,8 +668,9 @@ const file_defects_v1_defect_proto_rawDesc = "" +
 	"\x11defect_duplicates\x18\f \x03(\v2\x19.dolina.defects.v1.DefectR\x10defectDuplicates\x12,\n" +
 	"\x0ecomponent_purl\x18\x13 \x01(\tB\x05\xaa\x01\x02\b\x01R\rcomponentPurl\x12,\n" +
 	"\x0ecomponent_uuid\x18\x14 \x01(\fB\x05\xaa\x01\x02\b\x01R\rcomponentUuid\x12,\n" +
-	"\x0eapplication_id\x18\x15 \x01(\rB\x05\xaa\x01\x02\b\x01R\rapplicationId\x12.\n" +
-	"\x0fapplication_ref\x18\x16 \x01(\tB\x05\xaa\x01\x02\b\x01R\x0eapplicationRef\x12,\n" +
+	"\x0eapplication_id\x18\x15 \x01(\rB\x05\xaa\x01\x02\b\x01R\rapplicationId\x12*\n" +
+	"\rartifact_uuid\x18\x16 \x01(\fB\x05\xaa\x01\x02\b\x01R\fartifactUuid\x12.\n" +
+	"\x0fapplication_ref\x18\x17 \x01(\tB\x05\xaa\x01\x02\b\x01R\x0eapplicationRef\x12,\n" +
 	"\x12reference_url_list\x18\x1e \x03(\tR\x10referenceUrlList\x12<\n" +
 	"\bfix_info\x18\x1f \x01(\v2\x1a.dolina.defects.v1.FixInfoB\x05\xaa\x01\x02\b\x01R\afixInfo\x12@\n" +
 	"\n" +
@@ -649,17 +682,16 @@ const file_defects_v1_defect_proto_rawDesc = "" +
 	"DefectType\x12\x1b\n" +
 	"\x17DEFECT_TYPE_UNSPECIFIED\x10\x00\x12\x14\n" +
 	"\x10DEFECT_TYPE_SAST\x10\x01\x12\x17\n" +
-	"\x13DEFECT_TYPE_SECRETS\x10\x01\x12\x14\n" +
+	"\x13DEFECT_TYPE_SECRETS\x10\x02\x12\x14\n" +
 	"\x10DEFECT_TYPE_DAST\x10\x03\x12\x17\n" +
 	"\x13DEFECT_TYPE_FUZZING\x10\x03\x12\x14\n" +
 	"\x10DEFECT_TYPE_MAST\x10\x04\x12\x17\n" +
-	"\x13DEFECT_TYPE_PENTEST\x10\x06\x12\x13\n" +
-	"\x0fDEFECT_TYPE_OSA\x10\a\x12\x13\n" +
-	"\x0fDEFECT_TYPE_SCA\x10\a\x12\x13\n" +
-	"\x0fDEFECT_TYPE_IAC\x10\b\x12\x14\n" +
-	"\x10DEFECT_TYPE_ARCH\x10\t\x12\x1b\n" +
-	"\x17DEFECT_TYPE_CODE_REVIEW\x10\n" +
-	"\x1a\x02\x10\x01*\x9b\x02\n" +
+	"\x13DEFECT_TYPE_PENTEST\x10\x04\x12\x13\n" +
+	"\x0fDEFECT_TYPE_OSA\x10\x06\x12\x13\n" +
+	"\x0fDEFECT_TYPE_SCA\x10\x06\x12\x13\n" +
+	"\x0fDEFECT_TYPE_IAC\x10\a\x12\x14\n" +
+	"\x10DEFECT_TYPE_ARCH\x10\b\x12\x1b\n" +
+	"\x17DEFECT_TYPE_CODE_REVIEW\x10\t\x1a\x02\x10\x01*\x9b\x02\n" +
 	"\fDefectStatus\x12\x1d\n" +
 	"\x19DEFECT_STATUS_UNSPECIFIED\x10\x00\x12\x1a\n" +
 	"\x16DEFECT_STATUS_INDIRECT\x10\x01\x12\x18\n" +
