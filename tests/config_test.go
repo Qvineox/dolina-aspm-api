@@ -23,6 +23,8 @@ func TestConfig(t *testing.T) {
 		require.EqualValues(t, "Europe/Moscow", config.Database.Timezone)
 
 		require.EqualValues(t, 4, config.Logging.Level)
+		require.EqualValues(t, "dev", config.Logging.Environment)
+		require.EqualValues(t, "text", config.Logging.Format)
 	})
 
 	t.Run("partial static config test with defaults", func(t *testing.T) {
@@ -69,6 +71,6 @@ func testDatabaseDefaults(t *testing.T, config cfg.DatabaseConfig) {
 	require.EqualValues(t, "Europe/Moscow", config.Timezone)
 }
 
-func testLoggingDefaults(t *testing.T, config cfg.LoggingConfig) {
+func testLoggingDefaults(t *testing.T, config cfg.LogsConfig) {
 	require.EqualValues(t, slog.LevelInfo, config.Level)
 }

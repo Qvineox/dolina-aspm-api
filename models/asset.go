@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"gitlab.domsnail.ru/dolina/dolina-aspm-api/pkg/utils"
 	"gorm.io/datatypes"
 	"gorm.io/gorm"
 )
@@ -20,7 +21,7 @@ type ApplicationAsset struct {
 
 	AssetType AssetType `gorm:"column:type; type:asset_type" validate:"required,oneof=repository image executable"`
 
-	Labels datatypes.JSONSlice[string] `gorm:"column:labels; type:jsonb; default:'[]'"`
+	Labels datatypes.JSONSlice[string] `gorm:"column:labels; type:jsonb; default:'[]'" validate:"omitempty,unique"`
 
 	ComponentPURL *string   `gorm:"column:component_purl; uniqueIndex"`
 	Component     Component `gorm:"foreignKey:PURL; references:ComponentPURL"`
@@ -34,6 +35,10 @@ type ApplicationAsset struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt `gorm:"index"`
+}
+
+func (a *ApplicationAsset) SetLabels(labels []string) {
+	a.Labels = utils.Unique(labels)
 }
 
 func (a *ApplicationAsset) BeforeCreate(tx *gorm.DB) error {
@@ -87,7 +92,7 @@ func NewApplicationAsset(opts ApplicationAssetOptions) (*ApplicationAsset, error
 		ApplicationID: opts.ApplicationID,
 		AssetType:     opts.AssetType,
 		URL:           opts.URL,
-		Labels:        opts.Labels,
+		Labels:        utils.Unique(opts.Labels),
 		ComponentPURL: opts.ComponentPURL,
 	}
 

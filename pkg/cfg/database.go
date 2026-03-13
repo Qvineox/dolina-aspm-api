@@ -1,6 +1,8 @@
 package cfg
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type DatabaseConfig struct {
 	Host string `json:"host" yaml:"host" env:"HOST" env-default:"0.0.0.0" validate:"required"`
@@ -11,6 +13,11 @@ type DatabaseConfig struct {
 	Pass string `json:"pass" yaml:"pass" env:"PASS"`
 
 	Timezone string `json:"timezone" yaml:"timezone" env:"TIMEZONE" env-default:"Europe/Moscow"`
+
+	TraceAllMessages bool `json:"trace_all_messages" yaml:"trace_all_messages" env:"TRACE_ALL"`
+}
+
+type DatabaseLogsConfig struct {
 }
 
 func (config DatabaseConfig) Postgres() string {

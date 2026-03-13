@@ -2,6 +2,7 @@ package cfg
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/ilyakaznacheev/cleanenv"
@@ -11,7 +12,7 @@ var configValidator = validator.New()
 
 type StaticConfig struct {
 	Database DatabaseConfig `json:"database" yaml:"database" env-prefix:"DB_"`
-	Logging  LoggingConfig  `json:"logging" yaml:"logging" env-prefix:"LOG_"`
+	Logging  LogsConfig     `json:"logging" yaml:"logging" env-prefix:"LOG_"`
 }
 
 func NewConfigFromFile(path string) (StaticConfig, error) {
@@ -25,6 +26,10 @@ func NewConfigFromFile(path string) (StaticConfig, error) {
 	err = configValidator.Struct(sc)
 	if err != nil {
 		return StaticConfig{}, fmt.Errorf("failed to validate config: %w", err)
+	}
+
+	if sc.Logging.Host == "" {
+		sc.Logging.Host, _ = os.Hostname()
 	}
 
 	return sc, nil

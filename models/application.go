@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	"gitlab.domsnail.ru/dolina/dolina-aspm-api/pkg/utils"
 	"gorm.io/datatypes"
 	"gorm.io/gorm"
 )
@@ -16,7 +17,7 @@ type Application struct {
 	Description string `gorm:"column:description"`
 	URL         string `gorm:"column:url" validate:"omitempty,url"`
 
-	Labels datatypes.JSONSlice[string] `gorm:"column:labels; type:jsonb; default:'[]'"`
+	Labels datatypes.JSONSlice[string] `gorm:"column:labels; type:jsonb; default:'[]'" validate:"omitempty,unique"`
 
 	ComponentPURL *string   `gorm:"column:component_purl; uniqueIndex:uidx_application_purl"`
 	Component     Component `gorm:"foreignKey:PURL; references:ComponentPURL"`
@@ -28,6 +29,10 @@ type Application struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt `gorm:"index"`
+}
+
+func (a *Application) SetLabels(labels []string) {
+	a.Labels = utils.Unique(labels)
 }
 
 func (a *Application) BeforeCreate(tx *gorm.DB) error {
@@ -43,6 +48,20 @@ func (a *Application) BeforeUpdate(tx *gorm.DB) error {
 	err := validate.Struct(a)
 	if err != nil {
 		return fmt.Errorf("validation error: %w", err)
+	}
+
+	return nil
+}
+
+func (a *Application) BeforeDelete(tx *gorm.DB) error {
+	//err := tx.Where("application_id = ?", a.ID).Delete(&ApplicationAsset{}).Error
+	//if err != nil {
+	//	return fmt.Errorf("association delete error: %w", err)
+	//}
+
+	err := tx.Model(a).Association("Assets").Unscoped().Clear()
+	if err != nil {
+		return fmt.Errorf("association delete error: %w", err)
 	}
 
 	return nil
@@ -68,7 +87,7 @@ func NewApplication(opts ApplicationOptions) (*Application, error) {
 		Name:          opts.Name,
 		Description:   opts.Description,
 		URL:           opts.URL,
-		Labels:        opts.Labels,
+		Labels:        utils.Unique(opts.Labels),
 		ComponentPURL: opts.ComponentPURL,
 	}
 

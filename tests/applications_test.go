@@ -3,35 +3,15 @@ package tests
 import (
 	"testing"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/stretchr/testify/require"
 	"gitlab.domsnail.ru/dolina/dolina-aspm-api/models"
-	"gitlab.domsnail.ru/dolina/dolina-aspm-api/pkg/cfg"
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 )
 
+var validate = validator.New()
+
 func TestApplicationModel(t *testing.T) {
-	config, err := cfg.NewConfigFromFile("config.yml")
-	require.NoError(t, err)
-
-	var orm *gorm.DB
-	orm, err = gorm.Open(postgres.Open(config.Database.Postgres()), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.LogLevel(config.Logging.Level)),
-	})
-
-	require.NoError(t, err)
-	require.NotNil(t, orm)
-
-	orm.AllowGlobalUpdate = true
-	err = orm.Exec("DROP SCHEMA public CASCADE; CREATE SCHEMA public;").Error
-	require.NoError(t, err)
-
-	err = orm.Exec("CREATE EXTENSION IF NOT EXISTS pg_uuidv7;").Error
-	require.NoError(t, err)
-
-	MigrateTypes(t, orm)
-	AutoMigrate(t, orm)
+	var err error
 
 	t.Run("application create error test", func(t *testing.T) {
 		application, err := models.NewApplication(models.ApplicationOptions{
@@ -143,6 +123,38 @@ func TestApplicationModel(t *testing.T) {
 		require.Equal(t, "test_app1 new description", app.Description)
 		require.NotEqual(t, updatedAt, app.UpdatedAt)
 		require.Equal(t, createdAt, app.CreatedAt)
+	})
+
+	t.Run("application labels test", func(t *testing.T) {
+		app := &models.Application{}
+
+		err = orm.First(&app, appID).Error
+		require.NoError(t, err)
+		require.NotNil(t, app)
+
+		app.SetLabels([]string{"test_label1", "test_label2"})
+		require.Len(t, app.Labels, 2)
+
+		app.SetLabels([]string{"test_label1"})
+		require.Len(t, app.Labels, 1)
+
+		app.SetLabels([]string{"test_label1", "test_label2", "test_label2"})
+		require.Len(t, app.Labels, 2)
+
+		require.NoError(t, validate.Struct(app))
+
+		app.Labels = []string{"test_label1", "test_label2", "test_label3", "test_label3"}
+		require.Error(t, validate.Struct(app))
+
+		app.SetLabels([]string{"test_label1", "test_label2", "test_label2"})
+		require.Len(t, app.Labels, 2)
+
+		err = orm.Save(&app).Error
+		require.NoError(t, err)
+
+		err = orm.First(&app, appID).Error
+		require.NoError(t, err)
+		require.Len(t, app.Labels, 2)
 	})
 
 	t.Run("application update error test", func(t *testing.T) {
