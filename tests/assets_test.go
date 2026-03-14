@@ -168,7 +168,7 @@ func TestAssetsModel(t *testing.T) {
 	t.Run("application assets query test", func(t *testing.T) {
 		var application_ *models.Application
 
-		require.NoError(t, orm.Preload("Assets").First(&application_, "id = ?", application.ID).Error)
+		require.NoError(t, orm.Preload("ApplicationAssets").First(&application_, "id = ?", application.ID).Error)
 		require.Len(t, application_.Assets, 2)
 
 		var assets []models.ApplicationAsset

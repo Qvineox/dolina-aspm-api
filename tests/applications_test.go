@@ -24,6 +24,9 @@ func TestApplicationModel(t *testing.T) {
 		require.Error(t, err)
 		require.Nil(t, application)
 
+		err = orm.Create(&application).Error
+		require.Error(t, err)
+
 		application, err = models.NewApplication(models.ApplicationOptions{
 			Name:          "tst",
 			Description:   "test_app1 description",
@@ -34,6 +37,9 @@ func TestApplicationModel(t *testing.T) {
 
 		require.Error(t, err)
 		require.Nil(t, application)
+
+		err = orm.Create(&application).Error
+		require.Error(t, err)
 
 		var opts = models.ApplicationOptions{
 			Name:          "test_app1$F",

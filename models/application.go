@@ -19,10 +19,10 @@ type Application struct {
 
 	Labels datatypes.JSONSlice[string] `gorm:"column:labels; type:jsonb; default:'[]'" validate:"omitempty,unique"`
 
-	ComponentPURL *string   `gorm:"column:component_purl; uniqueIndex:uidx_application_purl"`
-	Component     Component `gorm:"foreignKey:PURL; references:ComponentPURL"`
+	ComponentPURL *string `gorm:"column:component_purl; uniqueIndex:uidx_application_purl"`
+	//Component     Component `gorm:"foreignKey:PURL; references:ComponentPURL" validate:"omitempty,dive"`
 
-	Assets []ApplicationAsset `gorm:"foreignKey:ApplicationID; references:ID; constraint:OnUpdate:CASCADE, OnDelete:SET NULL;"`
+	Assets []ApplicationAsset `gorm:"foreignKey:ApplicationID; references:ID; constraint:OnUpdate:CASCADE, OnDelete:SET NULL;" validate:"omitempty,dive"`
 
 	// RiskProfile // todo: add application risk profile
 
@@ -54,12 +54,7 @@ func (a *Application) BeforeUpdate(tx *gorm.DB) error {
 }
 
 func (a *Application) BeforeDelete(tx *gorm.DB) error {
-	//err := tx.Where("application_id = ?", a.ID).Delete(&ApplicationAsset{}).Error
-	//if err != nil {
-	//	return fmt.Errorf("association delete error: %w", err)
-	//}
-
-	err := tx.Model(a).Association("Assets").Unscoped().Clear()
+	err := tx.Model(a).Association("ApplicationAssets").Unscoped().Clear()
 	if err != nil {
 		return fmt.Errorf("association delete error: %w", err)
 	}

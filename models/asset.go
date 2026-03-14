@@ -15,26 +15,26 @@ type ApplicationAsset struct {
 	SUID     string    `gorm:"column:suid; uniqueIndex:uidx_asset_ref; not null" validate:"required"`
 	Revision string    `gorm:"column:revision; uniqueIndex:uidx_asset_ref; not null" validate:"required"` // e.g. ref, tag, branch
 
-	Name        string `gorm:"column:name; index; not null" validate:"required"`
-	Description string `gorm:"column:description"`
-	URL         string `gorm:"column:url" validate:"omitempty,url"`
+	ComponentPURL *string `gorm:"column:component_purl; uniqueIndex"`
+	Name          string  `gorm:"column:name; index; not null" validate:"required"`
+	Description   string  `gorm:"column:description"`
+	URL           string  `gorm:"column:url" validate:"omitempty,url"`
 
-	AssetType AssetType `gorm:"column:type; type:asset_type" validate:"required,oneof=repository image executable"`
-
-	Labels datatypes.JSONSlice[string] `gorm:"column:labels; type:jsonb; default:'[]'" validate:"omitempty,unique"`
-
-	ComponentPURL *string   `gorm:"column:component_purl; uniqueIndex"`
-	Component     Component `gorm:"foreignKey:PURL; references:ComponentPURL"`
+	AssetType AssetType                   `gorm:"column:type; type:asset_type" validate:"required,oneof=repository image executable"`
+	Labels    datatypes.JSONSlice[string] `gorm:"column:labels; type:jsonb; default:'[]'" validate:"omitempty,unique"`
 
 	ApplicationID *uint32 `gorm:"column:application_id; index"`
 
-	Defects []AssetDefect `gorm:"foreignKey:AssetUUID; references:UUID; constraint:OnUpdate:CASCADE, OnDelete:SET NULL;"`
-
-	Components []Component `gorm:"many2many:asset_components"`
+	Defects    []AssetDefect `gorm:"foreignKey:AssetUUID; references:UUID; constraint:OnUpdate:CASCADE, OnDelete:SET NULL;"`
+	Components []Component   `gorm:"many2many:asset_components"`
 
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt `gorm:"index"`
+}
+
+func (a ApplicationAsset) GetUUID() uuid.UUID {
+	return a.UUID
 }
 
 func (a *ApplicationAsset) SetLabels(labels []string) {
@@ -144,5 +144,5 @@ type AssetComponent struct {
 }
 
 func (a AssetComponent) TableName() string {
-	return "application_assets_components"
+	return "asset_components"
 }
