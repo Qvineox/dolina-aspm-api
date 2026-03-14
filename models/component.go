@@ -13,7 +13,7 @@ import (
 
 type Component struct {
 	UUID uuid.UUID `gorm:"column:uuid; primaryKey; type:uuid; default:uuid_generate_v7()" validate:"required,uuid"`
-	PURL PURL      `gorm:"column:purl; uniqueIndex:uidx_component_purl; comment:Unique component package URL"`
+	PURL *PURL     `gorm:"column:purl; uniqueIndex:uidx_component_purl; comment:Unique component package URL"`
 
 	Name    string `gorm:"column:name; not null" validate:"required,min=1"`
 	Version string `gorm:"column:version"`
@@ -127,7 +127,7 @@ func NewComponent(opts ComponentOptions) (*Component, error) {
 			return nil, fmt.Errorf("error parsing purl: %w", err)
 		}
 
-		component.PURL = PURL{purl}
+		component.PURL = &PURL{purl}
 	}
 
 	err = validate.Struct(component)
@@ -143,7 +143,7 @@ type PURL struct {
 }
 
 func (p *PURL) Value() (driver.Value, error) {
-	if p.PackageURL.Type == "" {
+	if len(p.PackageURL.Type) == 0 {
 		return nil, nil
 	}
 

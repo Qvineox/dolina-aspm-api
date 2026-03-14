@@ -41,7 +41,7 @@ func TestComponentModel(t *testing.T) {
 		require.Nil(t, component)
 	})
 
-	var _ uuid.UUID
+	var componentUUID uuid.UUID
 
 	t.Run("component create test", func(t *testing.T) {
 		component, err := models.NewComponent(models.ComponentOptions{
@@ -85,6 +85,82 @@ func TestComponentModel(t *testing.T) {
 		require.NotNil(t, component.CreatedAt)
 		require.NotNil(t, component.UpdatedAt)
 
-		//componentUUID = component.UUID
+		componentUUID = component.UUID
+	})
+
+	t.Run("components query test", func(t *testing.T) {
+		var component_ *models.Component
+
+		require.NoError(t, orm.First(&component_, "uuid = ?", componentUUID).Error)
+
+		require.EqualValues(t, "pkg:maven/org.apache.commons/io@1.3.4", component_.PURL.String())
+		require.EqualValues(t, "maven", component_.PURL.Type)
+		require.EqualValues(t, "org.apache.commons", component_.PURL.Namespace)
+		require.EqualValues(t, "io", component_.PURL.Name)
+		require.EqualValues(t, "1.3.4", component_.PURL.Version)
+
+		require.NotZero(t, component_.UUID.String())
+		require.NotNil(t, component_.CreatedAt)
+		require.NotNil(t, component_.UpdatedAt)
+	})
+
+	var assetSUID string
+
+	t.Run("asset component creation test", func(t *testing.T) {
+		asset, err := models.NewApplicationAsset(models.ApplicationAssetOptions{
+			Revision:    "main",
+			Name:        "test_asset3",
+			Description: "test_asset3 description",
+			AssetType:   models.AssetType_Repository,
+		})
+
+		require.NoError(t, err)
+		require.NotNil(t, asset)
+		require.NoError(t, orm.Create(&asset).Error)
+		assetSUID = asset.SUID
+
+		component, err := models.NewComponent(models.ComponentOptions{
+			ComponentType: models.ComponentTypeLanguagePackage,
+			Name:          "test_asset3_component1",
+			IsPublic:      false,
+		})
+
+		require.NoError(t, err)
+		require.NotNil(t, component)
+
+		component.ApplicationAssets = append(component.ApplicationAssets, *asset)
+		require.NoError(t, orm.Create(&component).Error)
+
+		component, err = models.NewComponent(models.ComponentOptions{
+			Name:          "test_asset3_component2",
+			IsPublic:      false,
+			ComponentType: models.ComponentTypeLanguagePackage,
+		})
+
+		require.NoError(t, err)
+		require.NotNil(t, component)
+
+		component.ApplicationAssets = append(component.ApplicationAssets, *asset)
+		require.NoError(t, orm.Create(&component).Error)
+
+		component, err = models.NewComponent(models.ComponentOptions{
+			Name:          "test_asset3_component2",
+			IsPublic:      false,
+			ComponentType: models.ComponentTypeLanguagePackage,
+			PURL:          "pkg:maven/org.apache.commons/test@1.4.5",
+		})
+
+		require.NoError(t, err)
+		require.NotNil(t, component)
+
+		component.ApplicationAssets = append(component.ApplicationAssets, *asset)
+		require.NoError(t, orm.Create(&component).Error)
+	})
+
+	t.Run("asset components query test", func(t *testing.T) {
+		var asset_ *models.ApplicationAsset
+
+		require.NoError(t, orm.Preload("Components").First(&asset_, "suid = ?", assetSUID).Error)
+		require.Len(t, asset_.Components, 3)
 	})
 }
