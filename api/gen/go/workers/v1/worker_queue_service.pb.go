@@ -7,6 +7,7 @@
 package workers_v1
 
 import (
+	v1 "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/common/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	_ "google.golang.org/protobuf/types/gofeaturespb"
@@ -26,19 +27,24 @@ var File_workers_v1_worker_queue_service_proto protoreflect.FileDescriptor
 
 const file_workers_v1_worker_queue_service_proto_rawDesc = "" +
 	"\n" +
-	"%workers/v1/worker_queue_service.proto\x12\x11dolina.workers.v1\x1a!google/protobuf/go_features.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x16workers/v1/queue.proto2V\n" +
-	"\x12WorkerQueueService\x12@\n" +
-	"\x06GetJob\x12\x16.google.protobuf.Empty\x1a\x1c.dolina.workers.v1.WorkerJob\"\x00B\\ZPgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/workers.proto/v1;workers_v1\x92\x03\a\xd2>\x02\x10\x03\b\x01b\beditionsp\xe8\a"
+	"%workers/v1/worker_queue_service.proto\x12\x11dolina.workers.v1\x1a!google/protobuf/go_features.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x16workers/v1/queue.proto\x1a\x14common/v1/uuid.proto2\x95\x01\n" +
+	"\x12WorkerQueueService\x12>\n" +
+	"\x06GetJob\x12\x16.dolina.common.v1.UUID\x1a\x1c.dolina.workers.v1.WorkerJob\x12?\n" +
+	"\x05Check\x12\x16.google.protobuf.Empty\x1a\x1e.dolina.workers.v1.WorkerQueueB\\ZPgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/workers.proto/v1;workers_v1\x92\x03\a\xd2>\x02\x10\x03\b\x01b\beditionsp\xe8\a"
 
 var file_workers_v1_worker_queue_service_proto_goTypes = []any{
-	(*emptypb.Empty)(nil), // 0: google.protobuf.Empty
-	(*WorkerJob)(nil),     // 1: dolina.workers.v1.WorkerJob
+	(*v1.UUID)(nil),       // 0: dolina.common.v1.UUID
+	(*emptypb.Empty)(nil), // 1: google.protobuf.Empty
+	(*WorkerJob)(nil),     // 2: dolina.workers.v1.WorkerJob
+	(*WorkerQueue)(nil),   // 3: dolina.workers.v1.WorkerQueue
 }
 var file_workers_v1_worker_queue_service_proto_depIdxs = []int32{
-	0, // 0: dolina.workers.v1.WorkerQueueService.GetJob:input_type -> google.protobuf.Empty
-	1, // 1: dolina.workers.v1.WorkerQueueService.GetJob:output_type -> dolina.workers.v1.WorkerJob
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
+	0, // 0: dolina.workers.v1.WorkerQueueService.GetJob:input_type -> dolina.common.v1.UUID
+	1, // 1: dolina.workers.v1.WorkerQueueService.Check:input_type -> google.protobuf.Empty
+	2, // 2: dolina.workers.v1.WorkerQueueService.GetJob:output_type -> dolina.workers.v1.WorkerJob
+	3, // 3: dolina.workers.v1.WorkerQueueService.Check:output_type -> dolina.workers.v1.WorkerQueue
+	2, // [2:4] is the sub-list for method output_type
+	0, // [0:2] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name

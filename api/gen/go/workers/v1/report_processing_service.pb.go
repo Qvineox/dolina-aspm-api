@@ -28,24 +28,27 @@ var File_workers_v1_report_processing_service_proto protoreflect.FileDescriptor
 
 const file_workers_v1_report_processing_service_proto_rawDesc = "" +
 	"\n" +
-	"*workers/v1/report_processing_service.proto\x12\x11dolina.workers.v1\x1a!google/protobuf/go_features.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\"workers/v1/report_processing.proto\x1a\x17reports/v1/report.proto\x1a\x14common/v1/uuid.proto2\xc0\x01\n" +
-	"\x17ReportProcessingService\x12F\n" +
-	"\x0fGetReportByUUID\x12\x16.dolina.common.v1.UUID\x1a\x19.dolina.reports.v1.Report\"\x00\x12]\n" +
-	"\x15StreamAnalysisProcess\x12(.dolina.workers.v1.AnalysisProcessStream\x1a\x16.google.protobuf.Empty\"\x00(\x01B\\ZPgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/workers.proto/v1;workers_v1\x92\x03\a\xd2>\x02\x10\x03\b\x01b\beditionsp\xe8\a"
+	"*workers/v1/report_processing_service.proto\x12\x11dolina.workers.v1\x1a!google/protobuf/go_features.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\"workers/v1/report_processing.proto\x1a\x17reports/v1/report.proto\x1a\x14common/v1/uuid.proto2\x8a\x02\n" +
+	"\x17ReportProcessingService\x12D\n" +
+	"\x0fGetReportByUUID\x12\x16.dolina.common.v1.UUID\x1a\x19.dolina.reports.v1.Report\x12L\n" +
+	"\x14CreateReportAnalysis\x12\x19.dolina.reports.v1.Report\x1a\x19.dolina.reports.v1.Report\x12[\n" +
+	"\x15StreamAnalysisProcess\x12(.dolina.workers.v1.AnalysisProcessStream\x1a\x16.google.protobuf.Empty(\x01B\\ZPgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/workers.proto/v1;workers_v1\x92\x03\a\xd2>\x02\x10\x03\b\x01b\beditionsp\xe8\a"
 
 var file_workers_v1_report_processing_service_proto_goTypes = []any{
 	(*v1.UUID)(nil),               // 0: dolina.common.v1.UUID
-	(*AnalysisProcessStream)(nil), // 1: dolina.workers.v1.AnalysisProcessStream
-	(*v11.Report)(nil),            // 2: dolina.reports.v1.Report
+	(*v11.Report)(nil),            // 1: dolina.reports.v1.Report
+	(*AnalysisProcessStream)(nil), // 2: dolina.workers.v1.AnalysisProcessStream
 	(*emptypb.Empty)(nil),         // 3: google.protobuf.Empty
 }
 var file_workers_v1_report_processing_service_proto_depIdxs = []int32{
 	0, // 0: dolina.workers.v1.ReportProcessingService.GetReportByUUID:input_type -> dolina.common.v1.UUID
-	1, // 1: dolina.workers.v1.ReportProcessingService.StreamAnalysisProcess:input_type -> dolina.workers.v1.AnalysisProcessStream
-	2, // 2: dolina.workers.v1.ReportProcessingService.GetReportByUUID:output_type -> dolina.reports.v1.Report
-	3, // 3: dolina.workers.v1.ReportProcessingService.StreamAnalysisProcess:output_type -> google.protobuf.Empty
-	2, // [2:4] is the sub-list for method output_type
-	0, // [0:2] is the sub-list for method input_type
+	1, // 1: dolina.workers.v1.ReportProcessingService.CreateReportAnalysis:input_type -> dolina.reports.v1.Report
+	2, // 2: dolina.workers.v1.ReportProcessingService.StreamAnalysisProcess:input_type -> dolina.workers.v1.AnalysisProcessStream
+	1, // 3: dolina.workers.v1.ReportProcessingService.GetReportByUUID:output_type -> dolina.reports.v1.Report
+	1, // 4: dolina.workers.v1.ReportProcessingService.CreateReportAnalysis:output_type -> dolina.reports.v1.Report
+	3, // 5: dolina.workers.v1.ReportProcessingService.StreamAnalysisProcess:output_type -> google.protobuf.Empty
+	3, // [3:6] is the sub-list for method output_type
+	0, // [0:3] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name

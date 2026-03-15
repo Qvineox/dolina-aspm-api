@@ -58,6 +58,15 @@ func (c *Component) BeforeUpdate(tx *gorm.DB) error {
 	return nil
 }
 
+func (c *Component) BeforeDelete(tx *gorm.DB) error {
+	err := tx.Model(c).Association("ApplicationAssets").Unscoped().Clear()
+	if err != nil {
+		return fmt.Errorf("association delete error: %w", err)
+	}
+
+	return nil
+}
+
 func (c *Component) TableName() string {
 	return "components"
 }

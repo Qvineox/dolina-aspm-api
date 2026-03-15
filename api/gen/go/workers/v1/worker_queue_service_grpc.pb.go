@@ -8,6 +8,7 @@ package workers_v1
 
 import (
 	context "context"
+	v1 "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/common/v1"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -21,13 +22,15 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	WorkerQueueService_GetJob_FullMethodName = "/dolina.workers.v1.WorkerQueueService/GetJob"
+	WorkerQueueService_Check_FullMethodName  = "/dolina.workers.v1.WorkerQueueService/Check"
 )
 
 // WorkerQueueServiceClient is the client API for WorkerQueueService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type WorkerQueueServiceClient interface {
-	GetJob(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*WorkerJob, error)
+	GetJob(ctx context.Context, in *v1.UUID, opts ...grpc.CallOption) (*WorkerJob, error)
+	Check(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*WorkerQueue, error)
 }
 
 type workerQueueServiceClient struct {
@@ -38,10 +41,20 @@ func NewWorkerQueueServiceClient(cc grpc.ClientConnInterface) WorkerQueueService
 	return &workerQueueServiceClient{cc}
 }
 
-func (c *workerQueueServiceClient) GetJob(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*WorkerJob, error) {
+func (c *workerQueueServiceClient) GetJob(ctx context.Context, in *v1.UUID, opts ...grpc.CallOption) (*WorkerJob, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(WorkerJob)
 	err := c.cc.Invoke(ctx, WorkerQueueService_GetJob_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *workerQueueServiceClient) Check(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*WorkerQueue, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(WorkerQueue)
+	err := c.cc.Invoke(ctx, WorkerQueueService_Check_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -52,7 +65,8 @@ func (c *workerQueueServiceClient) GetJob(ctx context.Context, in *emptypb.Empty
 // All implementations should embed UnimplementedWorkerQueueServiceServer
 // for forward compatibility.
 type WorkerQueueServiceServer interface {
-	GetJob(context.Context, *emptypb.Empty) (*WorkerJob, error)
+	GetJob(context.Context, *v1.UUID) (*WorkerJob, error)
+	Check(context.Context, *emptypb.Empty) (*WorkerQueue, error)
 }
 
 // UnimplementedWorkerQueueServiceServer should be embedded to have
@@ -62,8 +76,11 @@ type WorkerQueueServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedWorkerQueueServiceServer struct{}
 
-func (UnimplementedWorkerQueueServiceServer) GetJob(context.Context, *emptypb.Empty) (*WorkerJob, error) {
+func (UnimplementedWorkerQueueServiceServer) GetJob(context.Context, *v1.UUID) (*WorkerJob, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetJob not implemented")
+}
+func (UnimplementedWorkerQueueServiceServer) Check(context.Context, *emptypb.Empty) (*WorkerQueue, error) {
+	return nil, status.Error(codes.Unimplemented, "method Check not implemented")
 }
 func (UnimplementedWorkerQueueServiceServer) testEmbeddedByValue() {}
 
@@ -86,7 +103,7 @@ func RegisterWorkerQueueServiceServer(s grpc.ServiceRegistrar, srv WorkerQueueSe
 }
 
 func _WorkerQueueService_GetJob_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(emptypb.Empty)
+	in := new(v1.UUID)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -98,7 +115,25 @@ func _WorkerQueueService_GetJob_Handler(srv interface{}, ctx context.Context, de
 		FullMethod: WorkerQueueService_GetJob_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WorkerQueueServiceServer).GetJob(ctx, req.(*emptypb.Empty))
+		return srv.(WorkerQueueServiceServer).GetJob(ctx, req.(*v1.UUID))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _WorkerQueueService_Check_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WorkerQueueServiceServer).Check(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WorkerQueueService_Check_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WorkerQueueServiceServer).Check(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -113,6 +148,10 @@ var WorkerQueueService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetJob",
 			Handler:    _WorkerQueueService_GetJob_Handler,
+		},
+		{
+			MethodName: "Check",
+			Handler:    _WorkerQueueService_Check_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

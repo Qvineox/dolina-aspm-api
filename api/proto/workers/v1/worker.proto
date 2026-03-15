@@ -1,0 +1,72 @@
+edition = "2023";
+
+package dolina.workers.v1;
+
+option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/workers.proto/v1;workers_v1";
+option features.(pb.go).api_level = API_OPAQUE;
+option features.field_presence = EXPLICIT;
+
+import "google/protobuf/go_features.proto";
+import "google/protobuf/timestamp.proto";
+
+message WorkerIdentity {
+  uint32 id = 1;
+  string worker_name = 2;
+}
+
+message WorkerRegistration {
+  string registration_key = 1;
+
+  string name = 2;
+  string description = 3;
+}
+
+message WorkerStatus {
+  WorkerState state = 1;
+
+  string current_job_uuid = 2;
+}
+
+enum WorkerState {
+  WORKER_STATE_UNSPECIFIED = 0;
+
+  WORKER_STATE_ONLINE = 1;
+  WORKER_STATE_PENDING = 2;
+  WORKER_STATE_BUSY = 3;
+
+  WORKER_STATE_STALE = 4;
+  WORKER_STATE_OFFLINE = 5;
+  WORKER_STATE_ERROR = 6;
+}
+
+message WorkerSignal {
+  WorkerCommand command_type = 1;
+
+  uint64 sequence_id = 2;
+  google.protobuf.Timestamp timestamp = 3;
+
+  oneof payload {
+    // simple flag (used for WORKER_COMMAND_PING, WORKER_COMMAND_CANCEL_JOB, WORKER_COMMAND_SHUTDOWN)
+    bool flag_value = 10;
+
+    // passed job uuid (used for WORKER_COMMAND_ASSIGN_JOB)
+    string job_uuid = 11;
+
+    // Config
+    // ConfigUpdate config_update = 40;
+  }
+}
+
+enum WorkerCommand {
+  WORKER_COMMAND_UNSPECIFIED = 0;
+
+  WORKER_COMMAND_PING = 1;
+
+  WORKER_COMMAND_ASSIGN_JOB = 2;
+  WORKER_COMMAND_CANCEL_JOB = 3;
+
+  WORKER_COMMAND_SHUTDOWN = 4;
+  WORKER_COMMAND_CONFIG_UPDATE = 5;
+
+  WORKER_COMMAND_UPDATE_STATUS = 6;
+}

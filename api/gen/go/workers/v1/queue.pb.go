@@ -7,6 +7,7 @@
 package workers_v1
 
 import (
+	v1 "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/reports/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	_ "google.golang.org/protobuf/types/gofeaturespb"
@@ -22,9 +23,10 @@ const (
 )
 
 type WorkerQueue struct {
-	state         protoimpl.MessageState `protogen:"opaque.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state           protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Jobs *[]*WorkerJob          `protobuf:"bytes,1,rep,name=jobs"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *WorkerQueue) Reset() {
@@ -52,22 +54,42 @@ func (x *WorkerQueue) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
+func (x *WorkerQueue) GetJobs() []*WorkerJob {
+	if x != nil {
+		if x.xxx_hidden_Jobs != nil {
+			return *x.xxx_hidden_Jobs
+		}
+	}
+	return nil
+}
+
+func (x *WorkerQueue) SetJobs(v []*WorkerJob) {
+	x.xxx_hidden_Jobs = &v
+}
+
 type WorkerQueue_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
+	Jobs []*WorkerJob
 }
 
 func (b0 WorkerQueue_builder) Build() *WorkerQueue {
 	m0 := &WorkerQueue{}
 	b, x := &b0, m0
 	_, _ = b, x
+	x.xxx_hidden_Jobs = &b.Jobs
 	return m0
 }
 
 type WorkerJob struct {
-	state         protoimpl.MessageState `protogen:"opaque.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                  protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Uuid        *string                `protobuf:"bytes,1,opt,name=uuid"`
+	xxx_hidden_Metadata    *JobMetadata           `protobuf:"bytes,2,opt,name=metadata"`
+	xxx_hidden_JobPayload  isWorkerJob_JobPayload `protobuf_oneof:"job_payload"`
+	XXX_raceDetectHookData protoimpl.RaceDetectHookData
+	XXX_presence           [1]uint32
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *WorkerJob) Reset() {
@@ -95,13 +117,195 @@ func (x *WorkerJob) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
+func (x *WorkerJob) GetUuid() string {
+	if x != nil {
+		if x.xxx_hidden_Uuid != nil {
+			return *x.xxx_hidden_Uuid
+		}
+		return ""
+	}
+	return ""
+}
+
+func (x *WorkerJob) GetMetadata() *JobMetadata {
+	if x != nil {
+		return x.xxx_hidden_Metadata
+	}
+	return nil
+}
+
+func (x *WorkerJob) GetReportToAnalyse() *v1.Report {
+	if x != nil {
+		if x, ok := x.xxx_hidden_JobPayload.(*workerJob_ReportToAnalyse); ok {
+			return x.ReportToAnalyse
+		}
+	}
+	return nil
+}
+
+func (x *WorkerJob) SetUuid(v string) {
+	x.xxx_hidden_Uuid = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 3)
+}
+
+func (x *WorkerJob) SetMetadata(v *JobMetadata) {
+	x.xxx_hidden_Metadata = v
+}
+
+func (x *WorkerJob) SetReportToAnalyse(v *v1.Report) {
+	if v == nil {
+		x.xxx_hidden_JobPayload = nil
+		return
+	}
+	x.xxx_hidden_JobPayload = &workerJob_ReportToAnalyse{v}
+}
+
+func (x *WorkerJob) HasUuid() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+}
+
+func (x *WorkerJob) HasMetadata() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Metadata != nil
+}
+
+func (x *WorkerJob) HasJobPayload() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_JobPayload != nil
+}
+
+func (x *WorkerJob) HasReportToAnalyse() bool {
+	if x == nil {
+		return false
+	}
+	_, ok := x.xxx_hidden_JobPayload.(*workerJob_ReportToAnalyse)
+	return ok
+}
+
+func (x *WorkerJob) ClearUuid() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
+	x.xxx_hidden_Uuid = nil
+}
+
+func (x *WorkerJob) ClearMetadata() {
+	x.xxx_hidden_Metadata = nil
+}
+
+func (x *WorkerJob) ClearJobPayload() {
+	x.xxx_hidden_JobPayload = nil
+}
+
+func (x *WorkerJob) ClearReportToAnalyse() {
+	if _, ok := x.xxx_hidden_JobPayload.(*workerJob_ReportToAnalyse); ok {
+		x.xxx_hidden_JobPayload = nil
+	}
+}
+
+const WorkerJob_JobPayload_not_set_case case_WorkerJob_JobPayload = 0
+const WorkerJob_ReportToAnalyse_case case_WorkerJob_JobPayload = 3
+
+func (x *WorkerJob) WhichJobPayload() case_WorkerJob_JobPayload {
+	if x == nil {
+		return WorkerJob_JobPayload_not_set_case
+	}
+	switch x.xxx_hidden_JobPayload.(type) {
+	case *workerJob_ReportToAnalyse:
+		return WorkerJob_ReportToAnalyse_case
+	default:
+		return WorkerJob_JobPayload_not_set_case
+	}
+}
+
 type WorkerJob_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
+	Uuid     *string
+	Metadata *JobMetadata
+	// Fields of oneof xxx_hidden_JobPayload:
+	ReportToAnalyse *v1.Report
+	// -- end of xxx_hidden_JobPayload
 }
 
 func (b0 WorkerJob_builder) Build() *WorkerJob {
 	m0 := &WorkerJob{}
+	b, x := &b0, m0
+	_, _ = b, x
+	if b.Uuid != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 3)
+		x.xxx_hidden_Uuid = b.Uuid
+	}
+	x.xxx_hidden_Metadata = b.Metadata
+	if b.ReportToAnalyse != nil {
+		x.xxx_hidden_JobPayload = &workerJob_ReportToAnalyse{b.ReportToAnalyse}
+	}
+	return m0
+}
+
+type case_WorkerJob_JobPayload protoreflect.FieldNumber
+
+func (x case_WorkerJob_JobPayload) String() string {
+	md := file_workers_v1_queue_proto_msgTypes[1].Descriptor()
+	if x == 0 {
+		return "not set"
+	}
+	return protoimpl.X.MessageFieldStringOf(md, protoreflect.FieldNumber(x))
+}
+
+type isWorkerJob_JobPayload interface {
+	isWorkerJob_JobPayload()
+}
+
+type workerJob_ReportToAnalyse struct {
+	ReportToAnalyse *v1.Report `protobuf:"bytes,3,opt,name=report_to_analyse,json=reportToAnalyse,oneof"`
+}
+
+func (*workerJob_ReportToAnalyse) isWorkerJob_JobPayload() {}
+
+type JobMetadata struct {
+	state         protoimpl.MessageState `protogen:"opaque.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *JobMetadata) Reset() {
+	*x = JobMetadata{}
+	mi := &file_workers_v1_queue_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *JobMetadata) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*JobMetadata) ProtoMessage() {}
+
+func (x *JobMetadata) ProtoReflect() protoreflect.Message {
+	mi := &file_workers_v1_queue_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+type JobMetadata_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+}
+
+func (b0 JobMetadata_builder) Build() *JobMetadata {
+	m0 := &JobMetadata{}
 	b, x := &b0, m0
 	_, _ = b, x
 	return m0
@@ -111,21 +315,32 @@ var File_workers_v1_queue_proto protoreflect.FileDescriptor
 
 const file_workers_v1_queue_proto_rawDesc = "" +
 	"\n" +
-	"\x16workers/v1/queue.proto\x12\x11dolina.workers.v1\x1a!google/protobuf/go_features.proto\"\r\n" +
-	"\vWorkerQueue\"\v\n" +
-	"\tWorkerJobBZZPgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/workers.proto/v1;workers_v1\x92\x03\x05\xd2>\x02\x10\x03b\beditionsp\xe8\a"
+	"\x16workers/v1/queue.proto\x12\x11dolina.workers.v1\x1a!google/protobuf/go_features.proto\x1a\x17reports/v1/report.proto\"?\n" +
+	"\vWorkerQueue\x120\n" +
+	"\x04jobs\x18\x01 \x03(\v2\x1c.dolina.workers.v1.WorkerJobR\x04jobs\"\xb3\x01\n" +
+	"\tWorkerJob\x12\x12\n" +
+	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12:\n" +
+	"\bmetadata\x18\x02 \x01(\v2\x1e.dolina.workers.v1.JobMetadataR\bmetadata\x12G\n" +
+	"\x11report_to_analyse\x18\x03 \x01(\v2\x19.dolina.reports.v1.ReportH\x00R\x0freportToAnalyseB\r\n" +
+	"\vjob_payload\"\r\n" +
+	"\vJobMetadataBZZPgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/workers.proto/v1;workers_v1\x92\x03\x05\xd2>\x02\x10\x03b\beditionsp\xe8\a"
 
-var file_workers_v1_queue_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_workers_v1_queue_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_workers_v1_queue_proto_goTypes = []any{
 	(*WorkerQueue)(nil), // 0: dolina.workers.v1.WorkerQueue
 	(*WorkerJob)(nil),   // 1: dolina.workers.v1.WorkerJob
+	(*JobMetadata)(nil), // 2: dolina.workers.v1.JobMetadata
+	(*v1.Report)(nil),   // 3: dolina.reports.v1.Report
 }
 var file_workers_v1_queue_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	1, // 0: dolina.workers.v1.WorkerQueue.jobs:type_name -> dolina.workers.v1.WorkerJob
+	2, // 1: dolina.workers.v1.WorkerJob.metadata:type_name -> dolina.workers.v1.JobMetadata
+	3, // 2: dolina.workers.v1.WorkerJob.report_to_analyse:type_name -> dolina.reports.v1.Report
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_workers_v1_queue_proto_init() }
@@ -133,13 +348,16 @@ func file_workers_v1_queue_proto_init() {
 	if File_workers_v1_queue_proto != nil {
 		return
 	}
+	file_workers_v1_queue_proto_msgTypes[1].OneofWrappers = []any{
+		(*workerJob_ReportToAnalyse)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_workers_v1_queue_proto_rawDesc), len(file_workers_v1_queue_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

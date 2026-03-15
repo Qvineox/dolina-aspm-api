@@ -23,6 +23,7 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	ReportProcessingService_GetReportByUUID_FullMethodName       = "/dolina.workers.v1.ReportProcessingService/GetReportByUUID"
+	ReportProcessingService_CreateReportAnalysis_FullMethodName  = "/dolina.workers.v1.ReportProcessingService/CreateReportAnalysis"
 	ReportProcessingService_StreamAnalysisProcess_FullMethodName = "/dolina.workers.v1.ReportProcessingService/StreamAnalysisProcess"
 )
 
@@ -31,6 +32,9 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ReportProcessingServiceClient interface {
 	GetReportByUUID(ctx context.Context, in *v1.UUID, opts ...grpc.CallOption) (*v11.Report, error)
+	// todo: move to analysis service
+	// ref: https://gitlab.domsnail.ru/dolina/dolina-aspm-api/-/wikis/%D0%9A%D0%BE%D0%BC%D0%BF%D0%BE%D0%BD%D0%B5%D0%BD%D1%82%D1%8B/Workers
+	CreateReportAnalysis(ctx context.Context, in *v11.Report, opts ...grpc.CallOption) (*v11.Report, error)
 	StreamAnalysisProcess(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[AnalysisProcessStream, emptypb.Empty], error)
 }
 
@@ -46,6 +50,16 @@ func (c *reportProcessingServiceClient) GetReportByUUID(ctx context.Context, in 
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(v11.Report)
 	err := c.cc.Invoke(ctx, ReportProcessingService_GetReportByUUID_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *reportProcessingServiceClient) CreateReportAnalysis(ctx context.Context, in *v11.Report, opts ...grpc.CallOption) (*v11.Report, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(v11.Report)
+	err := c.cc.Invoke(ctx, ReportProcessingService_CreateReportAnalysis_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -70,6 +84,9 @@ type ReportProcessingService_StreamAnalysisProcessClient = grpc.ClientStreamingC
 // for forward compatibility.
 type ReportProcessingServiceServer interface {
 	GetReportByUUID(context.Context, *v1.UUID) (*v11.Report, error)
+	// todo: move to analysis service
+	// ref: https://gitlab.domsnail.ru/dolina/dolina-aspm-api/-/wikis/%D0%9A%D0%BE%D0%BC%D0%BF%D0%BE%D0%BD%D0%B5%D0%BD%D1%82%D1%8B/Workers
+	CreateReportAnalysis(context.Context, *v11.Report) (*v11.Report, error)
 	StreamAnalysisProcess(grpc.ClientStreamingServer[AnalysisProcessStream, emptypb.Empty]) error
 }
 
@@ -82,6 +99,9 @@ type UnimplementedReportProcessingServiceServer struct{}
 
 func (UnimplementedReportProcessingServiceServer) GetReportByUUID(context.Context, *v1.UUID) (*v11.Report, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetReportByUUID not implemented")
+}
+func (UnimplementedReportProcessingServiceServer) CreateReportAnalysis(context.Context, *v11.Report) (*v11.Report, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateReportAnalysis not implemented")
 }
 func (UnimplementedReportProcessingServiceServer) StreamAnalysisProcess(grpc.ClientStreamingServer[AnalysisProcessStream, emptypb.Empty]) error {
 	return status.Error(codes.Unimplemented, "method StreamAnalysisProcess not implemented")
@@ -124,6 +144,24 @@ func _ReportProcessingService_GetReportByUUID_Handler(srv interface{}, ctx conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ReportProcessingService_CreateReportAnalysis_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(v11.Report)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ReportProcessingServiceServer).CreateReportAnalysis(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ReportProcessingService_CreateReportAnalysis_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ReportProcessingServiceServer).CreateReportAnalysis(ctx, req.(*v11.Report))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ReportProcessingService_StreamAnalysisProcess_Handler(srv interface{}, stream grpc.ServerStream) error {
 	return srv.(ReportProcessingServiceServer).StreamAnalysisProcess(&grpc.GenericServerStream[AnalysisProcessStream, emptypb.Empty]{ServerStream: stream})
 }
@@ -141,6 +179,10 @@ var ReportProcessingService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetReportByUUID",
 			Handler:    _ReportProcessingService_GetReportByUUID_Handler,
+		},
+		{
+			MethodName: "CreateReportAnalysis",
+			Handler:    _ReportProcessingService_CreateReportAnalysis_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

@@ -14,7 +14,11 @@ import "reports/v1/report.proto";
 import "common/v1/uuid.proto";
 
 service ReportProcessingService {
-  rpc GetReportByUUID(common.v1.UUID) returns (reports.v1.Report) {}
+  rpc GetReportByUUID(common.v1.UUID) returns (reports.v1.Report);
 
-  rpc StreamAnalysisProcess(stream AnalysisProcessStream) returns (google.protobuf.Empty) {}
+  // todo: move to analysis service
+  // ref: https://gitlab.domsnail.ru/dolina/dolina-aspm-api/-/wikis/%D0%9A%D0%BE%D0%BC%D0%BF%D0%BE%D0%BD%D0%B5%D0%BD%D1%82%D1%8B/Workers
+  rpc CreateReportAnalysis(reports.v1.Report) returns (reports.v1.Report);
+
+  rpc StreamAnalysisProcess(stream AnalysisProcessStream) returns (google.protobuf.Empty);
 }

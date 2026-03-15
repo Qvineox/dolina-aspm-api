@@ -7,15 +7,14 @@ option features.(pb.go).api_level = API_OPAQUE;
 option features.field_presence = EXPLICIT;
 
 import "google/protobuf/go_features.proto";
-import "google/protobuf/empty.proto";
 
-import "workers/v1/queue.proto";
-import "common/v1/uuid.proto";
+import "workers/v1/worker.proto";
 
 // worker --> control center
 
-service WorkerQueueService {
-  rpc GetJob(common.v1.UUID) returns (WorkerJob);
+service WorkerControlService {
+  rpc Register(WorkerRegistration) returns (WorkerIdentity);
 
-  rpc Check(google.protobuf.Empty) returns (WorkerQueue);
+  rpc Heartbeat(stream WorkerStatus) returns (stream WorkerSignal);
 }
+

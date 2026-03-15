@@ -7,10 +7,21 @@ option features.(pb.go).api_level = API_OPAQUE;
 
 import "google/protobuf/go_features.proto";
 
-message WorkerQueue {
+import "reports/v1/report.proto";
 
+message WorkerQueue {
+  repeated WorkerJob jobs = 1;
 }
 
 message WorkerJob {
+  string uuid = 1;
+  JobMetadata metadata = 2;
+
+  oneof job_payload {
+    reports.v1.Report report_to_analyse = 3;
+  }
+}
+
+message JobMetadata {
 
 }
