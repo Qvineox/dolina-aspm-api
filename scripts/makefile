@@ -18,6 +18,7 @@ protoc_gen_go:
 		vulnerability/v1/*.proto \
 		applications/v1/*.proto \
 		components/v1/*.proto \
+		filestore/v1/*.proto \
 		exploits/v1/*.proto \
 		projects/v1/*.proto \
 		reports/v1/*.proto \
