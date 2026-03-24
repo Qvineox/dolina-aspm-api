@@ -42,6 +42,7 @@ protoc_gen_go_gw:
 		vulnerability/v1/*.proto \
 		applications/v1/*.proto \
 		components/v1/*.proto \
+		filestore/v1/*.proto \
 		exploits/v1/*.proto \
 		projects/v1/*.proto \
 		reports/v1/*.proto \
@@ -61,6 +62,7 @@ protoc_gen_ts:
 		vulnerability/v1/*.proto \
 		applications/v1/*.proto \
 		components/v1/*.proto \
+		filestore/v1/*.proto \
 		exploits/v1/*.proto \
 		projects/v1/*.proto \
 		reports/v1/*.proto \

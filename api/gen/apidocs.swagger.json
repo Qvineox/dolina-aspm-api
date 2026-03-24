@@ -22,6 +22,12 @@
       "name": "ComponentsService"
     },
     {
+      "name": "FilestoreService"
+    },
+    {
+      "name": "UploadService"
+    },
+    {
       "name": "ProjectService"
     },
     {
@@ -237,6 +243,95 @@
         ],
         "tags": [
           "DefectsService"
+        ]
+      }
+    },
+    "/api/v1/filestore/{uuid}": {
+      "get": {
+        "operationId": "FilestoreService_GetFileByUUID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1FileChunk"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "FilestoreService"
+        ]
+      },
+      "delete": {
+        "operationId": "FilestoreService_DeleteFileByUUID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "FilestoreService"
+        ]
+      }
+    },
+    "/api/v1/filestore/{uuid}/metadata": {
+      "get": {
+        "operationId": "FilestoreService_GetFileMetadataByUUID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1FileMetadata"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "FilestoreService"
         ]
       }
     },
@@ -883,6 +978,71 @@
           "ReportsService"
         ]
       }
+    },
+    "/api/v1/upload": {
+      "post": {
+        "operationId": "UploadService_UploadUnary",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UploadStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1FileChunk"
+            }
+          }
+        ],
+        "tags": [
+          "UploadService"
+        ]
+      }
+    },
+    "/api/v1/upload/stream": {
+      "post": {
+        "operationId": "UploadService_UploadStream",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UploadStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": " (streaming inputs)",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1FileChunk"
+            }
+          }
+        ],
+        "tags": [
+          "UploadService"
+        ]
+      }
     }
   },
   "definitions": {
@@ -1523,6 +1683,33 @@
       "description": "Represents a security exploit with identifying information, description, and external references. Contains a unique identifier (UUID), title, detailed description, list of reference URLs to external resources (CVE, exploit databases, etc.), and optional creation/update timestamps for audit tracking.",
       "title": "Exploit"
     },
+    "v1FileChunk": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string",
+          "format": "byte"
+        },
+        "metadata": {
+          "$ref": "#/definitions/v1FileMetadata"
+        }
+      }
+    },
+    "v1FileMetadata": {
+      "type": "object",
+      "properties": {
+        "fileName": {
+          "type": "string"
+        },
+        "mimeType": {
+          "type": "string"
+        },
+        "totalSize": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
+    },
     "v1FixInfo": {
       "type": "object",
       "properties": {
@@ -1781,6 +1968,21 @@
     },
     "v1Sort": {
       "type": "object"
+    },
+    "v1UploadStatus": {
+      "type": "object",
+      "properties": {
+        "fileUuid": {
+          "type": "string"
+        },
+        "fileName": {
+          "type": "string"
+        },
+        "receivedSize": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
     },
     "v1Vendor": {
       "type": "object",
