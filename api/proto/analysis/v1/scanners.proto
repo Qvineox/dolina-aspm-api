@@ -1,8 +1,8 @@
 edition = "2023";
 
-package dolina.reports.v1;
+package dolina.analysis.v1;
 
-option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/reports/v1;reports_v1";
+option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/analysis/v1;analysis_v1";
 option features.(pb.go).api_level = API_OPAQUE;
 
 import "protoc-gen-openapiv2/options/annotations.proto";

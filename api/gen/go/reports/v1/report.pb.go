@@ -8,6 +8,7 @@ package reports_v1
 
 import (
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
+	v1 "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/analysis/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	_ "google.golang.org/protobuf/types/gofeaturespb"
@@ -25,7 +26,7 @@ const (
 type Report struct {
 	state                     protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_Uuid           *string                `protobuf:"bytes,1,opt,name=uuid"`
-	xxx_hidden_ScannerReports *[]*ScannerReport      `protobuf:"bytes,2,rep,name=scanner_reports,json=scannerReports"`
+	xxx_hidden_ScannerReports *[]*v1.ScannerReport   `protobuf:"bytes,2,rep,name=scanner_reports,json=scannerReports"`
 	xxx_hidden_ProjectId      uint32                 `protobuf:"varint,3,opt,name=project_id,json=projectId"`
 	xxx_hidden_ApplicationId  uint32                 `protobuf:"varint,4,opt,name=application_id,json=applicationId"`
 	xxx_hidden_RepositoryUuid *string                `protobuf:"bytes,5,opt,name=repository_uuid,json=repositoryUuid"`
@@ -72,7 +73,7 @@ func (x *Report) GetUuid() string {
 	return ""
 }
 
-func (x *Report) GetScannerReports() []*ScannerReport {
+func (x *Report) GetScannerReports() []*v1.ScannerReport {
 	if x != nil {
 		if x.xxx_hidden_ScannerReports != nil {
 			return *x.xxx_hidden_ScannerReports
@@ -130,7 +131,7 @@ func (x *Report) SetUuid(v string) {
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 7)
 }
 
-func (x *Report) SetScannerReports(v []*ScannerReport) {
+func (x *Report) SetScannerReports(v []*v1.ScannerReport) {
 	x.xxx_hidden_ScannerReports = &v
 }
 
@@ -235,7 +236,7 @@ type Report_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	Uuid           *string
-	ScannerReports []*ScannerReport
+	ScannerReports []*v1.ScannerReport
 	// membership attributes
 	ProjectId      *uint32
 	ApplicationId  *uint32
@@ -359,10 +360,10 @@ var File_reports_v1_report_proto protoreflect.FileDescriptor
 
 const file_reports_v1_report_proto_rawDesc = "" +
 	"\n" +
-	"\x17reports/v1/report.proto\x12\x11dolina.reports.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a!google/protobuf/go_features.proto\x1a\x19reports/v1/scanners.proto\"\x9c\x06\n" +
+	"\x17reports/v1/report.proto\x12\x11dolina.reports.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a!google/protobuf/go_features.proto\x1a\x1aanalysis/v1/scanners.proto\"\x9d\x06\n" +
 	"\x06Report\x12\x12\n" +
-	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12I\n" +
-	"\x0fscanner_reports\x18\x02 \x03(\v2 .dolina.reports.v1.ScannerReportR\x0escannerReports\x12$\n" +
+	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12J\n" +
+	"\x0fscanner_reports\x18\x02 \x03(\v2!.dolina.analysis.v1.ScannerReportR\x0escannerReports\x12$\n" +
 	"\n" +
 	"project_id\x18\x03 \x01(\rB\x05\xaa\x01\x02\b\x01R\tprojectId\x12,\n" +
 	"\x0eapplication_id\x18\x04 \x01(\rB\x05\xaa\x01\x02\b\x01R\rapplicationId\x12.\n" +
@@ -376,12 +377,12 @@ const file_reports_v1_report_proto_rawDesc = "" +
 
 var file_reports_v1_report_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_reports_v1_report_proto_goTypes = []any{
-	(*Report)(nil),        // 0: dolina.reports.v1.Report
-	(*ReportPatch)(nil),   // 1: dolina.reports.v1.ReportPatch
-	(*ScannerReport)(nil), // 2: dolina.reports.v1.ScannerReport
+	(*Report)(nil),           // 0: dolina.reports.v1.Report
+	(*ReportPatch)(nil),      // 1: dolina.reports.v1.ReportPatch
+	(*v1.ScannerReport)(nil), // 2: dolina.analysis.v1.ScannerReport
 }
 var file_reports_v1_report_proto_depIdxs = []int32{
-	2, // 0: dolina.reports.v1.Report.scanner_reports:type_name -> dolina.reports.v1.ScannerReport
+	2, // 0: dolina.reports.v1.Report.scanner_reports:type_name -> dolina.analysis.v1.ScannerReport
 	1, // [1:1] is the sub-list for method output_type
 	1, // [1:1] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name
@@ -394,7 +395,6 @@ func file_reports_v1_report_proto_init() {
 	if File_reports_v1_report_proto != nil {
 		return
 	}
-	file_reports_v1_scanners_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

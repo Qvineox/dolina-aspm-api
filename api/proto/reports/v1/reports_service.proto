@@ -10,7 +10,7 @@ import "google/protobuf/go_features.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 
-import "reports/v1/scanners.proto";
+import "analysis/v1/scanners.proto";
 import "reports/v1/report.proto";
 import "common/v1/pagination.proto";
 import "common/v1/uuid.proto";
@@ -57,8 +57,8 @@ message ReportsQueryFilter {
   string artifact_uuid = 8;
   string artifact_purl = 9;
 
-  ScannerID scanner_id = 10;
-  ScannerFormat scanner_format = 11;
+  analysis.v1.ScannerID scanner_id = 10;
+  analysis.v1.ScannerFormat scanner_format = 11;
 
   string pipeline_id = 12;
 

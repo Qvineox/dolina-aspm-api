@@ -1,0 +1,26 @@
+edition = "2023";
+
+package dolina.analysis.v1;
+
+option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/analysis/v1;analysis_v1";
+option features.(pb.go).api_level = API_OPAQUE;
+
+import "google/protobuf/go_features.proto";
+
+import "google/protobuf/timestamp.proto";
+import "analysis/v1/analysis.proto";
+
+message AnalysisWindow {
+  uint32 id = 1;
+
+  AnalysisState state = 2;
+  float progress = 3;
+
+  repeated Analysis analysis_list = 4;
+
+  string pipeline_id = 5;
+
+  google.protobuf.Timestamp created_at = 10;
+  google.protobuf.Timestamp opened_at = 12;
+  google.protobuf.Timestamp closed_at = 13;
+}

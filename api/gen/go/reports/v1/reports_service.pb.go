@@ -7,7 +7,8 @@
 package reports_v1
 
 import (
-	v1 "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/common/v1"
+	v1 "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/analysis/v1"
+	v11 "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/common/v1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -34,10 +35,10 @@ type ReportsQueryFilter struct {
 	xxx_hidden_RepositoryUrl   *string                `protobuf:"bytes,7,opt,name=repository_url,json=repositoryUrl"`
 	xxx_hidden_ArtifactUuid    *string                `protobuf:"bytes,8,opt,name=artifact_uuid,json=artifactUuid"`
 	xxx_hidden_ArtifactPurl    *string                `protobuf:"bytes,9,opt,name=artifact_purl,json=artifactPurl"`
-	xxx_hidden_ScannerId       ScannerID              `protobuf:"varint,10,opt,name=scanner_id,json=scannerId,enum=dolina.reports.v1.ScannerID"`
-	xxx_hidden_ScannerFormat   ScannerFormat          `protobuf:"varint,11,opt,name=scanner_format,json=scannerFormat,enum=dolina.reports.v1.ScannerFormat"`
+	xxx_hidden_ScannerId       v1.ScannerID           `protobuf:"varint,10,opt,name=scanner_id,json=scannerId,enum=dolina.analysis.v1.ScannerID"`
+	xxx_hidden_ScannerFormat   v1.ScannerFormat       `protobuf:"varint,11,opt,name=scanner_format,json=scannerFormat,enum=dolina.analysis.v1.ScannerFormat"`
 	xxx_hidden_PipelineId      *string                `protobuf:"bytes,12,opt,name=pipeline_id,json=pipelineId"`
-	xxx_hidden_Pagination      *v1.Pagination         `protobuf:"bytes,20,opt,name=pagination"`
+	xxx_hidden_Pagination      *v11.Pagination        `protobuf:"bytes,20,opt,name=pagination"`
 	XXX_raceDetectHookData     protoimpl.RaceDetectHookData
 	XXX_presence               [1]uint32
 	unknownFields              protoimpl.UnknownFields
@@ -143,22 +144,22 @@ func (x *ReportsQueryFilter) GetArtifactPurl() string {
 	return ""
 }
 
-func (x *ReportsQueryFilter) GetScannerId() ScannerID {
+func (x *ReportsQueryFilter) GetScannerId() v1.ScannerID {
 	if x != nil {
 		if protoimpl.X.Present(&(x.XXX_presence[0]), 8) {
 			return x.xxx_hidden_ScannerId
 		}
 	}
-	return ScannerID_SCANNER_ID_UNSPECIFIED
+	return v1.ScannerID(0)
 }
 
-func (x *ReportsQueryFilter) GetScannerFormat() ScannerFormat {
+func (x *ReportsQueryFilter) GetScannerFormat() v1.ScannerFormat {
 	if x != nil {
 		if protoimpl.X.Present(&(x.XXX_presence[0]), 9) {
 			return x.xxx_hidden_ScannerFormat
 		}
 	}
-	return ScannerFormat_SCANNER_FORMAT_UNSPECIFIED
+	return v1.ScannerFormat(0)
 }
 
 func (x *ReportsQueryFilter) GetPipelineId() string {
@@ -171,7 +172,7 @@ func (x *ReportsQueryFilter) GetPipelineId() string {
 	return ""
 }
 
-func (x *ReportsQueryFilter) GetPagination() *v1.Pagination {
+func (x *ReportsQueryFilter) GetPagination() *v11.Pagination {
 	if x != nil {
 		return x.xxx_hidden_Pagination
 	}
@@ -218,12 +219,12 @@ func (x *ReportsQueryFilter) SetArtifactPurl(v string) {
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 12)
 }
 
-func (x *ReportsQueryFilter) SetScannerId(v ScannerID) {
+func (x *ReportsQueryFilter) SetScannerId(v v1.ScannerID) {
 	x.xxx_hidden_ScannerId = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 8, 12)
 }
 
-func (x *ReportsQueryFilter) SetScannerFormat(v ScannerFormat) {
+func (x *ReportsQueryFilter) SetScannerFormat(v v1.ScannerFormat) {
 	x.xxx_hidden_ScannerFormat = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 9, 12)
 }
@@ -233,7 +234,7 @@ func (x *ReportsQueryFilter) SetPipelineId(v string) {
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 10, 12)
 }
 
-func (x *ReportsQueryFilter) SetPagination(v *v1.Pagination) {
+func (x *ReportsQueryFilter) SetPagination(v *v11.Pagination) {
 	x.xxx_hidden_Pagination = v
 }
 
@@ -363,12 +364,12 @@ func (x *ReportsQueryFilter) ClearArtifactPurl() {
 
 func (x *ReportsQueryFilter) ClearScannerId() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 8)
-	x.xxx_hidden_ScannerId = ScannerID_SCANNER_ID_UNSPECIFIED
+	x.xxx_hidden_ScannerId = v1.ScannerID_SCANNER_ID_UNSPECIFIED
 }
 
 func (x *ReportsQueryFilter) ClearScannerFormat() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 9)
-	x.xxx_hidden_ScannerFormat = ScannerFormat_SCANNER_FORMAT_UNSPECIFIED
+	x.xxx_hidden_ScannerFormat = v1.ScannerFormat_SCANNER_FORMAT_UNSPECIFIED
 }
 
 func (x *ReportsQueryFilter) ClearPipelineId() {
@@ -393,10 +394,10 @@ type ReportsQueryFilter_builder struct {
 	// create or update project artifact by provided attributes
 	ArtifactUuid  *string
 	ArtifactPurl  *string
-	ScannerId     *ScannerID
-	ScannerFormat *ScannerFormat
+	ScannerId     *v1.ScannerID
+	ScannerFormat *v1.ScannerFormat
 	PipelineId    *string
-	Pagination    *v1.Pagination
+	Pagination    *v11.Pagination
 }
 
 func (b0 ReportsQueryFilter_builder) Build() *ReportsQueryFilter {
@@ -452,9 +453,9 @@ func (b0 ReportsQueryFilter_builder) Build() *ReportsQueryFilter {
 }
 
 type ReportsQueryResponse struct {
-	state                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_ReportsList *[]*Report             `protobuf:"bytes,1,rep,name=reports_list,json=reportsList"`
-	xxx_hidden_Pagination  *v1.PaginationMetadata `protobuf:"bytes,2,opt,name=pagination"`
+	state                  protoimpl.MessageState  `protogen:"opaque.v1"`
+	xxx_hidden_ReportsList *[]*Report              `protobuf:"bytes,1,rep,name=reports_list,json=reportsList"`
+	xxx_hidden_Pagination  *v11.PaginationMetadata `protobuf:"bytes,2,opt,name=pagination"`
 	unknownFields          protoimpl.UnknownFields
 	sizeCache              protoimpl.SizeCache
 }
@@ -493,7 +494,7 @@ func (x *ReportsQueryResponse) GetReportsList() []*Report {
 	return nil
 }
 
-func (x *ReportsQueryResponse) GetPagination() *v1.PaginationMetadata {
+func (x *ReportsQueryResponse) GetPagination() *v11.PaginationMetadata {
 	if x != nil {
 		return x.xxx_hidden_Pagination
 	}
@@ -504,7 +505,7 @@ func (x *ReportsQueryResponse) SetReportsList(v []*Report) {
 	x.xxx_hidden_ReportsList = &v
 }
 
-func (x *ReportsQueryResponse) SetPagination(v *v1.PaginationMetadata) {
+func (x *ReportsQueryResponse) SetPagination(v *v11.PaginationMetadata) {
 	x.xxx_hidden_Pagination = v
 }
 
@@ -523,7 +524,7 @@ type ReportsQueryResponse_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	ReportsList []*Report
-	Pagination  *v1.PaginationMetadata
+	Pagination  *v11.PaginationMetadata
 }
 
 func (b0 ReportsQueryResponse_builder) Build() *ReportsQueryResponse {
@@ -539,7 +540,7 @@ var File_reports_v1_reports_service_proto protoreflect.FileDescriptor
 
 const file_reports_v1_reports_service_proto_rawDesc = "" +
 	"\n" +
-	" reports/v1/reports_service.proto\x12\x11dolina.reports.v1\x1a!google/protobuf/go_features.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x19reports/v1/scanners.proto\x1a\x17reports/v1/report.proto\x1a\x1acommon/v1/pagination.proto\x1a\x14common/v1/uuid.proto\"\xa7\x04\n" +
+	" reports/v1/reports_service.proto\x12\x11dolina.reports.v1\x1a!google/protobuf/go_features.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1aanalysis/v1/scanners.proto\x1a\x17reports/v1/report.proto\x1a\x1acommon/v1/pagination.proto\x1a\x14common/v1/uuid.proto\"\xa9\x04\n" +
 	"\x12ReportsQueryFilter\x12\x1d\n" +
 	"\n" +
 	"project_id\x18\x02 \x01(\rR\tprojectId\x12!\n" +
@@ -549,11 +550,11 @@ const file_reports_v1_reports_service_proto_rawDesc = "" +
 	"\x0frepository_uuid\x18\x06 \x01(\tR\x0erepositoryUuid\x12%\n" +
 	"\x0erepository_url\x18\a \x01(\tR\rrepositoryUrl\x12#\n" +
 	"\rartifact_uuid\x18\b \x01(\tR\fartifactUuid\x12#\n" +
-	"\rartifact_purl\x18\t \x01(\tR\fartifactPurl\x12;\n" +
+	"\rartifact_purl\x18\t \x01(\tR\fartifactPurl\x12<\n" +
 	"\n" +
 	"scanner_id\x18\n" +
-	" \x01(\x0e2\x1c.dolina.reports.v1.ScannerIDR\tscannerId\x12G\n" +
-	"\x0escanner_format\x18\v \x01(\x0e2 .dolina.reports.v1.ScannerFormatR\rscannerFormat\x12\x1f\n" +
+	" \x01(\x0e2\x1d.dolina.analysis.v1.ScannerIDR\tscannerId\x12H\n" +
+	"\x0escanner_format\x18\v \x01(\x0e2!.dolina.analysis.v1.ScannerFormatR\rscannerFormat\x12\x1f\n" +
 	"\vpipeline_id\x18\f \x01(\tR\n" +
 	"pipelineId\x12<\n" +
 	"\n" +
@@ -572,20 +573,20 @@ const file_reports_v1_reports_service_proto_rawDesc = "" +
 
 var file_reports_v1_reports_service_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_reports_v1_reports_service_proto_goTypes = []any{
-	(*ReportsQueryFilter)(nil),    // 0: dolina.reports.v1.ReportsQueryFilter
-	(*ReportsQueryResponse)(nil),  // 1: dolina.reports.v1.ReportsQueryResponse
-	(ScannerID)(0),                // 2: dolina.reports.v1.ScannerID
-	(ScannerFormat)(0),            // 3: dolina.reports.v1.ScannerFormat
-	(*v1.Pagination)(nil),         // 4: dolina.common.v1.Pagination
-	(*Report)(nil),                // 5: dolina.reports.v1.Report
-	(*v1.PaginationMetadata)(nil), // 6: dolina.common.v1.PaginationMetadata
-	(*v1.UUID)(nil),               // 7: dolina.common.v1.UUID
-	(*ReportPatch)(nil),           // 8: dolina.reports.v1.ReportPatch
-	(*emptypb.Empty)(nil),         // 9: google.protobuf.Empty
+	(*ReportsQueryFilter)(nil),     // 0: dolina.reports.v1.ReportsQueryFilter
+	(*ReportsQueryResponse)(nil),   // 1: dolina.reports.v1.ReportsQueryResponse
+	(v1.ScannerID)(0),              // 2: dolina.analysis.v1.ScannerID
+	(v1.ScannerFormat)(0),          // 3: dolina.analysis.v1.ScannerFormat
+	(*v11.Pagination)(nil),         // 4: dolina.common.v1.Pagination
+	(*Report)(nil),                 // 5: dolina.reports.v1.Report
+	(*v11.PaginationMetadata)(nil), // 6: dolina.common.v1.PaginationMetadata
+	(*v11.UUID)(nil),               // 7: dolina.common.v1.UUID
+	(*ReportPatch)(nil),            // 8: dolina.reports.v1.ReportPatch
+	(*emptypb.Empty)(nil),          // 9: google.protobuf.Empty
 }
 var file_reports_v1_reports_service_proto_depIdxs = []int32{
-	2, // 0: dolina.reports.v1.ReportsQueryFilter.scanner_id:type_name -> dolina.reports.v1.ScannerID
-	3, // 1: dolina.reports.v1.ReportsQueryFilter.scanner_format:type_name -> dolina.reports.v1.ScannerFormat
+	2, // 0: dolina.reports.v1.ReportsQueryFilter.scanner_id:type_name -> dolina.analysis.v1.ScannerID
+	3, // 1: dolina.reports.v1.ReportsQueryFilter.scanner_format:type_name -> dolina.analysis.v1.ScannerFormat
 	4, // 2: dolina.reports.v1.ReportsQueryFilter.pagination:type_name -> dolina.common.v1.Pagination
 	5, // 3: dolina.reports.v1.ReportsQueryResponse.reports_list:type_name -> dolina.reports.v1.Report
 	6, // 4: dolina.reports.v1.ReportsQueryResponse.pagination:type_name -> dolina.common.v1.PaginationMetadata
@@ -609,7 +610,6 @@ func file_reports_v1_reports_service_proto_init() {
 	if File_reports_v1_reports_service_proto != nil {
 		return
 	}
-	file_reports_v1_scanners_proto_init()
 	file_reports_v1_report_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{

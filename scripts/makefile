@@ -21,6 +21,7 @@ protoc_gen_go:
 		filestore/v1/*.proto \
 		exploits/v1/*.proto \
 		projects/v1/*.proto \
+		analysis/v1/*.proto \
 		reports/v1/*.proto \
 		defects/v1/*.proto \
 		workers/v1/*.proto \
@@ -46,6 +47,7 @@ protoc_gen_go_gw:
 		filestore/v1/*.proto \
 		exploits/v1/*.proto \
 		projects/v1/*.proto \
+		analysis/v1/*.proto \
 		reports/v1/*.proto \
 		defects/v1/*.proto \
 		workers/v1/*.proto \
