@@ -135,13 +135,11 @@ func (x WorkerCommand) Number() protoreflect.EnumNumber {
 }
 
 type WorkerIdentity struct {
-	state                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Id          uint32                 `protobuf:"varint,1,opt,name=id"`
-	xxx_hidden_WorkerName  *string                `protobuf:"bytes,2,opt,name=worker_name,json=workerName"`
-	XXX_raceDetectHookData protoimpl.RaceDetectHookData
-	XXX_presence           [1]uint32
-	unknownFields          protoimpl.UnknownFields
-	sizeCache              protoimpl.SizeCache
+	state                 protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Id         uint32                 `protobuf:"varint,1,opt,name=id"`
+	xxx_hidden_WorkerName string                 `protobuf:"bytes,2,opt,name=worker_name,json=workerName"`
+	unknownFields         protoimpl.UnknownFields
+	sizeCache             protoimpl.SizeCache
 }
 
 func (x *WorkerIdentity) Reset() {
@@ -178,77 +176,40 @@ func (x *WorkerIdentity) GetId() uint32 {
 
 func (x *WorkerIdentity) GetWorkerName() string {
 	if x != nil {
-		if x.xxx_hidden_WorkerName != nil {
-			return *x.xxx_hidden_WorkerName
-		}
-		return ""
+		return x.xxx_hidden_WorkerName
 	}
 	return ""
 }
 
 func (x *WorkerIdentity) SetId(v uint32) {
 	x.xxx_hidden_Id = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 2)
 }
 
 func (x *WorkerIdentity) SetWorkerName(v string) {
-	x.xxx_hidden_WorkerName = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
-}
-
-func (x *WorkerIdentity) HasId() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
-}
-
-func (x *WorkerIdentity) HasWorkerName() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
-}
-
-func (x *WorkerIdentity) ClearId() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
-	x.xxx_hidden_Id = 0
-}
-
-func (x *WorkerIdentity) ClearWorkerName() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_WorkerName = nil
+	x.xxx_hidden_WorkerName = v
 }
 
 type WorkerIdentity_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	Id         *uint32
-	WorkerName *string
+	Id         uint32
+	WorkerName string
 }
 
 func (b0 WorkerIdentity_builder) Build() *WorkerIdentity {
 	m0 := &WorkerIdentity{}
 	b, x := &b0, m0
 	_, _ = b, x
-	if b.Id != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 2)
-		x.xxx_hidden_Id = *b.Id
-	}
-	if b.WorkerName != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 2)
-		x.xxx_hidden_WorkerName = b.WorkerName
-	}
+	x.xxx_hidden_Id = b.Id
+	x.xxx_hidden_WorkerName = b.WorkerName
 	return m0
 }
 
 type WorkerRegistration struct {
 	state                      protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_RegistrationKey *string                `protobuf:"bytes,1,opt,name=registration_key,json=registrationKey"`
-	xxx_hidden_Name            *string                `protobuf:"bytes,2,opt,name=name"`
-	xxx_hidden_Description     *string                `protobuf:"bytes,3,opt,name=description"`
-	XXX_raceDetectHookData     protoimpl.RaceDetectHookData
-	XXX_presence               [1]uint32
+	xxx_hidden_RegistrationKey string                 `protobuf:"bytes,1,opt,name=registration_key,json=registrationKey"`
+	xxx_hidden_Name            string                 `protobuf:"bytes,2,opt,name=name"`
+	xxx_hidden_Description     string                 `protobuf:"bytes,3,opt,name=description"`
 	unknownFields              protoimpl.UnknownFields
 	sizeCache                  protoimpl.SizeCache
 }
@@ -280,118 +241,59 @@ func (x *WorkerRegistration) ProtoReflect() protoreflect.Message {
 
 func (x *WorkerRegistration) GetRegistrationKey() string {
 	if x != nil {
-		if x.xxx_hidden_RegistrationKey != nil {
-			return *x.xxx_hidden_RegistrationKey
-		}
-		return ""
+		return x.xxx_hidden_RegistrationKey
 	}
 	return ""
 }
 
 func (x *WorkerRegistration) GetName() string {
 	if x != nil {
-		if x.xxx_hidden_Name != nil {
-			return *x.xxx_hidden_Name
-		}
-		return ""
+		return x.xxx_hidden_Name
 	}
 	return ""
 }
 
 func (x *WorkerRegistration) GetDescription() string {
 	if x != nil {
-		if x.xxx_hidden_Description != nil {
-			return *x.xxx_hidden_Description
-		}
-		return ""
+		return x.xxx_hidden_Description
 	}
 	return ""
 }
 
 func (x *WorkerRegistration) SetRegistrationKey(v string) {
-	x.xxx_hidden_RegistrationKey = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 3)
+	x.xxx_hidden_RegistrationKey = v
 }
 
 func (x *WorkerRegistration) SetName(v string) {
-	x.xxx_hidden_Name = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
+	x.xxx_hidden_Name = v
 }
 
 func (x *WorkerRegistration) SetDescription(v string) {
-	x.xxx_hidden_Description = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
-}
-
-func (x *WorkerRegistration) HasRegistrationKey() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
-}
-
-func (x *WorkerRegistration) HasName() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
-}
-
-func (x *WorkerRegistration) HasDescription() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
-}
-
-func (x *WorkerRegistration) ClearRegistrationKey() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
-	x.xxx_hidden_RegistrationKey = nil
-}
-
-func (x *WorkerRegistration) ClearName() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_Name = nil
-}
-
-func (x *WorkerRegistration) ClearDescription() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
-	x.xxx_hidden_Description = nil
+	x.xxx_hidden_Description = v
 }
 
 type WorkerRegistration_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	RegistrationKey *string
-	Name            *string
-	Description     *string
+	RegistrationKey string
+	Name            string
+	Description     string
 }
 
 func (b0 WorkerRegistration_builder) Build() *WorkerRegistration {
 	m0 := &WorkerRegistration{}
 	b, x := &b0, m0
 	_, _ = b, x
-	if b.RegistrationKey != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 3)
-		x.xxx_hidden_RegistrationKey = b.RegistrationKey
-	}
-	if b.Name != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
-		x.xxx_hidden_Name = b.Name
-	}
-	if b.Description != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
-		x.xxx_hidden_Description = b.Description
-	}
+	x.xxx_hidden_RegistrationKey = b.RegistrationKey
+	x.xxx_hidden_Name = b.Name
+	x.xxx_hidden_Description = b.Description
 	return m0
 }
 
 type WorkerStatus struct {
 	state                     protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_State          WorkerState            `protobuf:"varint,1,opt,name=state,enum=dolina.workers.v1.WorkerState"`
-	xxx_hidden_CurrentJobUuid *string                `protobuf:"bytes,2,opt,name=current_job_uuid,json=currentJobUuid"`
-	XXX_raceDetectHookData    protoimpl.RaceDetectHookData
-	XXX_presence              [1]uint32
+	xxx_hidden_CurrentJobUuid string                 `protobuf:"bytes,2,opt,name=current_job_uuid,json=currentJobUuid"`
 	unknownFields             protoimpl.UnknownFields
 	sizeCache                 protoimpl.SizeCache
 }
@@ -423,76 +325,39 @@ func (x *WorkerStatus) ProtoReflect() protoreflect.Message {
 
 func (x *WorkerStatus) GetState() WorkerState {
 	if x != nil {
-		if protoimpl.X.Present(&(x.XXX_presence[0]), 0) {
-			return x.xxx_hidden_State
-		}
+		return x.xxx_hidden_State
 	}
 	return WorkerState_WORKER_STATE_UNSPECIFIED
 }
 
 func (x *WorkerStatus) GetCurrentJobUuid() string {
 	if x != nil {
-		if x.xxx_hidden_CurrentJobUuid != nil {
-			return *x.xxx_hidden_CurrentJobUuid
-		}
-		return ""
+		return x.xxx_hidden_CurrentJobUuid
 	}
 	return ""
 }
 
 func (x *WorkerStatus) SetState(v WorkerState) {
 	x.xxx_hidden_State = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 2)
 }
 
 func (x *WorkerStatus) SetCurrentJobUuid(v string) {
-	x.xxx_hidden_CurrentJobUuid = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
-}
-
-func (x *WorkerStatus) HasState() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
-}
-
-func (x *WorkerStatus) HasCurrentJobUuid() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
-}
-
-func (x *WorkerStatus) ClearState() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
-	x.xxx_hidden_State = WorkerState_WORKER_STATE_UNSPECIFIED
-}
-
-func (x *WorkerStatus) ClearCurrentJobUuid() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_CurrentJobUuid = nil
+	x.xxx_hidden_CurrentJobUuid = v
 }
 
 type WorkerStatus_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	State          *WorkerState
-	CurrentJobUuid *string
+	State          WorkerState
+	CurrentJobUuid string
 }
 
 func (b0 WorkerStatus_builder) Build() *WorkerStatus {
 	m0 := &WorkerStatus{}
 	b, x := &b0, m0
 	_, _ = b, x
-	if b.State != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 2)
-		x.xxx_hidden_State = *b.State
-	}
-	if b.CurrentJobUuid != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 2)
-		x.xxx_hidden_CurrentJobUuid = b.CurrentJobUuid
-	}
+	x.xxx_hidden_State = b.State
+	x.xxx_hidden_CurrentJobUuid = b.CurrentJobUuid
 	return m0
 }
 
@@ -502,8 +367,6 @@ type WorkerSignal struct {
 	xxx_hidden_SequenceId  uint64                 `protobuf:"varint,2,opt,name=sequence_id,json=sequenceId"`
 	xxx_hidden_Timestamp   *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=timestamp"`
 	xxx_hidden_Payload     isWorkerSignal_Payload `protobuf_oneof:"payload"`
-	XXX_raceDetectHookData protoimpl.RaceDetectHookData
-	XXX_presence           [1]uint32
 	unknownFields          protoimpl.UnknownFields
 	sizeCache              protoimpl.SizeCache
 }
@@ -535,9 +398,7 @@ func (x *WorkerSignal) ProtoReflect() protoreflect.Message {
 
 func (x *WorkerSignal) GetCommandType() WorkerCommand {
 	if x != nil {
-		if protoimpl.X.Present(&(x.XXX_presence[0]), 0) {
-			return x.xxx_hidden_CommandType
-		}
+		return x.xxx_hidden_CommandType
 	}
 	return WorkerCommand_WORKER_COMMAND_UNSPECIFIED
 }
@@ -576,12 +437,10 @@ func (x *WorkerSignal) GetJobUuid() string {
 
 func (x *WorkerSignal) SetCommandType(v WorkerCommand) {
 	x.xxx_hidden_CommandType = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 4)
 }
 
 func (x *WorkerSignal) SetSequenceId(v uint64) {
 	x.xxx_hidden_SequenceId = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 4)
 }
 
 func (x *WorkerSignal) SetTimestamp(v *timestamppb.Timestamp) {
@@ -594,20 +453,6 @@ func (x *WorkerSignal) SetFlagValue(v bool) {
 
 func (x *WorkerSignal) SetJobUuid(v string) {
 	x.xxx_hidden_Payload = &workerSignal_JobUuid{v}
-}
-
-func (x *WorkerSignal) HasCommandType() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
-}
-
-func (x *WorkerSignal) HasSequenceId() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
 func (x *WorkerSignal) HasTimestamp() bool {
@@ -638,16 +483,6 @@ func (x *WorkerSignal) HasJobUuid() bool {
 	}
 	_, ok := x.xxx_hidden_Payload.(*workerSignal_JobUuid)
 	return ok
-}
-
-func (x *WorkerSignal) ClearCommandType() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
-	x.xxx_hidden_CommandType = WorkerCommand_WORKER_COMMAND_UNSPECIFIED
-}
-
-func (x *WorkerSignal) ClearSequenceId() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_SequenceId = 0
 }
 
 func (x *WorkerSignal) ClearTimestamp() {
@@ -691,8 +526,8 @@ func (x *WorkerSignal) WhichPayload() case_WorkerSignal_Payload {
 type WorkerSignal_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	CommandType *WorkerCommand
-	SequenceId  *uint64
+	CommandType WorkerCommand
+	SequenceId  uint64
 	Timestamp   *timestamppb.Timestamp
 	// Fields of oneof xxx_hidden_Payload:
 	// simple flag (used for WORKER_COMMAND_PING, WORKER_COMMAND_CANCEL_JOB, WORKER_COMMAND_SHUTDOWN)
@@ -706,14 +541,8 @@ func (b0 WorkerSignal_builder) Build() *WorkerSignal {
 	m0 := &WorkerSignal{}
 	b, x := &b0, m0
 	_, _ = b, x
-	if b.CommandType != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 4)
-		x.xxx_hidden_CommandType = *b.CommandType
-	}
-	if b.SequenceId != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 4)
-		x.xxx_hidden_SequenceId = *b.SequenceId
-	}
+	x.xxx_hidden_CommandType = b.CommandType
+	x.xxx_hidden_SequenceId = b.SequenceId
 	x.xxx_hidden_Timestamp = b.Timestamp
 	if b.FlagValue != nil {
 		x.xxx_hidden_Payload = &workerSignal_FlagValue{*b.FlagValue}
@@ -793,7 +622,7 @@ const file_workers_v1_worker_proto_rawDesc = "" +
 	"\x19WORKER_COMMAND_CANCEL_JOB\x10\x03\x12\x1b\n" +
 	"\x17WORKER_COMMAND_SHUTDOWN\x10\x04\x12 \n" +
 	"\x1cWORKER_COMMAND_CONFIG_UPDATE\x10\x05\x12 \n" +
-	"\x1cWORKER_COMMAND_UPDATE_STATUS\x10\x06BVZJgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/workers/v1;workers_v1\x92\x03\a\xd2>\x02\x10\x03\b\x01b\beditionsp\xe8\a"
+	"\x1cWORKER_COMMAND_UPDATE_STATUS\x10\x06BVZJgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/workers/v1;workers_v1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
 
 var file_workers_v1_worker_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_workers_v1_worker_proto_msgTypes = make([]protoimpl.MessageInfo, 4)

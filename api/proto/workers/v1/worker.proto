@@ -4,7 +4,7 @@ package dolina.workers.v1;
 
 option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/workers/v1;workers_v1";
 option features.(pb.go).api_level = API_OPAQUE;
-option features.field_presence = EXPLICIT;
+option features.field_presence = IMPLICIT;
 
 import "google/protobuf/go_features.proto";
 import "google/protobuf/timestamp.proto";
