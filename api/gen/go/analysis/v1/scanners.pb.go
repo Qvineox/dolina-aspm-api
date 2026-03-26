@@ -118,11 +118,9 @@ func (x ScannerFormat) Number() protoreflect.EnumNumber {
 
 type ScannerReport struct {
 	state                       protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_UploadedFileUuid *string                `protobuf:"bytes,1,opt,name=uploaded_file_uuid,json=uploadedFileUuid"`
+	xxx_hidden_UploadedFileUuid string                 `protobuf:"bytes,1,opt,name=uploaded_file_uuid,json=uploadedFileUuid"`
 	xxx_hidden_ScannerId        ScannerID              `protobuf:"varint,2,opt,name=scanner_id,json=scannerId,enum=dolina.analysis.v1.ScannerID"`
 	xxx_hidden_ScannerFormat    ScannerFormat          `protobuf:"varint,3,opt,name=scanner_format,json=scannerFormat,enum=dolina.analysis.v1.ScannerFormat"`
-	XXX_raceDetectHookData      protoimpl.RaceDetectHookData
-	XXX_presence                [1]uint32
 	unknownFields               protoimpl.UnknownFields
 	sizeCache                   protoimpl.SizeCache
 }
@@ -154,107 +152,52 @@ func (x *ScannerReport) ProtoReflect() protoreflect.Message {
 
 func (x *ScannerReport) GetUploadedFileUuid() string {
 	if x != nil {
-		if x.xxx_hidden_UploadedFileUuid != nil {
-			return *x.xxx_hidden_UploadedFileUuid
-		}
-		return ""
+		return x.xxx_hidden_UploadedFileUuid
 	}
 	return ""
 }
 
 func (x *ScannerReport) GetScannerId() ScannerID {
 	if x != nil {
-		if protoimpl.X.Present(&(x.XXX_presence[0]), 1) {
-			return x.xxx_hidden_ScannerId
-		}
+		return x.xxx_hidden_ScannerId
 	}
 	return ScannerID_SCANNER_ID_UNSPECIFIED
 }
 
 func (x *ScannerReport) GetScannerFormat() ScannerFormat {
 	if x != nil {
-		if protoimpl.X.Present(&(x.XXX_presence[0]), 2) {
-			return x.xxx_hidden_ScannerFormat
-		}
+		return x.xxx_hidden_ScannerFormat
 	}
 	return ScannerFormat_SCANNER_FORMAT_UNSPECIFIED
 }
 
 func (x *ScannerReport) SetUploadedFileUuid(v string) {
-	x.xxx_hidden_UploadedFileUuid = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 3)
+	x.xxx_hidden_UploadedFileUuid = v
 }
 
 func (x *ScannerReport) SetScannerId(v ScannerID) {
 	x.xxx_hidden_ScannerId = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
 }
 
 func (x *ScannerReport) SetScannerFormat(v ScannerFormat) {
 	x.xxx_hidden_ScannerFormat = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
-}
-
-func (x *ScannerReport) HasUploadedFileUuid() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
-}
-
-func (x *ScannerReport) HasScannerId() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
-}
-
-func (x *ScannerReport) HasScannerFormat() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
-}
-
-func (x *ScannerReport) ClearUploadedFileUuid() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
-	x.xxx_hidden_UploadedFileUuid = nil
-}
-
-func (x *ScannerReport) ClearScannerId() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_ScannerId = ScannerID_SCANNER_ID_UNSPECIFIED
-}
-
-func (x *ScannerReport) ClearScannerFormat() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
-	x.xxx_hidden_ScannerFormat = ScannerFormat_SCANNER_FORMAT_UNSPECIFIED
 }
 
 type ScannerReport_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	UploadedFileUuid *string
-	ScannerId        *ScannerID
-	ScannerFormat    *ScannerFormat
+	UploadedFileUuid string
+	ScannerId        ScannerID
+	ScannerFormat    ScannerFormat
 }
 
 func (b0 ScannerReport_builder) Build() *ScannerReport {
 	m0 := &ScannerReport{}
 	b, x := &b0, m0
 	_, _ = b, x
-	if b.UploadedFileUuid != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 3)
-		x.xxx_hidden_UploadedFileUuid = b.UploadedFileUuid
-	}
-	if b.ScannerId != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
-		x.xxx_hidden_ScannerId = *b.ScannerId
-	}
-	if b.ScannerFormat != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
-		x.xxx_hidden_ScannerFormat = *b.ScannerFormat
-	}
+	x.xxx_hidden_UploadedFileUuid = b.UploadedFileUuid
+	x.xxx_hidden_ScannerId = b.ScannerId
+	x.xxx_hidden_ScannerFormat = b.ScannerFormat
 	return m0
 }
 
@@ -262,12 +205,12 @@ var File_analysis_v1_scanners_proto protoreflect.FileDescriptor
 
 const file_analysis_v1_scanners_proto_rawDesc = "" +
 	"\n" +
-	"\x1aanalysis/v1/scanners.proto\x12\x12dolina.analysis.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a!google/protobuf/go_features.proto\"\xe2\x04\n" +
+	"\x1aanalysis/v1/scanners.proto\x12\x12dolina.analysis.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a!google/protobuf/go_features.proto\"\xd4\x04\n" +
 	"\rScannerReport\x12,\n" +
-	"\x12uploaded_file_uuid\x18\x01 \x01(\tR\x10uploadedFileUuid\x12C\n" +
+	"\x12uploaded_file_uuid\x18\x01 \x01(\tR\x10uploadedFileUuid\x12<\n" +
 	"\n" +
-	"scanner_id\x18\x02 \x01(\x0e2\x1d.dolina.analysis.v1.ScannerIDB\x05\xaa\x01\x02\b\x01R\tscannerId\x12O\n" +
-	"\x0escanner_format\x18\x03 \x01(\x0e2!.dolina.analysis.v1.ScannerFormatB\x05\xaa\x01\x02\b\x01R\rscannerFormat:\x8c\x03\x92A\x88\x03\n" +
+	"scanner_id\x18\x02 \x01(\x0e2\x1d.dolina.analysis.v1.ScannerIDR\tscannerId\x12H\n" +
+	"\x0escanner_format\x18\x03 \x01(\x0e2!.dolina.analysis.v1.ScannerFormatR\rscannerFormat:\x8c\x03\x92A\x88\x03\n" +
 	"\x85\x03*\x0eScanner Report2\xf2\x02A report generated by an external security scanner (e.g., Trivy, Semgrep, Snyk). It encapsulates raw findings, scan metadata (scanner name, version, timestamp), target information (repository, image, file path), and any additional context required for ingestion. This report serves as the primary input to Dolina ASPM for normalization, deduplication, and risk analysis.*V\n" +
 	"\tScannerID\x12\x1a\n" +
 	"\x16SCANNER_ID_UNSPECIFIED\x10\x00\x12\x14\n" +
@@ -278,7 +221,7 @@ const file_analysis_v1_scanners_proto_rawDesc = "" +
 	"\x17SCANNER_FORMAT_TRIVY_FS\x10\x01\x12\x18\n" +
 	"\x14SCANNER_FORMAT_SARIF\x10\x02\x12\x17\n" +
 	"\x13SCANNER_FORMAT_SBOM\x10\x03\x12\x1b\n" +
-	"\x17SCANNER_FORMAT_GITLEAKS\x10\x04BVZLgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/analysis/v1;analysis_v1\x92\x03\x05\xd2>\x02\x10\x03b\beditionsp\xe8\a"
+	"\x17SCANNER_FORMAT_GITLEAKS\x10\x04BXZLgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/analysis/v1;analysis_v1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
 
 var file_analysis_v1_scanners_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_analysis_v1_scanners_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
