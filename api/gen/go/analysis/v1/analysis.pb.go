@@ -8,7 +8,7 @@ package analysis_v1
 
 import (
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
-	v1 "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/workers.proto/v1"
+	v1 "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/workers/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	_ "google.golang.org/protobuf/types/gofeaturespb"

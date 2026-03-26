@@ -793,7 +793,7 @@ const file_workers_v1_worker_proto_rawDesc = "" +
 	"\x19WORKER_COMMAND_CANCEL_JOB\x10\x03\x12\x1b\n" +
 	"\x17WORKER_COMMAND_SHUTDOWN\x10\x04\x12 \n" +
 	"\x1cWORKER_COMMAND_CONFIG_UPDATE\x10\x05\x12 \n" +
-	"\x1cWORKER_COMMAND_UPDATE_STATUS\x10\x06B\\ZPgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/workers.proto/v1;workers_v1\x92\x03\a\xd2>\x02\x10\x03\b\x01b\beditionsp\xe8\a"
+	"\x1cWORKER_COMMAND_UPDATE_STATUS\x10\x06BVZJgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/workers/v1;workers_v1\x92\x03\a\xd2>\x02\x10\x03\b\x01b\beditionsp\xe8\a"
 
 var file_workers_v1_worker_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_workers_v1_worker_proto_msgTypes = make([]protoimpl.MessageInfo, 4)

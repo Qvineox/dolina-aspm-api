@@ -28,7 +28,7 @@ const file_workers_v1_worker_control_service_proto_rawDesc = "" +
 	"'workers/v1/worker_control_service.proto\x12\x11dolina.workers.v1\x1a!google/protobuf/go_features.proto\x1a\x17workers/v1/worker.proto2\xbf\x01\n" +
 	"\x14WorkerControlService\x12T\n" +
 	"\bRegister\x12%.dolina.workers.v1.WorkerRegistration\x1a!.dolina.workers.v1.WorkerIdentity\x12Q\n" +
-	"\tHeartbeat\x12\x1f.dolina.workers.v1.WorkerStatus\x1a\x1f.dolina.workers.v1.WorkerSignal(\x010\x01B\\ZPgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/workers.proto/v1;workers_v1\x92\x03\a\xd2>\x02\x10\x03\b\x01b\beditionsp\xe8\a"
+	"\tHeartbeat\x12\x1f.dolina.workers.v1.WorkerStatus\x1a\x1f.dolina.workers.v1.WorkerSignal(\x010\x01BVZJgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/workers/v1;workers_v1\x92\x03\a\xd2>\x02\x10\x03\b\x01b\beditionsp\xe8\a"
 
 var file_workers_v1_worker_control_service_proto_goTypes = []any{
 	(*WorkerRegistration)(nil), // 0: dolina.workers.v1.WorkerRegistration
