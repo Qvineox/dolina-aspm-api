@@ -12,6 +12,7 @@ import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	_ "google.golang.org/protobuf/types/gofeaturespb"
+	durationpb "google.golang.org/protobuf/types/known/durationpb"
 	reflect "reflect"
 	unsafe "unsafe"
 )
@@ -86,22 +87,20 @@ func (x AnalysisState) Number() protoreflect.EnumNumber {
 }
 
 type AnalyzeOptions struct {
-	state                        protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_ScannerReportList *[]*ScannerReport      `protobuf:"bytes,1,rep,name=scanner_report_list,json=scannerReportList"`
-	xxx_hidden_RepositoryUuid    *string                `protobuf:"bytes,2,opt,name=repository_uuid,json=repositoryUuid"`
-	xxx_hidden_RepositoryUrl     *string                `protobuf:"bytes,3,opt,name=repository_url,json=repositoryUrl"`
-	xxx_hidden_RepositoryRef     *string                `protobuf:"bytes,4,opt,name=repository_ref,json=repositoryRef"`
-	xxx_hidden_RepositoryName    *string                `protobuf:"bytes,5,opt,name=repository_name,json=repositoryName"`
-	xxx_hidden_ArtifactUuid      *string                `protobuf:"bytes,6,opt,name=artifact_uuid,json=artifactUuid"`
-	xxx_hidden_ArtifactPurl      *string                `protobuf:"bytes,7,opt,name=artifact_purl,json=artifactPurl"`
-	xxx_hidden_PipelineId        *string                `protobuf:"bytes,8,opt,name=pipeline_id,json=pipelineId"`
-	xxx_hidden_UploadWindow      uint32                 `protobuf:"varint,9,opt,name=upload_window,json=uploadWindow"`
-	xxx_hidden_AutoCreate        bool                   `protobuf:"varint,10,opt,name=auto_create,json=autoCreate"`
-	xxx_hidden_EarlyStart        bool                   `protobuf:"varint,11,opt,name=early_start,json=earlyStart"`
-	XXX_raceDetectHookData       protoimpl.RaceDetectHookData
-	XXX_presence                 [1]uint32
-	unknownFields                protoimpl.UnknownFields
-	sizeCache                    protoimpl.SizeCache
+	state                           protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_ScannerReportList    *[]*ScannerReport      `protobuf:"bytes,1,rep,name=scanner_report_list,json=scannerReportList"`
+	xxx_hidden_RepositoryUuid       string                 `protobuf:"bytes,2,opt,name=repository_uuid,json=repositoryUuid"`
+	xxx_hidden_RepositoryUrl        string                 `protobuf:"bytes,3,opt,name=repository_url,json=repositoryUrl"`
+	xxx_hidden_RepositoryRef        string                 `protobuf:"bytes,4,opt,name=repository_ref,json=repositoryRef"`
+	xxx_hidden_RepositoryName       string                 `protobuf:"bytes,5,opt,name=repository_name,json=repositoryName"`
+	xxx_hidden_ArtifactUuid         string                 `protobuf:"bytes,6,opt,name=artifact_uuid,json=artifactUuid"`
+	xxx_hidden_ArtifactPurl         string                 `protobuf:"bytes,7,opt,name=artifact_purl,json=artifactPurl"`
+	xxx_hidden_PipelineId           string                 `protobuf:"bytes,8,opt,name=pipeline_id,json=pipelineId"`
+	xxx_hidden_UploadWindowDuration *durationpb.Duration   `protobuf:"bytes,9,opt,name=upload_window_duration,json=uploadWindowDuration"`
+	xxx_hidden_AutoCreate           bool                   `protobuf:"varint,10,opt,name=auto_create,json=autoCreate"`
+	xxx_hidden_EarlyStart           bool                   `protobuf:"varint,11,opt,name=early_start,json=earlyStart"`
+	unknownFields                   protoimpl.UnknownFields
+	sizeCache                       protoimpl.SizeCache
 }
 
 func (x *AnalyzeOptions) Reset() {
@@ -140,79 +139,58 @@ func (x *AnalyzeOptions) GetScannerReportList() []*ScannerReport {
 
 func (x *AnalyzeOptions) GetRepositoryUuid() string {
 	if x != nil {
-		if x.xxx_hidden_RepositoryUuid != nil {
-			return *x.xxx_hidden_RepositoryUuid
-		}
-		return ""
+		return x.xxx_hidden_RepositoryUuid
 	}
 	return ""
 }
 
 func (x *AnalyzeOptions) GetRepositoryUrl() string {
 	if x != nil {
-		if x.xxx_hidden_RepositoryUrl != nil {
-			return *x.xxx_hidden_RepositoryUrl
-		}
-		return ""
+		return x.xxx_hidden_RepositoryUrl
 	}
 	return ""
 }
 
 func (x *AnalyzeOptions) GetRepositoryRef() string {
 	if x != nil {
-		if x.xxx_hidden_RepositoryRef != nil {
-			return *x.xxx_hidden_RepositoryRef
-		}
-		return ""
+		return x.xxx_hidden_RepositoryRef
 	}
 	return ""
 }
 
 func (x *AnalyzeOptions) GetRepositoryName() string {
 	if x != nil {
-		if x.xxx_hidden_RepositoryName != nil {
-			return *x.xxx_hidden_RepositoryName
-		}
-		return ""
+		return x.xxx_hidden_RepositoryName
 	}
 	return ""
 }
 
 func (x *AnalyzeOptions) GetArtifactUuid() string {
 	if x != nil {
-		if x.xxx_hidden_ArtifactUuid != nil {
-			return *x.xxx_hidden_ArtifactUuid
-		}
-		return ""
+		return x.xxx_hidden_ArtifactUuid
 	}
 	return ""
 }
 
 func (x *AnalyzeOptions) GetArtifactPurl() string {
 	if x != nil {
-		if x.xxx_hidden_ArtifactPurl != nil {
-			return *x.xxx_hidden_ArtifactPurl
-		}
-		return ""
+		return x.xxx_hidden_ArtifactPurl
 	}
 	return ""
 }
 
 func (x *AnalyzeOptions) GetPipelineId() string {
 	if x != nil {
-		if x.xxx_hidden_PipelineId != nil {
-			return *x.xxx_hidden_PipelineId
-		}
-		return ""
+		return x.xxx_hidden_PipelineId
 	}
 	return ""
 }
 
-func (x *AnalyzeOptions) GetUploadWindow() uint32 {
+func (x *AnalyzeOptions) GetUploadWindowDuration() *durationpb.Duration {
 	if x != nil {
-		return x.xxx_hidden_UploadWindow
+		return x.xxx_hidden_UploadWindowDuration
 	}
-	return 0
+	return nil
 }
 
 func (x *AnalyzeOptions) GetAutoCreate() bool {
@@ -234,173 +212,54 @@ func (x *AnalyzeOptions) SetScannerReportList(v []*ScannerReport) {
 }
 
 func (x *AnalyzeOptions) SetRepositoryUuid(v string) {
-	x.xxx_hidden_RepositoryUuid = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 11)
+	x.xxx_hidden_RepositoryUuid = v
 }
 
 func (x *AnalyzeOptions) SetRepositoryUrl(v string) {
-	x.xxx_hidden_RepositoryUrl = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 11)
+	x.xxx_hidden_RepositoryUrl = v
 }
 
 func (x *AnalyzeOptions) SetRepositoryRef(v string) {
-	x.xxx_hidden_RepositoryRef = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 11)
+	x.xxx_hidden_RepositoryRef = v
 }
 
 func (x *AnalyzeOptions) SetRepositoryName(v string) {
-	x.xxx_hidden_RepositoryName = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 11)
+	x.xxx_hidden_RepositoryName = v
 }
 
 func (x *AnalyzeOptions) SetArtifactUuid(v string) {
-	x.xxx_hidden_ArtifactUuid = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 11)
+	x.xxx_hidden_ArtifactUuid = v
 }
 
 func (x *AnalyzeOptions) SetArtifactPurl(v string) {
-	x.xxx_hidden_ArtifactPurl = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 11)
+	x.xxx_hidden_ArtifactPurl = v
 }
 
 func (x *AnalyzeOptions) SetPipelineId(v string) {
-	x.xxx_hidden_PipelineId = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 11)
+	x.xxx_hidden_PipelineId = v
 }
 
-func (x *AnalyzeOptions) SetUploadWindow(v uint32) {
-	x.xxx_hidden_UploadWindow = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 8, 11)
+func (x *AnalyzeOptions) SetUploadWindowDuration(v *durationpb.Duration) {
+	x.xxx_hidden_UploadWindowDuration = v
 }
 
 func (x *AnalyzeOptions) SetAutoCreate(v bool) {
 	x.xxx_hidden_AutoCreate = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 9, 11)
 }
 
 func (x *AnalyzeOptions) SetEarlyStart(v bool) {
 	x.xxx_hidden_EarlyStart = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 10, 11)
 }
 
-func (x *AnalyzeOptions) HasRepositoryUuid() bool {
+func (x *AnalyzeOptions) HasUploadWindowDuration() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+	return x.xxx_hidden_UploadWindowDuration != nil
 }
 
-func (x *AnalyzeOptions) HasRepositoryUrl() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
-}
-
-func (x *AnalyzeOptions) HasRepositoryRef() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
-}
-
-func (x *AnalyzeOptions) HasRepositoryName() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
-}
-
-func (x *AnalyzeOptions) HasArtifactUuid() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
-}
-
-func (x *AnalyzeOptions) HasArtifactPurl() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 6)
-}
-
-func (x *AnalyzeOptions) HasPipelineId() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 7)
-}
-
-func (x *AnalyzeOptions) HasUploadWindow() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 8)
-}
-
-func (x *AnalyzeOptions) HasAutoCreate() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 9)
-}
-
-func (x *AnalyzeOptions) HasEarlyStart() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 10)
-}
-
-func (x *AnalyzeOptions) ClearRepositoryUuid() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_RepositoryUuid = nil
-}
-
-func (x *AnalyzeOptions) ClearRepositoryUrl() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
-	x.xxx_hidden_RepositoryUrl = nil
-}
-
-func (x *AnalyzeOptions) ClearRepositoryRef() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
-	x.xxx_hidden_RepositoryRef = nil
-}
-
-func (x *AnalyzeOptions) ClearRepositoryName() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
-	x.xxx_hidden_RepositoryName = nil
-}
-
-func (x *AnalyzeOptions) ClearArtifactUuid() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
-	x.xxx_hidden_ArtifactUuid = nil
-}
-
-func (x *AnalyzeOptions) ClearArtifactPurl() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 6)
-	x.xxx_hidden_ArtifactPurl = nil
-}
-
-func (x *AnalyzeOptions) ClearPipelineId() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 7)
-	x.xxx_hidden_PipelineId = nil
-}
-
-func (x *AnalyzeOptions) ClearUploadWindow() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 8)
-	x.xxx_hidden_UploadWindow = 0
-}
-
-func (x *AnalyzeOptions) ClearAutoCreate() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 9)
-	x.xxx_hidden_AutoCreate = false
-}
-
-func (x *AnalyzeOptions) ClearEarlyStart() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 10)
-	x.xxx_hidden_EarlyStart = false
+func (x *AnalyzeOptions) ClearUploadWindowDuration() {
+	x.xxx_hidden_UploadWindowDuration = nil
 }
 
 type AnalyzeOptions_builder struct {
@@ -408,20 +267,20 @@ type AnalyzeOptions_builder struct {
 
 	ScannerReportList []*ScannerReport
 	// create or update project repository by provided attributes
-	RepositoryUuid *string
-	RepositoryUrl  *string
-	RepositoryRef  *string
-	RepositoryName *string
+	RepositoryUuid string
+	RepositoryUrl  string
+	RepositoryRef  string
+	RepositoryName string
 	// create or update project artifact by provided attributes
-	ArtifactUuid *string
-	ArtifactPurl *string
+	ArtifactUuid string
+	ArtifactPurl string
 	// ci/cd attributes
-	PipelineId   *string
-	UploadWindow *uint32
+	PipelineId           string
+	UploadWindowDuration *durationpb.Duration
 	// defines if non-existing entities (projects, repositories or artifacts) will be created
-	AutoCreate *bool
+	AutoCreate bool
 	// if early_start set to true, workers start to process scanner reports immediately, not waiting for process window to close
-	EarlyStart *bool
+	EarlyStart bool
 }
 
 func (b0 AnalyzeOptions_builder) Build() *AnalyzeOptions {
@@ -429,65 +288,33 @@ func (b0 AnalyzeOptions_builder) Build() *AnalyzeOptions {
 	b, x := &b0, m0
 	_, _ = b, x
 	x.xxx_hidden_ScannerReportList = &b.ScannerReportList
-	if b.RepositoryUuid != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 11)
-		x.xxx_hidden_RepositoryUuid = b.RepositoryUuid
-	}
-	if b.RepositoryUrl != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 11)
-		x.xxx_hidden_RepositoryUrl = b.RepositoryUrl
-	}
-	if b.RepositoryRef != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 11)
-		x.xxx_hidden_RepositoryRef = b.RepositoryRef
-	}
-	if b.RepositoryName != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 11)
-		x.xxx_hidden_RepositoryName = b.RepositoryName
-	}
-	if b.ArtifactUuid != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 11)
-		x.xxx_hidden_ArtifactUuid = b.ArtifactUuid
-	}
-	if b.ArtifactPurl != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 11)
-		x.xxx_hidden_ArtifactPurl = b.ArtifactPurl
-	}
-	if b.PipelineId != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 11)
-		x.xxx_hidden_PipelineId = b.PipelineId
-	}
-	if b.UploadWindow != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 8, 11)
-		x.xxx_hidden_UploadWindow = *b.UploadWindow
-	}
-	if b.AutoCreate != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 9, 11)
-		x.xxx_hidden_AutoCreate = *b.AutoCreate
-	}
-	if b.EarlyStart != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 10, 11)
-		x.xxx_hidden_EarlyStart = *b.EarlyStart
-	}
+	x.xxx_hidden_RepositoryUuid = b.RepositoryUuid
+	x.xxx_hidden_RepositoryUrl = b.RepositoryUrl
+	x.xxx_hidden_RepositoryRef = b.RepositoryRef
+	x.xxx_hidden_RepositoryName = b.RepositoryName
+	x.xxx_hidden_ArtifactUuid = b.ArtifactUuid
+	x.xxx_hidden_ArtifactPurl = b.ArtifactPurl
+	x.xxx_hidden_PipelineId = b.PipelineId
+	x.xxx_hidden_UploadWindowDuration = b.UploadWindowDuration
+	x.xxx_hidden_AutoCreate = b.AutoCreate
+	x.xxx_hidden_EarlyStart = b.EarlyStart
 	return m0
 }
 
 type Analysis struct {
 	state                     protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Uuid           *string                `protobuf:"bytes,1,opt,name=uuid"`
-	xxx_hidden_RepositoryUuid *string                `protobuf:"bytes,2,opt,name=repository_uuid,json=repositoryUuid"`
-	xxx_hidden_RepositoryUrl  *string                `protobuf:"bytes,3,opt,name=repository_url,json=repositoryUrl"`
-	xxx_hidden_RepositoryRef  *string                `protobuf:"bytes,4,opt,name=repository_ref,json=repositoryRef"`
-	xxx_hidden_RepositoryName *string                `protobuf:"bytes,5,opt,name=repository_name,json=repositoryName"`
-	xxx_hidden_ArtifactUuid   *string                `protobuf:"bytes,6,opt,name=artifact_uuid,json=artifactUuid"`
-	xxx_hidden_ArtifactPurl   *string                `protobuf:"bytes,7,opt,name=artifact_purl,json=artifactPurl"`
-	xxx_hidden_PipelineId     *string                `protobuf:"bytes,8,opt,name=pipeline_id,json=pipelineId"`
+	xxx_hidden_Uuid           string                 `protobuf:"bytes,1,opt,name=uuid"`
+	xxx_hidden_RepositoryUuid string                 `protobuf:"bytes,2,opt,name=repository_uuid,json=repositoryUuid"`
+	xxx_hidden_RepositoryUrl  string                 `protobuf:"bytes,3,opt,name=repository_url,json=repositoryUrl"`
+	xxx_hidden_RepositoryRef  string                 `protobuf:"bytes,4,opt,name=repository_ref,json=repositoryRef"`
+	xxx_hidden_RepositoryName string                 `protobuf:"bytes,5,opt,name=repository_name,json=repositoryName"`
+	xxx_hidden_ArtifactUuid   string                 `protobuf:"bytes,6,opt,name=artifact_uuid,json=artifactUuid"`
+	xxx_hidden_ArtifactPurl   string                 `protobuf:"bytes,7,opt,name=artifact_purl,json=artifactPurl"`
+	xxx_hidden_PipelineId     string                 `protobuf:"bytes,8,opt,name=pipeline_id,json=pipelineId"`
 	xxx_hidden_ScannerReport  *ScannerReport         `protobuf:"bytes,9,opt,name=scanner_report,json=scannerReport"`
 	xxx_hidden_WorkerIdentity *v1.WorkerIdentity     `protobuf:"bytes,10,opt,name=worker_identity,json=workerIdentity"`
-	xxx_hidden_JobUuid        *string                `protobuf:"bytes,11,opt,name=job_uuid,json=jobUuid"`
-	xxx_hidden_ReportUuid     *string                `protobuf:"bytes,12,opt,name=report_uuid,json=reportUuid"`
-	XXX_raceDetectHookData    protoimpl.RaceDetectHookData
-	XXX_presence              [1]uint32
+	xxx_hidden_JobUuid        string                 `protobuf:"bytes,11,opt,name=job_uuid,json=jobUuid"`
+	xxx_hidden_ReportUuid     string                 `protobuf:"bytes,12,opt,name=report_uuid,json=reportUuid"`
 	unknownFields             protoimpl.UnknownFields
 	sizeCache                 protoimpl.SizeCache
 }
@@ -519,80 +346,56 @@ func (x *Analysis) ProtoReflect() protoreflect.Message {
 
 func (x *Analysis) GetUuid() string {
 	if x != nil {
-		if x.xxx_hidden_Uuid != nil {
-			return *x.xxx_hidden_Uuid
-		}
-		return ""
+		return x.xxx_hidden_Uuid
 	}
 	return ""
 }
 
 func (x *Analysis) GetRepositoryUuid() string {
 	if x != nil {
-		if x.xxx_hidden_RepositoryUuid != nil {
-			return *x.xxx_hidden_RepositoryUuid
-		}
-		return ""
+		return x.xxx_hidden_RepositoryUuid
 	}
 	return ""
 }
 
 func (x *Analysis) GetRepositoryUrl() string {
 	if x != nil {
-		if x.xxx_hidden_RepositoryUrl != nil {
-			return *x.xxx_hidden_RepositoryUrl
-		}
-		return ""
+		return x.xxx_hidden_RepositoryUrl
 	}
 	return ""
 }
 
 func (x *Analysis) GetRepositoryRef() string {
 	if x != nil {
-		if x.xxx_hidden_RepositoryRef != nil {
-			return *x.xxx_hidden_RepositoryRef
-		}
-		return ""
+		return x.xxx_hidden_RepositoryRef
 	}
 	return ""
 }
 
 func (x *Analysis) GetRepositoryName() string {
 	if x != nil {
-		if x.xxx_hidden_RepositoryName != nil {
-			return *x.xxx_hidden_RepositoryName
-		}
-		return ""
+		return x.xxx_hidden_RepositoryName
 	}
 	return ""
 }
 
 func (x *Analysis) GetArtifactUuid() string {
 	if x != nil {
-		if x.xxx_hidden_ArtifactUuid != nil {
-			return *x.xxx_hidden_ArtifactUuid
-		}
-		return ""
+		return x.xxx_hidden_ArtifactUuid
 	}
 	return ""
 }
 
 func (x *Analysis) GetArtifactPurl() string {
 	if x != nil {
-		if x.xxx_hidden_ArtifactPurl != nil {
-			return *x.xxx_hidden_ArtifactPurl
-		}
-		return ""
+		return x.xxx_hidden_ArtifactPurl
 	}
 	return ""
 }
 
 func (x *Analysis) GetPipelineId() string {
 	if x != nil {
-		if x.xxx_hidden_PipelineId != nil {
-			return *x.xxx_hidden_PipelineId
-		}
-		return ""
+		return x.xxx_hidden_PipelineId
 	}
 	return ""
 }
@@ -613,62 +416,48 @@ func (x *Analysis) GetWorkerIdentity() *v1.WorkerIdentity {
 
 func (x *Analysis) GetJobUuid() string {
 	if x != nil {
-		if x.xxx_hidden_JobUuid != nil {
-			return *x.xxx_hidden_JobUuid
-		}
-		return ""
+		return x.xxx_hidden_JobUuid
 	}
 	return ""
 }
 
 func (x *Analysis) GetReportUuid() string {
 	if x != nil {
-		if x.xxx_hidden_ReportUuid != nil {
-			return *x.xxx_hidden_ReportUuid
-		}
-		return ""
+		return x.xxx_hidden_ReportUuid
 	}
 	return ""
 }
 
 func (x *Analysis) SetUuid(v string) {
-	x.xxx_hidden_Uuid = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 12)
+	x.xxx_hidden_Uuid = v
 }
 
 func (x *Analysis) SetRepositoryUuid(v string) {
-	x.xxx_hidden_RepositoryUuid = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 12)
+	x.xxx_hidden_RepositoryUuid = v
 }
 
 func (x *Analysis) SetRepositoryUrl(v string) {
-	x.xxx_hidden_RepositoryUrl = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 12)
+	x.xxx_hidden_RepositoryUrl = v
 }
 
 func (x *Analysis) SetRepositoryRef(v string) {
-	x.xxx_hidden_RepositoryRef = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 12)
+	x.xxx_hidden_RepositoryRef = v
 }
 
 func (x *Analysis) SetRepositoryName(v string) {
-	x.xxx_hidden_RepositoryName = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 12)
+	x.xxx_hidden_RepositoryName = v
 }
 
 func (x *Analysis) SetArtifactUuid(v string) {
-	x.xxx_hidden_ArtifactUuid = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 12)
+	x.xxx_hidden_ArtifactUuid = v
 }
 
 func (x *Analysis) SetArtifactPurl(v string) {
-	x.xxx_hidden_ArtifactPurl = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 12)
+	x.xxx_hidden_ArtifactPurl = v
 }
 
 func (x *Analysis) SetPipelineId(v string) {
-	x.xxx_hidden_PipelineId = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 12)
+	x.xxx_hidden_PipelineId = v
 }
 
 func (x *Analysis) SetScannerReport(v *ScannerReport) {
@@ -680,69 +469,11 @@ func (x *Analysis) SetWorkerIdentity(v *v1.WorkerIdentity) {
 }
 
 func (x *Analysis) SetJobUuid(v string) {
-	x.xxx_hidden_JobUuid = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 10, 12)
+	x.xxx_hidden_JobUuid = v
 }
 
 func (x *Analysis) SetReportUuid(v string) {
-	x.xxx_hidden_ReportUuid = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 11, 12)
-}
-
-func (x *Analysis) HasUuid() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
-}
-
-func (x *Analysis) HasRepositoryUuid() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
-}
-
-func (x *Analysis) HasRepositoryUrl() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
-}
-
-func (x *Analysis) HasRepositoryRef() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
-}
-
-func (x *Analysis) HasRepositoryName() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
-}
-
-func (x *Analysis) HasArtifactUuid() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
-}
-
-func (x *Analysis) HasArtifactPurl() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 6)
-}
-
-func (x *Analysis) HasPipelineId() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 7)
+	x.xxx_hidden_ReportUuid = v
 }
 
 func (x *Analysis) HasScannerReport() bool {
@@ -759,60 +490,6 @@ func (x *Analysis) HasWorkerIdentity() bool {
 	return x.xxx_hidden_WorkerIdentity != nil
 }
 
-func (x *Analysis) HasJobUuid() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 10)
-}
-
-func (x *Analysis) HasReportUuid() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 11)
-}
-
-func (x *Analysis) ClearUuid() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
-	x.xxx_hidden_Uuid = nil
-}
-
-func (x *Analysis) ClearRepositoryUuid() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_RepositoryUuid = nil
-}
-
-func (x *Analysis) ClearRepositoryUrl() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
-	x.xxx_hidden_RepositoryUrl = nil
-}
-
-func (x *Analysis) ClearRepositoryRef() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
-	x.xxx_hidden_RepositoryRef = nil
-}
-
-func (x *Analysis) ClearRepositoryName() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
-	x.xxx_hidden_RepositoryName = nil
-}
-
-func (x *Analysis) ClearArtifactUuid() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
-	x.xxx_hidden_ArtifactUuid = nil
-}
-
-func (x *Analysis) ClearArtifactPurl() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 6)
-	x.xxx_hidden_ArtifactPurl = nil
-}
-
-func (x *Analysis) ClearPipelineId() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 7)
-	x.xxx_hidden_PipelineId = nil
-}
-
 func (x *Analysis) ClearScannerReport() {
 	x.xxx_hidden_ScannerReport = nil
 }
@@ -821,79 +498,39 @@ func (x *Analysis) ClearWorkerIdentity() {
 	x.xxx_hidden_WorkerIdentity = nil
 }
 
-func (x *Analysis) ClearJobUuid() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 10)
-	x.xxx_hidden_JobUuid = nil
-}
-
-func (x *Analysis) ClearReportUuid() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 11)
-	x.xxx_hidden_ReportUuid = nil
-}
-
 type Analysis_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	Uuid           *string
-	RepositoryUuid *string
-	RepositoryUrl  *string
-	RepositoryRef  *string
-	RepositoryName *string
-	ArtifactUuid   *string
-	ArtifactPurl   *string
-	PipelineId     *string
+	Uuid           string
+	RepositoryUuid string
+	RepositoryUrl  string
+	RepositoryRef  string
+	RepositoryName string
+	ArtifactUuid   string
+	ArtifactPurl   string
+	PipelineId     string
 	ScannerReport  *ScannerReport
 	WorkerIdentity *v1.WorkerIdentity
-	JobUuid        *string
-	ReportUuid     *string
+	JobUuid        string
+	ReportUuid     string
 }
 
 func (b0 Analysis_builder) Build() *Analysis {
 	m0 := &Analysis{}
 	b, x := &b0, m0
 	_, _ = b, x
-	if b.Uuid != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 12)
-		x.xxx_hidden_Uuid = b.Uuid
-	}
-	if b.RepositoryUuid != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 12)
-		x.xxx_hidden_RepositoryUuid = b.RepositoryUuid
-	}
-	if b.RepositoryUrl != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 12)
-		x.xxx_hidden_RepositoryUrl = b.RepositoryUrl
-	}
-	if b.RepositoryRef != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 12)
-		x.xxx_hidden_RepositoryRef = b.RepositoryRef
-	}
-	if b.RepositoryName != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 12)
-		x.xxx_hidden_RepositoryName = b.RepositoryName
-	}
-	if b.ArtifactUuid != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 12)
-		x.xxx_hidden_ArtifactUuid = b.ArtifactUuid
-	}
-	if b.ArtifactPurl != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 12)
-		x.xxx_hidden_ArtifactPurl = b.ArtifactPurl
-	}
-	if b.PipelineId != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 12)
-		x.xxx_hidden_PipelineId = b.PipelineId
-	}
+	x.xxx_hidden_Uuid = b.Uuid
+	x.xxx_hidden_RepositoryUuid = b.RepositoryUuid
+	x.xxx_hidden_RepositoryUrl = b.RepositoryUrl
+	x.xxx_hidden_RepositoryRef = b.RepositoryRef
+	x.xxx_hidden_RepositoryName = b.RepositoryName
+	x.xxx_hidden_ArtifactUuid = b.ArtifactUuid
+	x.xxx_hidden_ArtifactPurl = b.ArtifactPurl
+	x.xxx_hidden_PipelineId = b.PipelineId
 	x.xxx_hidden_ScannerReport = b.ScannerReport
 	x.xxx_hidden_WorkerIdentity = b.WorkerIdentity
-	if b.JobUuid != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 10, 12)
-		x.xxx_hidden_JobUuid = b.JobUuid
-	}
-	if b.ReportUuid != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 11, 12)
-		x.xxx_hidden_ReportUuid = b.ReportUuid
-	}
+	x.xxx_hidden_JobUuid = b.JobUuid
+	x.xxx_hidden_ReportUuid = b.ReportUuid
 	return m0
 }
 
@@ -901,24 +538,24 @@ var File_analysis_v1_analysis_proto protoreflect.FileDescriptor
 
 const file_analysis_v1_analysis_proto_rawDesc = "" +
 	"\n" +
-	"\x1aanalysis/v1/analysis.proto\x12\x12dolina.analysis.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a!google/protobuf/go_features.proto\x1a\x1aanalysis/v1/scanners.proto\x1a\x17workers/v1/worker.proto\"\xb4\a\n" +
+	"\x1aanalysis/v1/analysis.proto\x12\x12dolina.analysis.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a!google/protobuf/go_features.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1aanalysis/v1/scanners.proto\x1a\x17workers/v1/worker.proto\"\xaf\a\n" +
 	"\x0eAnalyzeOptions\x12Q\n" +
-	"\x13scanner_report_list\x18\x01 \x03(\v2!.dolina.analysis.v1.ScannerReportR\x11scannerReportList\x12.\n" +
-	"\x0frepository_uuid\x18\x02 \x01(\tB\x05\xaa\x01\x02\b\x01R\x0erepositoryUuid\x12,\n" +
-	"\x0erepository_url\x18\x03 \x01(\tB\x05\xaa\x01\x02\b\x01R\rrepositoryUrl\x12,\n" +
-	"\x0erepository_ref\x18\x04 \x01(\tB\x05\xaa\x01\x02\b\x01R\rrepositoryRef\x12.\n" +
-	"\x0frepository_name\x18\x05 \x01(\tB\x05\xaa\x01\x02\b\x01R\x0erepositoryName\x12*\n" +
-	"\rartifact_uuid\x18\x06 \x01(\tB\x05\xaa\x01\x02\b\x01R\fartifactUuid\x12*\n" +
-	"\rartifact_purl\x18\a \x01(\tB\x05\xaa\x01\x02\b\x01R\fartifactPurl\x12&\n" +
-	"\vpipeline_id\x18\b \x01(\tB\x05\xaa\x01\x02\b\x01R\n" +
-	"pipelineId\x12*\n" +
-	"\rupload_window\x18\t \x01(\rB\x05\xaa\x01\x02\b\x01R\fuploadWindow\x12\x1f\n" +
+	"\x13scanner_report_list\x18\x01 \x03(\v2!.dolina.analysis.v1.ScannerReportR\x11scannerReportList\x12'\n" +
+	"\x0frepository_uuid\x18\x02 \x01(\tR\x0erepositoryUuid\x12%\n" +
+	"\x0erepository_url\x18\x03 \x01(\tR\rrepositoryUrl\x12%\n" +
+	"\x0erepository_ref\x18\x04 \x01(\tR\rrepositoryRef\x12'\n" +
+	"\x0frepository_name\x18\x05 \x01(\tR\x0erepositoryName\x12#\n" +
+	"\rartifact_uuid\x18\x06 \x01(\tR\fartifactUuid\x12#\n" +
+	"\rartifact_purl\x18\a \x01(\tR\fartifactPurl\x12\x1f\n" +
+	"\vpipeline_id\x18\b \x01(\tR\n" +
+	"pipelineId\x12V\n" +
+	"\x16upload_window_duration\x18\t \x01(\v2\x19.google.protobuf.DurationB\x05\xaa\x01\x02\b\x01R\x14uploadWindowDuration\x12\x1f\n" +
 	"\vauto_create\x18\n" +
 	" \x01(\bR\n" +
 	"autoCreate\x12\x1f\n" +
 	"\vearly_start\x18\v \x01(\bR\n" +
 	"earlyStart:\xa4\x03\x92A\xa0\x03\n" +
-	"\x9d\x03*\x0fAnalyze options2\x89\x03Contextual metadata accompanying a raw scanner report. It provides information about the environment in which the scan was executed, such as the repository URL, Git reference (branch, tag, commit), pipeline or build ID, and any other relevant deployment or runtime context. This data is used by Dolina ASPM to enrich, filter, and correlate findings with specific code versions or build stages.\"\x90\x04\n" +
+	"\x9d\x03*\x0fAnalyze options2\x89\x03Contextual metadata accompanying a raw scanner report. It provides information about the environment in which the scan was executed, such as the repository URL, Git reference (branch, tag, commit), pipeline or build ID, and any other relevant deployment or runtime context. This data is used by Dolina ASPM to enrich, filter, and correlate findings with specific code versions or build stages.\"\x82\x04\n" +
 	"\bAnalysis\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12'\n" +
 	"\x0frepository_uuid\x18\x02 \x01(\tR\x0erepositoryUuid\x12%\n" +
@@ -931,9 +568,9 @@ const file_analysis_v1_analysis_proto_rawDesc = "" +
 	"pipelineId\x12H\n" +
 	"\x0escanner_report\x18\t \x01(\v2!.dolina.analysis.v1.ScannerReportR\rscannerReport\x12Q\n" +
 	"\x0fworker_identity\x18\n" +
-	" \x01(\v2!.dolina.workers.v1.WorkerIdentityB\x05\xaa\x01\x02\b\x01R\x0eworkerIdentity\x12 \n" +
-	"\bjob_uuid\x18\v \x01(\tB\x05\xaa\x01\x02\b\x01R\ajobUuid\x12&\n" +
-	"\vreport_uuid\x18\f \x01(\tB\x05\xaa\x01\x02\b\x01R\n" +
+	" \x01(\v2!.dolina.workers.v1.WorkerIdentityB\x05\xaa\x01\x02\b\x01R\x0eworkerIdentity\x12\x19\n" +
+	"\bjob_uuid\x18\v \x01(\tR\ajobUuid\x12\x1f\n" +
+	"\vreport_uuid\x18\f \x01(\tR\n" +
 	"reportUuid*\x99\x02\n" +
 	"\rAnalysisState\x12\x1e\n" +
 	"\x1aANALYSIS_STATE_UNSPECIFIED\x10\x00\x12\x1e\n" +
@@ -944,26 +581,28 @@ const file_analysis_v1_analysis_proto_rawDesc = "" +
 	"\x13ANALYSIS_STATE_DONE\x10\x05\x12\x18\n" +
 	"\x14ANALYSIS_STATE_ERROR\x10\x06\x12\x1a\n" +
 	"\x16ANALYSIS_STATE_TIMEOUT\x10\a\x12\x1b\n" +
-	"\x17ANALYSIS_STATE_CANCELED\x10\bBVZLgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/analysis/v1;analysis_v1\x92\x03\x05\xd2>\x02\x10\x03b\beditionsp\xe8\a"
+	"\x17ANALYSIS_STATE_CANCELED\x10\bBXZLgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/analysis/v1;analysis_v1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
 
 var file_analysis_v1_analysis_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_analysis_v1_analysis_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_analysis_v1_analysis_proto_goTypes = []any{
-	(AnalysisState)(0),        // 0: dolina.analysis.v1.AnalysisState
-	(*AnalyzeOptions)(nil),    // 1: dolina.analysis.v1.AnalyzeOptions
-	(*Analysis)(nil),          // 2: dolina.analysis.v1.Analysis
-	(*ScannerReport)(nil),     // 3: dolina.analysis.v1.ScannerReport
-	(*v1.WorkerIdentity)(nil), // 4: dolina.workers.v1.WorkerIdentity
+	(AnalysisState)(0),          // 0: dolina.analysis.v1.AnalysisState
+	(*AnalyzeOptions)(nil),      // 1: dolina.analysis.v1.AnalyzeOptions
+	(*Analysis)(nil),            // 2: dolina.analysis.v1.Analysis
+	(*ScannerReport)(nil),       // 3: dolina.analysis.v1.ScannerReport
+	(*durationpb.Duration)(nil), // 4: google.protobuf.Duration
+	(*v1.WorkerIdentity)(nil),   // 5: dolina.workers.v1.WorkerIdentity
 }
 var file_analysis_v1_analysis_proto_depIdxs = []int32{
 	3, // 0: dolina.analysis.v1.AnalyzeOptions.scanner_report_list:type_name -> dolina.analysis.v1.ScannerReport
-	3, // 1: dolina.analysis.v1.Analysis.scanner_report:type_name -> dolina.analysis.v1.ScannerReport
-	4, // 2: dolina.analysis.v1.Analysis.worker_identity:type_name -> dolina.workers.v1.WorkerIdentity
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	4, // 1: dolina.analysis.v1.AnalyzeOptions.upload_window_duration:type_name -> google.protobuf.Duration
+	3, // 2: dolina.analysis.v1.Analysis.scanner_report:type_name -> dolina.analysis.v1.ScannerReport
+	5, // 3: dolina.analysis.v1.Analysis.worker_identity:type_name -> dolina.workers.v1.WorkerIdentity
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_analysis_v1_analysis_proto_init() }

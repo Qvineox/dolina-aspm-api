@@ -4,9 +4,11 @@ package dolina.analysis.v1;
 
 option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/analysis/v1;analysis_v1";
 option features.(pb.go).api_level = API_OPAQUE;
+option features.field_presence = IMPLICIT;
 
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "google/protobuf/go_features.proto";
+import "google/protobuf/duration.proto";
 
 import "analysis/v1/scanners.proto";
 import "workers/v1/worker.proto";
@@ -26,18 +28,20 @@ message AnalyzeOptions {
   repeated ScannerReport scanner_report_list = 1;
 
   // create or update project repository by provided attributes
-  string repository_uuid = 2 [features.field_presence = EXPLICIT];
-  string repository_url = 3 [features.field_presence = EXPLICIT]; // ignored if repository_uuid is provided
-  string repository_ref = 4 [features.field_presence = EXPLICIT]; // added to repository data (can be branch or tag)
-  string repository_name = 5 [features.field_presence = EXPLICIT]; // added to repository data
+  string repository_uuid = 2;
+  string repository_url = 3; // ignored if repository_uuid is provided
+  string repository_ref = 4; // added to repository data (can be branch or tag)
+  string repository_name = 5; // added to repository data
 
   // create or update project artifact by provided attributes
-  string artifact_uuid = 6 [features.field_presence = EXPLICIT];
-  string artifact_purl = 7 [features.field_presence = EXPLICIT]; // ignored if artifact_uuid is provided
+  string artifact_uuid = 6;
+  string artifact_purl = 7; // ignored if artifact_uuid is provided
 
   // ci/cd attributes
-  string pipeline_id = 8 [features.field_presence = EXPLICIT];
-  uint32 upload_window = 9 [features.field_presence = EXPLICIT]; // defines how long to delay processing
+  string pipeline_id = 8;
+
+  //
+  google.protobuf.Duration upload_window_duration = 9 [features.field_presence = EXPLICIT]; // defines how long to delay processing
 
   // defines if non-existing entities (projects, repositories or artifacts) will be created
   bool auto_create = 10;
@@ -62,9 +66,9 @@ message Analysis {
   ScannerReport scanner_report = 9;
 
   workers.v1.WorkerIdentity worker_identity = 10 [features.field_presence = EXPLICIT];
-  string job_uuid = 11 [features.field_presence = EXPLICIT];
+  string job_uuid = 11;
 
-  string report_uuid = 12 [features.field_presence = EXPLICIT];
+  string report_uuid = 12;
 }
 
 enum AnalysisState {

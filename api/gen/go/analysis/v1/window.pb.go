@@ -28,12 +28,10 @@ type AnalysisWindow struct {
 	xxx_hidden_State        AnalysisState          `protobuf:"varint,2,opt,name=state,enum=dolina.analysis.v1.AnalysisState"`
 	xxx_hidden_Progress     float32                `protobuf:"fixed32,3,opt,name=progress"`
 	xxx_hidden_AnalysisList *[]*Analysis           `protobuf:"bytes,4,rep,name=analysis_list,json=analysisList"`
-	xxx_hidden_PipelineId   *string                `protobuf:"bytes,5,opt,name=pipeline_id,json=pipelineId"`
+	xxx_hidden_PipelineId   string                 `protobuf:"bytes,5,opt,name=pipeline_id,json=pipelineId"`
 	xxx_hidden_CreatedAt    *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=created_at,json=createdAt"`
 	xxx_hidden_OpenedAt     *timestamppb.Timestamp `protobuf:"bytes,12,opt,name=opened_at,json=openedAt"`
 	xxx_hidden_ClosedAt     *timestamppb.Timestamp `protobuf:"bytes,13,opt,name=closed_at,json=closedAt"`
-	XXX_raceDetectHookData  protoimpl.RaceDetectHookData
-	XXX_presence            [1]uint32
 	unknownFields           protoimpl.UnknownFields
 	sizeCache               protoimpl.SizeCache
 }
@@ -72,9 +70,7 @@ func (x *AnalysisWindow) GetId() uint32 {
 
 func (x *AnalysisWindow) GetState() AnalysisState {
 	if x != nil {
-		if protoimpl.X.Present(&(x.XXX_presence[0]), 1) {
-			return x.xxx_hidden_State
-		}
+		return x.xxx_hidden_State
 	}
 	return AnalysisState_ANALYSIS_STATE_UNSPECIFIED
 }
@@ -97,10 +93,7 @@ func (x *AnalysisWindow) GetAnalysisList() []*Analysis {
 
 func (x *AnalysisWindow) GetPipelineId() string {
 	if x != nil {
-		if x.xxx_hidden_PipelineId != nil {
-			return *x.xxx_hidden_PipelineId
-		}
-		return ""
+		return x.xxx_hidden_PipelineId
 	}
 	return ""
 }
@@ -128,17 +121,14 @@ func (x *AnalysisWindow) GetClosedAt() *timestamppb.Timestamp {
 
 func (x *AnalysisWindow) SetId(v uint32) {
 	x.xxx_hidden_Id = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 8)
 }
 
 func (x *AnalysisWindow) SetState(v AnalysisState) {
 	x.xxx_hidden_State = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 8)
 }
 
 func (x *AnalysisWindow) SetProgress(v float32) {
 	x.xxx_hidden_Progress = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 8)
 }
 
 func (x *AnalysisWindow) SetAnalysisList(v []*Analysis) {
@@ -146,8 +136,7 @@ func (x *AnalysisWindow) SetAnalysisList(v []*Analysis) {
 }
 
 func (x *AnalysisWindow) SetPipelineId(v string) {
-	x.xxx_hidden_PipelineId = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 8)
+	x.xxx_hidden_PipelineId = v
 }
 
 func (x *AnalysisWindow) SetCreatedAt(v *timestamppb.Timestamp) {
@@ -160,34 +149,6 @@ func (x *AnalysisWindow) SetOpenedAt(v *timestamppb.Timestamp) {
 
 func (x *AnalysisWindow) SetClosedAt(v *timestamppb.Timestamp) {
 	x.xxx_hidden_ClosedAt = v
-}
-
-func (x *AnalysisWindow) HasId() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
-}
-
-func (x *AnalysisWindow) HasState() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
-}
-
-func (x *AnalysisWindow) HasProgress() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
-}
-
-func (x *AnalysisWindow) HasPipelineId() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
 }
 
 func (x *AnalysisWindow) HasCreatedAt() bool {
@@ -211,26 +172,6 @@ func (x *AnalysisWindow) HasClosedAt() bool {
 	return x.xxx_hidden_ClosedAt != nil
 }
 
-func (x *AnalysisWindow) ClearId() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
-	x.xxx_hidden_Id = 0
-}
-
-func (x *AnalysisWindow) ClearState() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_State = AnalysisState_ANALYSIS_STATE_UNSPECIFIED
-}
-
-func (x *AnalysisWindow) ClearProgress() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
-	x.xxx_hidden_Progress = 0
-}
-
-func (x *AnalysisWindow) ClearPipelineId() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
-	x.xxx_hidden_PipelineId = nil
-}
-
 func (x *AnalysisWindow) ClearCreatedAt() {
 	x.xxx_hidden_CreatedAt = nil
 }
@@ -246,11 +187,11 @@ func (x *AnalysisWindow) ClearClosedAt() {
 type AnalysisWindow_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	Id           *uint32
-	State        *AnalysisState
-	Progress     *float32
+	Id           uint32
+	State        AnalysisState
+	Progress     float32
 	AnalysisList []*Analysis
-	PipelineId   *string
+	PipelineId   string
 	CreatedAt    *timestamppb.Timestamp
 	OpenedAt     *timestamppb.Timestamp
 	ClosedAt     *timestamppb.Timestamp
@@ -260,23 +201,11 @@ func (b0 AnalysisWindow_builder) Build() *AnalysisWindow {
 	m0 := &AnalysisWindow{}
 	b, x := &b0, m0
 	_, _ = b, x
-	if b.Id != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 8)
-		x.xxx_hidden_Id = *b.Id
-	}
-	if b.State != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 8)
-		x.xxx_hidden_State = *b.State
-	}
-	if b.Progress != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 8)
-		x.xxx_hidden_Progress = *b.Progress
-	}
+	x.xxx_hidden_Id = b.Id
+	x.xxx_hidden_State = b.State
+	x.xxx_hidden_Progress = b.Progress
 	x.xxx_hidden_AnalysisList = &b.AnalysisList
-	if b.PipelineId != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 8)
-		x.xxx_hidden_PipelineId = b.PipelineId
-	}
+	x.xxx_hidden_PipelineId = b.PipelineId
 	x.xxx_hidden_CreatedAt = b.CreatedAt
 	x.xxx_hidden_OpenedAt = b.OpenedAt
 	x.xxx_hidden_ClosedAt = b.ClosedAt
@@ -299,7 +228,7 @@ const file_analysis_v1_window_proto_rawDesc = "" +
 	"created_at\x18\n" +
 	" \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x127\n" +
 	"\topened_at\x18\f \x01(\v2\x1a.google.protobuf.TimestampR\bopenedAt\x127\n" +
-	"\tclosed_at\x18\r \x01(\v2\x1a.google.protobuf.TimestampR\bclosedAtBVZLgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/analysis/v1;analysis_v1\x92\x03\x05\xd2>\x02\x10\x03b\beditionsp\xe8\a"
+	"\tclosed_at\x18\r \x01(\v2\x1a.google.protobuf.TimestampR\bclosedAtBXZLgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/analysis/v1;analysis_v1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
 
 var file_analysis_v1_window_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_analysis_v1_window_proto_goTypes = []any{

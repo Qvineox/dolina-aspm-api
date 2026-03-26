@@ -1382,9 +1382,8 @@
           "type": "string",
           "title": "ci/cd attributes"
         },
-        "uploadWindow": {
-          "type": "integer",
-          "format": "int64",
+        "uploadWindowDuration": {
+          "type": "string",
           "title": "defines how long to delay processing"
         },
         "autoCreate": {
