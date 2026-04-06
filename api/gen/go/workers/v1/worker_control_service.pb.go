@@ -7,9 +7,11 @@
 package workers_v1
 
 import (
+	v1 "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/jobs/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	_ "google.golang.org/protobuf/types/gofeaturespb"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	reflect "reflect"
 	unsafe "unsafe"
 )
@@ -25,24 +27,29 @@ var File_workers_v1_worker_control_service_proto protoreflect.FileDescriptor
 
 const file_workers_v1_worker_control_service_proto_rawDesc = "" +
 	"\n" +
-	"'workers/v1/worker_control_service.proto\x12\x11dolina.workers.v1\x1a!google/protobuf/go_features.proto\x1a\x17workers/v1/worker.proto2\xbf\x01\n" +
+	"'workers/v1/worker_control_service.proto\x12\x11dolina.workers.v1\x1a!google/protobuf/go_features.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x17workers/v1/worker.proto\x1a\x11jobs/v1/job.proto2\x8b\x02\n" +
 	"\x14WorkerControlService\x12T\n" +
 	"\bRegister\x12%.dolina.workers.v1.WorkerRegistration\x1a!.dolina.workers.v1.WorkerIdentity\x12Q\n" +
-	"\tHeartbeat\x12\x1f.dolina.workers.v1.WorkerStatus\x1a\x1f.dolina.workers.v1.WorkerSignal(\x010\x01BVZJgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/workers/v1;workers_v1\x92\x03\a\xd2>\x02\x10\x03\b\x01b\beditionsp\xe8\a"
+	"\tHeartbeat\x12\x1f.dolina.workers.v1.WorkerStatus\x1a\x1f.dolina.workers.v1.WorkerSignal(\x010\x01\x12J\n" +
+	"\x0fUpdateJobStatus\x12\x1f.dolina.jobs.v1.JobStatusUpdate\x1a\x16.google.protobuf.EmptyBVZJgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/workers/v1;workers_v1\x92\x03\a\xd2>\x02\x10\x03\b\x01b\beditionsp\xe8\a"
 
 var file_workers_v1_worker_control_service_proto_goTypes = []any{
 	(*WorkerRegistration)(nil), // 0: dolina.workers.v1.WorkerRegistration
 	(*WorkerStatus)(nil),       // 1: dolina.workers.v1.WorkerStatus
-	(*WorkerIdentity)(nil),     // 2: dolina.workers.v1.WorkerIdentity
-	(*WorkerSignal)(nil),       // 3: dolina.workers.v1.WorkerSignal
+	(*v1.JobStatusUpdate)(nil), // 2: dolina.jobs.v1.JobStatusUpdate
+	(*WorkerIdentity)(nil),     // 3: dolina.workers.v1.WorkerIdentity
+	(*WorkerSignal)(nil),       // 4: dolina.workers.v1.WorkerSignal
+	(*emptypb.Empty)(nil),      // 5: google.protobuf.Empty
 }
 var file_workers_v1_worker_control_service_proto_depIdxs = []int32{
 	0, // 0: dolina.workers.v1.WorkerControlService.Register:input_type -> dolina.workers.v1.WorkerRegistration
 	1, // 1: dolina.workers.v1.WorkerControlService.Heartbeat:input_type -> dolina.workers.v1.WorkerStatus
-	2, // 2: dolina.workers.v1.WorkerControlService.Register:output_type -> dolina.workers.v1.WorkerIdentity
-	3, // 3: dolina.workers.v1.WorkerControlService.Heartbeat:output_type -> dolina.workers.v1.WorkerSignal
-	2, // [2:4] is the sub-list for method output_type
-	0, // [0:2] is the sub-list for method input_type
+	2, // 2: dolina.workers.v1.WorkerControlService.UpdateJobStatus:input_type -> dolina.jobs.v1.JobStatusUpdate
+	3, // 3: dolina.workers.v1.WorkerControlService.Register:output_type -> dolina.workers.v1.WorkerIdentity
+	4, // 4: dolina.workers.v1.WorkerControlService.Heartbeat:output_type -> dolina.workers.v1.WorkerSignal
+	5, // 5: dolina.workers.v1.WorkerControlService.UpdateJobStatus:output_type -> google.protobuf.Empty
+	3, // [3:6] is the sub-list for method output_type
+	0, // [0:3] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name

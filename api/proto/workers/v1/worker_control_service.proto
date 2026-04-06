@@ -7,8 +7,10 @@ option features.(pb.go).api_level = API_OPAQUE;
 option features.field_presence = EXPLICIT;
 
 import "google/protobuf/go_features.proto";
+import "google/protobuf/empty.proto";
 
 import "workers/v1/worker.proto";
+import "jobs/v1/job.proto";
 
 // worker --> control center
 
@@ -16,5 +18,7 @@ service WorkerControlService {
   rpc Register(WorkerRegistration) returns (WorkerIdentity);
 
   rpc Heartbeat(stream WorkerStatus) returns (stream WorkerSignal);
-}
 
+  // UpdateJobStatus is an internal RPC to provide workers ability to update job status in real time
+  rpc UpdateJobStatus(jobs.v1.JobStatusUpdate) returns (google.protobuf.Empty);
+}

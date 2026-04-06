@@ -26,6 +26,7 @@ protoc_gen_go:
 		defects/v1/*.proto \
 		workers/v1/*.proto \
 		common/v1/*.proto \
+		jobs/v1/*.proto \
 		cvss/v2/*.proto \
 		cvss/v3/*.proto \
 		cvss/v4/*.proto \
@@ -52,6 +53,7 @@ protoc_gen_go_gw:
 		defects/v1/*.proto \
 		workers/v1/*.proto \
 		common/v1/*.proto \
+		jobs/v1/*.proto \
 		cvss/v2/*.proto \
 		cvss/v3/*.proto \
 		cvss/v4/*.proto \
@@ -72,6 +74,7 @@ protoc_gen_ts:
 		defects/v1/*.proto \
 		workers/v1/*.proto \
 		common/v1/*.proto \
+		jobs/v1/*.proto \
 		cvss/v2/*.proto \
 		cvss/v3/*.proto \
 		cvss/v4/*.proto \

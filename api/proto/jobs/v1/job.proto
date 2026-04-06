@@ -1,0 +1,63 @@
+edition = "2023";
+
+package dolina.jobs.v1;
+
+option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/jobs/v1;jobs_v1";
+option features.(pb.go).api_level = API_OPAQUE;
+option features.field_presence = IMPLICIT;
+
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "google/protobuf/go_features.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/struct.proto";
+
+message Job {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Job"
+    }
+  };
+
+  string uuid = 1;
+  uint32 priority = 2;
+
+  google.protobuf.Struct payload = 3;
+
+  JobType type = 4;
+  JobStatus status = 5;
+
+  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp updated_at = 7;
+  google.protobuf.Timestamp enqueued_at = 8;
+}
+
+message JobStatusUpdate {
+  string uuid = 1;
+  JobStatus status = 2;
+}
+
+enum JobType {
+  JOB_TYPE_UNSPECIFIED = 0;
+
+  JOB_TYPE_SCANNER_REPORT_ANALYSIS = 1;
+  JOB_TYPE_RULES_UPDATE = 2;
+}
+
+enum JobStatus {
+  JOB_STATUS_UNSPECIFIED = 0;
+
+  JOB_STATUS_CREATED = 1; // job has only been created on a core server
+  JOB_STATUS_ENQUEUED = 2; // job has been placed into queue
+  JOB_STATUS_ASSIGNED = 3; // job has been assigned to worker
+  JOB_STATUS_SENT = 4; // job has been sent to the assigned worker
+
+  JOB_STATUS_PROCESSING = 5; // job is being processed on the worker
+  JOB_STATUS_VALIDATING = 6; // job has been completed and results are being validated
+
+  JOB_STATUS_SAVING = 7; // job is done and validated without error and now being saved into database
+  JOB_STATUS_DONE = 8; // job results are saved
+
+  JOB_STATUS_ERROR = 9; // there has been an error on one of the steps
+  JOB_STATUS_TIMEOUT = 10; // jobs has timed out
+  JOB_STATUS_CANCELLED = 11; // jobs has been cancelled by remote actor (user or automation)
+}
