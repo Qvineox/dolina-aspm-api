@@ -13,23 +13,37 @@ import "filestore/v1/file.proto";
 import "common/v1/uuid.proto";
 
 service FilestoreService {
-  rpc GetFileMetadataByUUID(common.v1.UUID) returns (FileMetadata) {
+  rpc GetFileMetadataByKey(FileKey) returns (FileMetadata) {
     option (google.api.http) = {
-      get: "/api/v1/filestore/{uuid}/metadata"
+      get: "/api/v1/filestore/{key}/metadata"
     };
   }
 
-  rpc GetFileByUUID(common.v1.UUID) returns (FileChunk) {
+  rpc GetFileByKey(FileKey) returns (FileChunk) {
     option (google.api.http) = {
-      get: "/api/v1/filestore/{uuid}"
+      get: "/api/v1/filestore/{key}"
     };
   }
 
-  rpc DeleteFileByUUID(common.v1.UUID) returns (google.protobuf.Empty) {
+  rpc DeleteFileByKey(FileKey) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      delete: "/api/v1/filestore/{uuid}"
+      delete: "/api/v1/filestore/{key}"
     };
   }
 
   rpc GetFileStreamByUUID(common.v1.UUID) returns (stream FileChunk);
+
+  rpc UploadFile(FileChunk) returns (UploadStatus) {
+    option (google.api.http) = {
+      post: "/api/v1/upload"
+      body: "*",
+    };
+  }
+
+  rpc UploadFileStream(stream FileChunk) returns (UploadStatus) {
+    option (google.api.http) = {
+      post: "/api/v1/upload/stream"
+      body: "*",
+    };
+  }
 }

@@ -7,20 +7,24 @@ option features.(pb.go).api_level = API_OPAQUE;
 
 import "google/protobuf/go_features.proto";
 
+message FileKey {
+  string key = 1;
+}
+
 message FileChunk {
   bytes content = 1;
   FileMetadata metadata = 2 [features.field_presence = EXPLICIT];
 }
 
 message FileMetadata {
-  string file_name = 1;
+  string file_key = 1;
 
   string mime_type = 2 [features.field_presence = EXPLICIT];
   uint64 total_size = 3;
 }
 
 message UploadStatus {
-  string file_uuid = 1;
+  string file_key = 1;
   string file_name = 2;
 
   uint64 received_size = 3;

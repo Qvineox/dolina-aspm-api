@@ -69,28 +69,28 @@ func (x ScannerID) Number() protoreflect.EnumNumber {
 type ScannerFormat int32
 
 const (
-	ScannerFormat_SCANNER_FORMAT_UNSPECIFIED ScannerFormat = 0
-	ScannerFormat_SCANNER_FORMAT_TRIVY_FS    ScannerFormat = 1
-	ScannerFormat_SCANNER_FORMAT_SARIF       ScannerFormat = 2
-	ScannerFormat_SCANNER_FORMAT_SBOM        ScannerFormat = 3
-	ScannerFormat_SCANNER_FORMAT_GITLEAKS    ScannerFormat = 4
+	ScannerFormat_SCANNER_FORMAT_UNSPECIFIED   ScannerFormat = 0
+	ScannerFormat_SCANNER_FORMAT_TRIVY_FS_JSON ScannerFormat = 1
+	ScannerFormat_SCANNER_FORMAT_SARIF         ScannerFormat = 2
+	ScannerFormat_SCANNER_FORMAT_CYCLONEDX_1_6 ScannerFormat = 3
+	ScannerFormat_SCANNER_FORMAT_GITLEAKS_JSON ScannerFormat = 4
 )
 
 // Enum value maps for ScannerFormat.
 var (
 	ScannerFormat_name = map[int32]string{
 		0: "SCANNER_FORMAT_UNSPECIFIED",
-		1: "SCANNER_FORMAT_TRIVY_FS",
+		1: "SCANNER_FORMAT_TRIVY_FS_JSON",
 		2: "SCANNER_FORMAT_SARIF",
-		3: "SCANNER_FORMAT_SBOM",
-		4: "SCANNER_FORMAT_GITLEAKS",
+		3: "SCANNER_FORMAT_CYCLONEDX_1_6",
+		4: "SCANNER_FORMAT_GITLEAKS_JSON",
 	}
 	ScannerFormat_value = map[string]int32{
-		"SCANNER_FORMAT_UNSPECIFIED": 0,
-		"SCANNER_FORMAT_TRIVY_FS":    1,
-		"SCANNER_FORMAT_SARIF":       2,
-		"SCANNER_FORMAT_SBOM":        3,
-		"SCANNER_FORMAT_GITLEAKS":    4,
+		"SCANNER_FORMAT_UNSPECIFIED":   0,
+		"SCANNER_FORMAT_TRIVY_FS_JSON": 1,
+		"SCANNER_FORMAT_SARIF":         2,
+		"SCANNER_FORMAT_CYCLONEDX_1_6": 3,
+		"SCANNER_FORMAT_GITLEAKS_JSON": 4,
 	}
 )
 
@@ -117,12 +117,12 @@ func (x ScannerFormat) Number() protoreflect.EnumNumber {
 }
 
 type ScannerReport struct {
-	state                       protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_UploadedFileUuid string                 `protobuf:"bytes,1,opt,name=uploaded_file_uuid,json=uploadedFileUuid"`
-	xxx_hidden_ScannerId        ScannerID              `protobuf:"varint,2,opt,name=scanner_id,json=scannerId,enum=dolina.analysis.v1.ScannerID"`
-	xxx_hidden_ScannerFormat    ScannerFormat          `protobuf:"varint,3,opt,name=scanner_format,json=scannerFormat,enum=dolina.analysis.v1.ScannerFormat"`
-	unknownFields               protoimpl.UnknownFields
-	sizeCache                   protoimpl.SizeCache
+	state                      protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_UploadedFileKey string                 `protobuf:"bytes,1,opt,name=uploaded_file_key,json=uploadedFileKey"`
+	xxx_hidden_ScannerId       ScannerID              `protobuf:"varint,2,opt,name=scanner_id,json=scannerId,enum=dolina.analysis.v1.ScannerID"`
+	xxx_hidden_ScannerFormat   ScannerFormat          `protobuf:"varint,3,opt,name=scanner_format,json=scannerFormat,enum=dolina.analysis.v1.ScannerFormat"`
+	unknownFields              protoimpl.UnknownFields
+	sizeCache                  protoimpl.SizeCache
 }
 
 func (x *ScannerReport) Reset() {
@@ -150,9 +150,9 @@ func (x *ScannerReport) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *ScannerReport) GetUploadedFileUuid() string {
+func (x *ScannerReport) GetUploadedFileKey() string {
 	if x != nil {
-		return x.xxx_hidden_UploadedFileUuid
+		return x.xxx_hidden_UploadedFileKey
 	}
 	return ""
 }
@@ -171,8 +171,8 @@ func (x *ScannerReport) GetScannerFormat() ScannerFormat {
 	return ScannerFormat_SCANNER_FORMAT_UNSPECIFIED
 }
 
-func (x *ScannerReport) SetUploadedFileUuid(v string) {
-	x.xxx_hidden_UploadedFileUuid = v
+func (x *ScannerReport) SetUploadedFileKey(v string) {
+	x.xxx_hidden_UploadedFileKey = v
 }
 
 func (x *ScannerReport) SetScannerId(v ScannerID) {
@@ -186,16 +186,16 @@ func (x *ScannerReport) SetScannerFormat(v ScannerFormat) {
 type ScannerReport_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	UploadedFileUuid string
-	ScannerId        ScannerID
-	ScannerFormat    ScannerFormat
+	UploadedFileKey string
+	ScannerId       ScannerID
+	ScannerFormat   ScannerFormat
 }
 
 func (b0 ScannerReport_builder) Build() *ScannerReport {
 	m0 := &ScannerReport{}
 	b, x := &b0, m0
 	_, _ = b, x
-	x.xxx_hidden_UploadedFileUuid = b.UploadedFileUuid
+	x.xxx_hidden_UploadedFileKey = b.UploadedFileKey
 	x.xxx_hidden_ScannerId = b.ScannerId
 	x.xxx_hidden_ScannerFormat = b.ScannerFormat
 	return m0
@@ -205,9 +205,9 @@ var File_analysis_v1_scanners_proto protoreflect.FileDescriptor
 
 const file_analysis_v1_scanners_proto_rawDesc = "" +
 	"\n" +
-	"\x1aanalysis/v1/scanners.proto\x12\x12dolina.analysis.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a!google/protobuf/go_features.proto\"\xd4\x04\n" +
-	"\rScannerReport\x12,\n" +
-	"\x12uploaded_file_uuid\x18\x01 \x01(\tR\x10uploadedFileUuid\x12<\n" +
+	"\x1aanalysis/v1/scanners.proto\x12\x12dolina.analysis.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a!google/protobuf/go_features.proto\"\xd2\x04\n" +
+	"\rScannerReport\x12*\n" +
+	"\x11uploaded_file_key\x18\x01 \x01(\tR\x0fuploadedFileKey\x12<\n" +
 	"\n" +
 	"scanner_id\x18\x02 \x01(\x0e2\x1d.dolina.analysis.v1.ScannerIDR\tscannerId\x12H\n" +
 	"\x0escanner_format\x18\x03 \x01(\x0e2!.dolina.analysis.v1.ScannerFormatR\rscannerFormat:\x8c\x03\x92A\x88\x03\n" +
@@ -215,13 +215,13 @@ const file_analysis_v1_scanners_proto_rawDesc = "" +
 	"\tScannerID\x12\x1a\n" +
 	"\x16SCANNER_ID_UNSPECIFIED\x10\x00\x12\x14\n" +
 	"\x10SCANNER_ID_TRIVY\x10\x01\x12\x17\n" +
-	"\x13SCANNER_ID_GITLEAKS\x10\x02*\x9c\x01\n" +
+	"\x13SCANNER_ID_GITLEAKS\x10\x02*\xaf\x01\n" +
 	"\rScannerFormat\x12\x1e\n" +
-	"\x1aSCANNER_FORMAT_UNSPECIFIED\x10\x00\x12\x1b\n" +
-	"\x17SCANNER_FORMAT_TRIVY_FS\x10\x01\x12\x18\n" +
-	"\x14SCANNER_FORMAT_SARIF\x10\x02\x12\x17\n" +
-	"\x13SCANNER_FORMAT_SBOM\x10\x03\x12\x1b\n" +
-	"\x17SCANNER_FORMAT_GITLEAKS\x10\x04BXZLgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/analysis/v1;analysis_v1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
+	"\x1aSCANNER_FORMAT_UNSPECIFIED\x10\x00\x12 \n" +
+	"\x1cSCANNER_FORMAT_TRIVY_FS_JSON\x10\x01\x12\x18\n" +
+	"\x14SCANNER_FORMAT_SARIF\x10\x02\x12 \n" +
+	"\x1cSCANNER_FORMAT_CYCLONEDX_1_6\x10\x03\x12 \n" +
+	"\x1cSCANNER_FORMAT_GITLEAKS_JSON\x10\x04BXZLgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/analysis/v1;analysis_v1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
 
 var file_analysis_v1_scanners_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_analysis_v1_scanners_proto_msgTypes = make([]protoimpl.MessageInfo, 1)

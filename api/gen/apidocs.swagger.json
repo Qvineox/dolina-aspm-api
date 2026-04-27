@@ -25,9 +25,6 @@
       "name": "FilestoreService"
     },
     {
-      "name": "UploadService"
-    },
-    {
       "name": "ProjectService"
     },
     {
@@ -270,9 +267,9 @@
         ]
       }
     },
-    "/api/v1/filestore/{uuid}": {
+    "/api/v1/filestore/{key}": {
       "get": {
-        "operationId": "FilestoreService_GetFileByUUID",
+        "operationId": "FilestoreService_GetFileByKey",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -289,7 +286,7 @@
         },
         "parameters": [
           {
-            "name": "uuid",
+            "name": "key",
             "in": "path",
             "required": true,
             "type": "string"
@@ -300,7 +297,7 @@
         ]
       },
       "delete": {
-        "operationId": "FilestoreService_DeleteFileByUUID",
+        "operationId": "FilestoreService_DeleteFileByKey",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -318,7 +315,7 @@
         },
         "parameters": [
           {
-            "name": "uuid",
+            "name": "key",
             "in": "path",
             "required": true,
             "type": "string"
@@ -329,9 +326,9 @@
         ]
       }
     },
-    "/api/v1/filestore/{uuid}/metadata": {
+    "/api/v1/filestore/{key}/metadata": {
       "get": {
-        "operationId": "FilestoreService_GetFileMetadataByUUID",
+        "operationId": "FilestoreService_GetFileMetadataByKey",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -348,7 +345,7 @@
         },
         "parameters": [
           {
-            "name": "uuid",
+            "name": "key",
             "in": "path",
             "required": true,
             "type": "string"
@@ -811,10 +808,10 @@
             "type": "string",
             "enum": [
               "SCANNER_FORMAT_UNSPECIFIED",
-              "SCANNER_FORMAT_TRIVY_FS",
+              "SCANNER_FORMAT_TRIVY_FS_JSON",
               "SCANNER_FORMAT_SARIF",
-              "SCANNER_FORMAT_SBOM",
-              "SCANNER_FORMAT_GITLEAKS"
+              "SCANNER_FORMAT_CYCLONEDX_1_6",
+              "SCANNER_FORMAT_GITLEAKS_JSON"
             ],
             "default": "SCANNER_FORMAT_UNSPECIFIED"
           },
@@ -847,7 +844,7 @@
     "/api/v1/reports/analyze": {
       "post": {
         "summary": "Asynchronous method for reports analysis, always returns uncertain info",
-        "operationId": "AnalysisService_AnalyzeUnary",
+        "operationId": "AnalysisService_AnalyzeReports",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -975,7 +972,7 @@
     },
     "/api/v1/upload": {
       "post": {
-        "operationId": "UploadService_UploadUnary",
+        "operationId": "FilestoreService_UploadFile",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1001,13 +998,13 @@
           }
         ],
         "tags": [
-          "UploadService"
+          "FilestoreService"
         ]
       }
     },
     "/api/v1/upload/stream": {
       "post": {
-        "operationId": "UploadService_UploadStream",
+        "operationId": "FilestoreService_UploadFileStream",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1034,7 +1031,7 @@
           }
         ],
         "tags": [
-          "UploadService"
+          "FilestoreService"
         ]
       }
     }
@@ -1330,6 +1327,9 @@
         "pipelineId": {
           "type": "string"
         },
+        "assetSuid": {
+          "type": "string"
+        },
         "createdAt": {
           "type": "string",
           "format": "date-time"
@@ -1354,45 +1354,44 @@
             "$ref": "#/definitions/v1ScannerReport"
           }
         },
-        "repositoryUuid": {
+        "applicationSuid": {
           "type": "string",
+          "title": "application/asset related fields"
+        },
+        "assetSuid": {
+          "type": "string"
+        },
+        "repositoryPath": {
+          "type": "string",
+          "description": "used to generate repository suid and name",
           "title": "create or update project repository by provided attributes"
         },
         "repositoryUrl": {
-          "type": "string",
-          "title": "ignored if repository_uuid is provided"
+          "type": "string"
         },
         "repositoryRef": {
           "type": "string",
-          "title": "added to repository data (can be branch or tag)"
-        },
-        "repositoryName": {
-          "type": "string",
-          "title": "added to repository data"
-        },
-        "artifactUuid": {
-          "type": "string",
-          "title": "create or update project artifact by provided attributes"
+          "title": "branch, tag, any variation of an app"
         },
         "artifactPurl": {
           "type": "string",
-          "title": "ignored if artifact_uuid is provided"
+          "title": "create or update project artifact by provided attributes"
         },
         "pipelineId": {
           "type": "string",
           "title": "ci/cd attributes"
         },
-        "uploadWindowDuration": {
-          "type": "string",
-          "title": "defines how long to delay processing"
-        },
         "autoCreate": {
           "type": "boolean",
-          "title": "defines if non-existing entities (projects, repositories or artifacts) will be created"
+          "title": "defines if non-existing entities (assets, repositories or artifacts) will be created"
+        },
+        "uploadWindowDuration": {
+          "type": "string",
+          "description": "defines how long to delay processing",
+          "title": "if early_start set to true, workers start to process scanner reports immediately, not waiting for process window to close"
         },
         "earlyStart": {
-          "type": "boolean",
-          "title": "if early_start set to true, workers start to process scanner reports immediately, not waiting for process window to close"
+          "type": "boolean"
         }
       },
       "description": "Contextual metadata accompanying a raw scanner report. It provides information about the environment in which the scan was executed, such as the repository URL, Git reference (branch, tag, commit), pipeline or build ID, and any other relevant deployment or runtime context. This data is used by Dolina ASPM to enrich, filter, and correlate findings with specific code versions or build stages.",
@@ -1722,7 +1721,7 @@
     "v1FileMetadata": {
       "type": "object",
       "properties": {
-        "fileName": {
+        "fileKey": {
           "type": "string"
         },
         "mimeType": {
@@ -1958,10 +1957,10 @@
       "type": "string",
       "enum": [
         "SCANNER_FORMAT_UNSPECIFIED",
-        "SCANNER_FORMAT_TRIVY_FS",
+        "SCANNER_FORMAT_TRIVY_FS_JSON",
         "SCANNER_FORMAT_SARIF",
-        "SCANNER_FORMAT_SBOM",
-        "SCANNER_FORMAT_GITLEAKS"
+        "SCANNER_FORMAT_CYCLONEDX_1_6",
+        "SCANNER_FORMAT_GITLEAKS_JSON"
       ],
       "default": "SCANNER_FORMAT_UNSPECIFIED"
     },
@@ -1977,7 +1976,7 @@
     "v1ScannerReport": {
       "type": "object",
       "properties": {
-        "uploadedFileUuid": {
+        "uploadedFileKey": {
           "type": "string"
         },
         "scannerId": {
@@ -1996,7 +1995,7 @@
     "v1UploadStatus": {
       "type": "object",
       "properties": {
-        "fileUuid": {
+        "fileKey": {
           "type": "string"
         },
         "fileName": {

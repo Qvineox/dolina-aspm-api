@@ -21,20 +21,24 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	FilestoreService_GetFileMetadataByUUID_FullMethodName = "/dolina.filestore.v1.FilestoreService/GetFileMetadataByUUID"
-	FilestoreService_GetFileByUUID_FullMethodName         = "/dolina.filestore.v1.FilestoreService/GetFileByUUID"
-	FilestoreService_DeleteFileByUUID_FullMethodName      = "/dolina.filestore.v1.FilestoreService/DeleteFileByUUID"
-	FilestoreService_GetFileStreamByUUID_FullMethodName   = "/dolina.filestore.v1.FilestoreService/GetFileStreamByUUID"
+	FilestoreService_GetFileMetadataByKey_FullMethodName = "/dolina.filestore.v1.FilestoreService/GetFileMetadataByKey"
+	FilestoreService_GetFileByKey_FullMethodName         = "/dolina.filestore.v1.FilestoreService/GetFileByKey"
+	FilestoreService_DeleteFileByKey_FullMethodName      = "/dolina.filestore.v1.FilestoreService/DeleteFileByKey"
+	FilestoreService_GetFileStreamByUUID_FullMethodName  = "/dolina.filestore.v1.FilestoreService/GetFileStreamByUUID"
+	FilestoreService_UploadFile_FullMethodName           = "/dolina.filestore.v1.FilestoreService/UploadFile"
+	FilestoreService_UploadFileStream_FullMethodName     = "/dolina.filestore.v1.FilestoreService/UploadFileStream"
 )
 
 // FilestoreServiceClient is the client API for FilestoreService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type FilestoreServiceClient interface {
-	GetFileMetadataByUUID(ctx context.Context, in *v1.UUID, opts ...grpc.CallOption) (*FileMetadata, error)
-	GetFileByUUID(ctx context.Context, in *v1.UUID, opts ...grpc.CallOption) (*FileChunk, error)
-	DeleteFileByUUID(ctx context.Context, in *v1.UUID, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	GetFileMetadataByKey(ctx context.Context, in *FileKey, opts ...grpc.CallOption) (*FileMetadata, error)
+	GetFileByKey(ctx context.Context, in *FileKey, opts ...grpc.CallOption) (*FileChunk, error)
+	DeleteFileByKey(ctx context.Context, in *FileKey, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	GetFileStreamByUUID(ctx context.Context, in *v1.UUID, opts ...grpc.CallOption) (grpc.ServerStreamingClient[FileChunk], error)
+	UploadFile(ctx context.Context, in *FileChunk, opts ...grpc.CallOption) (*UploadStatus, error)
+	UploadFileStream(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[FileChunk, UploadStatus], error)
 }
 
 type filestoreServiceClient struct {
@@ -45,30 +49,30 @@ func NewFilestoreServiceClient(cc grpc.ClientConnInterface) FilestoreServiceClie
 	return &filestoreServiceClient{cc}
 }
 
-func (c *filestoreServiceClient) GetFileMetadataByUUID(ctx context.Context, in *v1.UUID, opts ...grpc.CallOption) (*FileMetadata, error) {
+func (c *filestoreServiceClient) GetFileMetadataByKey(ctx context.Context, in *FileKey, opts ...grpc.CallOption) (*FileMetadata, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(FileMetadata)
-	err := c.cc.Invoke(ctx, FilestoreService_GetFileMetadataByUUID_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, FilestoreService_GetFileMetadataByKey_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *filestoreServiceClient) GetFileByUUID(ctx context.Context, in *v1.UUID, opts ...grpc.CallOption) (*FileChunk, error) {
+func (c *filestoreServiceClient) GetFileByKey(ctx context.Context, in *FileKey, opts ...grpc.CallOption) (*FileChunk, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(FileChunk)
-	err := c.cc.Invoke(ctx, FilestoreService_GetFileByUUID_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, FilestoreService_GetFileByKey_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *filestoreServiceClient) DeleteFileByUUID(ctx context.Context, in *v1.UUID, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *filestoreServiceClient) DeleteFileByKey(ctx context.Context, in *FileKey, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, FilestoreService_DeleteFileByUUID_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, FilestoreService_DeleteFileByKey_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -94,14 +98,39 @@ func (c *filestoreServiceClient) GetFileStreamByUUID(ctx context.Context, in *v1
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type FilestoreService_GetFileStreamByUUIDClient = grpc.ServerStreamingClient[FileChunk]
 
+func (c *filestoreServiceClient) UploadFile(ctx context.Context, in *FileChunk, opts ...grpc.CallOption) (*UploadStatus, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UploadStatus)
+	err := c.cc.Invoke(ctx, FilestoreService_UploadFile_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *filestoreServiceClient) UploadFileStream(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[FileChunk, UploadStatus], error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	stream, err := c.cc.NewStream(ctx, &FilestoreService_ServiceDesc.Streams[1], FilestoreService_UploadFileStream_FullMethodName, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &grpc.GenericClientStream[FileChunk, UploadStatus]{ClientStream: stream}
+	return x, nil
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type FilestoreService_UploadFileStreamClient = grpc.ClientStreamingClient[FileChunk, UploadStatus]
+
 // FilestoreServiceServer is the server API for FilestoreService service.
 // All implementations should embed UnimplementedFilestoreServiceServer
 // for forward compatibility.
 type FilestoreServiceServer interface {
-	GetFileMetadataByUUID(context.Context, *v1.UUID) (*FileMetadata, error)
-	GetFileByUUID(context.Context, *v1.UUID) (*FileChunk, error)
-	DeleteFileByUUID(context.Context, *v1.UUID) (*emptypb.Empty, error)
+	GetFileMetadataByKey(context.Context, *FileKey) (*FileMetadata, error)
+	GetFileByKey(context.Context, *FileKey) (*FileChunk, error)
+	DeleteFileByKey(context.Context, *FileKey) (*emptypb.Empty, error)
 	GetFileStreamByUUID(*v1.UUID, grpc.ServerStreamingServer[FileChunk]) error
+	UploadFile(context.Context, *FileChunk) (*UploadStatus, error)
+	UploadFileStream(grpc.ClientStreamingServer[FileChunk, UploadStatus]) error
 }
 
 // UnimplementedFilestoreServiceServer should be embedded to have
@@ -111,17 +140,23 @@ type FilestoreServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedFilestoreServiceServer struct{}
 
-func (UnimplementedFilestoreServiceServer) GetFileMetadataByUUID(context.Context, *v1.UUID) (*FileMetadata, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetFileMetadataByUUID not implemented")
+func (UnimplementedFilestoreServiceServer) GetFileMetadataByKey(context.Context, *FileKey) (*FileMetadata, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetFileMetadataByKey not implemented")
 }
-func (UnimplementedFilestoreServiceServer) GetFileByUUID(context.Context, *v1.UUID) (*FileChunk, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetFileByUUID not implemented")
+func (UnimplementedFilestoreServiceServer) GetFileByKey(context.Context, *FileKey) (*FileChunk, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetFileByKey not implemented")
 }
-func (UnimplementedFilestoreServiceServer) DeleteFileByUUID(context.Context, *v1.UUID) (*emptypb.Empty, error) {
-	return nil, status.Error(codes.Unimplemented, "method DeleteFileByUUID not implemented")
+func (UnimplementedFilestoreServiceServer) DeleteFileByKey(context.Context, *FileKey) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeleteFileByKey not implemented")
 }
 func (UnimplementedFilestoreServiceServer) GetFileStreamByUUID(*v1.UUID, grpc.ServerStreamingServer[FileChunk]) error {
 	return status.Error(codes.Unimplemented, "method GetFileStreamByUUID not implemented")
+}
+func (UnimplementedFilestoreServiceServer) UploadFile(context.Context, *FileChunk) (*UploadStatus, error) {
+	return nil, status.Error(codes.Unimplemented, "method UploadFile not implemented")
+}
+func (UnimplementedFilestoreServiceServer) UploadFileStream(grpc.ClientStreamingServer[FileChunk, UploadStatus]) error {
+	return status.Error(codes.Unimplemented, "method UploadFileStream not implemented")
 }
 func (UnimplementedFilestoreServiceServer) testEmbeddedByValue() {}
 
@@ -143,56 +178,56 @@ func RegisterFilestoreServiceServer(s grpc.ServiceRegistrar, srv FilestoreServic
 	s.RegisterService(&FilestoreService_ServiceDesc, srv)
 }
 
-func _FilestoreService_GetFileMetadataByUUID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(v1.UUID)
+func _FilestoreService_GetFileMetadataByKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FileKey)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(FilestoreServiceServer).GetFileMetadataByUUID(ctx, in)
+		return srv.(FilestoreServiceServer).GetFileMetadataByKey(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: FilestoreService_GetFileMetadataByUUID_FullMethodName,
+		FullMethod: FilestoreService_GetFileMetadataByKey_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FilestoreServiceServer).GetFileMetadataByUUID(ctx, req.(*v1.UUID))
+		return srv.(FilestoreServiceServer).GetFileMetadataByKey(ctx, req.(*FileKey))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FilestoreService_GetFileByUUID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(v1.UUID)
+func _FilestoreService_GetFileByKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FileKey)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(FilestoreServiceServer).GetFileByUUID(ctx, in)
+		return srv.(FilestoreServiceServer).GetFileByKey(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: FilestoreService_GetFileByUUID_FullMethodName,
+		FullMethod: FilestoreService_GetFileByKey_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FilestoreServiceServer).GetFileByUUID(ctx, req.(*v1.UUID))
+		return srv.(FilestoreServiceServer).GetFileByKey(ctx, req.(*FileKey))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FilestoreService_DeleteFileByUUID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(v1.UUID)
+func _FilestoreService_DeleteFileByKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FileKey)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(FilestoreServiceServer).DeleteFileByUUID(ctx, in)
+		return srv.(FilestoreServiceServer).DeleteFileByKey(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: FilestoreService_DeleteFileByUUID_FullMethodName,
+		FullMethod: FilestoreService_DeleteFileByKey_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FilestoreServiceServer).DeleteFileByUUID(ctx, req.(*v1.UUID))
+		return srv.(FilestoreServiceServer).DeleteFileByKey(ctx, req.(*FileKey))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -208,6 +243,31 @@ func _FilestoreService_GetFileStreamByUUID_Handler(srv interface{}, stream grpc.
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type FilestoreService_GetFileStreamByUUIDServer = grpc.ServerStreamingServer[FileChunk]
 
+func _FilestoreService_UploadFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FileChunk)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FilestoreServiceServer).UploadFile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FilestoreService_UploadFile_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FilestoreServiceServer).UploadFile(ctx, req.(*FileChunk))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FilestoreService_UploadFileStream_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(FilestoreServiceServer).UploadFileStream(&grpc.GenericServerStream[FileChunk, UploadStatus]{ServerStream: stream})
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type FilestoreService_UploadFileStreamServer = grpc.ClientStreamingServer[FileChunk, UploadStatus]
+
 // FilestoreService_ServiceDesc is the grpc.ServiceDesc for FilestoreService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -216,16 +276,20 @@ var FilestoreService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*FilestoreServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetFileMetadataByUUID",
-			Handler:    _FilestoreService_GetFileMetadataByUUID_Handler,
+			MethodName: "GetFileMetadataByKey",
+			Handler:    _FilestoreService_GetFileMetadataByKey_Handler,
 		},
 		{
-			MethodName: "GetFileByUUID",
-			Handler:    _FilestoreService_GetFileByUUID_Handler,
+			MethodName: "GetFileByKey",
+			Handler:    _FilestoreService_GetFileByKey_Handler,
 		},
 		{
-			MethodName: "DeleteFileByUUID",
-			Handler:    _FilestoreService_DeleteFileByUUID_Handler,
+			MethodName: "DeleteFileByKey",
+			Handler:    _FilestoreService_DeleteFileByKey_Handler,
+		},
+		{
+			MethodName: "UploadFile",
+			Handler:    _FilestoreService_UploadFile_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
@@ -233,6 +297,11 @@ var FilestoreService_ServiceDesc = grpc.ServiceDesc{
 			StreamName:    "GetFileStreamByUUID",
 			Handler:       _FilestoreService_GetFileStreamByUUID_Handler,
 			ServerStreams: true,
+		},
+		{
+			StreamName:    "UploadFileStream",
+			Handler:       _FilestoreService_UploadFileStream_Handler,
+			ClientStreams: true,
 		},
 	},
 	Metadata: "filestore/v1/filestore_service.proto",

@@ -27,10 +27,10 @@ var File_analysis_v1_analysis_service_proto protoreflect.FileDescriptor
 
 const file_analysis_v1_analysis_service_proto_rawDesc = "" +
 	"\n" +
-	"\"analysis/v1/analysis_service.proto\x12\x12dolina.analysis.v1\x1a!google/protobuf/go_features.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1aanalysis/v1/analysis.proto\x1a\x18analysis/v1/window.proto\x1a\x14common/v1/uuid.proto2\xea\x02\n" +
-	"\x0fAnalysisService\x12[\n" +
-	"\rAnalyzeStream\x12\".dolina.analysis.v1.AnalyzeOptions\x1a\".dolina.analysis.v1.AnalysisWindow\"\x000\x01\x12z\n" +
-	"\fAnalyzeUnary\x12\".dolina.analysis.v1.AnalyzeOptions\x1a\".dolina.analysis.v1.AnalysisWindow\"\"\x82\xd3\xe4\x93\x02\x1c:\x01*\"\x17/api/v1/reports/analyze\x12~\n" +
+	"\"analysis/v1/analysis_service.proto\x12\x12dolina.analysis.v1\x1a!google/protobuf/go_features.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1aanalysis/v1/analysis.proto\x1a\x18analysis/v1/window.proto\x1a\x14common/v1/uuid.proto2\xf3\x02\n" +
+	"\x0fAnalysisService\x12b\n" +
+	"\x14AnalyzeReportsStream\x12\".dolina.analysis.v1.AnalyzeOptions\x1a\".dolina.analysis.v1.AnalysisWindow\"\x000\x01\x12|\n" +
+	"\x0eAnalyzeReports\x12\".dolina.analysis.v1.AnalyzeOptions\x1a\".dolina.analysis.v1.AnalysisWindow\"\"\x82\xd3\xe4\x93\x02\x1c:\x01*\"\x17/api/v1/reports/analyze\x12~\n" +
 	"\x17GetAnalysisWindowByUUID\x12\x16.dolina.common.v1.UUID\x1a\".dolina.analysis.v1.AnalysisWindow\"'\x82\xd3\xe4\x93\x02!\x12\x1f/api/v1/analysis/windows/{uuid}BXZLgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/analysis/v1;analysis_v1\x92\x03\a\xd2>\x02\x10\x03\b\x01b\beditionsp\xe8\a"
 
 var file_analysis_v1_analysis_service_proto_goTypes = []any{
@@ -39,11 +39,11 @@ var file_analysis_v1_analysis_service_proto_goTypes = []any{
 	(*AnalysisWindow)(nil), // 2: dolina.analysis.v1.AnalysisWindow
 }
 var file_analysis_v1_analysis_service_proto_depIdxs = []int32{
-	0, // 0: dolina.analysis.v1.AnalysisService.AnalyzeStream:input_type -> dolina.analysis.v1.AnalyzeOptions
-	0, // 1: dolina.analysis.v1.AnalysisService.AnalyzeUnary:input_type -> dolina.analysis.v1.AnalyzeOptions
+	0, // 0: dolina.analysis.v1.AnalysisService.AnalyzeReportsStream:input_type -> dolina.analysis.v1.AnalyzeOptions
+	0, // 1: dolina.analysis.v1.AnalysisService.AnalyzeReports:input_type -> dolina.analysis.v1.AnalyzeOptions
 	1, // 2: dolina.analysis.v1.AnalysisService.GetAnalysisWindowByUUID:input_type -> dolina.common.v1.UUID
-	2, // 3: dolina.analysis.v1.AnalysisService.AnalyzeStream:output_type -> dolina.analysis.v1.AnalysisWindow
-	2, // 4: dolina.analysis.v1.AnalysisService.AnalyzeUnary:output_type -> dolina.analysis.v1.AnalysisWindow
+	2, // 3: dolina.analysis.v1.AnalysisService.AnalyzeReportsStream:output_type -> dolina.analysis.v1.AnalysisWindow
+	2, // 4: dolina.analysis.v1.AnalysisService.AnalyzeReports:output_type -> dolina.analysis.v1.AnalysisWindow
 	2, // 5: dolina.analysis.v1.AnalysisService.GetAnalysisWindowByUUID:output_type -> dolina.analysis.v1.AnalysisWindow
 	3, // [3:6] is the sub-list for method output_type
 	0, // [0:3] is the sub-list for method input_type

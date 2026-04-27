@@ -15,10 +15,10 @@ import "common/v1/uuid.proto";
 
 service AnalysisService {
   // Synchronised method for reports analysis
-  rpc AnalyzeStream(AnalyzeOptions) returns (stream AnalysisWindow) {}
+  rpc AnalyzeReportsStream(AnalyzeOptions) returns (stream AnalysisWindow) {}
 
   // Asynchronous method for reports analysis, always returns uncertain info
-  rpc AnalyzeUnary(AnalyzeOptions) returns (AnalysisWindow) {
+  rpc AnalyzeReports(AnalyzeOptions) returns (AnalysisWindow) {
     option (google.api.http) = {
       post: "/api/v1/reports/analyze"
       body: "*"

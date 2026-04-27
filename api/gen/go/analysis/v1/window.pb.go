@@ -29,6 +29,7 @@ type AnalysisWindow struct {
 	xxx_hidden_Progress     float32                `protobuf:"fixed32,3,opt,name=progress"`
 	xxx_hidden_AnalysisList *[]*Analysis           `protobuf:"bytes,4,rep,name=analysis_list,json=analysisList"`
 	xxx_hidden_PipelineId   string                 `protobuf:"bytes,5,opt,name=pipeline_id,json=pipelineId"`
+	xxx_hidden_AssetSuid    string                 `protobuf:"bytes,6,opt,name=asset_suid,json=assetSuid"`
 	xxx_hidden_CreatedAt    *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=created_at,json=createdAt"`
 	xxx_hidden_OpenedAt     *timestamppb.Timestamp `protobuf:"bytes,12,opt,name=opened_at,json=openedAt"`
 	xxx_hidden_ClosedAt     *timestamppb.Timestamp `protobuf:"bytes,13,opt,name=closed_at,json=closedAt"`
@@ -98,6 +99,13 @@ func (x *AnalysisWindow) GetPipelineId() string {
 	return ""
 }
 
+func (x *AnalysisWindow) GetAssetSuid() string {
+	if x != nil {
+		return x.xxx_hidden_AssetSuid
+	}
+	return ""
+}
+
 func (x *AnalysisWindow) GetCreatedAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.xxx_hidden_CreatedAt
@@ -137,6 +145,10 @@ func (x *AnalysisWindow) SetAnalysisList(v []*Analysis) {
 
 func (x *AnalysisWindow) SetPipelineId(v string) {
 	x.xxx_hidden_PipelineId = v
+}
+
+func (x *AnalysisWindow) SetAssetSuid(v string) {
+	x.xxx_hidden_AssetSuid = v
 }
 
 func (x *AnalysisWindow) SetCreatedAt(v *timestamppb.Timestamp) {
@@ -192,6 +204,7 @@ type AnalysisWindow_builder struct {
 	Progress     float32
 	AnalysisList []*Analysis
 	PipelineId   string
+	AssetSuid    string
 	CreatedAt    *timestamppb.Timestamp
 	OpenedAt     *timestamppb.Timestamp
 	ClosedAt     *timestamppb.Timestamp
@@ -206,6 +219,7 @@ func (b0 AnalysisWindow_builder) Build() *AnalysisWindow {
 	x.xxx_hidden_Progress = b.Progress
 	x.xxx_hidden_AnalysisList = &b.AnalysisList
 	x.xxx_hidden_PipelineId = b.PipelineId
+	x.xxx_hidden_AssetSuid = b.AssetSuid
 	x.xxx_hidden_CreatedAt = b.CreatedAt
 	x.xxx_hidden_OpenedAt = b.OpenedAt
 	x.xxx_hidden_ClosedAt = b.ClosedAt
@@ -216,14 +230,16 @@ var File_analysis_v1_window_proto protoreflect.FileDescriptor
 
 const file_analysis_v1_window_proto_rawDesc = "" +
 	"\n" +
-	"\x18analysis/v1/window.proto\x12\x12dolina.analysis.v1\x1a!google/protobuf/go_features.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1aanalysis/v1/analysis.proto\"\x86\x03\n" +
+	"\x18analysis/v1/window.proto\x12\x12dolina.analysis.v1\x1a!google/protobuf/go_features.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1aanalysis/v1/analysis.proto\"\xa5\x03\n" +
 	"\x0eAnalysisWindow\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x127\n" +
 	"\x05state\x18\x02 \x01(\x0e2!.dolina.analysis.v1.AnalysisStateR\x05state\x12\x1a\n" +
 	"\bprogress\x18\x03 \x01(\x02R\bprogress\x12A\n" +
 	"\ranalysis_list\x18\x04 \x03(\v2\x1c.dolina.analysis.v1.AnalysisR\fanalysisList\x12\x1f\n" +
 	"\vpipeline_id\x18\x05 \x01(\tR\n" +
-	"pipelineId\x129\n" +
+	"pipelineId\x12\x1d\n" +
+	"\n" +
+	"asset_suid\x18\x06 \x01(\tR\tassetSuid\x129\n" +
 	"\n" +
 	"created_at\x18\n" +
 	" \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x127\n" +

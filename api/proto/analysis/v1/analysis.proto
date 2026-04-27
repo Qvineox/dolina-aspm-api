@@ -27,26 +27,26 @@ message AnalyzeOptions {
 
   repeated ScannerReport scanner_report_list = 1;
 
+  // application/asset related fields
+  string application_suid = 2;
+  string asset_suid = 3;
+
   // create or update project repository by provided attributes
-  string repository_uuid = 2;
-  string repository_url = 3; // ignored if repository_uuid is provided
-  string repository_ref = 4; // added to repository data (can be branch or tag)
-  string repository_name = 5; // added to repository data
+  string repository_path = 4; // used to generate repository suid and name
+  string repository_url = 5;
+  string repository_ref = 6; // branch, tag, any variation of an app
 
   // create or update project artifact by provided attributes
-  string artifact_uuid = 6;
-  string artifact_purl = 7; // ignored if artifact_uuid is provided
+  string artifact_purl = 7;
 
   // ci/cd attributes
   string pipeline_id = 8;
 
-  //
-  google.protobuf.Duration upload_window_duration = 9 [features.field_presence = EXPLICIT]; // defines how long to delay processing
-
-  // defines if non-existing entities (projects, repositories or artifacts) will be created
+  // defines if non-existing entities (assets, repositories or artifacts) will be created
   bool auto_create = 10;
 
   // if early_start set to true, workers start to process scanner reports immediately, not waiting for process window to close
+  google.protobuf.Duration upload_window_duration = 9; // defines how long to delay processing
   bool early_start = 11;
 }
 

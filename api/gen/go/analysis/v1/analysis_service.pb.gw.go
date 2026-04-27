@@ -36,7 +36,7 @@ var (
 	_ = metadata.Join
 )
 
-func request_AnalysisService_AnalyzeUnary_0(ctx context.Context, marshaler runtime.Marshaler, client AnalysisServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_AnalysisService_AnalyzeReports_0(ctx context.Context, marshaler runtime.Marshaler, client AnalysisServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
 		protoReq AnalyzeOptions
 		metadata runtime.ServerMetadata
@@ -49,11 +49,11 @@ func request_AnalysisService_AnalyzeUnary_0(ctx context.Context, marshaler runti
 	if req.Body != nil {
 		_, _ = io.Copy(io.Discard, req.Body)
 	}
-	msg, err := client.AnalyzeUnary(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.AnalyzeReports(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 }
 
-func local_request_AnalysisService_AnalyzeUnary_0(ctx context.Context, marshaler runtime.Marshaler, server AnalysisServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_AnalysisService_AnalyzeReports_0(ctx context.Context, marshaler runtime.Marshaler, server AnalysisServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
 		protoReq AnalyzeOptions
 		metadata runtime.ServerMetadata
@@ -63,7 +63,7 @@ func local_request_AnalysisService_AnalyzeUnary_0(ctx context.Context, marshaler
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	protoReq = bodyData
-	msg, err := server.AnalyzeUnary(ctx, &protoReq)
+	msg, err := server.AnalyzeReports(ctx, &protoReq)
 	return msg, metadata, err
 }
 
@@ -114,25 +114,25 @@ func local_request_AnalysisService_GetAnalysisWindowByUUID_0(ctx context.Context
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterAnalysisServiceHandlerFromEndpoint instead.
 // GRPC interceptors will not work for this type of registration. To use interceptors, you must use the "runtime.WithMiddlewares" option in the "runtime.NewServeMux" call.
 func RegisterAnalysisServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server AnalysisServiceServer) error {
-	mux.Handle(http.MethodPost, pattern_AnalysisService_AnalyzeUnary_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_AnalysisService_AnalyzeReports_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/dolina.analysis.v1.AnalysisService/AnalyzeUnary", runtime.WithHTTPPathPattern("/api/v1/reports/analyze"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/dolina.analysis.v1.AnalysisService/AnalyzeReports", runtime.WithHTTPPathPattern("/api/v1/reports/analyze"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_AnalysisService_AnalyzeUnary_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_AnalysisService_AnalyzeReports_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_AnalysisService_AnalyzeUnary_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_AnalysisService_AnalyzeReports_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 	mux.Handle(http.MethodGet, pattern_AnalysisService_GetAnalysisWindowByUUID_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -194,22 +194,22 @@ func RegisterAnalysisServiceHandler(ctx context.Context, mux *runtime.ServeMux, 
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
 // "AnalysisServiceClient" to call the correct interceptors. This client ignores the HTTP middlewares.
 func RegisterAnalysisServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client AnalysisServiceClient) error {
-	mux.Handle(http.MethodPost, pattern_AnalysisService_AnalyzeUnary_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_AnalysisService_AnalyzeReports_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/dolina.analysis.v1.AnalysisService/AnalyzeUnary", runtime.WithHTTPPathPattern("/api/v1/reports/analyze"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/dolina.analysis.v1.AnalysisService/AnalyzeReports", runtime.WithHTTPPathPattern("/api/v1/reports/analyze"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_AnalysisService_AnalyzeUnary_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_AnalysisService_AnalyzeReports_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_AnalysisService_AnalyzeUnary_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_AnalysisService_AnalyzeReports_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 	mux.Handle(http.MethodGet, pattern_AnalysisService_GetAnalysisWindowByUUID_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -232,11 +232,11 @@ func RegisterAnalysisServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 }
 
 var (
-	pattern_AnalysisService_AnalyzeUnary_0            = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "reports", "analyze"}, ""))
+	pattern_AnalysisService_AnalyzeReports_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "reports", "analyze"}, ""))
 	pattern_AnalysisService_GetAnalysisWindowByUUID_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "v1", "analysis", "windows", "uuid"}, ""))
 )
 
 var (
-	forward_AnalysisService_AnalyzeUnary_0            = runtime.ForwardResponseMessage
+	forward_AnalysisService_AnalyzeReports_0          = runtime.ForwardResponseMessage
 	forward_AnalysisService_GetAnalysisWindowByUUID_0 = runtime.ForwardResponseMessage
 )

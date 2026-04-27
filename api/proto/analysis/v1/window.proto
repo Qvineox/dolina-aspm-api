@@ -20,6 +20,7 @@ message AnalysisWindow {
   repeated Analysis analysis_list = 4;
 
   string pipeline_id = 5;
+  string asset_suid = 6;
 
   google.protobuf.Timestamp created_at = 10;
   google.protobuf.Timestamp opened_at = 12;

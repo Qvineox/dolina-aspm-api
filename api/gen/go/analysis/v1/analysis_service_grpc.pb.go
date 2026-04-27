@@ -20,8 +20,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	AnalysisService_AnalyzeStream_FullMethodName           = "/dolina.analysis.v1.AnalysisService/AnalyzeStream"
-	AnalysisService_AnalyzeUnary_FullMethodName            = "/dolina.analysis.v1.AnalysisService/AnalyzeUnary"
+	AnalysisService_AnalyzeReportsStream_FullMethodName    = "/dolina.analysis.v1.AnalysisService/AnalyzeReportsStream"
+	AnalysisService_AnalyzeReports_FullMethodName          = "/dolina.analysis.v1.AnalysisService/AnalyzeReports"
 	AnalysisService_GetAnalysisWindowByUUID_FullMethodName = "/dolina.analysis.v1.AnalysisService/GetAnalysisWindowByUUID"
 )
 
@@ -30,9 +30,9 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AnalysisServiceClient interface {
 	// Synchronised method for reports analysis
-	AnalyzeStream(ctx context.Context, in *AnalyzeOptions, opts ...grpc.CallOption) (grpc.ServerStreamingClient[AnalysisWindow], error)
+	AnalyzeReportsStream(ctx context.Context, in *AnalyzeOptions, opts ...grpc.CallOption) (grpc.ServerStreamingClient[AnalysisWindow], error)
 	// Asynchronous method for reports analysis, always returns uncertain info
-	AnalyzeUnary(ctx context.Context, in *AnalyzeOptions, opts ...grpc.CallOption) (*AnalysisWindow, error)
+	AnalyzeReports(ctx context.Context, in *AnalyzeOptions, opts ...grpc.CallOption) (*AnalysisWindow, error)
 	GetAnalysisWindowByUUID(ctx context.Context, in *v1.UUID, opts ...grpc.CallOption) (*AnalysisWindow, error)
 }
 
@@ -44,9 +44,9 @@ func NewAnalysisServiceClient(cc grpc.ClientConnInterface) AnalysisServiceClient
 	return &analysisServiceClient{cc}
 }
 
-func (c *analysisServiceClient) AnalyzeStream(ctx context.Context, in *AnalyzeOptions, opts ...grpc.CallOption) (grpc.ServerStreamingClient[AnalysisWindow], error) {
+func (c *analysisServiceClient) AnalyzeReportsStream(ctx context.Context, in *AnalyzeOptions, opts ...grpc.CallOption) (grpc.ServerStreamingClient[AnalysisWindow], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &AnalysisService_ServiceDesc.Streams[0], AnalysisService_AnalyzeStream_FullMethodName, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &AnalysisService_ServiceDesc.Streams[0], AnalysisService_AnalyzeReportsStream_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -61,12 +61,12 @@ func (c *analysisServiceClient) AnalyzeStream(ctx context.Context, in *AnalyzeOp
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type AnalysisService_AnalyzeStreamClient = grpc.ServerStreamingClient[AnalysisWindow]
+type AnalysisService_AnalyzeReportsStreamClient = grpc.ServerStreamingClient[AnalysisWindow]
 
-func (c *analysisServiceClient) AnalyzeUnary(ctx context.Context, in *AnalyzeOptions, opts ...grpc.CallOption) (*AnalysisWindow, error) {
+func (c *analysisServiceClient) AnalyzeReports(ctx context.Context, in *AnalyzeOptions, opts ...grpc.CallOption) (*AnalysisWindow, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(AnalysisWindow)
-	err := c.cc.Invoke(ctx, AnalysisService_AnalyzeUnary_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, AnalysisService_AnalyzeReports_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -88,9 +88,9 @@ func (c *analysisServiceClient) GetAnalysisWindowByUUID(ctx context.Context, in 
 // for forward compatibility.
 type AnalysisServiceServer interface {
 	// Synchronised method for reports analysis
-	AnalyzeStream(*AnalyzeOptions, grpc.ServerStreamingServer[AnalysisWindow]) error
+	AnalyzeReportsStream(*AnalyzeOptions, grpc.ServerStreamingServer[AnalysisWindow]) error
 	// Asynchronous method for reports analysis, always returns uncertain info
-	AnalyzeUnary(context.Context, *AnalyzeOptions) (*AnalysisWindow, error)
+	AnalyzeReports(context.Context, *AnalyzeOptions) (*AnalysisWindow, error)
 	GetAnalysisWindowByUUID(context.Context, *v1.UUID) (*AnalysisWindow, error)
 }
 
@@ -101,11 +101,11 @@ type AnalysisServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedAnalysisServiceServer struct{}
 
-func (UnimplementedAnalysisServiceServer) AnalyzeStream(*AnalyzeOptions, grpc.ServerStreamingServer[AnalysisWindow]) error {
-	return status.Error(codes.Unimplemented, "method AnalyzeStream not implemented")
+func (UnimplementedAnalysisServiceServer) AnalyzeReportsStream(*AnalyzeOptions, grpc.ServerStreamingServer[AnalysisWindow]) error {
+	return status.Error(codes.Unimplemented, "method AnalyzeReportsStream not implemented")
 }
-func (UnimplementedAnalysisServiceServer) AnalyzeUnary(context.Context, *AnalyzeOptions) (*AnalysisWindow, error) {
-	return nil, status.Error(codes.Unimplemented, "method AnalyzeUnary not implemented")
+func (UnimplementedAnalysisServiceServer) AnalyzeReports(context.Context, *AnalyzeOptions) (*AnalysisWindow, error) {
+	return nil, status.Error(codes.Unimplemented, "method AnalyzeReports not implemented")
 }
 func (UnimplementedAnalysisServiceServer) GetAnalysisWindowByUUID(context.Context, *v1.UUID) (*AnalysisWindow, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetAnalysisWindowByUUID not implemented")
@@ -130,31 +130,31 @@ func RegisterAnalysisServiceServer(s grpc.ServiceRegistrar, srv AnalysisServiceS
 	s.RegisterService(&AnalysisService_ServiceDesc, srv)
 }
 
-func _AnalysisService_AnalyzeStream_Handler(srv interface{}, stream grpc.ServerStream) error {
+func _AnalysisService_AnalyzeReportsStream_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(AnalyzeOptions)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(AnalysisServiceServer).AnalyzeStream(m, &grpc.GenericServerStream[AnalyzeOptions, AnalysisWindow]{ServerStream: stream})
+	return srv.(AnalysisServiceServer).AnalyzeReportsStream(m, &grpc.GenericServerStream[AnalyzeOptions, AnalysisWindow]{ServerStream: stream})
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type AnalysisService_AnalyzeStreamServer = grpc.ServerStreamingServer[AnalysisWindow]
+type AnalysisService_AnalyzeReportsStreamServer = grpc.ServerStreamingServer[AnalysisWindow]
 
-func _AnalysisService_AnalyzeUnary_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _AnalysisService_AnalyzeReports_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(AnalyzeOptions)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AnalysisServiceServer).AnalyzeUnary(ctx, in)
+		return srv.(AnalysisServiceServer).AnalyzeReports(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AnalysisService_AnalyzeUnary_FullMethodName,
+		FullMethod: AnalysisService_AnalyzeReports_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AnalysisServiceServer).AnalyzeUnary(ctx, req.(*AnalyzeOptions))
+		return srv.(AnalysisServiceServer).AnalyzeReports(ctx, req.(*AnalyzeOptions))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -185,8 +185,8 @@ var AnalysisService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*AnalysisServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "AnalyzeUnary",
-			Handler:    _AnalysisService_AnalyzeUnary_Handler,
+			MethodName: "AnalyzeReports",
+			Handler:    _AnalysisService_AnalyzeReports_Handler,
 		},
 		{
 			MethodName: "GetAnalysisWindowByUUID",
@@ -195,8 +195,8 @@ var AnalysisService_ServiceDesc = grpc.ServiceDesc{
 	},
 	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "AnalyzeStream",
-			Handler:       _AnalysisService_AnalyzeStream_Handler,
+			StreamName:    "AnalyzeReportsStream",
+			Handler:       _AnalysisService_AnalyzeReportsStream_Handler,
 			ServerStreams: true,
 		},
 	},

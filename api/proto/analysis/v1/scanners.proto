@@ -21,7 +21,7 @@ message ScannerReport {
     }
   };
 
-  string uploaded_file_uuid = 1;
+  string uploaded_file_key = 1;
 
   ScannerID scanner_id = 2;
   ScannerFormat scanner_format = 3;
@@ -37,8 +37,8 @@ enum ScannerID {
 enum ScannerFormat {
   SCANNER_FORMAT_UNSPECIFIED = 0;
 
-  SCANNER_FORMAT_TRIVY_FS = 1;
+  SCANNER_FORMAT_TRIVY_FS_JSON = 1;
   SCANNER_FORMAT_SARIF = 2;
-  SCANNER_FORMAT_SBOM = 3;
-  SCANNER_FORMAT_GITLEAKS = 4;
+  SCANNER_FORMAT_CYCLONEDX_1_6 = 3;
+  SCANNER_FORMAT_GITLEAKS_JSON = 4;
 }

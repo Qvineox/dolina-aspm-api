@@ -16,7 +16,6 @@ import (
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
-	"gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/common/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/grpclog"
@@ -36,126 +35,198 @@ var (
 	_ = metadata.Join
 )
 
-func request_FilestoreService_GetFileMetadataByUUID_0(ctx context.Context, marshaler runtime.Marshaler, client FilestoreServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_FilestoreService_GetFileMetadataByKey_0(ctx context.Context, marshaler runtime.Marshaler, client FilestoreServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq common_v1.UUID
+		protoReq FileKey
 		metadata runtime.ServerMetadata
 		err      error
 	)
 	if req.Body != nil {
 		_, _ = io.Copy(io.Discard, req.Body)
 	}
-	val, ok := pathParams["uuid"]
+	val, ok := pathParams["key"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uuid")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "key")
 	}
-	convertedUuid, err := runtime.String(val)
+	convertedKey, err := runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uuid", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "key", err)
 	}
-	protoReq.SetUuid(convertedUuid)
-	msg, err := client.GetFileMetadataByUUID(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	protoReq.SetKey(convertedKey)
+	msg, err := client.GetFileMetadataByKey(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 }
 
-func local_request_FilestoreService_GetFileMetadataByUUID_0(ctx context.Context, marshaler runtime.Marshaler, server FilestoreServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_FilestoreService_GetFileMetadataByKey_0(ctx context.Context, marshaler runtime.Marshaler, server FilestoreServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq common_v1.UUID
+		protoReq FileKey
 		metadata runtime.ServerMetadata
 		err      error
 	)
-	val, ok := pathParams["uuid"]
+	val, ok := pathParams["key"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uuid")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "key")
 	}
-	convertedUuid, err := runtime.String(val)
+	convertedKey, err := runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uuid", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "key", err)
 	}
-	protoReq.SetUuid(convertedUuid)
-	msg, err := server.GetFileMetadataByUUID(ctx, &protoReq)
+	protoReq.SetKey(convertedKey)
+	msg, err := server.GetFileMetadataByKey(ctx, &protoReq)
 	return msg, metadata, err
 }
 
-func request_FilestoreService_GetFileByUUID_0(ctx context.Context, marshaler runtime.Marshaler, client FilestoreServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_FilestoreService_GetFileByKey_0(ctx context.Context, marshaler runtime.Marshaler, client FilestoreServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq common_v1.UUID
-		metadata runtime.ServerMetadata
-		err      error
-	)
-	if req.Body != nil {
-		_, _ = io.Copy(io.Discard, req.Body)
-	}
-	val, ok := pathParams["uuid"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uuid")
-	}
-	convertedUuid, err := runtime.String(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uuid", err)
-	}
-	protoReq.SetUuid(convertedUuid)
-	msg, err := client.GetFileByUUID(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	return msg, metadata, err
-}
-
-func local_request_FilestoreService_GetFileByUUID_0(ctx context.Context, marshaler runtime.Marshaler, server FilestoreServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var (
-		protoReq common_v1.UUID
-		metadata runtime.ServerMetadata
-		err      error
-	)
-	val, ok := pathParams["uuid"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uuid")
-	}
-	convertedUuid, err := runtime.String(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uuid", err)
-	}
-	protoReq.SetUuid(convertedUuid)
-	msg, err := server.GetFileByUUID(ctx, &protoReq)
-	return msg, metadata, err
-}
-
-func request_FilestoreService_DeleteFileByUUID_0(ctx context.Context, marshaler runtime.Marshaler, client FilestoreServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var (
-		protoReq common_v1.UUID
+		protoReq FileKey
 		metadata runtime.ServerMetadata
 		err      error
 	)
 	if req.Body != nil {
 		_, _ = io.Copy(io.Discard, req.Body)
 	}
-	val, ok := pathParams["uuid"]
+	val, ok := pathParams["key"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uuid")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "key")
 	}
-	convertedUuid, err := runtime.String(val)
+	convertedKey, err := runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uuid", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "key", err)
 	}
-	protoReq.SetUuid(convertedUuid)
-	msg, err := client.DeleteFileByUUID(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	protoReq.SetKey(convertedKey)
+	msg, err := client.GetFileByKey(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 }
 
-func local_request_FilestoreService_DeleteFileByUUID_0(ctx context.Context, marshaler runtime.Marshaler, server FilestoreServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_FilestoreService_GetFileByKey_0(ctx context.Context, marshaler runtime.Marshaler, server FilestoreServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq common_v1.UUID
+		protoReq FileKey
 		metadata runtime.ServerMetadata
 		err      error
 	)
-	val, ok := pathParams["uuid"]
+	val, ok := pathParams["key"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uuid")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "key")
 	}
-	convertedUuid, err := runtime.String(val)
+	convertedKey, err := runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uuid", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "key", err)
 	}
-	protoReq.SetUuid(convertedUuid)
-	msg, err := server.DeleteFileByUUID(ctx, &protoReq)
+	protoReq.SetKey(convertedKey)
+	msg, err := server.GetFileByKey(ctx, &protoReq)
+	return msg, metadata, err
+}
+
+func request_FilestoreService_DeleteFileByKey_0(ctx context.Context, marshaler runtime.Marshaler, client FilestoreServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq FileKey
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	val, ok := pathParams["key"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "key")
+	}
+	convertedKey, err := runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "key", err)
+	}
+	protoReq.SetKey(convertedKey)
+	msg, err := client.DeleteFileByKey(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_FilestoreService_DeleteFileByKey_0(ctx context.Context, marshaler runtime.Marshaler, server FilestoreServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq FileKey
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	val, ok := pathParams["key"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "key")
+	}
+	convertedKey, err := runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "key", err)
+	}
+	protoReq.SetKey(convertedKey)
+	msg, err := server.DeleteFileByKey(ctx, &protoReq)
+	return msg, metadata, err
+}
+
+func request_FilestoreService_UploadFile_0(ctx context.Context, marshaler runtime.Marshaler, client FilestoreServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq FileChunk
+		metadata runtime.ServerMetadata
+	)
+	var bodyData FileChunk
+	if err := marshaler.NewDecoder(req.Body).Decode(&bodyData); err != nil && !errors.Is(err, io.EOF) {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	protoReq = bodyData
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	msg, err := client.UploadFile(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_FilestoreService_UploadFile_0(ctx context.Context, marshaler runtime.Marshaler, server FilestoreServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq FileChunk
+		metadata runtime.ServerMetadata
+	)
+	var bodyData FileChunk
+	if err := marshaler.NewDecoder(req.Body).Decode(&bodyData); err != nil && !errors.Is(err, io.EOF) {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	protoReq = bodyData
+	msg, err := server.UploadFile(ctx, &protoReq)
+	return msg, metadata, err
+}
+
+func request_FilestoreService_UploadFileStream_0(ctx context.Context, marshaler runtime.Marshaler, client FilestoreServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var metadata runtime.ServerMetadata
+	stream, err := client.UploadFileStream(ctx)
+	if err != nil {
+		grpclog.Errorf("Failed to start streaming: %v", err)
+		return nil, metadata, err
+	}
+	dec := marshaler.NewDecoder(req.Body)
+	for {
+		var protoReq FileChunk
+		err = dec.Decode(&protoReq)
+		if errors.Is(err, io.EOF) {
+			break
+		}
+		if err != nil {
+			grpclog.Errorf("Failed to decode request: %v", err)
+			return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+		}
+		if err = stream.Send(&protoReq); err != nil {
+			if errors.Is(err, io.EOF) {
+				break
+			}
+			grpclog.Errorf("Failed to send request: %v", err)
+			return nil, metadata, err
+		}
+	}
+	if err := stream.CloseSend(); err != nil {
+		grpclog.Errorf("Failed to terminate client stream: %v", err)
+		return nil, metadata, err
+	}
+	header, err := stream.Header()
+	if err != nil {
+		grpclog.Errorf("Failed to get header from client: %v", err)
+		return nil, metadata, err
+	}
+	metadata.HeaderMD = header
+	msg, err := stream.CloseAndRecv()
+	metadata.TrailerMD = stream.Trailer()
 	return msg, metadata, err
 }
 
@@ -165,65 +236,92 @@ func local_request_FilestoreService_DeleteFileByUUID_0(ctx context.Context, mars
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterFilestoreServiceHandlerFromEndpoint instead.
 // GRPC interceptors will not work for this type of registration. To use interceptors, you must use the "runtime.WithMiddlewares" option in the "runtime.NewServeMux" call.
 func RegisterFilestoreServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server FilestoreServiceServer) error {
-	mux.Handle(http.MethodGet, pattern_FilestoreService_GetFileMetadataByUUID_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_FilestoreService_GetFileMetadataByKey_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/dolina.filestore.v1.FilestoreService/GetFileMetadataByUUID", runtime.WithHTTPPathPattern("/api/v1/filestore/{uuid}/metadata"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/dolina.filestore.v1.FilestoreService/GetFileMetadataByKey", runtime.WithHTTPPathPattern("/api/v1/filestore/{key}/metadata"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_FilestoreService_GetFileMetadataByUUID_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_FilestoreService_GetFileMetadataByKey_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_FilestoreService_GetFileMetadataByUUID_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_FilestoreService_GetFileMetadataByKey_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodGet, pattern_FilestoreService_GetFileByUUID_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_FilestoreService_GetFileByKey_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/dolina.filestore.v1.FilestoreService/GetFileByUUID", runtime.WithHTTPPathPattern("/api/v1/filestore/{uuid}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/dolina.filestore.v1.FilestoreService/GetFileByKey", runtime.WithHTTPPathPattern("/api/v1/filestore/{key}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_FilestoreService_GetFileByUUID_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_FilestoreService_GetFileByKey_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_FilestoreService_GetFileByUUID_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_FilestoreService_GetFileByKey_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodDelete, pattern_FilestoreService_DeleteFileByUUID_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodDelete, pattern_FilestoreService_DeleteFileByKey_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/dolina.filestore.v1.FilestoreService/DeleteFileByUUID", runtime.WithHTTPPathPattern("/api/v1/filestore/{uuid}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/dolina.filestore.v1.FilestoreService/DeleteFileByKey", runtime.WithHTTPPathPattern("/api/v1/filestore/{key}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_FilestoreService_DeleteFileByUUID_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_FilestoreService_DeleteFileByKey_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_FilestoreService_DeleteFileByUUID_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_FilestoreService_DeleteFileByKey_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodPost, pattern_FilestoreService_UploadFile_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/dolina.filestore.v1.FilestoreService/UploadFile", runtime.WithHTTPPathPattern("/api/v1/upload"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_FilestoreService_UploadFile_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_FilestoreService_UploadFile_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+
+	mux.Handle(http.MethodPost, pattern_FilestoreService_UploadFileStream_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
+		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+		return
 	})
 
 	return nil
@@ -265,68 +363,106 @@ func RegisterFilestoreServiceHandler(ctx context.Context, mux *runtime.ServeMux,
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
 // "FilestoreServiceClient" to call the correct interceptors. This client ignores the HTTP middlewares.
 func RegisterFilestoreServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client FilestoreServiceClient) error {
-	mux.Handle(http.MethodGet, pattern_FilestoreService_GetFileMetadataByUUID_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_FilestoreService_GetFileMetadataByKey_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/dolina.filestore.v1.FilestoreService/GetFileMetadataByUUID", runtime.WithHTTPPathPattern("/api/v1/filestore/{uuid}/metadata"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/dolina.filestore.v1.FilestoreService/GetFileMetadataByKey", runtime.WithHTTPPathPattern("/api/v1/filestore/{key}/metadata"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_FilestoreService_GetFileMetadataByUUID_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_FilestoreService_GetFileMetadataByKey_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_FilestoreService_GetFileMetadataByUUID_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_FilestoreService_GetFileMetadataByKey_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodGet, pattern_FilestoreService_GetFileByUUID_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_FilestoreService_GetFileByKey_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/dolina.filestore.v1.FilestoreService/GetFileByUUID", runtime.WithHTTPPathPattern("/api/v1/filestore/{uuid}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/dolina.filestore.v1.FilestoreService/GetFileByKey", runtime.WithHTTPPathPattern("/api/v1/filestore/{key}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_FilestoreService_GetFileByUUID_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_FilestoreService_GetFileByKey_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_FilestoreService_GetFileByUUID_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_FilestoreService_GetFileByKey_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodDelete, pattern_FilestoreService_DeleteFileByUUID_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodDelete, pattern_FilestoreService_DeleteFileByKey_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/dolina.filestore.v1.FilestoreService/DeleteFileByUUID", runtime.WithHTTPPathPattern("/api/v1/filestore/{uuid}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/dolina.filestore.v1.FilestoreService/DeleteFileByKey", runtime.WithHTTPPathPattern("/api/v1/filestore/{key}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_FilestoreService_DeleteFileByUUID_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_FilestoreService_DeleteFileByKey_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_FilestoreService_DeleteFileByUUID_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_FilestoreService_DeleteFileByKey_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodPost, pattern_FilestoreService_UploadFile_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/dolina.filestore.v1.FilestoreService/UploadFile", runtime.WithHTTPPathPattern("/api/v1/upload"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_FilestoreService_UploadFile_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_FilestoreService_UploadFile_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodPost, pattern_FilestoreService_UploadFileStream_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/dolina.filestore.v1.FilestoreService/UploadFileStream", runtime.WithHTTPPathPattern("/api/v1/upload/stream"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_FilestoreService_UploadFileStream_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_FilestoreService_UploadFileStream_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 	return nil
 }
 
 var (
-	pattern_FilestoreService_GetFileMetadataByUUID_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "filestore", "uuid", "metadata"}, ""))
-	pattern_FilestoreService_GetFileByUUID_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "filestore", "uuid"}, ""))
-	pattern_FilestoreService_DeleteFileByUUID_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "filestore", "uuid"}, ""))
+	pattern_FilestoreService_GetFileMetadataByKey_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "filestore", "key", "metadata"}, ""))
+	pattern_FilestoreService_GetFileByKey_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "filestore", "key"}, ""))
+	pattern_FilestoreService_DeleteFileByKey_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "filestore", "key"}, ""))
+	pattern_FilestoreService_UploadFile_0           = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "upload"}, ""))
+	pattern_FilestoreService_UploadFileStream_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "upload", "stream"}, ""))
 )
 
 var (
-	forward_FilestoreService_GetFileMetadataByUUID_0 = runtime.ForwardResponseMessage
-	forward_FilestoreService_GetFileByUUID_0         = runtime.ForwardResponseMessage
-	forward_FilestoreService_DeleteFileByUUID_0      = runtime.ForwardResponseMessage
+	forward_FilestoreService_GetFileMetadataByKey_0 = runtime.ForwardResponseMessage
+	forward_FilestoreService_GetFileByKey_0         = runtime.ForwardResponseMessage
+	forward_FilestoreService_DeleteFileByKey_0      = runtime.ForwardResponseMessage
+	forward_FilestoreService_UploadFile_0           = runtime.ForwardResponseMessage
+	forward_FilestoreService_UploadFileStream_0     = runtime.ForwardResponseMessage
 )

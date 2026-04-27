@@ -89,15 +89,15 @@ func (x AnalysisState) Number() protoreflect.EnumNumber {
 type AnalyzeOptions struct {
 	state                           protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_ScannerReportList    *[]*ScannerReport      `protobuf:"bytes,1,rep,name=scanner_report_list,json=scannerReportList"`
-	xxx_hidden_RepositoryUuid       string                 `protobuf:"bytes,2,opt,name=repository_uuid,json=repositoryUuid"`
-	xxx_hidden_RepositoryUrl        string                 `protobuf:"bytes,3,opt,name=repository_url,json=repositoryUrl"`
-	xxx_hidden_RepositoryRef        string                 `protobuf:"bytes,4,opt,name=repository_ref,json=repositoryRef"`
-	xxx_hidden_RepositoryName       string                 `protobuf:"bytes,5,opt,name=repository_name,json=repositoryName"`
-	xxx_hidden_ArtifactUuid         string                 `protobuf:"bytes,6,opt,name=artifact_uuid,json=artifactUuid"`
+	xxx_hidden_ApplicationSuid      string                 `protobuf:"bytes,2,opt,name=application_suid,json=applicationSuid"`
+	xxx_hidden_AssetSuid            string                 `protobuf:"bytes,3,opt,name=asset_suid,json=assetSuid"`
+	xxx_hidden_RepositoryPath       string                 `protobuf:"bytes,4,opt,name=repository_path,json=repositoryPath"`
+	xxx_hidden_RepositoryUrl        string                 `protobuf:"bytes,5,opt,name=repository_url,json=repositoryUrl"`
+	xxx_hidden_RepositoryRef        string                 `protobuf:"bytes,6,opt,name=repository_ref,json=repositoryRef"`
 	xxx_hidden_ArtifactPurl         string                 `protobuf:"bytes,7,opt,name=artifact_purl,json=artifactPurl"`
 	xxx_hidden_PipelineId           string                 `protobuf:"bytes,8,opt,name=pipeline_id,json=pipelineId"`
-	xxx_hidden_UploadWindowDuration *durationpb.Duration   `protobuf:"bytes,9,opt,name=upload_window_duration,json=uploadWindowDuration"`
 	xxx_hidden_AutoCreate           bool                   `protobuf:"varint,10,opt,name=auto_create,json=autoCreate"`
+	xxx_hidden_UploadWindowDuration *durationpb.Duration   `protobuf:"bytes,9,opt,name=upload_window_duration,json=uploadWindowDuration"`
 	xxx_hidden_EarlyStart           bool                   `protobuf:"varint,11,opt,name=early_start,json=earlyStart"`
 	unknownFields                   protoimpl.UnknownFields
 	sizeCache                       protoimpl.SizeCache
@@ -137,9 +137,23 @@ func (x *AnalyzeOptions) GetScannerReportList() []*ScannerReport {
 	return nil
 }
 
-func (x *AnalyzeOptions) GetRepositoryUuid() string {
+func (x *AnalyzeOptions) GetApplicationSuid() string {
 	if x != nil {
-		return x.xxx_hidden_RepositoryUuid
+		return x.xxx_hidden_ApplicationSuid
+	}
+	return ""
+}
+
+func (x *AnalyzeOptions) GetAssetSuid() string {
+	if x != nil {
+		return x.xxx_hidden_AssetSuid
+	}
+	return ""
+}
+
+func (x *AnalyzeOptions) GetRepositoryPath() string {
+	if x != nil {
+		return x.xxx_hidden_RepositoryPath
 	}
 	return ""
 }
@@ -158,20 +172,6 @@ func (x *AnalyzeOptions) GetRepositoryRef() string {
 	return ""
 }
 
-func (x *AnalyzeOptions) GetRepositoryName() string {
-	if x != nil {
-		return x.xxx_hidden_RepositoryName
-	}
-	return ""
-}
-
-func (x *AnalyzeOptions) GetArtifactUuid() string {
-	if x != nil {
-		return x.xxx_hidden_ArtifactUuid
-	}
-	return ""
-}
-
 func (x *AnalyzeOptions) GetArtifactPurl() string {
 	if x != nil {
 		return x.xxx_hidden_ArtifactPurl
@@ -186,18 +186,18 @@ func (x *AnalyzeOptions) GetPipelineId() string {
 	return ""
 }
 
-func (x *AnalyzeOptions) GetUploadWindowDuration() *durationpb.Duration {
-	if x != nil {
-		return x.xxx_hidden_UploadWindowDuration
-	}
-	return nil
-}
-
 func (x *AnalyzeOptions) GetAutoCreate() bool {
 	if x != nil {
 		return x.xxx_hidden_AutoCreate
 	}
 	return false
+}
+
+func (x *AnalyzeOptions) GetUploadWindowDuration() *durationpb.Duration {
+	if x != nil {
+		return x.xxx_hidden_UploadWindowDuration
+	}
+	return nil
 }
 
 func (x *AnalyzeOptions) GetEarlyStart() bool {
@@ -211,8 +211,16 @@ func (x *AnalyzeOptions) SetScannerReportList(v []*ScannerReport) {
 	x.xxx_hidden_ScannerReportList = &v
 }
 
-func (x *AnalyzeOptions) SetRepositoryUuid(v string) {
-	x.xxx_hidden_RepositoryUuid = v
+func (x *AnalyzeOptions) SetApplicationSuid(v string) {
+	x.xxx_hidden_ApplicationSuid = v
+}
+
+func (x *AnalyzeOptions) SetAssetSuid(v string) {
+	x.xxx_hidden_AssetSuid = v
+}
+
+func (x *AnalyzeOptions) SetRepositoryPath(v string) {
+	x.xxx_hidden_RepositoryPath = v
 }
 
 func (x *AnalyzeOptions) SetRepositoryUrl(v string) {
@@ -223,14 +231,6 @@ func (x *AnalyzeOptions) SetRepositoryRef(v string) {
 	x.xxx_hidden_RepositoryRef = v
 }
 
-func (x *AnalyzeOptions) SetRepositoryName(v string) {
-	x.xxx_hidden_RepositoryName = v
-}
-
-func (x *AnalyzeOptions) SetArtifactUuid(v string) {
-	x.xxx_hidden_ArtifactUuid = v
-}
-
 func (x *AnalyzeOptions) SetArtifactPurl(v string) {
 	x.xxx_hidden_ArtifactPurl = v
 }
@@ -239,12 +239,12 @@ func (x *AnalyzeOptions) SetPipelineId(v string) {
 	x.xxx_hidden_PipelineId = v
 }
 
-func (x *AnalyzeOptions) SetUploadWindowDuration(v *durationpb.Duration) {
-	x.xxx_hidden_UploadWindowDuration = v
-}
-
 func (x *AnalyzeOptions) SetAutoCreate(v bool) {
 	x.xxx_hidden_AutoCreate = v
+}
+
+func (x *AnalyzeOptions) SetUploadWindowDuration(v *durationpb.Duration) {
+	x.xxx_hidden_UploadWindowDuration = v
 }
 
 func (x *AnalyzeOptions) SetEarlyStart(v bool) {
@@ -266,21 +266,22 @@ type AnalyzeOptions_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	ScannerReportList []*ScannerReport
+	// application/asset related fields
+	ApplicationSuid string
+	AssetSuid       string
 	// create or update project repository by provided attributes
-	RepositoryUuid string
+	RepositoryPath string
 	RepositoryUrl  string
 	RepositoryRef  string
-	RepositoryName string
 	// create or update project artifact by provided attributes
-	ArtifactUuid string
 	ArtifactPurl string
 	// ci/cd attributes
-	PipelineId           string
-	UploadWindowDuration *durationpb.Duration
-	// defines if non-existing entities (projects, repositories or artifacts) will be created
+	PipelineId string
+	// defines if non-existing entities (assets, repositories or artifacts) will be created
 	AutoCreate bool
 	// if early_start set to true, workers start to process scanner reports immediately, not waiting for process window to close
-	EarlyStart bool
+	UploadWindowDuration *durationpb.Duration
+	EarlyStart           bool
 }
 
 func (b0 AnalyzeOptions_builder) Build() *AnalyzeOptions {
@@ -288,15 +289,15 @@ func (b0 AnalyzeOptions_builder) Build() *AnalyzeOptions {
 	b, x := &b0, m0
 	_, _ = b, x
 	x.xxx_hidden_ScannerReportList = &b.ScannerReportList
-	x.xxx_hidden_RepositoryUuid = b.RepositoryUuid
+	x.xxx_hidden_ApplicationSuid = b.ApplicationSuid
+	x.xxx_hidden_AssetSuid = b.AssetSuid
+	x.xxx_hidden_RepositoryPath = b.RepositoryPath
 	x.xxx_hidden_RepositoryUrl = b.RepositoryUrl
 	x.xxx_hidden_RepositoryRef = b.RepositoryRef
-	x.xxx_hidden_RepositoryName = b.RepositoryName
-	x.xxx_hidden_ArtifactUuid = b.ArtifactUuid
 	x.xxx_hidden_ArtifactPurl = b.ArtifactPurl
 	x.xxx_hidden_PipelineId = b.PipelineId
-	x.xxx_hidden_UploadWindowDuration = b.UploadWindowDuration
 	x.xxx_hidden_AutoCreate = b.AutoCreate
+	x.xxx_hidden_UploadWindowDuration = b.UploadWindowDuration
 	x.xxx_hidden_EarlyStart = b.EarlyStart
 	return m0
 }
@@ -538,21 +539,22 @@ var File_analysis_v1_analysis_proto protoreflect.FileDescriptor
 
 const file_analysis_v1_analysis_proto_rawDesc = "" +
 	"\n" +
-	"\x1aanalysis/v1/analysis.proto\x12\x12dolina.analysis.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a!google/protobuf/go_features.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1aanalysis/v1/scanners.proto\x1a\x17workers/v1/worker.proto\"\xaf\a\n" +
+	"\x1aanalysis/v1/analysis.proto\x12\x12dolina.analysis.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a!google/protobuf/go_features.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1aanalysis/v1/scanners.proto\x1a\x17workers/v1/worker.proto\"\xa4\a\n" +
 	"\x0eAnalyzeOptions\x12Q\n" +
-	"\x13scanner_report_list\x18\x01 \x03(\v2!.dolina.analysis.v1.ScannerReportR\x11scannerReportList\x12'\n" +
-	"\x0frepository_uuid\x18\x02 \x01(\tR\x0erepositoryUuid\x12%\n" +
-	"\x0erepository_url\x18\x03 \x01(\tR\rrepositoryUrl\x12%\n" +
-	"\x0erepository_ref\x18\x04 \x01(\tR\rrepositoryRef\x12'\n" +
-	"\x0frepository_name\x18\x05 \x01(\tR\x0erepositoryName\x12#\n" +
-	"\rartifact_uuid\x18\x06 \x01(\tR\fartifactUuid\x12#\n" +
+	"\x13scanner_report_list\x18\x01 \x03(\v2!.dolina.analysis.v1.ScannerReportR\x11scannerReportList\x12)\n" +
+	"\x10application_suid\x18\x02 \x01(\tR\x0fapplicationSuid\x12\x1d\n" +
+	"\n" +
+	"asset_suid\x18\x03 \x01(\tR\tassetSuid\x12'\n" +
+	"\x0frepository_path\x18\x04 \x01(\tR\x0erepositoryPath\x12%\n" +
+	"\x0erepository_url\x18\x05 \x01(\tR\rrepositoryUrl\x12%\n" +
+	"\x0erepository_ref\x18\x06 \x01(\tR\rrepositoryRef\x12#\n" +
 	"\rartifact_purl\x18\a \x01(\tR\fartifactPurl\x12\x1f\n" +
 	"\vpipeline_id\x18\b \x01(\tR\n" +
-	"pipelineId\x12V\n" +
-	"\x16upload_window_duration\x18\t \x01(\v2\x19.google.protobuf.DurationB\x05\xaa\x01\x02\b\x01R\x14uploadWindowDuration\x12\x1f\n" +
+	"pipelineId\x12\x1f\n" +
 	"\vauto_create\x18\n" +
 	" \x01(\bR\n" +
-	"autoCreate\x12\x1f\n" +
+	"autoCreate\x12O\n" +
+	"\x16upload_window_duration\x18\t \x01(\v2\x19.google.protobuf.DurationR\x14uploadWindowDuration\x12\x1f\n" +
 	"\vearly_start\x18\v \x01(\bR\n" +
 	"earlyStart:\xa4\x03\x92A\xa0\x03\n" +
 	"\x9d\x03*\x0fAnalyze options2\x89\x03Contextual metadata accompanying a raw scanner report. It provides information about the environment in which the scan was executed, such as the repository URL, Git reference (branch, tag, commit), pipeline or build ID, and any other relevant deployment or runtime context. This data is used by Dolina ASPM to enrich, filter, and correlate findings with specific code versions or build stages.\"\x82\x04\n" +
