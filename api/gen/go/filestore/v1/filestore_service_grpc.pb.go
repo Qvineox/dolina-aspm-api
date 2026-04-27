@@ -37,7 +37,7 @@ type FilestoreServiceClient interface {
 	GetFileByKey(ctx context.Context, in *FileKey, opts ...grpc.CallOption) (*FileChunk, error)
 	DeleteFileByKey(ctx context.Context, in *FileKey, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	GetFileStreamByUUID(ctx context.Context, in *v1.UUID, opts ...grpc.CallOption) (grpc.ServerStreamingClient[FileChunk], error)
-	UploadFile(ctx context.Context, in *FileChunk, opts ...grpc.CallOption) (*UploadStatus, error)
+	UploadFile(ctx context.Context, in *FileChunk, opts ...grpc.CallOption) (*FileKey, error)
 	UploadFileStream(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[FileChunk, UploadStatus], error)
 }
 
@@ -98,9 +98,9 @@ func (c *filestoreServiceClient) GetFileStreamByUUID(ctx context.Context, in *v1
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type FilestoreService_GetFileStreamByUUIDClient = grpc.ServerStreamingClient[FileChunk]
 
-func (c *filestoreServiceClient) UploadFile(ctx context.Context, in *FileChunk, opts ...grpc.CallOption) (*UploadStatus, error) {
+func (c *filestoreServiceClient) UploadFile(ctx context.Context, in *FileChunk, opts ...grpc.CallOption) (*FileKey, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(UploadStatus)
+	out := new(FileKey)
 	err := c.cc.Invoke(ctx, FilestoreService_UploadFile_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -129,7 +129,7 @@ type FilestoreServiceServer interface {
 	GetFileByKey(context.Context, *FileKey) (*FileChunk, error)
 	DeleteFileByKey(context.Context, *FileKey) (*emptypb.Empty, error)
 	GetFileStreamByUUID(*v1.UUID, grpc.ServerStreamingServer[FileChunk]) error
-	UploadFile(context.Context, *FileChunk) (*UploadStatus, error)
+	UploadFile(context.Context, *FileChunk) (*FileKey, error)
 	UploadFileStream(grpc.ClientStreamingServer[FileChunk, UploadStatus]) error
 }
 
@@ -152,7 +152,7 @@ func (UnimplementedFilestoreServiceServer) DeleteFileByKey(context.Context, *Fil
 func (UnimplementedFilestoreServiceServer) GetFileStreamByUUID(*v1.UUID, grpc.ServerStreamingServer[FileChunk]) error {
 	return status.Error(codes.Unimplemented, "method GetFileStreamByUUID not implemented")
 }
-func (UnimplementedFilestoreServiceServer) UploadFile(context.Context, *FileChunk) (*UploadStatus, error) {
+func (UnimplementedFilestoreServiceServer) UploadFile(context.Context, *FileChunk) (*FileKey, error) {
 	return nil, status.Error(codes.Unimplemented, "method UploadFile not implemented")
 }
 func (UnimplementedFilestoreServiceServer) UploadFileStream(grpc.ClientStreamingServer[FileChunk, UploadStatus]) error {

@@ -33,7 +33,7 @@ service FilestoreService {
 
   rpc GetFileStreamByUUID(common.v1.UUID) returns (stream FileChunk);
 
-  rpc UploadFile(FileChunk) returns (UploadStatus) {
+  rpc UploadFile(FileChunk) returns (FileKey) {
     option (google.api.http) = {
       post: "/api/v1/upload"
       body: "*",

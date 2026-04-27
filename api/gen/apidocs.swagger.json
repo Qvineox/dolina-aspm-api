@@ -977,7 +977,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1UploadStatus"
+              "$ref": "#/definitions/v1FileKey"
             }
           },
           "default": {
@@ -1718,18 +1718,40 @@
         }
       }
     },
+    "v1FileKey": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        }
+      }
+    },
     "v1FileMetadata": {
       "type": "object",
       "properties": {
-        "fileKey": {
-          "type": "string"
-        },
-        "mimeType": {
+        "version": {
           "type": "string"
         },
         "totalSize": {
           "type": "string",
           "format": "uint64"
+        },
+        "contentType": {
+          "type": "string"
+        },
+        "tagList": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expiredAt": {
+          "type": "string",
+          "format": "date-time"
         }
       }
     },
@@ -1996,9 +2018,6 @@
       "type": "object",
       "properties": {
         "fileKey": {
-          "type": "string"
-        },
-        "fileName": {
           "type": "string"
         },
         "receivedSize": {

@@ -10,6 +10,7 @@ import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	_ "google.golang.org/protobuf/types/gofeaturespb"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	unsafe "unsafe"
 )
@@ -204,9 +205,12 @@ func (b0 FileChunk_builder) Build() *FileChunk {
 
 type FileMetadata struct {
 	state                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_FileKey     *string                `protobuf:"bytes,1,opt,name=file_key,json=fileKey"`
-	xxx_hidden_MimeType    *string                `protobuf:"bytes,2,opt,name=mime_type,json=mimeType"`
-	xxx_hidden_TotalSize   uint64                 `protobuf:"varint,3,opt,name=total_size,json=totalSize"`
+	xxx_hidden_Version     *string                `protobuf:"bytes,1,opt,name=version"`
+	xxx_hidden_TotalSize   uint64                 `protobuf:"varint,2,opt,name=total_size,json=totalSize"`
+	xxx_hidden_ContentType *string                `protobuf:"bytes,3,opt,name=content_type,json=contentType"`
+	xxx_hidden_TagList     []string               `protobuf:"bytes,4,rep,name=tag_list,json=tagList"`
+	xxx_hidden_CreatedAt   *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=created_at,json=createdAt"`
+	xxx_hidden_ExpiredAt   *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=expired_at,json=expiredAt"`
 	XXX_raceDetectHookData protoimpl.RaceDetectHookData
 	XXX_presence           [1]uint32
 	unknownFields          protoimpl.UnknownFields
@@ -238,20 +242,10 @@ func (x *FileMetadata) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *FileMetadata) GetFileKey() string {
+func (x *FileMetadata) GetVersion() string {
 	if x != nil {
-		if x.xxx_hidden_FileKey != nil {
-			return *x.xxx_hidden_FileKey
-		}
-		return ""
-	}
-	return ""
-}
-
-func (x *FileMetadata) GetMimeType() string {
-	if x != nil {
-		if x.xxx_hidden_MimeType != nil {
-			return *x.xxx_hidden_MimeType
+		if x.xxx_hidden_Version != nil {
+			return *x.xxx_hidden_Version
 		}
 		return ""
 	}
@@ -265,89 +259,159 @@ func (x *FileMetadata) GetTotalSize() uint64 {
 	return 0
 }
 
-func (x *FileMetadata) SetFileKey(v string) {
-	x.xxx_hidden_FileKey = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 3)
+func (x *FileMetadata) GetContentType() string {
+	if x != nil {
+		if x.xxx_hidden_ContentType != nil {
+			return *x.xxx_hidden_ContentType
+		}
+		return ""
+	}
+	return ""
 }
 
-func (x *FileMetadata) SetMimeType(v string) {
-	x.xxx_hidden_MimeType = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
+func (x *FileMetadata) GetTagList() []string {
+	if x != nil {
+		return x.xxx_hidden_TagList
+	}
+	return nil
+}
+
+func (x *FileMetadata) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.xxx_hidden_CreatedAt
+	}
+	return nil
+}
+
+func (x *FileMetadata) GetExpiredAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.xxx_hidden_ExpiredAt
+	}
+	return nil
+}
+
+func (x *FileMetadata) SetVersion(v string) {
+	x.xxx_hidden_Version = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 6)
 }
 
 func (x *FileMetadata) SetTotalSize(v uint64) {
 	x.xxx_hidden_TotalSize = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 6)
 }
 
-func (x *FileMetadata) HasFileKey() bool {
+func (x *FileMetadata) SetContentType(v string) {
+	x.xxx_hidden_ContentType = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 6)
+}
+
+func (x *FileMetadata) SetTagList(v []string) {
+	x.xxx_hidden_TagList = v
+}
+
+func (x *FileMetadata) SetCreatedAt(v *timestamppb.Timestamp) {
+	x.xxx_hidden_CreatedAt = v
+}
+
+func (x *FileMetadata) SetExpiredAt(v *timestamppb.Timestamp) {
+	x.xxx_hidden_ExpiredAt = v
+}
+
+func (x *FileMetadata) HasVersion() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
-func (x *FileMetadata) HasMimeType() bool {
+func (x *FileMetadata) HasTotalSize() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
-func (x *FileMetadata) HasTotalSize() bool {
+func (x *FileMetadata) HasContentType() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
 }
 
-func (x *FileMetadata) ClearFileKey() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
-	x.xxx_hidden_FileKey = nil
+func (x *FileMetadata) HasCreatedAt() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_CreatedAt != nil
 }
 
-func (x *FileMetadata) ClearMimeType() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_MimeType = nil
+func (x *FileMetadata) HasExpiredAt() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_ExpiredAt != nil
+}
+
+func (x *FileMetadata) ClearVersion() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
+	x.xxx_hidden_Version = nil
 }
 
 func (x *FileMetadata) ClearTotalSize() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
 	x.xxx_hidden_TotalSize = 0
+}
+
+func (x *FileMetadata) ClearContentType() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_ContentType = nil
+}
+
+func (x *FileMetadata) ClearCreatedAt() {
+	x.xxx_hidden_CreatedAt = nil
+}
+
+func (x *FileMetadata) ClearExpiredAt() {
+	x.xxx_hidden_ExpiredAt = nil
 }
 
 type FileMetadata_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	FileKey   *string
-	MimeType  *string
-	TotalSize *uint64
+	Version     *string
+	TotalSize   *uint64
+	ContentType *string
+	TagList     []string
+	CreatedAt   *timestamppb.Timestamp
+	ExpiredAt   *timestamppb.Timestamp
 }
 
 func (b0 FileMetadata_builder) Build() *FileMetadata {
 	m0 := &FileMetadata{}
 	b, x := &b0, m0
 	_, _ = b, x
-	if b.FileKey != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 3)
-		x.xxx_hidden_FileKey = b.FileKey
-	}
-	if b.MimeType != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
-		x.xxx_hidden_MimeType = b.MimeType
+	if b.Version != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 6)
+		x.xxx_hidden_Version = b.Version
 	}
 	if b.TotalSize != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 6)
 		x.xxx_hidden_TotalSize = *b.TotalSize
 	}
+	if b.ContentType != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 6)
+		x.xxx_hidden_ContentType = b.ContentType
+	}
+	x.xxx_hidden_TagList = b.TagList
+	x.xxx_hidden_CreatedAt = b.CreatedAt
+	x.xxx_hidden_ExpiredAt = b.ExpiredAt
 	return m0
 }
 
 type UploadStatus struct {
 	state                   protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_FileKey      *string                `protobuf:"bytes,1,opt,name=file_key,json=fileKey"`
-	xxx_hidden_FileName     *string                `protobuf:"bytes,2,opt,name=file_name,json=fileName"`
-	xxx_hidden_ReceivedSize uint64                 `protobuf:"varint,3,opt,name=received_size,json=receivedSize"`
+	xxx_hidden_ReceivedSize uint64                 `protobuf:"varint,2,opt,name=received_size,json=receivedSize"`
 	XXX_raceDetectHookData  protoimpl.RaceDetectHookData
 	XXX_presence            [1]uint32
 	unknownFields           protoimpl.UnknownFields
@@ -389,16 +453,6 @@ func (x *UploadStatus) GetFileKey() string {
 	return ""
 }
 
-func (x *UploadStatus) GetFileName() string {
-	if x != nil {
-		if x.xxx_hidden_FileName != nil {
-			return *x.xxx_hidden_FileName
-		}
-		return ""
-	}
-	return ""
-}
-
 func (x *UploadStatus) GetReceivedSize() uint64 {
 	if x != nil {
 		return x.xxx_hidden_ReceivedSize
@@ -408,17 +462,12 @@ func (x *UploadStatus) GetReceivedSize() uint64 {
 
 func (x *UploadStatus) SetFileKey(v string) {
 	x.xxx_hidden_FileKey = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 3)
-}
-
-func (x *UploadStatus) SetFileName(v string) {
-	x.xxx_hidden_FileName = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 2)
 }
 
 func (x *UploadStatus) SetReceivedSize(v uint64) {
 	x.xxx_hidden_ReceivedSize = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
 }
 
 func (x *UploadStatus) HasFileKey() bool {
@@ -428,18 +477,11 @@ func (x *UploadStatus) HasFileKey() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
-func (x *UploadStatus) HasFileName() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
-}
-
 func (x *UploadStatus) HasReceivedSize() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
 func (x *UploadStatus) ClearFileKey() {
@@ -447,13 +489,8 @@ func (x *UploadStatus) ClearFileKey() {
 	x.xxx_hidden_FileKey = nil
 }
 
-func (x *UploadStatus) ClearFileName() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_FileName = nil
-}
-
 func (x *UploadStatus) ClearReceivedSize() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
 	x.xxx_hidden_ReceivedSize = 0
 }
 
@@ -461,7 +498,6 @@ type UploadStatus_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	FileKey      *string
-	FileName     *string
 	ReceivedSize *uint64
 }
 
@@ -470,15 +506,11 @@ func (b0 UploadStatus_builder) Build() *UploadStatus {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.FileKey != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 3)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 2)
 		x.xxx_hidden_FileKey = b.FileKey
 	}
-	if b.FileName != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
-		x.xxx_hidden_FileName = b.FileName
-	}
 	if b.ReceivedSize != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 2)
 		x.xxx_hidden_ReceivedSize = *b.ReceivedSize
 	}
 	return m0
@@ -488,36 +520,43 @@ var File_filestore_v1_file_proto protoreflect.FileDescriptor
 
 const file_filestore_v1_file_proto_rawDesc = "" +
 	"\n" +
-	"\x17filestore/v1/file.proto\x12\x13dolina.filestore.v1\x1a!google/protobuf/go_features.proto\"\x1b\n" +
+	"\x17filestore/v1/file.proto\x12\x13dolina.filestore.v1\x1a!google/protobuf/go_features.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x1b\n" +
 	"\aFileKey\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\"k\n" +
 	"\tFileChunk\x12\x18\n" +
 	"\acontent\x18\x01 \x01(\fR\acontent\x12D\n" +
-	"\bmetadata\x18\x02 \x01(\v2!.dolina.filestore.v1.FileMetadataB\x05\xaa\x01\x02\b\x01R\bmetadata\"l\n" +
-	"\fFileMetadata\x12\x19\n" +
-	"\bfile_key\x18\x01 \x01(\tR\afileKey\x12\"\n" +
-	"\tmime_type\x18\x02 \x01(\tB\x05\xaa\x01\x02\b\x01R\bmimeType\x12\x1d\n" +
+	"\bmetadata\x18\x02 \x01(\v2!.dolina.filestore.v1.FileMetadataB\x05\xaa\x01\x02\b\x01R\bmetadata\"\x82\x02\n" +
+	"\fFileMetadata\x12\x18\n" +
+	"\aversion\x18\x01 \x01(\tR\aversion\x12\x1d\n" +
 	"\n" +
-	"total_size\x18\x03 \x01(\x04R\ttotalSize\"k\n" +
+	"total_size\x18\x02 \x01(\x04R\ttotalSize\x12!\n" +
+	"\fcontent_type\x18\x03 \x01(\tR\vcontentType\x12\x19\n" +
+	"\btag_list\x18\x04 \x03(\tR\atagList\x129\n" +
+	"\n" +
+	"created_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12@\n" +
+	"\n" +
+	"expired_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\x05\xaa\x01\x02\b\x01R\texpiredAt\"N\n" +
 	"\fUploadStatus\x12\x19\n" +
-	"\bfile_key\x18\x01 \x01(\tR\afileKey\x12\x1b\n" +
-	"\tfile_name\x18\x02 \x01(\tR\bfileName\x12#\n" +
-	"\rreceived_size\x18\x03 \x01(\x04R\freceivedSizeBXZNgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/filestore/v1;filestore_v1\x92\x03\x05\xd2>\x02\x10\x03b\beditionsp\xe8\a"
+	"\bfile_key\x18\x01 \x01(\tR\afileKey\x12#\n" +
+	"\rreceived_size\x18\x02 \x01(\x04R\freceivedSizeBXZNgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/filestore/v1;filestore_v1\x92\x03\x05\xd2>\x02\x10\x03b\beditionsp\xe8\a"
 
 var file_filestore_v1_file_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_filestore_v1_file_proto_goTypes = []any{
-	(*FileKey)(nil),      // 0: dolina.filestore.v1.FileKey
-	(*FileChunk)(nil),    // 1: dolina.filestore.v1.FileChunk
-	(*FileMetadata)(nil), // 2: dolina.filestore.v1.FileMetadata
-	(*UploadStatus)(nil), // 3: dolina.filestore.v1.UploadStatus
+	(*FileKey)(nil),               // 0: dolina.filestore.v1.FileKey
+	(*FileChunk)(nil),             // 1: dolina.filestore.v1.FileChunk
+	(*FileMetadata)(nil),          // 2: dolina.filestore.v1.FileMetadata
+	(*UploadStatus)(nil),          // 3: dolina.filestore.v1.UploadStatus
+	(*timestamppb.Timestamp)(nil), // 4: google.protobuf.Timestamp
 }
 var file_filestore_v1_file_proto_depIdxs = []int32{
 	2, // 0: dolina.filestore.v1.FileChunk.metadata:type_name -> dolina.filestore.v1.FileMetadata
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	4, // 1: dolina.filestore.v1.FileMetadata.created_at:type_name -> google.protobuf.Timestamp
+	4, // 2: dolina.filestore.v1.FileMetadata.expired_at:type_name -> google.protobuf.Timestamp
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_filestore_v1_file_proto_init() }

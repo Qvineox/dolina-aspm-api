@@ -6,6 +6,7 @@ option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/filest
 option features.(pb.go).api_level = API_OPAQUE;
 
 import "google/protobuf/go_features.proto";
+import "google/protobuf/timestamp.proto";
 
 message FileKey {
   string key = 1;
@@ -17,15 +18,18 @@ message FileChunk {
 }
 
 message FileMetadata {
-  string file_key = 1;
+  string version = 1;
+  uint64 total_size = 2;
 
-  string mime_type = 2 [features.field_presence = EXPLICIT];
-  uint64 total_size = 3;
+  string content_type = 3;
+
+  repeated string tag_list = 4;
+
+  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp expired_at = 7 [features.field_presence = EXPLICIT];
 }
 
 message UploadStatus {
   string file_key = 1;
-  string file_name = 2;
-
-  uint64 received_size = 3;
+  uint64 received_size = 2;
 }
