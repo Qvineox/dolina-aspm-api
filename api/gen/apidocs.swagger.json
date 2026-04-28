@@ -1235,7 +1235,7 @@
         "repositoryRef": {
           "type": "string"
         },
-        "repositoryName": {
+        "repositoryPath": {
           "type": "string"
         },
         "artifactUuid": {

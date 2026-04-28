@@ -56,7 +56,7 @@ message Analysis {
   string repository_uuid = 2;
   string repository_url = 3;
   string repository_ref = 4;
-  string repository_name = 5;
+  string repository_path = 5;
 
   string artifact_uuid = 6;
   string artifact_purl = 7;
