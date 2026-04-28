@@ -1933,13 +1933,6 @@
         "uuid": {
           "type": "string"
         },
-        "scannerReports": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/v1ScannerReport"
-          }
-        },
         "projectId": {
           "type": "integer",
           "format": "int64",
