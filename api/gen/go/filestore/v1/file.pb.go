@@ -23,12 +23,10 @@ const (
 )
 
 type FileKey struct {
-	state                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Key         *string                `protobuf:"bytes,1,opt,name=key"`
-	XXX_raceDetectHookData protoimpl.RaceDetectHookData
-	XXX_presence           [1]uint32
-	unknownFields          protoimpl.UnknownFields
-	sizeCache              protoimpl.SizeCache
+	state          protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Key string                 `protobuf:"bytes,1,opt,name=key"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *FileKey) Reset() {
@@ -58,56 +56,35 @@ func (x *FileKey) ProtoReflect() protoreflect.Message {
 
 func (x *FileKey) GetKey() string {
 	if x != nil {
-		if x.xxx_hidden_Key != nil {
-			return *x.xxx_hidden_Key
-		}
-		return ""
+		return x.xxx_hidden_Key
 	}
 	return ""
 }
 
 func (x *FileKey) SetKey(v string) {
-	x.xxx_hidden_Key = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 1)
-}
-
-func (x *FileKey) HasKey() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
-}
-
-func (x *FileKey) ClearKey() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
-	x.xxx_hidden_Key = nil
+	x.xxx_hidden_Key = v
 }
 
 type FileKey_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	Key *string
+	Key string
 }
 
 func (b0 FileKey_builder) Build() *FileKey {
 	m0 := &FileKey{}
 	b, x := &b0, m0
 	_, _ = b, x
-	if b.Key != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 1)
-		x.xxx_hidden_Key = b.Key
-	}
+	x.xxx_hidden_Key = b.Key
 	return m0
 }
 
 type FileChunk struct {
-	state                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Content     []byte                 `protobuf:"bytes,1,opt,name=content"`
-	xxx_hidden_Metadata    *FileMetadata          `protobuf:"bytes,2,opt,name=metadata"`
-	XXX_raceDetectHookData protoimpl.RaceDetectHookData
-	XXX_presence           [1]uint32
-	unknownFields          protoimpl.UnknownFields
-	sizeCache              protoimpl.SizeCache
+	state               protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Content  []byte                 `protobuf:"bytes,1,opt,name=content"`
+	xxx_hidden_Metadata *FileMetadata          `protobuf:"bytes,2,opt,name=metadata"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *FileChunk) Reset() {
@@ -154,18 +131,10 @@ func (x *FileChunk) SetContent(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_Content = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 2)
 }
 
 func (x *FileChunk) SetMetadata(v *FileMetadata) {
 	x.xxx_hidden_Metadata = v
-}
-
-func (x *FileChunk) HasContent() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
 func (x *FileChunk) HasMetadata() bool {
@@ -173,11 +142,6 @@ func (x *FileChunk) HasMetadata() bool {
 		return false
 	}
 	return x.xxx_hidden_Metadata != nil
-}
-
-func (x *FileChunk) ClearContent() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
-	x.xxx_hidden_Content = nil
 }
 
 func (x *FileChunk) ClearMetadata() {
@@ -195,24 +159,19 @@ func (b0 FileChunk_builder) Build() *FileChunk {
 	m0 := &FileChunk{}
 	b, x := &b0, m0
 	_, _ = b, x
-	if b.Content != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 2)
-		x.xxx_hidden_Content = b.Content
-	}
+	x.xxx_hidden_Content = b.Content
 	x.xxx_hidden_Metadata = b.Metadata
 	return m0
 }
 
 type FileMetadata struct {
 	state                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Version     *string                `protobuf:"bytes,1,opt,name=version"`
+	xxx_hidden_Version     string                 `protobuf:"bytes,1,opt,name=version"`
 	xxx_hidden_TotalSize   uint64                 `protobuf:"varint,2,opt,name=total_size,json=totalSize"`
-	xxx_hidden_ContentType *string                `protobuf:"bytes,3,opt,name=content_type,json=contentType"`
+	xxx_hidden_ContentType string                 `protobuf:"bytes,3,opt,name=content_type,json=contentType"`
 	xxx_hidden_TagList     []string               `protobuf:"bytes,4,rep,name=tag_list,json=tagList"`
 	xxx_hidden_CreatedAt   *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=created_at,json=createdAt"`
 	xxx_hidden_ExpiredAt   *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=expired_at,json=expiredAt"`
-	XXX_raceDetectHookData protoimpl.RaceDetectHookData
-	XXX_presence           [1]uint32
 	unknownFields          protoimpl.UnknownFields
 	sizeCache              protoimpl.SizeCache
 }
@@ -244,10 +203,7 @@ func (x *FileMetadata) ProtoReflect() protoreflect.Message {
 
 func (x *FileMetadata) GetVersion() string {
 	if x != nil {
-		if x.xxx_hidden_Version != nil {
-			return *x.xxx_hidden_Version
-		}
-		return ""
+		return x.xxx_hidden_Version
 	}
 	return ""
 }
@@ -261,10 +217,7 @@ func (x *FileMetadata) GetTotalSize() uint64 {
 
 func (x *FileMetadata) GetContentType() string {
 	if x != nil {
-		if x.xxx_hidden_ContentType != nil {
-			return *x.xxx_hidden_ContentType
-		}
-		return ""
+		return x.xxx_hidden_ContentType
 	}
 	return ""
 }
@@ -291,18 +244,15 @@ func (x *FileMetadata) GetExpiredAt() *timestamppb.Timestamp {
 }
 
 func (x *FileMetadata) SetVersion(v string) {
-	x.xxx_hidden_Version = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 6)
+	x.xxx_hidden_Version = v
 }
 
 func (x *FileMetadata) SetTotalSize(v uint64) {
 	x.xxx_hidden_TotalSize = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 6)
 }
 
 func (x *FileMetadata) SetContentType(v string) {
-	x.xxx_hidden_ContentType = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 6)
+	x.xxx_hidden_ContentType = v
 }
 
 func (x *FileMetadata) SetTagList(v []string) {
@@ -315,27 +265,6 @@ func (x *FileMetadata) SetCreatedAt(v *timestamppb.Timestamp) {
 
 func (x *FileMetadata) SetExpiredAt(v *timestamppb.Timestamp) {
 	x.xxx_hidden_ExpiredAt = v
-}
-
-func (x *FileMetadata) HasVersion() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
-}
-
-func (x *FileMetadata) HasTotalSize() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
-}
-
-func (x *FileMetadata) HasContentType() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
 }
 
 func (x *FileMetadata) HasCreatedAt() bool {
@@ -352,21 +281,6 @@ func (x *FileMetadata) HasExpiredAt() bool {
 	return x.xxx_hidden_ExpiredAt != nil
 }
 
-func (x *FileMetadata) ClearVersion() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
-	x.xxx_hidden_Version = nil
-}
-
-func (x *FileMetadata) ClearTotalSize() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_TotalSize = 0
-}
-
-func (x *FileMetadata) ClearContentType() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
-	x.xxx_hidden_ContentType = nil
-}
-
 func (x *FileMetadata) ClearCreatedAt() {
 	x.xxx_hidden_CreatedAt = nil
 }
@@ -378,9 +292,9 @@ func (x *FileMetadata) ClearExpiredAt() {
 type FileMetadata_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	Version     *string
-	TotalSize   *uint64
-	ContentType *string
+	Version     string
+	TotalSize   uint64
+	ContentType string
 	TagList     []string
 	CreatedAt   *timestamppb.Timestamp
 	ExpiredAt   *timestamppb.Timestamp
@@ -390,18 +304,9 @@ func (b0 FileMetadata_builder) Build() *FileMetadata {
 	m0 := &FileMetadata{}
 	b, x := &b0, m0
 	_, _ = b, x
-	if b.Version != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 6)
-		x.xxx_hidden_Version = b.Version
-	}
-	if b.TotalSize != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 6)
-		x.xxx_hidden_TotalSize = *b.TotalSize
-	}
-	if b.ContentType != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 6)
-		x.xxx_hidden_ContentType = b.ContentType
-	}
+	x.xxx_hidden_Version = b.Version
+	x.xxx_hidden_TotalSize = b.TotalSize
+	x.xxx_hidden_ContentType = b.ContentType
 	x.xxx_hidden_TagList = b.TagList
 	x.xxx_hidden_CreatedAt = b.CreatedAt
 	x.xxx_hidden_ExpiredAt = b.ExpiredAt
@@ -410,10 +315,8 @@ func (b0 FileMetadata_builder) Build() *FileMetadata {
 
 type UploadStatus struct {
 	state                   protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_FileKey      *string                `protobuf:"bytes,1,opt,name=file_key,json=fileKey"`
+	xxx_hidden_FileKey      string                 `protobuf:"bytes,1,opt,name=file_key,json=fileKey"`
 	xxx_hidden_ReceivedSize uint64                 `protobuf:"varint,2,opt,name=received_size,json=receivedSize"`
-	XXX_raceDetectHookData  protoimpl.RaceDetectHookData
-	XXX_presence            [1]uint32
 	unknownFields           protoimpl.UnknownFields
 	sizeCache               protoimpl.SizeCache
 }
@@ -445,10 +348,7 @@ func (x *UploadStatus) ProtoReflect() protoreflect.Message {
 
 func (x *UploadStatus) GetFileKey() string {
 	if x != nil {
-		if x.xxx_hidden_FileKey != nil {
-			return *x.xxx_hidden_FileKey
-		}
-		return ""
+		return x.xxx_hidden_FileKey
 	}
 	return ""
 }
@@ -461,58 +361,26 @@ func (x *UploadStatus) GetReceivedSize() uint64 {
 }
 
 func (x *UploadStatus) SetFileKey(v string) {
-	x.xxx_hidden_FileKey = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 2)
+	x.xxx_hidden_FileKey = v
 }
 
 func (x *UploadStatus) SetReceivedSize(v uint64) {
 	x.xxx_hidden_ReceivedSize = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
-}
-
-func (x *UploadStatus) HasFileKey() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
-}
-
-func (x *UploadStatus) HasReceivedSize() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
-}
-
-func (x *UploadStatus) ClearFileKey() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
-	x.xxx_hidden_FileKey = nil
-}
-
-func (x *UploadStatus) ClearReceivedSize() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_ReceivedSize = 0
 }
 
 type UploadStatus_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	FileKey      *string
-	ReceivedSize *uint64
+	FileKey      string
+	ReceivedSize uint64
 }
 
 func (b0 UploadStatus_builder) Build() *UploadStatus {
 	m0 := &UploadStatus{}
 	b, x := &b0, m0
 	_, _ = b, x
-	if b.FileKey != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 2)
-		x.xxx_hidden_FileKey = b.FileKey
-	}
-	if b.ReceivedSize != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 2)
-		x.xxx_hidden_ReceivedSize = *b.ReceivedSize
-	}
+	x.xxx_hidden_FileKey = b.FileKey
+	x.xxx_hidden_ReceivedSize = b.ReceivedSize
 	return m0
 }
 
@@ -538,7 +406,7 @@ const file_filestore_v1_file_proto_rawDesc = "" +
 	"expired_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\x05\xaa\x01\x02\b\x01R\texpiredAt\"N\n" +
 	"\fUploadStatus\x12\x19\n" +
 	"\bfile_key\x18\x01 \x01(\tR\afileKey\x12#\n" +
-	"\rreceived_size\x18\x02 \x01(\x04R\freceivedSizeBXZNgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/filestore/v1;filestore_v1\x92\x03\x05\xd2>\x02\x10\x03b\beditionsp\xe8\a"
+	"\rreceived_size\x18\x02 \x01(\x04R\freceivedSizeBZZNgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/filestore/v1;filestore_v1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
 
 var file_filestore_v1_file_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_filestore_v1_file_proto_goTypes = []any{
