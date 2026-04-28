@@ -14,8 +14,10 @@ message FileKey {
 }
 
 message FileChunk {
-  bytes content = 1;
-  FileMetadata metadata = 2 [features.field_presence = EXPLICIT];
+  string file_name = 1;
+
+  bytes content = 2;
+  FileMetadata metadata = 3 [features.field_presence = EXPLICIT];
 }
 
 message FileMetadata {

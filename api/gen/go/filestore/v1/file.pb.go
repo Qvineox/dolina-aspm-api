@@ -81,8 +81,9 @@ func (b0 FileKey_builder) Build() *FileKey {
 
 type FileChunk struct {
 	state               protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Content  []byte                 `protobuf:"bytes,1,opt,name=content"`
-	xxx_hidden_Metadata *FileMetadata          `protobuf:"bytes,2,opt,name=metadata"`
+	xxx_hidden_FileName string                 `protobuf:"bytes,1,opt,name=file_name,json=fileName"`
+	xxx_hidden_Content  []byte                 `protobuf:"bytes,2,opt,name=content"`
+	xxx_hidden_Metadata *FileMetadata          `protobuf:"bytes,3,opt,name=metadata"`
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
 }
@@ -112,6 +113,13 @@ func (x *FileChunk) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
+func (x *FileChunk) GetFileName() string {
+	if x != nil {
+		return x.xxx_hidden_FileName
+	}
+	return ""
+}
+
 func (x *FileChunk) GetContent() []byte {
 	if x != nil {
 		return x.xxx_hidden_Content
@@ -124,6 +132,10 @@ func (x *FileChunk) GetMetadata() *FileMetadata {
 		return x.xxx_hidden_Metadata
 	}
 	return nil
+}
+
+func (x *FileChunk) SetFileName(v string) {
+	x.xxx_hidden_FileName = v
 }
 
 func (x *FileChunk) SetContent(v []byte) {
@@ -151,6 +163,7 @@ func (x *FileChunk) ClearMetadata() {
 type FileChunk_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
+	FileName string
 	Content  []byte
 	Metadata *FileMetadata
 }
@@ -159,6 +172,7 @@ func (b0 FileChunk_builder) Build() *FileChunk {
 	m0 := &FileChunk{}
 	b, x := &b0, m0
 	_, _ = b, x
+	x.xxx_hidden_FileName = b.FileName
 	x.xxx_hidden_Content = b.Content
 	x.xxx_hidden_Metadata = b.Metadata
 	return m0
@@ -390,10 +404,11 @@ const file_filestore_v1_file_proto_rawDesc = "" +
 	"\n" +
 	"\x17filestore/v1/file.proto\x12\x13dolina.filestore.v1\x1a!google/protobuf/go_features.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x1b\n" +
 	"\aFileKey\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\"k\n" +
-	"\tFileChunk\x12\x18\n" +
-	"\acontent\x18\x01 \x01(\fR\acontent\x12D\n" +
-	"\bmetadata\x18\x02 \x01(\v2!.dolina.filestore.v1.FileMetadataB\x05\xaa\x01\x02\b\x01R\bmetadata\"\xea\x02\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\"\x88\x01\n" +
+	"\tFileChunk\x12\x1b\n" +
+	"\tfile_name\x18\x01 \x01(\tR\bfileName\x12\x18\n" +
+	"\acontent\x18\x02 \x01(\fR\acontent\x12D\n" +
+	"\bmetadata\x18\x03 \x01(\v2!.dolina.filestore.v1.FileMetadataB\x05\xaa\x01\x02\b\x01R\bmetadata\"\xea\x02\n" +
 	"\fFileMetadata\x12\x18\n" +
 	"\aversion\x18\x01 \x01(\tR\aversion\x12\x1d\n" +
 	"\n" +
