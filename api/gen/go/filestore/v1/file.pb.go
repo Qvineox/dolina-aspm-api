@@ -169,8 +169,8 @@ type FileMetadata struct {
 	xxx_hidden_Version     string                 `protobuf:"bytes,1,opt,name=version"`
 	xxx_hidden_TotalSize   uint64                 `protobuf:"varint,2,opt,name=total_size,json=totalSize"`
 	xxx_hidden_ContentType string                 `protobuf:"bytes,3,opt,name=content_type,json=contentType"`
-	xxx_hidden_TagList     []string               `protobuf:"bytes,4,rep,name=tag_list,json=tagList"`
-	xxx_hidden_CreatedAt   *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=created_at,json=createdAt"`
+	xxx_hidden_TagMap      map[string]string      `protobuf:"bytes,4,rep,name=tag_map,json=tagMap" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	xxx_hidden_UpdatedAt   *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=updated_at,json=updatedAt"`
 	xxx_hidden_ExpiredAt   *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=expired_at,json=expiredAt"`
 	unknownFields          protoimpl.UnknownFields
 	sizeCache              protoimpl.SizeCache
@@ -222,16 +222,16 @@ func (x *FileMetadata) GetContentType() string {
 	return ""
 }
 
-func (x *FileMetadata) GetTagList() []string {
+func (x *FileMetadata) GetTagMap() map[string]string {
 	if x != nil {
-		return x.xxx_hidden_TagList
+		return x.xxx_hidden_TagMap
 	}
 	return nil
 }
 
-func (x *FileMetadata) GetCreatedAt() *timestamppb.Timestamp {
+func (x *FileMetadata) GetUpdatedAt() *timestamppb.Timestamp {
 	if x != nil {
-		return x.xxx_hidden_CreatedAt
+		return x.xxx_hidden_UpdatedAt
 	}
 	return nil
 }
@@ -255,23 +255,23 @@ func (x *FileMetadata) SetContentType(v string) {
 	x.xxx_hidden_ContentType = v
 }
 
-func (x *FileMetadata) SetTagList(v []string) {
-	x.xxx_hidden_TagList = v
+func (x *FileMetadata) SetTagMap(v map[string]string) {
+	x.xxx_hidden_TagMap = v
 }
 
-func (x *FileMetadata) SetCreatedAt(v *timestamppb.Timestamp) {
-	x.xxx_hidden_CreatedAt = v
+func (x *FileMetadata) SetUpdatedAt(v *timestamppb.Timestamp) {
+	x.xxx_hidden_UpdatedAt = v
 }
 
 func (x *FileMetadata) SetExpiredAt(v *timestamppb.Timestamp) {
 	x.xxx_hidden_ExpiredAt = v
 }
 
-func (x *FileMetadata) HasCreatedAt() bool {
+func (x *FileMetadata) HasUpdatedAt() bool {
 	if x == nil {
 		return false
 	}
-	return x.xxx_hidden_CreatedAt != nil
+	return x.xxx_hidden_UpdatedAt != nil
 }
 
 func (x *FileMetadata) HasExpiredAt() bool {
@@ -281,8 +281,8 @@ func (x *FileMetadata) HasExpiredAt() bool {
 	return x.xxx_hidden_ExpiredAt != nil
 }
 
-func (x *FileMetadata) ClearCreatedAt() {
-	x.xxx_hidden_CreatedAt = nil
+func (x *FileMetadata) ClearUpdatedAt() {
+	x.xxx_hidden_UpdatedAt = nil
 }
 
 func (x *FileMetadata) ClearExpiredAt() {
@@ -295,8 +295,8 @@ type FileMetadata_builder struct {
 	Version     string
 	TotalSize   uint64
 	ContentType string
-	TagList     []string
-	CreatedAt   *timestamppb.Timestamp
+	TagMap      map[string]string
+	UpdatedAt   *timestamppb.Timestamp
 	ExpiredAt   *timestamppb.Timestamp
 }
 
@@ -307,8 +307,8 @@ func (b0 FileMetadata_builder) Build() *FileMetadata {
 	x.xxx_hidden_Version = b.Version
 	x.xxx_hidden_TotalSize = b.TotalSize
 	x.xxx_hidden_ContentType = b.ContentType
-	x.xxx_hidden_TagList = b.TagList
-	x.xxx_hidden_CreatedAt = b.CreatedAt
+	x.xxx_hidden_TagMap = b.TagMap
+	x.xxx_hidden_UpdatedAt = b.UpdatedAt
 	x.xxx_hidden_ExpiredAt = b.ExpiredAt
 	return m0
 }
@@ -393,38 +393,43 @@ const file_filestore_v1_file_proto_rawDesc = "" +
 	"\x03key\x18\x01 \x01(\tR\x03key\"k\n" +
 	"\tFileChunk\x12\x18\n" +
 	"\acontent\x18\x01 \x01(\fR\acontent\x12D\n" +
-	"\bmetadata\x18\x02 \x01(\v2!.dolina.filestore.v1.FileMetadataB\x05\xaa\x01\x02\b\x01R\bmetadata\"\x82\x02\n" +
+	"\bmetadata\x18\x02 \x01(\v2!.dolina.filestore.v1.FileMetadataB\x05\xaa\x01\x02\b\x01R\bmetadata\"\xea\x02\n" +
 	"\fFileMetadata\x12\x18\n" +
 	"\aversion\x18\x01 \x01(\tR\aversion\x12\x1d\n" +
 	"\n" +
 	"total_size\x18\x02 \x01(\x04R\ttotalSize\x12!\n" +
-	"\fcontent_type\x18\x03 \x01(\tR\vcontentType\x12\x19\n" +
-	"\btag_list\x18\x04 \x03(\tR\atagList\x129\n" +
+	"\fcontent_type\x18\x03 \x01(\tR\vcontentType\x12F\n" +
+	"\atag_map\x18\x04 \x03(\v2-.dolina.filestore.v1.FileMetadata.TagMapEntryR\x06tagMap\x129\n" +
 	"\n" +
-	"created_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12@\n" +
+	"updated_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12@\n" +
 	"\n" +
-	"expired_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\x05\xaa\x01\x02\b\x01R\texpiredAt\"N\n" +
+	"expired_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\x05\xaa\x01\x02\b\x01R\texpiredAt\x1a9\n" +
+	"\vTagMapEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"N\n" +
 	"\fUploadStatus\x12\x19\n" +
 	"\bfile_key\x18\x01 \x01(\tR\afileKey\x12#\n" +
 	"\rreceived_size\x18\x02 \x01(\x04R\freceivedSizeBZZNgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/filestore/v1;filestore_v1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
 
-var file_filestore_v1_file_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_filestore_v1_file_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_filestore_v1_file_proto_goTypes = []any{
 	(*FileKey)(nil),               // 0: dolina.filestore.v1.FileKey
 	(*FileChunk)(nil),             // 1: dolina.filestore.v1.FileChunk
 	(*FileMetadata)(nil),          // 2: dolina.filestore.v1.FileMetadata
 	(*UploadStatus)(nil),          // 3: dolina.filestore.v1.UploadStatus
-	(*timestamppb.Timestamp)(nil), // 4: google.protobuf.Timestamp
+	nil,                           // 4: dolina.filestore.v1.FileMetadata.TagMapEntry
+	(*timestamppb.Timestamp)(nil), // 5: google.protobuf.Timestamp
 }
 var file_filestore_v1_file_proto_depIdxs = []int32{
 	2, // 0: dolina.filestore.v1.FileChunk.metadata:type_name -> dolina.filestore.v1.FileMetadata
-	4, // 1: dolina.filestore.v1.FileMetadata.created_at:type_name -> google.protobuf.Timestamp
-	4, // 2: dolina.filestore.v1.FileMetadata.expired_at:type_name -> google.protobuf.Timestamp
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	4, // 1: dolina.filestore.v1.FileMetadata.tag_map:type_name -> dolina.filestore.v1.FileMetadata.TagMapEntry
+	5, // 2: dolina.filestore.v1.FileMetadata.updated_at:type_name -> google.protobuf.Timestamp
+	5, // 3: dolina.filestore.v1.FileMetadata.expired_at:type_name -> google.protobuf.Timestamp
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_filestore_v1_file_proto_init() }
@@ -438,7 +443,7 @@ func file_filestore_v1_file_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_filestore_v1_file_proto_rawDesc), len(file_filestore_v1_file_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

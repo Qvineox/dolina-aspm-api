@@ -24,9 +24,9 @@ message FileMetadata {
 
   string content_type = 3;
 
-  repeated string tag_list = 4;
+  map<string, string> tag_map = 4;
 
-  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp updated_at = 6;
   google.protobuf.Timestamp expired_at = 7 [features.field_presence = EXPLICIT];
 }
 
