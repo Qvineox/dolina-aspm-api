@@ -790,32 +790,6 @@
             "type": "string"
           },
           {
-            "name": "scannerId",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "enum": [
-              "SCANNER_ID_UNSPECIFIED",
-              "SCANNER_ID_TRIVY",
-              "SCANNER_ID_GITLEAKS"
-            ],
-            "default": "SCANNER_ID_UNSPECIFIED"
-          },
-          {
-            "name": "scannerFormat",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "enum": [
-              "SCANNER_FORMAT_UNSPECIFIED",
-              "SCANNER_FORMAT_TRIVY_FS_JSON",
-              "SCANNER_FORMAT_SARIF",
-              "SCANNER_FORMAT_CYCLONEDX_1_6",
-              "SCANNER_FORMAT_GITLEAKS_JSON"
-            ],
-            "default": "SCANNER_FORMAT_UNSPECIFIED"
-          },
-          {
             "name": "pipelineId",
             "in": "query",
             "required": false,
