@@ -7,6 +7,7 @@
 package filestore_v1
 
 import (
+	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	_ "google.golang.org/protobuf/types/gofeaturespb"
@@ -197,14 +198,15 @@ func (b0 File_builder) Build() *File {
 }
 
 type FileUpload struct {
-	state                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_FileName    string                 `protobuf:"bytes,1,opt,name=file_name,json=fileName"`
-	xxx_hidden_Content     []byte                 `protobuf:"bytes,2,opt,name=content"`
-	xxx_hidden_TagMap      map[string]string      `protobuf:"bytes,3,rep,name=tag_map,json=tagMap" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	XXX_raceDetectHookData protoimpl.RaceDetectHookData
-	XXX_presence           [1]uint32
-	unknownFields          protoimpl.UnknownFields
-	sizeCache              protoimpl.SizeCache
+	state                    protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_FileName      string                 `protobuf:"bytes,1,opt,name=file_name,json=fileName"`
+	xxx_hidden_Content       []byte                 `protobuf:"bytes,2,opt,name=content"`
+	xxx_hidden_TagMap        map[string]string      `protobuf:"bytes,3,rep,name=tag_map,json=tagMap" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	xxx_hidden_UseVersioning bool                   `protobuf:"varint,4,opt,name=use_versioning,json=useVersioning"`
+	XXX_raceDetectHookData   protoimpl.RaceDetectHookData
+	XXX_presence             [1]uint32
+	unknownFields            protoimpl.UnknownFields
+	sizeCache                protoimpl.SizeCache
 }
 
 func (x *FileUpload) Reset() {
@@ -253,6 +255,13 @@ func (x *FileUpload) GetTagMap() map[string]string {
 	return nil
 }
 
+func (x *FileUpload) GetUseVersioning() bool {
+	if x != nil {
+		return x.xxx_hidden_UseVersioning
+	}
+	return false
+}
+
 func (x *FileUpload) SetFileName(v string) {
 	x.xxx_hidden_FileName = v
 }
@@ -262,11 +271,15 @@ func (x *FileUpload) SetContent(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_Content = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 4)
 }
 
 func (x *FileUpload) SetTagMap(v map[string]string) {
 	x.xxx_hidden_TagMap = v
+}
+
+func (x *FileUpload) SetUseVersioning(v bool) {
+	x.xxx_hidden_UseVersioning = v
 }
 
 func (x *FileUpload) HasContent() bool {
@@ -285,8 +298,11 @@ type FileUpload_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	FileName string
-	Content  []byte
-	TagMap   map[string]string
+	// base64 encoded file contents
+	Content []byte
+	TagMap  map[string]string
+	// when use_versioning is set to true file is saved with original name, without unique suffix this option will override existing file and increment its version
+	UseVersioning bool
 }
 
 func (b0 FileUpload_builder) Build() *FileUpload {
@@ -295,10 +311,11 @@ func (b0 FileUpload_builder) Build() *FileUpload {
 	_, _ = b, x
 	x.xxx_hidden_FileName = b.FileName
 	if b.Content != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 4)
 		x.xxx_hidden_Content = b.Content
 	}
 	x.xxx_hidden_TagMap = b.TagMap
+	x.xxx_hidden_UseVersioning = b.UseVersioning
 	return m0
 }
 
@@ -526,21 +543,23 @@ var File_filestore_v1_file_proto protoreflect.FileDescriptor
 
 const file_filestore_v1_file_proto_rawDesc = "" +
 	"\n" +
-	"\x17filestore/v1/file.proto\x12\x13dolina.filestore.v1\x1a!google/protobuf/go_features.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x1b\n" +
+	"\x17filestore/v1/file.proto\x12\x13dolina.filestore.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a!google/protobuf/go_features.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x1b\n" +
 	"\aFileKey\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\"\x8a\x01\n" +
 	"\x04File\x12\x1b\n" +
 	"\tfile_name\x18\x01 \x01(\tR\bfileName\x12\x1f\n" +
 	"\acontent\x18\x02 \x01(\fB\x05\xaa\x01\x02\b\x01R\acontent\x12D\n" +
-	"\bmetadata\x18\x03 \x01(\v2!.dolina.filestore.v1.FileMetadataB\x05\xaa\x01\x02\b\x01R\bmetadata\"\xcb\x01\n" +
+	"\bmetadata\x18\x03 \x01(\v2!.dolina.filestore.v1.FileMetadataB\x05\xaa\x01\x02\b\x01R\bmetadata\"\x86\x02\n" +
 	"\n" +
 	"FileUpload\x12\x1b\n" +
 	"\tfile_name\x18\x01 \x01(\tR\bfileName\x12\x1f\n" +
 	"\acontent\x18\x02 \x01(\fB\x05\xaa\x01\x02\b\x01R\acontent\x12D\n" +
-	"\atag_map\x18\x03 \x03(\v2+.dolina.filestore.v1.FileUpload.TagMapEntryR\x06tagMap\x1a9\n" +
+	"\atag_map\x18\x03 \x03(\v2+.dolina.filestore.v1.FileUpload.TagMapEntryR\x06tagMap\x12%\n" +
+	"\x0euse_versioning\x18\x04 \x01(\bR\ruseVersioning\x1a9\n" +
 	"\vTagMapEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xea\x02\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\x12\x92A\x0f\n" +
+	"\r*\vFile upload\"\xea\x02\n" +
 	"\fFileMetadata\x12\x18\n" +
 	"\aversion\x18\x01 \x01(\tR\aversion\x12\x1d\n" +
 	"\n" +

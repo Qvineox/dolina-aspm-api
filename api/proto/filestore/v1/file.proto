@@ -6,6 +6,7 @@ option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/filest
 option features.(pb.go).api_level = API_OPAQUE;
 option features.field_presence = IMPLICIT;
 
+import "protoc-gen-openapiv2/options/annotations.proto";
 import "google/protobuf/go_features.proto";
 import "google/protobuf/timestamp.proto";
 
@@ -21,10 +22,21 @@ message File {
 }
 
 message FileUpload {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "File upload"
+      description: ""
+    }
+  };
+
   string file_name = 1;
 
+  // base64 encoded file contents
   bytes content = 2 [features.field_presence = EXPLICIT];
   map<string, string> tag_map = 3;
+
+  // when use_versioning is set to true file is saved with original name, without unique suffix this option will override existing file and increment its version
+  bool use_versioning = 4;
 }
 
 message FileMetadata {

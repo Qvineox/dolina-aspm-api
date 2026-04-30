@@ -1740,15 +1740,21 @@
         },
         "content": {
           "type": "string",
-          "format": "byte"
+          "format": "byte",
+          "title": "base64 encoded file contents"
         },
         "tagMap": {
           "type": "object",
           "additionalProperties": {
             "type": "string"
           }
+        },
+        "useVersioning": {
+          "type": "boolean",
+          "title": "when use_versioning is set to true file is saved with original name, without unique suffix this option will override existing file and increment its version"
         }
-      }
+      },
+      "title": "File upload"
     },
     "v1FixInfo": {
       "type": "object",
