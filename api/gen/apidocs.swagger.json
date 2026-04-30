@@ -1683,7 +1683,7 @@
     "v1File": {
       "type": "object",
       "properties": {
-        "fileName": {
+        "fileKey": {
           "type": "string"
         },
         "content": {

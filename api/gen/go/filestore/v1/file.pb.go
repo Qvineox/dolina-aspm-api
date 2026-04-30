@@ -82,7 +82,7 @@ func (b0 FileKey_builder) Build() *FileKey {
 
 type File struct {
 	state                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_FileName    string                 `protobuf:"bytes,1,opt,name=file_name,json=fileName"`
+	xxx_hidden_FileKey     string                 `protobuf:"bytes,1,opt,name=file_key,json=fileKey"`
 	xxx_hidden_Content     []byte                 `protobuf:"bytes,2,opt,name=content"`
 	xxx_hidden_Metadata    *FileMetadata          `protobuf:"bytes,3,opt,name=metadata"`
 	XXX_raceDetectHookData protoimpl.RaceDetectHookData
@@ -116,9 +116,9 @@ func (x *File) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *File) GetFileName() string {
+func (x *File) GetFileKey() string {
 	if x != nil {
-		return x.xxx_hidden_FileName
+		return x.xxx_hidden_FileKey
 	}
 	return ""
 }
@@ -137,8 +137,8 @@ func (x *File) GetMetadata() *FileMetadata {
 	return nil
 }
 
-func (x *File) SetFileName(v string) {
-	x.xxx_hidden_FileName = v
+func (x *File) SetFileKey(v string) {
+	x.xxx_hidden_FileKey = v
 }
 
 func (x *File) SetContent(v []byte) {
@@ -179,7 +179,7 @@ func (x *File) ClearMetadata() {
 type File_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	FileName string
+	FileKey  string
 	Content  []byte
 	Metadata *FileMetadata
 }
@@ -188,7 +188,7 @@ func (b0 File_builder) Build() *File {
 	m0 := &File{}
 	b, x := &b0, m0
 	_, _ = b, x
-	x.xxx_hidden_FileName = b.FileName
+	x.xxx_hidden_FileKey = b.FileKey
 	if b.Content != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
 		x.xxx_hidden_Content = b.Content
@@ -545,9 +545,9 @@ const file_filestore_v1_file_proto_rawDesc = "" +
 	"\n" +
 	"\x17filestore/v1/file.proto\x12\x13dolina.filestore.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a!google/protobuf/go_features.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x1b\n" +
 	"\aFileKey\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\"\x8a\x01\n" +
-	"\x04File\x12\x1b\n" +
-	"\tfile_name\x18\x01 \x01(\tR\bfileName\x12\x1f\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\"\x88\x01\n" +
+	"\x04File\x12\x19\n" +
+	"\bfile_key\x18\x01 \x01(\tR\afileKey\x12\x1f\n" +
 	"\acontent\x18\x02 \x01(\fB\x05\xaa\x01\x02\b\x01R\acontent\x12D\n" +
 	"\bmetadata\x18\x03 \x01(\v2!.dolina.filestore.v1.FileMetadataB\x05\xaa\x01\x02\b\x01R\bmetadata\"\x86\x02\n" +
 	"\n" +
