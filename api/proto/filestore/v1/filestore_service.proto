@@ -19,7 +19,7 @@ service FilestoreService {
     };
   }
 
-  rpc GetFileByKey(FileKey) returns (FileChunk) {
+  rpc GetFileByKey(FileKey) returns (File) {
     option (google.api.http) = {
       get: "/api/v1/filestore/{key}"
     };
@@ -31,16 +31,16 @@ service FilestoreService {
     };
   }
 
-  rpc GetFileStreamByUUID(common.v1.UUID) returns (stream FileChunk);
+  rpc GetFileStreamByUUID(common.v1.UUID) returns (stream File);
 
-  rpc UploadFile(FileChunk) returns (FileKey) {
+  rpc UploadFile(FileUpload) returns (FileKey) {
     option (google.api.http) = {
       post: "/api/v1/upload"
       body: "*",
     };
   }
 
-  rpc UploadFileStream(stream FileChunk) returns (UploadStatus) {
+  rpc UploadFileStream(stream File) returns (UploadStatus) {
     option (google.api.http) = {
       post: "/api/v1/upload/stream"
       body: "*",

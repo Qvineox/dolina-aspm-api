@@ -160,10 +160,10 @@ func local_request_FilestoreService_DeleteFileByKey_0(ctx context.Context, marsh
 
 func request_FilestoreService_UploadFile_0(ctx context.Context, marshaler runtime.Marshaler, client FilestoreServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq FileChunk
+		protoReq FileUpload
 		metadata runtime.ServerMetadata
 	)
-	var bodyData FileChunk
+	var bodyData FileUpload
 	if err := marshaler.NewDecoder(req.Body).Decode(&bodyData); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
@@ -177,10 +177,10 @@ func request_FilestoreService_UploadFile_0(ctx context.Context, marshaler runtim
 
 func local_request_FilestoreService_UploadFile_0(ctx context.Context, marshaler runtime.Marshaler, server FilestoreServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq FileChunk
+		protoReq FileUpload
 		metadata runtime.ServerMetadata
 	)
-	var bodyData FileChunk
+	var bodyData FileUpload
 	if err := marshaler.NewDecoder(req.Body).Decode(&bodyData); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
@@ -198,7 +198,7 @@ func request_FilestoreService_UploadFileStream_0(ctx context.Context, marshaler 
 	}
 	dec := marshaler.NewDecoder(req.Body)
 	for {
-		var protoReq FileChunk
+		var protoReq File
 		err = dec.Decode(&protoReq)
 		if errors.Is(err, io.EOF) {
 			break

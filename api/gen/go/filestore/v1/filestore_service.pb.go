@@ -28,37 +28,38 @@ var File_filestore_v1_filestore_service_proto protoreflect.FileDescriptor
 
 const file_filestore_v1_filestore_service_proto_rawDesc = "" +
 	"\n" +
-	"$filestore/v1/filestore_service.proto\x12\x13dolina.filestore.v1\x1a!google/protobuf/go_features.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x17filestore/v1/file.proto\x1a\x14common/v1/uuid.proto2\xa2\x05\n" +
+	"$filestore/v1/filestore_service.proto\x12\x13dolina.filestore.v1\x1a!google/protobuf/go_features.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x17filestore/v1/file.proto\x1a\x14common/v1/uuid.proto2\x94\x05\n" +
 	"\x10FilestoreService\x12\x81\x01\n" +
-	"\x14GetFileMetadataByKey\x12\x1c.dolina.filestore.v1.FileKey\x1a!.dolina.filestore.v1.FileMetadata\"(\x82\xd3\xe4\x93\x02\"\x12 /api/v1/filestore/{key}/metadata\x12m\n" +
-	"\fGetFileByKey\x12\x1c.dolina.filestore.v1.FileKey\x1a\x1e.dolina.filestore.v1.FileChunk\"\x1f\x82\xd3\xe4\x93\x02\x19\x12\x17/api/v1/filestore/{key}\x12h\n" +
-	"\x0fDeleteFileByKey\x12\x1c.dolina.filestore.v1.FileKey\x1a\x16.google.protobuf.Empty\"\x1f\x82\xd3\xe4\x93\x02\x19*\x17/api/v1/filestore/{key}\x12O\n" +
-	"\x13GetFileStreamByUUID\x12\x16.dolina.common.v1.UUID\x1a\x1e.dolina.filestore.v1.FileChunk0\x01\x12e\n" +
+	"\x14GetFileMetadataByKey\x12\x1c.dolina.filestore.v1.FileKey\x1a!.dolina.filestore.v1.FileMetadata\"(\x82\xd3\xe4\x93\x02\"\x12 /api/v1/filestore/{key}/metadata\x12h\n" +
+	"\fGetFileByKey\x12\x1c.dolina.filestore.v1.FileKey\x1a\x19.dolina.filestore.v1.File\"\x1f\x82\xd3\xe4\x93\x02\x19\x12\x17/api/v1/filestore/{key}\x12h\n" +
+	"\x0fDeleteFileByKey\x12\x1c.dolina.filestore.v1.FileKey\x1a\x16.google.protobuf.Empty\"\x1f\x82\xd3\xe4\x93\x02\x19*\x17/api/v1/filestore/{key}\x12J\n" +
+	"\x13GetFileStreamByUUID\x12\x16.dolina.common.v1.UUID\x1a\x19.dolina.filestore.v1.File0\x01\x12f\n" +
 	"\n" +
-	"UploadFile\x12\x1e.dolina.filestore.v1.FileChunk\x1a\x1c.dolina.filestore.v1.FileKey\"\x19\x82\xd3\xe4\x93\x02\x13:\x01*\"\x0e/api/v1/upload\x12y\n" +
-	"\x10UploadFileStream\x12\x1e.dolina.filestore.v1.FileChunk\x1a!.dolina.filestore.v1.UploadStatus\" \x82\xd3\xe4\x93\x02\x1a:\x01*\"\x15/api/v1/upload/stream(\x01BXZNgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/filestore/v1;filestore_v1\x92\x03\x05\xd2>\x02\x10\x03b\beditionsp\xe8\a"
+	"UploadFile\x12\x1f.dolina.filestore.v1.FileUpload\x1a\x1c.dolina.filestore.v1.FileKey\"\x19\x82\xd3\xe4\x93\x02\x13:\x01*\"\x0e/api/v1/upload\x12t\n" +
+	"\x10UploadFileStream\x12\x19.dolina.filestore.v1.File\x1a!.dolina.filestore.v1.UploadStatus\" \x82\xd3\xe4\x93\x02\x1a:\x01*\"\x15/api/v1/upload/stream(\x01BXZNgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/filestore/v1;filestore_v1\x92\x03\x05\xd2>\x02\x10\x03b\beditionsp\xe8\a"
 
 var file_filestore_v1_filestore_service_proto_goTypes = []any{
 	(*FileKey)(nil),       // 0: dolina.filestore.v1.FileKey
 	(*v1.UUID)(nil),       // 1: dolina.common.v1.UUID
-	(*FileChunk)(nil),     // 2: dolina.filestore.v1.FileChunk
-	(*FileMetadata)(nil),  // 3: dolina.filestore.v1.FileMetadata
-	(*emptypb.Empty)(nil), // 4: google.protobuf.Empty
-	(*UploadStatus)(nil),  // 5: dolina.filestore.v1.UploadStatus
+	(*FileUpload)(nil),    // 2: dolina.filestore.v1.FileUpload
+	(*File)(nil),          // 3: dolina.filestore.v1.File
+	(*FileMetadata)(nil),  // 4: dolina.filestore.v1.FileMetadata
+	(*emptypb.Empty)(nil), // 5: google.protobuf.Empty
+	(*UploadStatus)(nil),  // 6: dolina.filestore.v1.UploadStatus
 }
 var file_filestore_v1_filestore_service_proto_depIdxs = []int32{
 	0, // 0: dolina.filestore.v1.FilestoreService.GetFileMetadataByKey:input_type -> dolina.filestore.v1.FileKey
 	0, // 1: dolina.filestore.v1.FilestoreService.GetFileByKey:input_type -> dolina.filestore.v1.FileKey
 	0, // 2: dolina.filestore.v1.FilestoreService.DeleteFileByKey:input_type -> dolina.filestore.v1.FileKey
 	1, // 3: dolina.filestore.v1.FilestoreService.GetFileStreamByUUID:input_type -> dolina.common.v1.UUID
-	2, // 4: dolina.filestore.v1.FilestoreService.UploadFile:input_type -> dolina.filestore.v1.FileChunk
-	2, // 5: dolina.filestore.v1.FilestoreService.UploadFileStream:input_type -> dolina.filestore.v1.FileChunk
-	3, // 6: dolina.filestore.v1.FilestoreService.GetFileMetadataByKey:output_type -> dolina.filestore.v1.FileMetadata
-	2, // 7: dolina.filestore.v1.FilestoreService.GetFileByKey:output_type -> dolina.filestore.v1.FileChunk
-	4, // 8: dolina.filestore.v1.FilestoreService.DeleteFileByKey:output_type -> google.protobuf.Empty
-	2, // 9: dolina.filestore.v1.FilestoreService.GetFileStreamByUUID:output_type -> dolina.filestore.v1.FileChunk
+	2, // 4: dolina.filestore.v1.FilestoreService.UploadFile:input_type -> dolina.filestore.v1.FileUpload
+	3, // 5: dolina.filestore.v1.FilestoreService.UploadFileStream:input_type -> dolina.filestore.v1.File
+	4, // 6: dolina.filestore.v1.FilestoreService.GetFileMetadataByKey:output_type -> dolina.filestore.v1.FileMetadata
+	3, // 7: dolina.filestore.v1.FilestoreService.GetFileByKey:output_type -> dolina.filestore.v1.File
+	5, // 8: dolina.filestore.v1.FilestoreService.DeleteFileByKey:output_type -> google.protobuf.Empty
+	3, // 9: dolina.filestore.v1.FilestoreService.GetFileStreamByUUID:output_type -> dolina.filestore.v1.File
 	0, // 10: dolina.filestore.v1.FilestoreService.UploadFile:output_type -> dolina.filestore.v1.FileKey
-	5, // 11: dolina.filestore.v1.FilestoreService.UploadFileStream:output_type -> dolina.filestore.v1.UploadStatus
+	6, // 11: dolina.filestore.v1.FilestoreService.UploadFileStream:output_type -> dolina.filestore.v1.UploadStatus
 	6, // [6:12] is the sub-list for method output_type
 	0, // [0:6] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name

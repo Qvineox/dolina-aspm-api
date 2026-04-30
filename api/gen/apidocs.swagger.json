@@ -274,7 +274,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1FileChunk"
+              "$ref": "#/definitions/v1File"
             }
           },
           "default": {
@@ -967,7 +967,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/v1FileChunk"
+              "$ref": "#/definitions/v1FileUpload"
             }
           }
         ],
@@ -1000,7 +1000,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/v1FileChunk"
+              "$ref": "#/definitions/v1File"
             }
           }
         ],
@@ -1680,7 +1680,7 @@
       "description": "Represents a security exploit with identifying information, description, and external references. Contains a unique identifier (UUID), title, detailed description, list of reference URLs to external resources (CVE, exploit databases, etc.), and optional creation/update timestamps for audit tracking.",
       "title": "Exploit"
     },
-    "v1FileChunk": {
+    "v1File": {
       "type": "object",
       "properties": {
         "fileName": {
@@ -1729,6 +1729,24 @@
         "expiredAt": {
           "type": "string",
           "format": "date-time"
+        }
+      }
+    },
+    "v1FileUpload": {
+      "type": "object",
+      "properties": {
+        "fileName": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string",
+          "format": "byte"
+        },
+        "tagMap": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
         }
       }
     },

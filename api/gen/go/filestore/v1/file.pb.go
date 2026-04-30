@@ -79,29 +79,31 @@ func (b0 FileKey_builder) Build() *FileKey {
 	return m0
 }
 
-type FileChunk struct {
-	state               protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_FileName string                 `protobuf:"bytes,1,opt,name=file_name,json=fileName"`
-	xxx_hidden_Content  []byte                 `protobuf:"bytes,2,opt,name=content"`
-	xxx_hidden_Metadata *FileMetadata          `protobuf:"bytes,3,opt,name=metadata"`
-	unknownFields       protoimpl.UnknownFields
-	sizeCache           protoimpl.SizeCache
+type File struct {
+	state                  protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_FileName    string                 `protobuf:"bytes,1,opt,name=file_name,json=fileName"`
+	xxx_hidden_Content     []byte                 `protobuf:"bytes,2,opt,name=content"`
+	xxx_hidden_Metadata    *FileMetadata          `protobuf:"bytes,3,opt,name=metadata"`
+	XXX_raceDetectHookData protoimpl.RaceDetectHookData
+	XXX_presence           [1]uint32
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
-func (x *FileChunk) Reset() {
-	*x = FileChunk{}
+func (x *File) Reset() {
+	*x = File{}
 	mi := &file_filestore_v1_file_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *FileChunk) String() string {
+func (x *File) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*FileChunk) ProtoMessage() {}
+func (*File) ProtoMessage() {}
 
-func (x *FileChunk) ProtoReflect() protoreflect.Message {
+func (x *File) ProtoReflect() protoreflect.Message {
 	mi := &file_filestore_v1_file_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -113,54 +115,67 @@ func (x *FileChunk) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *FileChunk) GetFileName() string {
+func (x *File) GetFileName() string {
 	if x != nil {
 		return x.xxx_hidden_FileName
 	}
 	return ""
 }
 
-func (x *FileChunk) GetContent() []byte {
+func (x *File) GetContent() []byte {
 	if x != nil {
 		return x.xxx_hidden_Content
 	}
 	return nil
 }
 
-func (x *FileChunk) GetMetadata() *FileMetadata {
+func (x *File) GetMetadata() *FileMetadata {
 	if x != nil {
 		return x.xxx_hidden_Metadata
 	}
 	return nil
 }
 
-func (x *FileChunk) SetFileName(v string) {
+func (x *File) SetFileName(v string) {
 	x.xxx_hidden_FileName = v
 }
 
-func (x *FileChunk) SetContent(v []byte) {
+func (x *File) SetContent(v []byte) {
 	if v == nil {
 		v = []byte{}
 	}
 	x.xxx_hidden_Content = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
 }
 
-func (x *FileChunk) SetMetadata(v *FileMetadata) {
+func (x *File) SetMetadata(v *FileMetadata) {
 	x.xxx_hidden_Metadata = v
 }
 
-func (x *FileChunk) HasMetadata() bool {
+func (x *File) HasContent() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+}
+
+func (x *File) HasMetadata() bool {
 	if x == nil {
 		return false
 	}
 	return x.xxx_hidden_Metadata != nil
 }
 
-func (x *FileChunk) ClearMetadata() {
+func (x *File) ClearContent() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	x.xxx_hidden_Content = nil
+}
+
+func (x *File) ClearMetadata() {
 	x.xxx_hidden_Metadata = nil
 }
 
-type FileChunk_builder struct {
+type File_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	FileName string
@@ -168,13 +183,122 @@ type FileChunk_builder struct {
 	Metadata *FileMetadata
 }
 
-func (b0 FileChunk_builder) Build() *FileChunk {
-	m0 := &FileChunk{}
+func (b0 File_builder) Build() *File {
+	m0 := &File{}
 	b, x := &b0, m0
 	_, _ = b, x
 	x.xxx_hidden_FileName = b.FileName
-	x.xxx_hidden_Content = b.Content
+	if b.Content != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
+		x.xxx_hidden_Content = b.Content
+	}
 	x.xxx_hidden_Metadata = b.Metadata
+	return m0
+}
+
+type FileUpload struct {
+	state                  protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_FileName    string                 `protobuf:"bytes,1,opt,name=file_name,json=fileName"`
+	xxx_hidden_Content     []byte                 `protobuf:"bytes,2,opt,name=content"`
+	xxx_hidden_TagMap      map[string]string      `protobuf:"bytes,3,rep,name=tag_map,json=tagMap" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	XXX_raceDetectHookData protoimpl.RaceDetectHookData
+	XXX_presence           [1]uint32
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
+}
+
+func (x *FileUpload) Reset() {
+	*x = FileUpload{}
+	mi := &file_filestore_v1_file_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FileUpload) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FileUpload) ProtoMessage() {}
+
+func (x *FileUpload) ProtoReflect() protoreflect.Message {
+	mi := &file_filestore_v1_file_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+func (x *FileUpload) GetFileName() string {
+	if x != nil {
+		return x.xxx_hidden_FileName
+	}
+	return ""
+}
+
+func (x *FileUpload) GetContent() []byte {
+	if x != nil {
+		return x.xxx_hidden_Content
+	}
+	return nil
+}
+
+func (x *FileUpload) GetTagMap() map[string]string {
+	if x != nil {
+		return x.xxx_hidden_TagMap
+	}
+	return nil
+}
+
+func (x *FileUpload) SetFileName(v string) {
+	x.xxx_hidden_FileName = v
+}
+
+func (x *FileUpload) SetContent(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_Content = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
+}
+
+func (x *FileUpload) SetTagMap(v map[string]string) {
+	x.xxx_hidden_TagMap = v
+}
+
+func (x *FileUpload) HasContent() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+}
+
+func (x *FileUpload) ClearContent() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	x.xxx_hidden_Content = nil
+}
+
+type FileUpload_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	FileName string
+	Content  []byte
+	TagMap   map[string]string
+}
+
+func (b0 FileUpload_builder) Build() *FileUpload {
+	m0 := &FileUpload{}
+	b, x := &b0, m0
+	_, _ = b, x
+	x.xxx_hidden_FileName = b.FileName
+	if b.Content != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
+		x.xxx_hidden_Content = b.Content
+	}
+	x.xxx_hidden_TagMap = b.TagMap
 	return m0
 }
 
@@ -192,7 +316,7 @@ type FileMetadata struct {
 
 func (x *FileMetadata) Reset() {
 	*x = FileMetadata{}
-	mi := &file_filestore_v1_file_proto_msgTypes[2]
+	mi := &file_filestore_v1_file_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -204,7 +328,7 @@ func (x *FileMetadata) String() string {
 func (*FileMetadata) ProtoMessage() {}
 
 func (x *FileMetadata) ProtoReflect() protoreflect.Message {
-	mi := &file_filestore_v1_file_proto_msgTypes[2]
+	mi := &file_filestore_v1_file_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -337,7 +461,7 @@ type UploadStatus struct {
 
 func (x *UploadStatus) Reset() {
 	*x = UploadStatus{}
-	mi := &file_filestore_v1_file_proto_msgTypes[3]
+	mi := &file_filestore_v1_file_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -349,7 +473,7 @@ func (x *UploadStatus) String() string {
 func (*UploadStatus) ProtoMessage() {}
 
 func (x *UploadStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_filestore_v1_file_proto_msgTypes[3]
+	mi := &file_filestore_v1_file_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -404,11 +528,19 @@ const file_filestore_v1_file_proto_rawDesc = "" +
 	"\n" +
 	"\x17filestore/v1/file.proto\x12\x13dolina.filestore.v1\x1a!google/protobuf/go_features.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x1b\n" +
 	"\aFileKey\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\"\x88\x01\n" +
-	"\tFileChunk\x12\x1b\n" +
-	"\tfile_name\x18\x01 \x01(\tR\bfileName\x12\x18\n" +
-	"\acontent\x18\x02 \x01(\fR\acontent\x12D\n" +
-	"\bmetadata\x18\x03 \x01(\v2!.dolina.filestore.v1.FileMetadataB\x05\xaa\x01\x02\b\x01R\bmetadata\"\xea\x02\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\"\x8a\x01\n" +
+	"\x04File\x12\x1b\n" +
+	"\tfile_name\x18\x01 \x01(\tR\bfileName\x12\x1f\n" +
+	"\acontent\x18\x02 \x01(\fB\x05\xaa\x01\x02\b\x01R\acontent\x12D\n" +
+	"\bmetadata\x18\x03 \x01(\v2!.dolina.filestore.v1.FileMetadataB\x05\xaa\x01\x02\b\x01R\bmetadata\"\xcb\x01\n" +
+	"\n" +
+	"FileUpload\x12\x1b\n" +
+	"\tfile_name\x18\x01 \x01(\tR\bfileName\x12\x1f\n" +
+	"\acontent\x18\x02 \x01(\fB\x05\xaa\x01\x02\b\x01R\acontent\x12D\n" +
+	"\atag_map\x18\x03 \x03(\v2+.dolina.filestore.v1.FileUpload.TagMapEntryR\x06tagMap\x1a9\n" +
+	"\vTagMapEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xea\x02\n" +
 	"\fFileMetadata\x12\x18\n" +
 	"\aversion\x18\x01 \x01(\tR\aversion\x12\x1d\n" +
 	"\n" +
@@ -426,25 +558,28 @@ const file_filestore_v1_file_proto_rawDesc = "" +
 	"\bfile_key\x18\x01 \x01(\tR\afileKey\x12#\n" +
 	"\rreceived_size\x18\x02 \x01(\x04R\freceivedSizeBZZNgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/filestore/v1;filestore_v1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
 
-var file_filestore_v1_file_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_filestore_v1_file_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_filestore_v1_file_proto_goTypes = []any{
 	(*FileKey)(nil),               // 0: dolina.filestore.v1.FileKey
-	(*FileChunk)(nil),             // 1: dolina.filestore.v1.FileChunk
-	(*FileMetadata)(nil),          // 2: dolina.filestore.v1.FileMetadata
-	(*UploadStatus)(nil),          // 3: dolina.filestore.v1.UploadStatus
-	nil,                           // 4: dolina.filestore.v1.FileMetadata.TagMapEntry
-	(*timestamppb.Timestamp)(nil), // 5: google.protobuf.Timestamp
+	(*File)(nil),                  // 1: dolina.filestore.v1.File
+	(*FileUpload)(nil),            // 2: dolina.filestore.v1.FileUpload
+	(*FileMetadata)(nil),          // 3: dolina.filestore.v1.FileMetadata
+	(*UploadStatus)(nil),          // 4: dolina.filestore.v1.UploadStatus
+	nil,                           // 5: dolina.filestore.v1.FileUpload.TagMapEntry
+	nil,                           // 6: dolina.filestore.v1.FileMetadata.TagMapEntry
+	(*timestamppb.Timestamp)(nil), // 7: google.protobuf.Timestamp
 }
 var file_filestore_v1_file_proto_depIdxs = []int32{
-	2, // 0: dolina.filestore.v1.FileChunk.metadata:type_name -> dolina.filestore.v1.FileMetadata
-	4, // 1: dolina.filestore.v1.FileMetadata.tag_map:type_name -> dolina.filestore.v1.FileMetadata.TagMapEntry
-	5, // 2: dolina.filestore.v1.FileMetadata.updated_at:type_name -> google.protobuf.Timestamp
-	5, // 3: dolina.filestore.v1.FileMetadata.expired_at:type_name -> google.protobuf.Timestamp
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	3, // 0: dolina.filestore.v1.File.metadata:type_name -> dolina.filestore.v1.FileMetadata
+	5, // 1: dolina.filestore.v1.FileUpload.tag_map:type_name -> dolina.filestore.v1.FileUpload.TagMapEntry
+	6, // 2: dolina.filestore.v1.FileMetadata.tag_map:type_name -> dolina.filestore.v1.FileMetadata.TagMapEntry
+	7, // 3: dolina.filestore.v1.FileMetadata.updated_at:type_name -> google.protobuf.Timestamp
+	7, // 4: dolina.filestore.v1.FileMetadata.expired_at:type_name -> google.protobuf.Timestamp
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_filestore_v1_file_proto_init() }
@@ -458,7 +593,7 @@ func file_filestore_v1_file_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_filestore_v1_file_proto_rawDesc), len(file_filestore_v1_file_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

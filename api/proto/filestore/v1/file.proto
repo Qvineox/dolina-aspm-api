@@ -13,11 +13,18 @@ message FileKey {
   string key = 1;
 }
 
-message FileChunk {
+message File {
   string file_name = 1;
 
-  bytes content = 2;
+  bytes content = 2 [features.field_presence = EXPLICIT];
   FileMetadata metadata = 3 [features.field_presence = EXPLICIT];
+}
+
+message FileUpload {
+  string file_name = 1;
+
+  bytes content = 2 [features.field_presence = EXPLICIT];
+  map<string, string> tag_map = 3;
 }
 
 message FileMetadata {
