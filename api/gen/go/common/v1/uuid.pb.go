@@ -21,6 +21,63 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type ID struct {
+	state         protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Id uint32                 `protobuf:"varint,1,opt,name=id"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ID) Reset() {
+	*x = ID{}
+	mi := &file_common_v1_uuid_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ID) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ID) ProtoMessage() {}
+
+func (x *ID) ProtoReflect() protoreflect.Message {
+	mi := &file_common_v1_uuid_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+func (x *ID) GetId() uint32 {
+	if x != nil {
+		return x.xxx_hidden_Id
+	}
+	return 0
+}
+
+func (x *ID) SetId(v uint32) {
+	x.xxx_hidden_Id = v
+}
+
+type ID_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	Id uint32
+}
+
+func (b0 ID_builder) Build() *ID {
+	m0 := &ID{}
+	b, x := &b0, m0
+	_, _ = b, x
+	x.xxx_hidden_Id = b.Id
+	return m0
+}
+
 type UUID struct {
 	state           protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_Uuid string                 `protobuf:"bytes,1,opt,name=uuid"`
@@ -30,7 +87,7 @@ type UUID struct {
 
 func (x *UUID) Reset() {
 	*x = UUID{}
-	mi := &file_common_v1_uuid_proto_msgTypes[0]
+	mi := &file_common_v1_uuid_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -42,7 +99,7 @@ func (x *UUID) String() string {
 func (*UUID) ProtoMessage() {}
 
 func (x *UUID) ProtoReflect() protoreflect.Message {
-	mi := &file_common_v1_uuid_proto_msgTypes[0]
+	mi := &file_common_v1_uuid_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -82,13 +139,16 @@ var File_common_v1_uuid_proto protoreflect.FileDescriptor
 
 const file_common_v1_uuid_proto_rawDesc = "" +
 	"\n" +
-	"\x14common/v1/uuid.proto\x12\x10dolina.common.v1\x1a!google/protobuf/go_features.proto\"\x1a\n" +
+	"\x14common/v1/uuid.proto\x12\x10dolina.common.v1\x1a!google/protobuf/go_features.proto\"\x14\n" +
+	"\x02ID\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\rR\x02id\"\x1a\n" +
 	"\x04UUID\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuidBTZHgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/common/v1;common_v1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
 
-var file_common_v1_uuid_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_common_v1_uuid_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_common_v1_uuid_proto_goTypes = []any{
-	(*UUID)(nil), // 0: dolina.common.v1.UUID
+	(*ID)(nil),   // 0: dolina.common.v1.ID
+	(*UUID)(nil), // 1: dolina.common.v1.UUID
 }
 var file_common_v1_uuid_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
@@ -109,7 +169,7 @@ func file_common_v1_uuid_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_common_v1_uuid_proto_rawDesc), len(file_common_v1_uuid_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   1,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

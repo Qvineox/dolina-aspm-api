@@ -29,13 +29,15 @@ message FileUpload {
     }
   };
 
+  // file_name is later will be processed into unique file key
   string file_name = 1;
 
   // base64 encoded file contents
   bytes content = 2 [features.field_presence = EXPLICIT];
   map<string, string> tag_map = 3;
 
-  // when use_versioning is set to true file is saved with original name, without unique suffix this option will override existing file and increment its version
+  // when use_versioning is set to true file is saved with original name,
+  // without unique suffix this option will override existing file and increment its version
   bool use_versioning = 4;
 }
 

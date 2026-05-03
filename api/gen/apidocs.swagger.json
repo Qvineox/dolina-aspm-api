@@ -19,6 +19,15 @@
       "description": "Methods user by a Dolina CLI module"
     },
     {
+      "name": "ApplicationsService"
+    },
+    {
+      "name": "AssetsService"
+    },
+    {
+      "name": "RevisionsService"
+    },
+    {
       "name": "ComponentsService"
     },
     {
@@ -52,14 +61,664 @@
     "application/json"
   ],
   "paths": {
-    "/api/v1/analysis/windows/{uuid}": {
+    "/api/v1/analysis/windows": {
       "get": {
-        "operationId": "AnalysisService_GetAnalysisWindowByUUID",
+        "operationId": "AnalysisService_GetAnalysisWindowsByQueryFilter",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1AnalysisWindowsQueryResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "state",
+            "description": " - ANALYSIS_STATE_NOT_STARTED: analysis job in a queue\n - ANALYSIS_STATE_ASSIGNED: worker is assigned\n - ANALYSIS_STATE_IN_PROGRESS: worker is processing\n - ANALYSIS_STATE_VERIFICATION: worker is verifying and sends analysis results\n - ANALYSIS_STATE_DONE: analysis is done and results are saved\n - ANALYSIS_STATE_ERROR: analysis is finished with error\n - ANALYSIS_STATE_TIMEOUT: analysis is finished with timeout\n - ANALYSIS_STATE_CANCELED: analysis is cancel by user",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "ANALYSIS_STATE_UNSPECIFIED",
+              "ANALYSIS_STATE_NOT_STARTED",
+              "ANALYSIS_STATE_ASSIGNED",
+              "ANALYSIS_STATE_IN_PROGRESS",
+              "ANALYSIS_STATE_VERIFICATION",
+              "ANALYSIS_STATE_DONE",
+              "ANALYSIS_STATE_ERROR",
+              "ANALYSIS_STATE_TIMEOUT",
+              "ANALYSIS_STATE_CANCELED"
+            ],
+            "default": "ANALYSIS_STATE_UNSPECIFIED"
+          },
+          {
+            "name": "pipelineId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "assetSuid",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "pagination.offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "pagination.limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "AnalysisService"
+        ]
+      }
+    },
+    "/api/v1/analysis/windows/start": {
+      "post": {
+        "description": "Forces all active analysis windows into closed state and immediately starts them, setting the priority to the max available values",
+        "operationId": "AnalysisService_ForceAllWindowsStart",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "AnalysisService"
+        ]
+      }
+    },
+    "/api/v1/analysis/windows/{id}": {
+      "get": {
+        "operationId": "AnalysisService_GetAnalysisWindowByID",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1AnalysisWindow"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "AnalysisService"
+        ]
+      }
+    },
+    "/api/v1/analysis/windows/{id}/cancel": {
+      "post": {
+        "description": "Cancels analysis window start, if its not started yet",
+        "operationId": "AnalysisService_CancelWindowStart",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "AnalysisService"
+        ]
+      }
+    },
+    "/api/v1/analysis/windows/{id}/start": {
+      "post": {
+        "description": "Forces an active analysis window into closed state and immediately starts it, setting the priority to the max available value",
+        "operationId": "AnalysisService_ForceWindowStart",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "AnalysisService"
+        ]
+      }
+    },
+    "/api/v1/application": {
+      "put": {
+        "operationId": "ApplicationsService_CreateApplication",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ID"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "suid",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "description",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "url",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "labelList",
+            "description": "user-defined text labels to categorize applications, e.g. backend/frontend and others",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "purl.instance",
+            "description": "string representation of a purl",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "purl.type",
+            "description": "the package \"type\" or package \"protocol\" such as maven, npm, nuget, gem, pypi, etc.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "purl.namespace",
+            "description": "a name prefix such as a Maven group id, a Docker image owner, a GitHub user or organization. Namespace is type-specific.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "purl.name",
+            "description": "the name of the package.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "purl.version",
+            "description": "the name of the package.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "purl.qualifiers",
+            "description": "qualifier data for a package such as OS, architecture, repository, etc. Qualifiers are type-specific.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "purl.subpath",
+            "description": "subpath within a package, relative to the package root.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "riskProfileId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "projectId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "createdAt",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "updatedAt",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          }
+        ],
+        "tags": [
+          "ApplicationsService"
+        ]
+      }
+    },
+    "/api/v1/applications": {
+      "get": {
+        "operationId": "ApplicationsService_GetApplicationsByQueryFilter",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ApplicationsQueryResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "labelList",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "riskProfileId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "pagination.offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "pagination.limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "ApplicationsService"
+        ]
+      }
+    },
+    "/api/v1/applications/{applicationId}/transfer": {
+      "patch": {
+        "description": "Transfers application with all its relations to other project, also can be removed from any projects if project_is if left unset",
+        "operationId": "ApplicationsService_TransferApplicationToProject",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "applicationId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApplicationsServiceTransferApplicationToProjectBody"
+            }
+          }
+        ],
+        "tags": [
+          "ApplicationsService"
+        ]
+      }
+    },
+    "/api/v1/applications/{id}": {
+      "get": {
+        "operationId": "ApplicationsService_GetApplicationByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Application"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "ApplicationsService"
+        ]
+      },
+      "delete": {
+        "operationId": "ApplicationsService_DeleteApplicationByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "ApplicationsService"
+        ]
+      },
+      "patch": {
+        "operationId": "ApplicationsService_UpdateApplication",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApplicationsServiceUpdateApplicationBody"
+            }
+          }
+        ],
+        "tags": [
+          "ApplicationsService"
+        ]
+      }
+    },
+    "/api/v1/applications/{id}/assets": {
+      "get": {
+        "operationId": "AssetsService_GetApplicationAssets",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1AssetsQueryResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "AssetsService"
+        ]
+      }
+    },
+    "/api/v1/assets": {
+      "get": {
+        "operationId": "AssetsService_GetAssetsByQueryFilter",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1AssetsQueryResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "revision",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "labelList",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "assetType",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "ASSET_TYPE_UNSPECIFIED",
+              "ASSET_TYPE_GIT_REPOSITORY",
+              "ASSET_TYPE_CONTAINER_IMAGE"
+            ],
+            "default": "ASSET_TYPE_UNSPECIFIED"
+          },
+          {
+            "name": "applicationId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "repositoryUuid",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "pagination.offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "pagination.limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "AssetsService"
+        ]
+      }
+    },
+    "/api/v1/assets/{uuid}": {
+      "get": {
+        "operationId": "AssetsService_GetAssetByUUID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Asset"
             }
           },
           "default": {
@@ -78,7 +737,95 @@
           }
         ],
         "tags": [
-          "AnalysisService"
+          "AssetsService"
+        ]
+      },
+      "delete": {
+        "operationId": "AssetsService_DeleteAssetByUUID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AssetsService"
+        ]
+      }
+    },
+    "/api/v1/assets/{uuid}/revisions": {
+      "get": {
+        "operationId": "RevisionsService_GetAssetRevisions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1RevisionsQueryResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "RevisionsService"
+        ]
+      },
+      "delete": {
+        "operationId": "RevisionsService_DeleteAssetRevisions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "RevisionsService"
         ]
       }
     },
@@ -356,65 +1103,14 @@
         ]
       }
     },
-    "/api/v1/projects": {
-      "get": {
-        "operationId": "ProjectService_GetProjectsByQueryFilter",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1ProjectsList"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "uint64"
-          },
-          {
-            "name": "slug",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "name",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "tags",
-            "in": "query",
-            "required": false,
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "collectionFormat": "multi"
-          }
-        ],
-        "tags": [
-          "ProjectService"
-        ]
-      },
+    "/api/v1/project": {
       "put": {
         "operationId": "ProjectService_CreateProject",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1Project"
+              "$ref": "#/definitions/v1ID"
             }
           },
           "default": {
@@ -432,6 +1128,60 @@
             "schema": {
               "$ref": "#/definitions/v1Project"
             }
+          }
+        ],
+        "tags": [
+          "ProjectService"
+        ]
+      }
+    },
+    "/api/v1/projects": {
+      "get": {
+        "operationId": "ProjectService_GetProjectByQueryFilter",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ProjectsQueryResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "labelList",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "pagination.offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "pagination.limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
           }
         ],
         "tags": [
@@ -441,7 +1191,7 @@
     },
     "/api/v1/projects/{id}": {
       "get": {
-        "operationId": "ProjectService_GetProject",
+        "operationId": "ProjectService_GetProjectByID",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -461,43 +1211,22 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string",
-            "format": "uint64"
-          },
-          {
-            "name": "slug",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "name",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "tags",
-            "in": "query",
-            "required": false,
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "collectionFormat": "multi"
+            "type": "integer",
+            "format": "int64"
           }
         ],
         "tags": [
           "ProjectService"
         ]
       },
-      "patch": {
-        "operationId": "ProjectService_UpdateProject",
+      "delete": {
+        "operationId": "ProjectService_DeleteProjectByID",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1Project"
+              "type": "object",
+              "properties": {}
             }
           },
           "default": {
@@ -512,16 +1241,8 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string",
-            "format": "uint64"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/ProjectServiceUpdateProjectBody"
-            }
+            "type": "integer",
+            "format": "int64"
           }
         ],
         "tags": [
@@ -529,14 +1250,14 @@
         ]
       }
     },
-    "/api/v1/projects/{projectId}/{id}": {
-      "patch": {
-        "operationId": "ProjectService_UpdateProjectRevision",
+    "/api/v1/projects/{id}/applications": {
+      "get": {
+        "operationId": "ApplicationsService_GetProjectApplications",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/dolinaProjectsV1Revision"
+              "$ref": "#/definitions/v1Application"
             }
           },
           "default": {
@@ -547,172 +1268,16 @@
           }
         },
         "parameters": [
-          {
-            "name": "projectId",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "uint64"
-          },
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string",
-            "format": "uint64"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/ProjectServiceUpdateProjectRevisionBody"
-            }
+            "type": "integer",
+            "format": "int64"
           }
         ],
         "tags": [
-          "ProjectService"
-        ]
-      }
-    },
-    "/api/v1/projects/{projectId}/{revisionId}": {
-      "get": {
-        "operationId": "ProjectService_GetProjectRevision",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/dolinaProjectsV1Revision"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "projectId",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "uint64"
-          },
-          {
-            "name": "revisionId",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "uint64"
-          },
-          {
-            "name": "projectSlug",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "ProjectService"
-        ]
-      }
-    },
-    "/api/v1/projects/{projectSlug}/{revisionId}": {
-      "get": {
-        "operationId": "ProjectService_GetProjectRevision2",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/dolinaProjectsV1Revision"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "projectSlug",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "revisionId",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "uint64"
-          },
-          {
-            "name": "projectId",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "uint64"
-          }
-        ],
-        "tags": [
-          "ProjectService"
-        ]
-      }
-    },
-    "/api/v1/projects/{slug}": {
-      "get": {
-        "operationId": "ProjectService_GetProject2",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1Project"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "slug",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "id",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "uint64"
-          },
-          {
-            "name": "name",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "tags",
-            "in": "query",
-            "required": false,
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "collectionFormat": "multi"
-          }
-        ],
-        "tags": [
-          "ProjectService"
+          "ApplicationsService"
         ]
       }
     },
@@ -944,6 +1509,156 @@
         ]
       }
     },
+    "/api/v1/revisions": {
+      "get": {
+        "operationId": "RevisionsService_GetAssetsByQueryFilter",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1RevisionsQueryResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "revision",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "labelList",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "applicationId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "assetUuid",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "repositoryUuid",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "artifactUuid",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "commitHash",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "pagination.offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "pagination.limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "RevisionsService"
+        ]
+      }
+    },
+    "/api/v1/revisions/{uuid}": {
+      "get": {
+        "operationId": "RevisionsService_GetRevisionByUUID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/dolinaApplicationV1Revision"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "RevisionsService"
+        ]
+      },
+      "delete": {
+        "operationId": "RevisionsService_DeleteRevisionByUUID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "RevisionsService"
+        ]
+      }
+    },
     "/api/v1/upload": {
       "post": {
         "operationId": "FilestoreService_UploadFile",
@@ -1011,33 +1726,48 @@
     }
   },
   "definitions": {
-    "ProjectServiceUpdateProjectBody": {
+    "ApplicationsServiceTransferApplicationToProjectBody": {
       "type": "object",
       "properties": {
-        "name": {
+        "projectId": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "ApplicationsServiceUpdateApplicationBody": {
+      "type": "object",
+      "properties": {
+        "suid": {
           "type": "string"
         },
-        "slug": {
+        "name": {
           "type": "string"
         },
         "description": {
           "type": "string"
         },
-        "tagList": {
+        "url": {
+          "type": "string"
+        },
+        "labelList": {
           "type": "array",
           "items": {
             "type": "string"
-          }
+          },
+          "title": "user-defined text labels to categorize applications, e.g. backend/frontend and others"
         },
-        "vcsUrl": {
-          "type": "string"
+        "purl": {
+          "$ref": "#/definitions/v1PURL",
+          "title": "application component purl"
         },
-        "revisionList": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/v1Project"
-          }
+        "riskProfileId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "projectId": {
+          "type": "integer",
+          "format": "int64"
         },
         "createdAt": {
           "type": "string",
@@ -1047,57 +1777,9 @@
           "type": "string",
           "format": "date-time"
         }
-      }
-    },
-    "ProjectServiceUpdateProjectRevisionBody": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "tagList": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "projectSlug": {
-          "type": "string",
-          "title": "used to create new projects"
-        },
-        "gitTags": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "gitBranches": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "gitCommitHash": {
-          "type": "string"
-        },
-        "vcsUrl": {
-          "type": "string"
-        },
-        "createdBy": {
-          "type": "string"
-        },
-        "sbomFileUuid": {
-          "type": "string"
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "updatedAt": {
-          "type": "string",
-          "format": "date-time"
-        }
-      }
+      },
+      "description": "Software application entity in the ASPM system containing comprehensive metadata about the application and its components. Includes identifiers (ID/UUID), naming information, version details, component inventories (libraries, modules, services), ownership metadata, deployment characteristics, and audit timestamps for tracking application security posture.",
+      "title": "Application"
     },
     "ReportsServicePatchReportBody": {
       "type": "object"
@@ -1134,53 +1816,36 @@
       ],
       "default": "CVSS4_SEVERITY_UNSPECIFIED"
     },
-    "dolinaProjectsV1Revision": {
+    "dolinaApplicationV1Revision": {
       "type": "object",
       "properties": {
-        "id": {
+        "uuid": {
           "type": "string",
-          "format": "uint64"
+          "title": "sequential internal revision number\nthere can be multiple revisions from same git ref"
         },
-        "name": {
-          "type": "string"
+        "applicationId": {
+          "type": "integer",
+          "format": "int64"
         },
-        "tagList": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
+        "assetUuid": {
+          "type": "integer",
+          "format": "int64"
         },
-        "projectId": {
+        "ref": {
           "type": "string",
-          "format": "uint64"
+          "description": "branch name, tag, or ref/spec (e.g., \"main\", \"v1.2.3\"),\ncontextual branch/tag showing deployment context."
         },
-        "projectSlug": {
-          "type": "string",
-          "title": "used to create new projects"
-        },
-        "gitTags": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "gitBranches": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "gitCommitHash": {
+        "repositoryUuid": {
           "type": "string"
         },
-        "vcsUrl": {
+        "artifactUuid": {
           "type": "string"
         },
-        "createdBy": {
-          "type": "string"
+        "commit": {
+          "$ref": "#/definitions/v1Commit"
         },
-        "sbomFileUuid": {
-          "type": "string"
+        "repository": {
+          "$ref": "#/definitions/v1Repository"
         },
         "createdAt": {
           "type": "string",
@@ -1190,7 +1855,9 @@
           "type": "string",
           "format": "date-time"
         }
-      }
+      },
+      "description": "Application revision representing a specific historical state in the application asset's version control history. Contains exact commit hash, branch/tag reference, commit timestamp, optional author metadata, and change summary for tracking security posture evolution across application versions in the ASPM system.",
+      "title": "Revision"
     },
     "protobufAny": {
       "type": "object",
@@ -1318,6 +1985,21 @@
         }
       }
     },
+    "v1AnalysisWindowsQueryResponse": {
+      "type": "object",
+      "properties": {
+        "analysisWindowsList": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1AnalysisWindow"
+          }
+        },
+        "pagination": {
+          "$ref": "#/definitions/v1PaginationMetadata"
+        }
+      }
+    },
     "v1AnalyzeOptions": {
       "type": "object",
       "properties": {
@@ -1371,6 +2053,148 @@
       "description": "Contextual metadata accompanying a raw scanner report. It provides information about the environment in which the scan was executed, such as the repository URL, Git reference (branch, tag, commit), pipeline or build ID, and any other relevant deployment or runtime context. This data is used by Dolina ASPM to enrich, filter, and correlate findings with specific code versions or build stages.",
       "title": "Analyze options"
     },
+    "v1Application": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "suid": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "labelList": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "user-defined text labels to categorize applications, e.g. backend/frontend and others"
+        },
+        "purl": {
+          "$ref": "#/definitions/v1PURL",
+          "title": "application component purl"
+        },
+        "riskProfileId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "projectId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "description": "Software application entity in the ASPM system containing comprehensive metadata about the application and its components. Includes identifiers (ID/UUID), naming information, version details, component inventories (libraries, modules, services), ownership metadata, deployment characteristics, and audit timestamps for tracking application security posture.",
+      "title": "Application"
+    },
+    "v1ApplicationsQueryResponse": {
+      "type": "object",
+      "properties": {
+        "applicationsList": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Application"
+          }
+        },
+        "pagination": {
+          "$ref": "#/definitions/v1PaginationMetadata"
+        }
+      }
+    },
+    "v1Asset": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string"
+        },
+        "suid": {
+          "type": "string"
+        },
+        "revision": {
+          "type": "string"
+        },
+        "purl": {
+          "$ref": "#/definitions/v1PURL"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "labelList": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "user-defined text labels to categorize applications, e.g. backend/frontend and others"
+        },
+        "assetType": {
+          "$ref": "#/definitions/v1AssetType"
+        },
+        "applicationId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "repositoryUuid": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "description": "Technical entity associated with an application, such as source code, container image, build artifact, dependency package, or other deployable component. Includes identification, type, version or digest, source reference, ownership metadata, and timestamps for tracking inventory, traceability, and security analysis within the ASPM system.",
+      "title": "Asset"
+    },
+    "v1AssetType": {
+      "type": "string",
+      "enum": [
+        "ASSET_TYPE_UNSPECIFIED",
+        "ASSET_TYPE_GIT_REPOSITORY",
+        "ASSET_TYPE_CONTAINER_IMAGE"
+      ],
+      "default": "ASSET_TYPE_UNSPECIFIED"
+    },
+    "v1AssetsQueryResponse": {
+      "type": "object",
+      "properties": {
+        "assetsList": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Asset"
+          }
+        },
+        "pagination": {
+          "$ref": "#/definitions/v1PaginationMetadata"
+        }
+      }
+    },
     "v1CodeFragment": {
       "type": "object",
       "properties": {
@@ -1409,6 +2233,48 @@
       },
       "description": "Source code fragment representation capturing vulnerable code snippets, secrets, or defects within files. Contains line numbers (start/end ranges), extracted code content, surrounding context lines, file path reference, and metadata about the detected issue type, severity, and detection source for remediation tracking in the ASPM system.",
       "title": "Code fragment"
+    },
+    "v1Commit": {
+      "type": "object",
+      "properties": {
+        "hash": {
+          "type": "string",
+          "title": "full SHA-1/256 commit identifier (hex)"
+        },
+        "ref": {
+          "type": "string"
+        },
+        "tagList": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "authorEmail": {
+          "type": "string",
+          "title": "accountability for security-relevant changes"
+        },
+        "authorName": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "parentHashes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "merge commit genealogy, parent commit hashes (for merge commits),\nidentifies which commits were merged together to create this revision"
+        },
+        "committedAt": {
+          "type": "string",
+          "format": "date-time",
+          "title": "exact commit timestamp from the vcs"
+        }
+      },
+      "description": "Git commit metadata extracted for security analysis and audit. Contains exact VCS identifiers and authorship for precise historical reconstruction and vulnerability attribution.",
+      "title": "Git commit"
     },
     "v1Component": {
       "type": "object",
@@ -1736,7 +2602,8 @@
       "type": "object",
       "properties": {
         "fileName": {
-          "type": "string"
+          "type": "string",
+          "title": "file_name is later will be processed into unique file key"
         },
         "content": {
           "type": "string",
@@ -1751,7 +2618,7 @@
         },
         "useVersioning": {
           "type": "boolean",
-          "title": "when use_versioning is set to true file is saved with original name, without unique suffix this option will override existing file and increment its version"
+          "title": "when use_versioning is set to true file is saved with original name,\nwithout unique suffix this option will override existing file and increment its version"
         }
       },
       "title": "File upload"
@@ -1788,6 +2655,15 @@
           "items": {
             "type": "string"
           }
+        }
+      }
+    },
+    "v1ID": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
         }
       }
     },
@@ -1881,26 +2757,16 @@
         "name": {
           "type": "string"
         },
-        "slug": {
+        "suid": {
           "type": "string"
         },
         "description": {
           "type": "string"
         },
-        "tagList": {
+        "labelList": {
           "type": "array",
           "items": {
             "type": "string"
-          }
-        },
-        "vcsUrl": {
-          "type": "string"
-        },
-        "revisionList": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/v1Project"
           }
         },
         "createdAt": {
@@ -1913,15 +2779,18 @@
         }
       }
     },
-    "v1ProjectsList": {
+    "v1ProjectsQueryResponse": {
       "type": "object",
       "properties": {
-        "list": {
+        "projectsList": {
           "type": "array",
           "items": {
             "type": "object",
             "$ref": "#/definitions/v1Project"
           }
+        },
+        "pagination": {
+          "$ref": "#/definitions/v1PaginationMetadata"
         }
       }
     },
@@ -1962,6 +2831,63 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/v1Report"
+          }
+        },
+        "pagination": {
+          "$ref": "#/definitions/v1PaginationMetadata"
+        }
+      }
+    },
+    "v1Repository": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "fullPath": {
+          "type": "string"
+        },
+        "cloneUrl": {
+          "type": "string",
+          "title": "git clone url (https/ssh)"
+        },
+        "defaultBranch": {
+          "type": "string"
+        },
+        "provider": {
+          "$ref": "#/definitions/v1VCSProvider"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "applicationId": {
+          "type": "integer",
+          "format": "int64",
+          "title": "membership attributes"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "description": "Git repository configuration defining the source code origin for application revisions. Contains repository identification, clone URL, authentication details (masked), branch/tag defaults, and metadata for ASPM scanning and historical analysis.",
+      "title": "Git repository"
+    },
+    "v1RevisionsQueryResponse": {
+      "type": "object",
+      "properties": {
+        "revisionsList": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/dolinaApplicationV1Revision"
           }
         },
         "pagination": {
@@ -2019,6 +2945,16 @@
           "format": "uint64"
         }
       }
+    },
+    "v1VCSProvider": {
+      "type": "string",
+      "enum": [
+        "VCS_PROVIDER_UNSPECIFIED",
+        "VCS_PROVIDER_GITHUB",
+        "VCS_PROVIDER_GITLAB",
+        "VCS_PROVIDER_BITBUCKET"
+      ],
+      "default": "VCS_PROVIDER_UNSPECIFIED"
     },
     "v1Vendor": {
       "type": "object",

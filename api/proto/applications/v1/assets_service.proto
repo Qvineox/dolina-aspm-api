@@ -1,0 +1,62 @@
+edition = "2023";
+
+package dolina.application.v1;
+
+option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/applications/v1;application_v1";
+option features.(pb.go).api_level = API_OPAQUE;
+option features.field_presence = IMPLICIT;
+
+import "google/protobuf/go_features.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+import "applications/v1/asset.proto";
+import "common/v1/pagination.proto";
+import "common/v1/sort.proto";
+import "common/v1/uuid.proto";
+
+service AssetsService {
+  rpc GetAssetByUUID(common.v1.UUID) returns (Asset) {
+    option (google.api.http) = {
+      get: "/api/v1/assets/{uuid}"
+    };
+  }
+
+  rpc GetApplicationAssets(common.v1.ID) returns (AssetsQueryResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/applications/{id}/assets"
+    };
+  }
+
+  rpc GetAssetsByQueryFilter(AssetsQueryFilter) returns (AssetsQueryResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/assets"
+    };
+  }
+
+  rpc DeleteAssetByUUID(common.v1.UUID) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/api/v1/assets/{uuid}"
+    };
+  }
+}
+
+message AssetsQueryFilter {
+  string name = 1;
+  string revision = 2;
+
+  repeated string label_list = 3;
+  AssetType asset_type = 4;
+
+  uint32 application_id = 5;
+  string repository_uuid = 6;
+
+  common.v1.Pagination pagination = 7;
+  common.v1.Sort sort = 8;
+}
+
+message AssetsQueryResponse {
+  repeated Asset assets_list = 1;
+
+  common.v1.PaginationMetadata pagination = 2;
+}

@@ -26,13 +26,14 @@ const (
 
 type Revision struct {
 	state                     protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_RevisionId     uint32                 `protobuf:"varint,1,opt,name=revision_id,json=revisionId"`
+	xxx_hidden_Uuid           *string                `protobuf:"bytes,1,opt,name=uuid"`
 	xxx_hidden_ApplicationId  uint32                 `protobuf:"varint,2,opt,name=application_id,json=applicationId"`
-	xxx_hidden_Ref            string                 `protobuf:"bytes,3,opt,name=ref"`
-	xxx_hidden_RepositoryUuid *string                `protobuf:"bytes,4,opt,name=repository_uuid,json=repositoryUuid"`
-	xxx_hidden_ArtifactUuid   *string                `protobuf:"bytes,5,opt,name=artifact_uuid,json=artifactUuid"`
-	xxx_hidden_Commit         *v1.Commit             `protobuf:"bytes,6,opt,name=commit"`
-	xxx_hidden_Repository     *v1.Repository         `protobuf:"bytes,7,opt,name=repository"`
+	xxx_hidden_AssetUuid      uint32                 `protobuf:"varint,3,opt,name=asset_uuid,json=assetUuid"`
+	xxx_hidden_Ref            string                 `protobuf:"bytes,4,opt,name=ref"`
+	xxx_hidden_RepositoryUuid *string                `protobuf:"bytes,5,opt,name=repository_uuid,json=repositoryUuid"`
+	xxx_hidden_ArtifactUuid   *string                `protobuf:"bytes,6,opt,name=artifact_uuid,json=artifactUuid"`
+	xxx_hidden_Commit         *v1.Commit             `protobuf:"bytes,7,opt,name=commit"`
+	xxx_hidden_Repository     *v1.Repository         `protobuf:"bytes,8,opt,name=repository"`
 	xxx_hidden_CreatedAt      *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=created_at,json=createdAt"`
 	xxx_hidden_UpdatedAt      *timestamppb.Timestamp `protobuf:"bytes,11,opt,name=updated_at,json=updatedAt"`
 	XXX_raceDetectHookData    protoimpl.RaceDetectHookData
@@ -66,16 +67,26 @@ func (x *Revision) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *Revision) GetRevisionId() uint32 {
+func (x *Revision) GetUuid() string {
 	if x != nil {
-		return x.xxx_hidden_RevisionId
+		if x.xxx_hidden_Uuid != nil {
+			return *x.xxx_hidden_Uuid
+		}
+		return ""
 	}
-	return 0
+	return ""
 }
 
 func (x *Revision) GetApplicationId() uint32 {
 	if x != nil {
 		return x.xxx_hidden_ApplicationId
+	}
+	return 0
+}
+
+func (x *Revision) GetAssetUuid() uint32 {
+	if x != nil {
+		return x.xxx_hidden_AssetUuid
 	}
 	return 0
 }
@@ -135,13 +146,17 @@ func (x *Revision) GetUpdatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
-func (x *Revision) SetRevisionId(v uint32) {
-	x.xxx_hidden_RevisionId = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 9)
+func (x *Revision) SetUuid(v string) {
+	x.xxx_hidden_Uuid = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 10)
 }
 
 func (x *Revision) SetApplicationId(v uint32) {
 	x.xxx_hidden_ApplicationId = v
+}
+
+func (x *Revision) SetAssetUuid(v uint32) {
+	x.xxx_hidden_AssetUuid = v
 }
 
 func (x *Revision) SetRef(v string) {
@@ -150,12 +165,12 @@ func (x *Revision) SetRef(v string) {
 
 func (x *Revision) SetRepositoryUuid(v string) {
 	x.xxx_hidden_RepositoryUuid = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 10)
 }
 
 func (x *Revision) SetArtifactUuid(v string) {
 	x.xxx_hidden_ArtifactUuid = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 10)
 }
 
 func (x *Revision) SetCommit(v *v1.Commit) {
@@ -174,7 +189,7 @@ func (x *Revision) SetUpdatedAt(v *timestamppb.Timestamp) {
 	x.xxx_hidden_UpdatedAt = v
 }
 
-func (x *Revision) HasRevisionId() bool {
+func (x *Revision) HasUuid() bool {
 	if x == nil {
 		return false
 	}
@@ -185,14 +200,14 @@ func (x *Revision) HasRepositoryUuid() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
 }
 
 func (x *Revision) HasArtifactUuid() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
 }
 
 func (x *Revision) HasCommit() bool {
@@ -223,18 +238,18 @@ func (x *Revision) HasUpdatedAt() bool {
 	return x.xxx_hidden_UpdatedAt != nil
 }
 
-func (x *Revision) ClearRevisionId() {
+func (x *Revision) ClearUuid() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
-	x.xxx_hidden_RevisionId = 0
+	x.xxx_hidden_Uuid = nil
 }
 
 func (x *Revision) ClearRepositoryUuid() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
 	x.xxx_hidden_RepositoryUuid = nil
 }
 
 func (x *Revision) ClearArtifactUuid() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
 	x.xxx_hidden_ArtifactUuid = nil
 }
 
@@ -259,8 +274,9 @@ type Revision_builder struct {
 
 	// sequential internal revision number
 	// there can be multiple revisions from same git ref
-	RevisionId    *uint32
+	Uuid          *string
 	ApplicationId uint32
+	AssetUuid     uint32
 	// branch name, tag, or ref/spec (e.g., "main", "v1.2.3"),
 	// contextual branch/tag showing deployment context.
 	Ref            string
@@ -276,18 +292,19 @@ func (b0 Revision_builder) Build() *Revision {
 	m0 := &Revision{}
 	b, x := &b0, m0
 	_, _ = b, x
-	if b.RevisionId != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 9)
-		x.xxx_hidden_RevisionId = *b.RevisionId
+	if b.Uuid != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 10)
+		x.xxx_hidden_Uuid = b.Uuid
 	}
 	x.xxx_hidden_ApplicationId = b.ApplicationId
+	x.xxx_hidden_AssetUuid = b.AssetUuid
 	x.xxx_hidden_Ref = b.Ref
 	if b.RepositoryUuid != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 10)
 		x.xxx_hidden_RepositoryUuid = b.RepositoryUuid
 	}
 	if b.ArtifactUuid != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 10)
 		x.xxx_hidden_ArtifactUuid = b.ArtifactUuid
 	}
 	x.xxx_hidden_Commit = b.Commit
@@ -301,24 +318,25 @@ var File_applications_v1_revision_proto protoreflect.FileDescriptor
 
 const file_applications_v1_revision_proto_rawDesc = "" +
 	"\n" +
-	"\x1eapplications/v1/revision.proto\x12\x15dolina.application.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a!google/protobuf/go_features.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17git/v1/repository.proto\x1a\x13git/v1/commit.proto\"\x87\x06\n" +
-	"\bRevision\x12&\n" +
-	"\vrevision_id\x18\x01 \x01(\rB\x05\xaa\x01\x02\b\x01R\n" +
-	"revisionId\x12%\n" +
-	"\x0eapplication_id\x18\x02 \x01(\rR\rapplicationId\x12\x10\n" +
-	"\x03ref\x18\x03 \x01(\tR\x03ref\x12.\n" +
-	"\x0frepository_uuid\x18\x04 \x01(\tB\x05\xaa\x01\x02\b\x01R\x0erepositoryUuid\x12*\n" +
-	"\rartifact_uuid\x18\x05 \x01(\tB\x05\xaa\x01\x02\b\x01R\fartifactUuid\x124\n" +
-	"\x06commit\x18\x06 \x01(\v2\x15.dolina.git.v1.CommitB\x05\xaa\x01\x02\b\x01R\x06commit\x12@\n" +
+	"\x1eapplications/v1/revision.proto\x12\x15dolina.application.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a!google/protobuf/go_features.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17git/v1/repository.proto\x1a\x13git/v1/commit.proto\"\x9f\x06\n" +
+	"\bRevision\x12\x19\n" +
+	"\x04uuid\x18\x01 \x01(\tB\x05\xaa\x01\x02\b\x01R\x04uuid\x12%\n" +
+	"\x0eapplication_id\x18\x02 \x01(\rR\rapplicationId\x12\x1d\n" +
 	"\n" +
-	"repository\x18\a \x01(\v2\x19.dolina.git.v1.RepositoryB\x05\xaa\x01\x02\b\x01R\n" +
+	"asset_uuid\x18\x03 \x01(\rR\tassetUuid\x12\x10\n" +
+	"\x03ref\x18\x04 \x01(\tR\x03ref\x12.\n" +
+	"\x0frepository_uuid\x18\x05 \x01(\tB\x05\xaa\x01\x02\b\x01R\x0erepositoryUuid\x12*\n" +
+	"\rartifact_uuid\x18\x06 \x01(\tB\x05\xaa\x01\x02\b\x01R\fartifactUuid\x124\n" +
+	"\x06commit\x18\a \x01(\v2\x15.dolina.git.v1.CommitB\x05\xaa\x01\x02\b\x01R\x06commit\x12@\n" +
+	"\n" +
+	"repository\x18\b \x01(\v2\x19.dolina.git.v1.RepositoryB\x05\xaa\x01\x02\b\x01R\n" +
 	"repository\x129\n" +
 	"\n" +
 	"created_at\x18\n" +
 	" \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12@\n" +
 	"\n" +
-	"updated_at\x18\v \x01(\v2\x1a.google.protobuf.TimestampB\x05\xaa\x01\x02\b\x01R\tupdatedAt:\xc8\x02\x92A\xc4\x02\n" +
-	"\xc1\x02*\bRevision2\xb4\x02Application revision representing a specific historical state in the application's version control history. Contains exact commit hash, branch/tag reference, commit timestamp, optional author metadata, and change summary for tracking security posture evolution across application versions in the ASPM system.B_ZSgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/applications/v1;application_v1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
+	"updated_at\x18\v \x01(\v2\x1a.google.protobuf.TimestampB\x05\xaa\x01\x02\b\x01R\tupdatedAt:\xce\x02\x92A\xca\x02\n" +
+	"\xc7\x02*\bRevision2\xba\x02Application revision representing a specific historical state in the application asset's version control history. Contains exact commit hash, branch/tag reference, commit timestamp, optional author metadata, and change summary for tracking security posture evolution across application versions in the ASPM system.B_ZSgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/applications/v1;application_v1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
 
 var file_applications_v1_revision_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_applications_v1_revision_proto_goTypes = []any{

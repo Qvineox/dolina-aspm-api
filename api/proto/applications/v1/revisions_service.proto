@@ -1,0 +1,72 @@
+edition = "2023";
+
+package dolina.application.v1;
+
+option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/applications/v1;application_v1";
+option features.(pb.go).api_level = API_OPAQUE;
+option features.field_presence = IMPLICIT;
+
+import "google/protobuf/go_features.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+import "applications/v1/revision.proto";
+import "common/v1/pagination.proto";
+import "common/v1/sort.proto";
+import "common/v1/uuid.proto";
+
+service RevisionsService {
+  rpc GetRevisionByUUID(common.v1.UUID) returns (Revision) {
+    option (google.api.http) = {
+      get: "/api/v1/revisions/{uuid}"
+    };
+  }
+
+  rpc GetAssetRevisions(common.v1.UUID) returns (RevisionsQueryResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/assets/{uuid}/revisions"
+    };
+  }
+
+  rpc GetAssetsByQueryFilter(RevisionsQueryFilter) returns (RevisionsQueryResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/revisions"
+    };
+  }
+
+  rpc DeleteRevisionByUUID(common.v1.UUID) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/api/v1/revisions/{uuid}"
+    };
+  }
+
+  rpc DeleteAssetRevisions(common.v1.UUID) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/api/v1/assets/{uuid}/revisions"
+    };
+  }
+}
+
+message RevisionsQueryFilter {
+  string name = 1;
+  string revision = 2;
+
+  repeated string label_list = 3;
+
+  uint32 application_id = 5;
+  string asset_uuid = 6;
+
+  string repository_uuid = 7;
+  string artifact_uuid = 8;
+
+  string commit_hash = 9;
+
+  common.v1.Pagination pagination = 10;
+  common.v1.Sort sort = 11;
+}
+
+message RevisionsQueryResponse {
+  repeated Revision revisions_list = 1;
+
+  common.v1.PaginationMetadata pagination = 2;
+}

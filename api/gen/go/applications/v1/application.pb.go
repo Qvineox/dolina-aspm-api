@@ -25,18 +25,22 @@ const (
 )
 
 type Application struct {
-	state                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Id          uint32                 `protobuf:"varint,1,opt,name=id"`
-	xxx_hidden_Suid        string                 `protobuf:"bytes,2,opt,name=suid"`
-	xxx_hidden_Name        string                 `protobuf:"bytes,3,opt,name=name"`
-	xxx_hidden_Description string                 `protobuf:"bytes,4,opt,name=description"`
-	xxx_hidden_Url         string                 `protobuf:"bytes,5,opt,name=url"`
-	xxx_hidden_LabelList   []string               `protobuf:"bytes,6,rep,name=label_list,json=labelList"`
-	xxx_hidden_Purl        *v1.PURL               `protobuf:"bytes,7,opt,name=purl"`
-	xxx_hidden_CreatedAt   *timestamppb.Timestamp `protobuf:"bytes,20,opt,name=created_at,json=createdAt"`
-	xxx_hidden_UpdatedAt   *timestamppb.Timestamp `protobuf:"bytes,21,opt,name=updated_at,json=updatedAt"`
-	unknownFields          protoimpl.UnknownFields
-	sizeCache              protoimpl.SizeCache
+	state                    protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Id            uint32                 `protobuf:"varint,1,opt,name=id"`
+	xxx_hidden_Suid          string                 `protobuf:"bytes,2,opt,name=suid"`
+	xxx_hidden_Name          string                 `protobuf:"bytes,3,opt,name=name"`
+	xxx_hidden_Description   string                 `protobuf:"bytes,4,opt,name=description"`
+	xxx_hidden_Url           *string                `protobuf:"bytes,5,opt,name=url"`
+	xxx_hidden_LabelList     []string               `protobuf:"bytes,6,rep,name=label_list,json=labelList"`
+	xxx_hidden_Purl          *v1.PURL               `protobuf:"bytes,7,opt,name=purl"`
+	xxx_hidden_RiskProfileId uint32                 `protobuf:"varint,8,opt,name=risk_profile_id,json=riskProfileId"`
+	xxx_hidden_ProjectId     uint32                 `protobuf:"varint,9,opt,name=project_id,json=projectId"`
+	xxx_hidden_CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,20,opt,name=created_at,json=createdAt"`
+	xxx_hidden_UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,21,opt,name=updated_at,json=updatedAt"`
+	XXX_raceDetectHookData   protoimpl.RaceDetectHookData
+	XXX_presence             [1]uint32
+	unknownFields            protoimpl.UnknownFields
+	sizeCache                protoimpl.SizeCache
 }
 
 func (x *Application) Reset() {
@@ -94,7 +98,10 @@ func (x *Application) GetDescription() string {
 
 func (x *Application) GetUrl() string {
 	if x != nil {
-		return x.xxx_hidden_Url
+		if x.xxx_hidden_Url != nil {
+			return *x.xxx_hidden_Url
+		}
+		return ""
 	}
 	return ""
 }
@@ -111,6 +118,20 @@ func (x *Application) GetPurl() *v1.PURL {
 		return x.xxx_hidden_Purl
 	}
 	return nil
+}
+
+func (x *Application) GetRiskProfileId() uint32 {
+	if x != nil {
+		return x.xxx_hidden_RiskProfileId
+	}
+	return 0
+}
+
+func (x *Application) GetProjectId() uint32 {
+	if x != nil {
+		return x.xxx_hidden_ProjectId
+	}
+	return 0
 }
 
 func (x *Application) GetCreatedAt() *timestamppb.Timestamp {
@@ -144,7 +165,8 @@ func (x *Application) SetDescription(v string) {
 }
 
 func (x *Application) SetUrl(v string) {
-	x.xxx_hidden_Url = v
+	x.xxx_hidden_Url = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 11)
 }
 
 func (x *Application) SetLabelList(v []string) {
@@ -155,12 +177,27 @@ func (x *Application) SetPurl(v *v1.PURL) {
 	x.xxx_hidden_Purl = v
 }
 
+func (x *Application) SetRiskProfileId(v uint32) {
+	x.xxx_hidden_RiskProfileId = v
+}
+
+func (x *Application) SetProjectId(v uint32) {
+	x.xxx_hidden_ProjectId = v
+}
+
 func (x *Application) SetCreatedAt(v *timestamppb.Timestamp) {
 	x.xxx_hidden_CreatedAt = v
 }
 
 func (x *Application) SetUpdatedAt(v *timestamppb.Timestamp) {
 	x.xxx_hidden_UpdatedAt = v
+}
+
+func (x *Application) HasUrl() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
 }
 
 func (x *Application) HasPurl() bool {
@@ -184,6 +221,11 @@ func (x *Application) HasUpdatedAt() bool {
 	return x.xxx_hidden_UpdatedAt != nil
 }
 
+func (x *Application) ClearUrl() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
+	x.xxx_hidden_Url = nil
+}
+
 func (x *Application) ClearPurl() {
 	x.xxx_hidden_Purl = nil
 }
@@ -203,13 +245,15 @@ type Application_builder struct {
 	Suid        string
 	Name        string
 	Description string
-	Url         string
+	Url         *string
 	// user-defined text labels to categorize applications, e.g. backend/frontend and others
 	LabelList []string
 	// application component purl
-	Purl      *v1.PURL
-	CreatedAt *timestamppb.Timestamp
-	UpdatedAt *timestamppb.Timestamp
+	Purl          *v1.PURL
+	RiskProfileId uint32
+	ProjectId     uint32
+	CreatedAt     *timestamppb.Timestamp
+	UpdatedAt     *timestamppb.Timestamp
 }
 
 func (b0 Application_builder) Build() *Application {
@@ -220,9 +264,14 @@ func (b0 Application_builder) Build() *Application {
 	x.xxx_hidden_Suid = b.Suid
 	x.xxx_hidden_Name = b.Name
 	x.xxx_hidden_Description = b.Description
-	x.xxx_hidden_Url = b.Url
+	if b.Url != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 11)
+		x.xxx_hidden_Url = b.Url
+	}
 	x.xxx_hidden_LabelList = b.LabelList
 	x.xxx_hidden_Purl = b.Purl
+	x.xxx_hidden_RiskProfileId = b.RiskProfileId
+	x.xxx_hidden_ProjectId = b.ProjectId
 	x.xxx_hidden_CreatedAt = b.CreatedAt
 	x.xxx_hidden_UpdatedAt = b.UpdatedAt
 	return m0
@@ -232,16 +281,19 @@ var File_applications_v1_application_proto protoreflect.FileDescriptor
 
 const file_applications_v1_application_proto_rawDesc = "" +
 	"\n" +
-	"!applications/v1/application.proto\x12\x15dolina.application.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a!google/protobuf/go_features.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18components/v1/purl.proto\"\xcb\x05\n" +
+	"!applications/v1/application.proto\x12\x15dolina.application.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a!google/protobuf/go_features.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18components/v1/purl.proto\"\x99\x06\n" +
 	"\vApplication\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x12\n" +
 	"\x04suid\x18\x02 \x01(\tR\x04suid\x12\x12\n" +
 	"\x04name\x18\x03 \x01(\tR\x04name\x12 \n" +
-	"\vdescription\x18\x04 \x01(\tR\vdescription\x12\x10\n" +
-	"\x03url\x18\x05 \x01(\tR\x03url\x12\x1d\n" +
+	"\vdescription\x18\x04 \x01(\tR\vdescription\x12\x17\n" +
+	"\x03url\x18\x05 \x01(\tB\x05\xaa\x01\x02\b\x01R\x03url\x12\x1d\n" +
 	"\n" +
 	"label_list\x18\x06 \x03(\tR\tlabelList\x125\n" +
-	"\x04purl\x18\a \x01(\v2\x1a.dolina.components.v1.PURLB\x05\xaa\x01\x02\b\x01R\x04purl\x129\n" +
+	"\x04purl\x18\a \x01(\v2\x1a.dolina.components.v1.PURLB\x05\xaa\x01\x02\b\x01R\x04purl\x12&\n" +
+	"\x0frisk_profile_id\x18\b \x01(\rR\rriskProfileId\x12\x1d\n" +
+	"\n" +
+	"project_id\x18\t \x01(\rR\tprojectId\x129\n" +
 	"\n" +
 	"created_at\x18\x14 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12@\n" +
 	"\n" +

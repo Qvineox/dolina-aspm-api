@@ -1,0 +1,53 @@
+edition = "2023";
+
+package dolina.application.v1;
+
+option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/applications/v1;application_v1";
+option features.(pb.go).api_level = API_OPAQUE;
+option features.field_presence = EXPLICIT;
+
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "google/protobuf/go_features.proto";
+import "google/protobuf/timestamp.proto";
+
+import "components/v1/purl.proto";
+
+message Asset {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Asset"
+      description: "Technical entity associated with an application, such as source code, container image, build "
+          "artifact, dependency package, or other deployable component. Includes identification, type, version or "
+          "digest, source reference, ownership metadata, and timestamps for tracking inventory, traceability, and "
+          "security analysis within the ASPM system."
+    }
+  };
+
+  string uuid = 1;
+  string suid = 2;
+
+  string revision = 3;
+
+  components.v1.PURL purl = 4 [features.field_presence = EXPLICIT];
+
+  string name = 5;
+  string description = 6;
+  string url = 7 [features.field_presence = EXPLICIT];
+
+  // user-defined text labels to categorize applications, e.g. backend/frontend and others
+  repeated string label_list = 8;
+  AssetType asset_type = 9 [features.field_presence = EXPLICIT];
+
+  uint32 application_id = 10 [features.field_presence = EXPLICIT];
+  string repository_uuid = 11 [features.field_presence = EXPLICIT];
+
+  google.protobuf.Timestamp created_at = 20;
+  google.protobuf.Timestamp updated_at = 21 [features.field_presence = EXPLICIT];
+}
+
+enum AssetType {
+  ASSET_TYPE_UNSPECIFIED = 0;
+
+  ASSET_TYPE_GIT_REPOSITORY = 1;
+  ASSET_TYPE_CONTAINER_IMAGE = 2;
+}

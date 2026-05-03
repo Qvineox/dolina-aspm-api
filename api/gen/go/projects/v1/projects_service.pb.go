@@ -7,10 +7,12 @@
 package projects_v1
 
 import (
+	v1 "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/common/v1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	_ "google.golang.org/protobuf/types/gofeaturespb"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	reflect "reflect"
 	unsafe "unsafe"
 )
@@ -23,13 +25,13 @@ const (
 )
 
 type ProjectsQueryFilter struct {
-	state           protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Id   uint64                 `protobuf:"varint,1,opt,name=id"`
-	xxx_hidden_Slug string                 `protobuf:"bytes,2,opt,name=slug"`
-	xxx_hidden_Name string                 `protobuf:"bytes,3,opt,name=name"`
-	xxx_hidden_Tags []string               `protobuf:"bytes,4,rep,name=tags"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	state                 protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Name       string                 `protobuf:"bytes,1,opt,name=name"`
+	xxx_hidden_LabelList  []string               `protobuf:"bytes,2,rep,name=label_list,json=labelList"`
+	xxx_hidden_Pagination *v1.Pagination         `protobuf:"bytes,3,opt,name=pagination"`
+	xxx_hidden_Sort       *v1.Sort               `protobuf:"bytes,4,opt,name=sort"`
+	unknownFields         protoimpl.UnknownFields
+	sizeCache             protoimpl.SizeCache
 }
 
 func (x *ProjectsQueryFilter) Reset() {
@@ -57,20 +59,6 @@ func (x *ProjectsQueryFilter) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *ProjectsQueryFilter) GetId() uint64 {
-	if x != nil {
-		return x.xxx_hidden_Id
-	}
-	return 0
-}
-
-func (x *ProjectsQueryFilter) GetSlug() string {
-	if x != nil {
-		return x.xxx_hidden_Slug
-	}
-	return ""
-}
-
 func (x *ProjectsQueryFilter) GetName() string {
 	if x != nil {
 		return x.xxx_hidden_Name
@@ -78,70 +66,107 @@ func (x *ProjectsQueryFilter) GetName() string {
 	return ""
 }
 
-func (x *ProjectsQueryFilter) GetTags() []string {
+func (x *ProjectsQueryFilter) GetLabelList() []string {
 	if x != nil {
-		return x.xxx_hidden_Tags
+		return x.xxx_hidden_LabelList
 	}
 	return nil
 }
 
-func (x *ProjectsQueryFilter) SetId(v uint64) {
-	x.xxx_hidden_Id = v
+func (x *ProjectsQueryFilter) GetPagination() *v1.Pagination {
+	if x != nil {
+		return x.xxx_hidden_Pagination
+	}
+	return nil
 }
 
-func (x *ProjectsQueryFilter) SetSlug(v string) {
-	x.xxx_hidden_Slug = v
+func (x *ProjectsQueryFilter) GetSort() *v1.Sort {
+	if x != nil {
+		return x.xxx_hidden_Sort
+	}
+	return nil
 }
 
 func (x *ProjectsQueryFilter) SetName(v string) {
 	x.xxx_hidden_Name = v
 }
 
-func (x *ProjectsQueryFilter) SetTags(v []string) {
-	x.xxx_hidden_Tags = v
+func (x *ProjectsQueryFilter) SetLabelList(v []string) {
+	x.xxx_hidden_LabelList = v
+}
+
+func (x *ProjectsQueryFilter) SetPagination(v *v1.Pagination) {
+	x.xxx_hidden_Pagination = v
+}
+
+func (x *ProjectsQueryFilter) SetSort(v *v1.Sort) {
+	x.xxx_hidden_Sort = v
+}
+
+func (x *ProjectsQueryFilter) HasPagination() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Pagination != nil
+}
+
+func (x *ProjectsQueryFilter) HasSort() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Sort != nil
+}
+
+func (x *ProjectsQueryFilter) ClearPagination() {
+	x.xxx_hidden_Pagination = nil
+}
+
+func (x *ProjectsQueryFilter) ClearSort() {
+	x.xxx_hidden_Sort = nil
 }
 
 type ProjectsQueryFilter_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	Id   uint64
-	Slug string
-	Name string
-	Tags []string
+	Name       string
+	LabelList  []string
+	Pagination *v1.Pagination
+	Sort       *v1.Sort
 }
 
 func (b0 ProjectsQueryFilter_builder) Build() *ProjectsQueryFilter {
 	m0 := &ProjectsQueryFilter{}
 	b, x := &b0, m0
 	_, _ = b, x
-	x.xxx_hidden_Id = b.Id
-	x.xxx_hidden_Slug = b.Slug
 	x.xxx_hidden_Name = b.Name
-	x.xxx_hidden_Tags = b.Tags
+	x.xxx_hidden_LabelList = b.LabelList
+	x.xxx_hidden_Pagination = b.Pagination
+	x.xxx_hidden_Sort = b.Sort
 	return m0
 }
 
-type ProjectsList struct {
-	state           protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_List *[]*Project            `protobuf:"bytes,1,rep,name=list"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+type ProjectsQueryResponse struct {
+	state                   protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_ProjectsList *[]*Project            `protobuf:"bytes,1,rep,name=projects_list,json=projectsList"`
+	xxx_hidden_Pagination   *v1.PaginationMetadata `protobuf:"bytes,2,opt,name=pagination"`
+	unknownFields           protoimpl.UnknownFields
+	sizeCache               protoimpl.SizeCache
 }
 
-func (x *ProjectsList) Reset() {
-	*x = ProjectsList{}
+func (x *ProjectsQueryResponse) Reset() {
+	*x = ProjectsQueryResponse{}
 	mi := &file_projects_v1_projects_service_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ProjectsList) String() string {
+func (x *ProjectsQueryResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ProjectsList) ProtoMessage() {}
+func (*ProjectsQueryResponse) ProtoMessage() {}
 
-func (x *ProjectsList) ProtoReflect() protoreflect.Message {
+func (x *ProjectsQueryResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_projects_v1_projects_service_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -153,158 +178,54 @@ func (x *ProjectsList) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *ProjectsList) GetList() []*Project {
+func (x *ProjectsQueryResponse) GetProjectsList() []*Project {
 	if x != nil {
-		if x.xxx_hidden_List != nil {
-			return *x.xxx_hidden_List
+		if x.xxx_hidden_ProjectsList != nil {
+			return *x.xxx_hidden_ProjectsList
 		}
 	}
 	return nil
 }
 
-func (x *ProjectsList) SetList(v []*Project) {
-	x.xxx_hidden_List = &v
+func (x *ProjectsQueryResponse) GetPagination() *v1.PaginationMetadata {
+	if x != nil {
+		return x.xxx_hidden_Pagination
+	}
+	return nil
 }
 
-type ProjectsList_builder struct {
+func (x *ProjectsQueryResponse) SetProjectsList(v []*Project) {
+	x.xxx_hidden_ProjectsList = &v
+}
+
+func (x *ProjectsQueryResponse) SetPagination(v *v1.PaginationMetadata) {
+	x.xxx_hidden_Pagination = v
+}
+
+func (x *ProjectsQueryResponse) HasPagination() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Pagination != nil
+}
+
+func (x *ProjectsQueryResponse) ClearPagination() {
+	x.xxx_hidden_Pagination = nil
+}
+
+type ProjectsQueryResponse_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	List []*Project
+	ProjectsList []*Project
+	Pagination   *v1.PaginationMetadata
 }
 
-func (b0 ProjectsList_builder) Build() *ProjectsList {
-	m0 := &ProjectsList{}
+func (b0 ProjectsQueryResponse_builder) Build() *ProjectsQueryResponse {
+	m0 := &ProjectsQueryResponse{}
 	b, x := &b0, m0
 	_, _ = b, x
-	x.xxx_hidden_List = &b.List
-	return m0
-}
-
-type ProjectRevisionQuery struct {
-	state                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_ProjectId   uint64                 `protobuf:"varint,1,opt,name=project_id,json=projectId"`
-	xxx_hidden_ProjectSlug string                 `protobuf:"bytes,2,opt,name=project_slug,json=projectSlug"`
-	xxx_hidden_RevisionId  uint64                 `protobuf:"varint,3,opt,name=revision_id,json=revisionId"`
-	unknownFields          protoimpl.UnknownFields
-	sizeCache              protoimpl.SizeCache
-}
-
-func (x *ProjectRevisionQuery) Reset() {
-	*x = ProjectRevisionQuery{}
-	mi := &file_projects_v1_projects_service_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ProjectRevisionQuery) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ProjectRevisionQuery) ProtoMessage() {}
-
-func (x *ProjectRevisionQuery) ProtoReflect() protoreflect.Message {
-	mi := &file_projects_v1_projects_service_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-func (x *ProjectRevisionQuery) GetProjectId() uint64 {
-	if x != nil {
-		return x.xxx_hidden_ProjectId
-	}
-	return 0
-}
-
-func (x *ProjectRevisionQuery) GetProjectSlug() string {
-	if x != nil {
-		return x.xxx_hidden_ProjectSlug
-	}
-	return ""
-}
-
-func (x *ProjectRevisionQuery) GetRevisionId() uint64 {
-	if x != nil {
-		return x.xxx_hidden_RevisionId
-	}
-	return 0
-}
-
-func (x *ProjectRevisionQuery) SetProjectId(v uint64) {
-	x.xxx_hidden_ProjectId = v
-}
-
-func (x *ProjectRevisionQuery) SetProjectSlug(v string) {
-	x.xxx_hidden_ProjectSlug = v
-}
-
-func (x *ProjectRevisionQuery) SetRevisionId(v uint64) {
-	x.xxx_hidden_RevisionId = v
-}
-
-type ProjectRevisionQuery_builder struct {
-	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
-
-	ProjectId   uint64
-	ProjectSlug string
-	RevisionId  uint64
-}
-
-func (b0 ProjectRevisionQuery_builder) Build() *ProjectRevisionQuery {
-	m0 := &ProjectRevisionQuery{}
-	b, x := &b0, m0
-	_, _ = b, x
-	x.xxx_hidden_ProjectId = b.ProjectId
-	x.xxx_hidden_ProjectSlug = b.ProjectSlug
-	x.xxx_hidden_RevisionId = b.RevisionId
-	return m0
-}
-
-type ProjectCreateOptions struct {
-	state         protoimpl.MessageState `protogen:"opaque.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ProjectCreateOptions) Reset() {
-	*x = ProjectCreateOptions{}
-	mi := &file_projects_v1_projects_service_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ProjectCreateOptions) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ProjectCreateOptions) ProtoMessage() {}
-
-func (x *ProjectCreateOptions) ProtoReflect() protoreflect.Message {
-	mi := &file_projects_v1_projects_service_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-type ProjectCreateOptions_builder struct {
-	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
-
-}
-
-func (b0 ProjectCreateOptions_builder) Build() *ProjectCreateOptions {
-	m0 := &ProjectCreateOptions{}
-	b, x := &b0, m0
-	_, _ = b, x
+	x.xxx_hidden_ProjectsList = &b.ProjectsList
+	x.xxx_hidden_Pagination = b.Pagination
 	return m0
 }
 
@@ -312,58 +233,55 @@ var File_projects_v1_projects_service_proto protoreflect.FileDescriptor
 
 const file_projects_v1_projects_service_proto_rawDesc = "" +
 	"\n" +
-	"\"projects/v1/projects_service.proto\x12\x12dolina.projects.v1\x1a!google/protobuf/go_features.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x19projects/v1/project.proto\x1a\x1aprojects/v1/revision.proto\"a\n" +
-	"\x13ProjectsQueryFilter\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x12\n" +
-	"\x04slug\x18\x02 \x01(\tR\x04slug\x12\x12\n" +
-	"\x04name\x18\x03 \x01(\tR\x04name\x12\x12\n" +
-	"\x04tags\x18\x04 \x03(\tR\x04tags\"?\n" +
-	"\fProjectsList\x12/\n" +
-	"\x04list\x18\x01 \x03(\v2\x1b.dolina.projects.v1.ProjectR\x04list\"y\n" +
-	"\x14ProjectRevisionQuery\x12\x1d\n" +
+	"\"projects/v1/projects_service.proto\x12\x12dolina.projects.v1\x1a!google/protobuf/go_features.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1acommon/v1/pagination.proto\x1a\x19projects/v1/project.proto\x1a\x14common/v1/sort.proto\x1a\x14common/v1/uuid.proto\"\xb2\x01\n" +
+	"\x13ProjectsQueryFilter\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12\x1d\n" +
 	"\n" +
-	"project_id\x18\x01 \x01(\x04R\tprojectId\x12!\n" +
-	"\fproject_slug\x18\x02 \x01(\tR\vprojectSlug\x12\x1f\n" +
-	"\vrevision_id\x18\x03 \x01(\x04R\n" +
-	"revisionId\"\x16\n" +
-	"\x14ProjectCreateOptions2\xbf\x06\n" +
-	"\x0eProjectService\x12\x7f\n" +
-	"\x18GetProjectsByQueryFilter\x12'.dolina.projects.v1.ProjectsQueryFilter\x1a .dolina.projects.v1.ProjectsList\"\x18\x82\xd3\xe4\x93\x02\x12\x12\x10/api/v1/projects\x12\x8c\x01\n" +
+	"label_list\x18\x02 \x03(\tR\tlabelList\x12<\n" +
 	"\n" +
-	"GetProject\x12'.dolina.projects.v1.ProjectsQueryFilter\x1a\x1b.dolina.projects.v1.Project\"8\x82\xd3\xe4\x93\x022Z\x19\x12\x17/api/v1/projects/{slug}\x12\x15/api/v1/projects/{id}\x12f\n" +
-	"\rCreateProject\x12\x1b.dolina.projects.v1.Project\x1a\x1b.dolina.projects.v1.Project\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\x1a\x10/api/v1/projects\x12k\n" +
-	"\rUpdateProject\x12\x1b.dolina.projects.v1.Project\x1a\x1b.dolina.projects.v1.Project\" \x82\xd3\xe4\x93\x02\x1a:\x01*2\x15/api/v1/projects/{id}\x12\xc2\x01\n" +
-	"\x12GetProjectRevision\x12(.dolina.projects.v1.ProjectRevisionQuery\x1a\x1c.dolina.projects.v1.Revision\"d\x82\xd3\xe4\x93\x02^Z/\x12-/api/v1/projects/{project_slug}/{revision_id}\x12+/api/v1/projects/{project_id}/{revision_id}\x12\x82\x01\n" +
-	"\x15UpdateProjectRevision\x12\x1c.dolina.projects.v1.Revision\x1a\x1c.dolina.projects.v1.Revision\"-\x82\xd3\xe4\x93\x02':\x01*2\"/api/v1/projects/{project_id}/{id}BXZLgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/projects/v1;projects_v1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
+	"pagination\x18\x03 \x01(\v2\x1c.dolina.common.v1.PaginationR\n" +
+	"pagination\x12*\n" +
+	"\x04sort\x18\x04 \x01(\v2\x16.dolina.common.v1.SortR\x04sort\"\x9f\x01\n" +
+	"\x15ProjectsQueryResponse\x12@\n" +
+	"\rprojects_list\x18\x01 \x03(\v2\x1b.dolina.projects.v1.ProjectR\fprojectsList\x12D\n" +
+	"\n" +
+	"pagination\x18\x02 \x01(\v2$.dolina.common.v1.PaginationMetadataR\n" +
+	"pagination2\xc0\x03\n" +
+	"\x0eProjectService\x12b\n" +
+	"\x0eGetProjectByID\x12\x14.dolina.common.v1.ID\x1a\x1b.dolina.projects.v1.Project\"\x1d\x82\xd3\xe4\x93\x02\x17\x12\x15/api/v1/projects/{id}\x12\x87\x01\n" +
+	"\x17GetProjectByQueryFilter\x12'.dolina.projects.v1.ProjectsQueryFilter\x1a).dolina.projects.v1.ProjectsQueryResponse\"\x18\x82\xd3\xe4\x93\x02\x12\x12\x10/api/v1/projects\x12^\n" +
+	"\rCreateProject\x12\x1b.dolina.projects.v1.Project\x1a\x14.dolina.common.v1.ID\"\x1a\x82\xd3\xe4\x93\x02\x14:\x01*\x1a\x0f/api/v1/project\x12`\n" +
+	"\x11DeleteProjectByID\x12\x14.dolina.common.v1.ID\x1a\x16.google.protobuf.Empty\"\x1d\x82\xd3\xe4\x93\x02\x17*\x15/api/v1/projects/{id}BXZLgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/projects/v1;projects_v1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
 
-var file_projects_v1_projects_service_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_projects_v1_projects_service_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_projects_v1_projects_service_proto_goTypes = []any{
-	(*ProjectsQueryFilter)(nil),  // 0: dolina.projects.v1.ProjectsQueryFilter
-	(*ProjectsList)(nil),         // 1: dolina.projects.v1.ProjectsList
-	(*ProjectRevisionQuery)(nil), // 2: dolina.projects.v1.ProjectRevisionQuery
-	(*ProjectCreateOptions)(nil), // 3: dolina.projects.v1.ProjectCreateOptions
-	(*Project)(nil),              // 4: dolina.projects.v1.Project
-	(*Revision)(nil),             // 5: dolina.projects.v1.Revision
+	(*ProjectsQueryFilter)(nil),   // 0: dolina.projects.v1.ProjectsQueryFilter
+	(*ProjectsQueryResponse)(nil), // 1: dolina.projects.v1.ProjectsQueryResponse
+	(*v1.Pagination)(nil),         // 2: dolina.common.v1.Pagination
+	(*v1.Sort)(nil),               // 3: dolina.common.v1.Sort
+	(*Project)(nil),               // 4: dolina.projects.v1.Project
+	(*v1.PaginationMetadata)(nil), // 5: dolina.common.v1.PaginationMetadata
+	(*v1.ID)(nil),                 // 6: dolina.common.v1.ID
+	(*emptypb.Empty)(nil),         // 7: google.protobuf.Empty
 }
 var file_projects_v1_projects_service_proto_depIdxs = []int32{
-	4, // 0: dolina.projects.v1.ProjectsList.list:type_name -> dolina.projects.v1.Project
-	0, // 1: dolina.projects.v1.ProjectService.GetProjectsByQueryFilter:input_type -> dolina.projects.v1.ProjectsQueryFilter
-	0, // 2: dolina.projects.v1.ProjectService.GetProject:input_type -> dolina.projects.v1.ProjectsQueryFilter
-	4, // 3: dolina.projects.v1.ProjectService.CreateProject:input_type -> dolina.projects.v1.Project
-	4, // 4: dolina.projects.v1.ProjectService.UpdateProject:input_type -> dolina.projects.v1.Project
-	2, // 5: dolina.projects.v1.ProjectService.GetProjectRevision:input_type -> dolina.projects.v1.ProjectRevisionQuery
-	5, // 6: dolina.projects.v1.ProjectService.UpdateProjectRevision:input_type -> dolina.projects.v1.Revision
-	1, // 7: dolina.projects.v1.ProjectService.GetProjectsByQueryFilter:output_type -> dolina.projects.v1.ProjectsList
-	4, // 8: dolina.projects.v1.ProjectService.GetProject:output_type -> dolina.projects.v1.Project
-	4, // 9: dolina.projects.v1.ProjectService.CreateProject:output_type -> dolina.projects.v1.Project
-	4, // 10: dolina.projects.v1.ProjectService.UpdateProject:output_type -> dolina.projects.v1.Project
-	5, // 11: dolina.projects.v1.ProjectService.GetProjectRevision:output_type -> dolina.projects.v1.Revision
-	5, // 12: dolina.projects.v1.ProjectService.UpdateProjectRevision:output_type -> dolina.projects.v1.Revision
-	7, // [7:13] is the sub-list for method output_type
-	1, // [1:7] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	2, // 0: dolina.projects.v1.ProjectsQueryFilter.pagination:type_name -> dolina.common.v1.Pagination
+	3, // 1: dolina.projects.v1.ProjectsQueryFilter.sort:type_name -> dolina.common.v1.Sort
+	4, // 2: dolina.projects.v1.ProjectsQueryResponse.projects_list:type_name -> dolina.projects.v1.Project
+	5, // 3: dolina.projects.v1.ProjectsQueryResponse.pagination:type_name -> dolina.common.v1.PaginationMetadata
+	6, // 4: dolina.projects.v1.ProjectService.GetProjectByID:input_type -> dolina.common.v1.ID
+	0, // 5: dolina.projects.v1.ProjectService.GetProjectByQueryFilter:input_type -> dolina.projects.v1.ProjectsQueryFilter
+	4, // 6: dolina.projects.v1.ProjectService.CreateProject:input_type -> dolina.projects.v1.Project
+	6, // 7: dolina.projects.v1.ProjectService.DeleteProjectByID:input_type -> dolina.common.v1.ID
+	4, // 8: dolina.projects.v1.ProjectService.GetProjectByID:output_type -> dolina.projects.v1.Project
+	1, // 9: dolina.projects.v1.ProjectService.GetProjectByQueryFilter:output_type -> dolina.projects.v1.ProjectsQueryResponse
+	6, // 10: dolina.projects.v1.ProjectService.CreateProject:output_type -> dolina.common.v1.ID
+	7, // 11: dolina.projects.v1.ProjectService.DeleteProjectByID:output_type -> google.protobuf.Empty
+	8, // [8:12] is the sub-list for method output_type
+	4, // [4:8] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_projects_v1_projects_service_proto_init() }
@@ -372,14 +290,13 @@ func file_projects_v1_projects_service_proto_init() {
 		return
 	}
 	file_projects_v1_project_proto_init()
-	file_projects_v1_revision_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_projects_v1_projects_service_proto_rawDesc), len(file_projects_v1_projects_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

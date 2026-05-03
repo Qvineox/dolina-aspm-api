@@ -24,18 +24,21 @@ message Application {
   };
 
   uint32 id = 1;
-  string suid = 2; // string unique identifier
+  string suid = 2;
 
   string name = 3;
   string description = 4;
 
-  string url = 5;
+  string url = 5 [features.field_presence = EXPLICIT];
 
   // user-defined text labels to categorize applications, e.g. backend/frontend and others
   repeated string label_list = 6;
 
   // application component purl
   components.v1.PURL purl = 7 [features.field_presence = EXPLICIT];
+
+  uint32 risk_profile_id = 8;
+  uint32 project_id = 9;
 
   // todo: vsc links
   // gitlab/github integration

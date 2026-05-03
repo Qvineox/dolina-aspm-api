@@ -23,20 +23,16 @@ const (
 )
 
 type Project struct {
-	state                   protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Id           uint64                 `protobuf:"varint,1,opt,name=id"`
-	xxx_hidden_Name         string                 `protobuf:"bytes,2,opt,name=name"`
-	xxx_hidden_Slug         string                 `protobuf:"bytes,3,opt,name=slug"`
-	xxx_hidden_Description  string                 `protobuf:"bytes,4,opt,name=description"`
-	xxx_hidden_TagList      []string               `protobuf:"bytes,5,rep,name=tag_list,json=tagList"`
-	xxx_hidden_VcsUrl       *string                `protobuf:"bytes,6,opt,name=vcs_url,json=vcsUrl"`
-	xxx_hidden_RevisionList *[]*Project            `protobuf:"bytes,7,rep,name=revision_list,json=revisionList"`
-	xxx_hidden_CreatedAt    *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=created_at,json=createdAt"`
-	xxx_hidden_UpdatedAt    *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=updated_at,json=updatedAt"`
-	XXX_raceDetectHookData  protoimpl.RaceDetectHookData
-	XXX_presence            [1]uint32
-	unknownFields           protoimpl.UnknownFields
-	sizeCache               protoimpl.SizeCache
+	state                  protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Id          uint64                 `protobuf:"varint,1,opt,name=id"`
+	xxx_hidden_Name        string                 `protobuf:"bytes,2,opt,name=name"`
+	xxx_hidden_Suid        string                 `protobuf:"bytes,3,opt,name=suid"`
+	xxx_hidden_Description string                 `protobuf:"bytes,4,opt,name=description"`
+	xxx_hidden_LabelList   []string               `protobuf:"bytes,5,rep,name=label_list,json=labelList"`
+	xxx_hidden_CreatedAt   *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=created_at,json=createdAt"`
+	xxx_hidden_UpdatedAt   *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=updated_at,json=updatedAt"`
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *Project) Reset() {
@@ -78,9 +74,9 @@ func (x *Project) GetName() string {
 	return ""
 }
 
-func (x *Project) GetSlug() string {
+func (x *Project) GetSuid() string {
 	if x != nil {
-		return x.xxx_hidden_Slug
+		return x.xxx_hidden_Suid
 	}
 	return ""
 }
@@ -92,28 +88,9 @@ func (x *Project) GetDescription() string {
 	return ""
 }
 
-func (x *Project) GetTagList() []string {
+func (x *Project) GetLabelList() []string {
 	if x != nil {
-		return x.xxx_hidden_TagList
-	}
-	return nil
-}
-
-func (x *Project) GetVcsUrl() string {
-	if x != nil {
-		if x.xxx_hidden_VcsUrl != nil {
-			return *x.xxx_hidden_VcsUrl
-		}
-		return ""
-	}
-	return ""
-}
-
-func (x *Project) GetRevisionList() []*Project {
-	if x != nil {
-		if x.xxx_hidden_RevisionList != nil {
-			return *x.xxx_hidden_RevisionList
-		}
+		return x.xxx_hidden_LabelList
 	}
 	return nil
 }
@@ -140,25 +117,16 @@ func (x *Project) SetName(v string) {
 	x.xxx_hidden_Name = v
 }
 
-func (x *Project) SetSlug(v string) {
-	x.xxx_hidden_Slug = v
+func (x *Project) SetSuid(v string) {
+	x.xxx_hidden_Suid = v
 }
 
 func (x *Project) SetDescription(v string) {
 	x.xxx_hidden_Description = v
 }
 
-func (x *Project) SetTagList(v []string) {
-	x.xxx_hidden_TagList = v
-}
-
-func (x *Project) SetVcsUrl(v string) {
-	x.xxx_hidden_VcsUrl = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 9)
-}
-
-func (x *Project) SetRevisionList(v []*Project) {
-	x.xxx_hidden_RevisionList = &v
+func (x *Project) SetLabelList(v []string) {
+	x.xxx_hidden_LabelList = v
 }
 
 func (x *Project) SetCreatedAt(v *timestamppb.Timestamp) {
@@ -167,13 +135,6 @@ func (x *Project) SetCreatedAt(v *timestamppb.Timestamp) {
 
 func (x *Project) SetUpdatedAt(v *timestamppb.Timestamp) {
 	x.xxx_hidden_UpdatedAt = v
-}
-
-func (x *Project) HasVcsUrl() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
 }
 
 func (x *Project) HasCreatedAt() bool {
@@ -190,11 +151,6 @@ func (x *Project) HasUpdatedAt() bool {
 	return x.xxx_hidden_UpdatedAt != nil
 }
 
-func (x *Project) ClearVcsUrl() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
-	x.xxx_hidden_VcsUrl = nil
-}
-
 func (x *Project) ClearCreatedAt() {
 	x.xxx_hidden_CreatedAt = nil
 }
@@ -206,15 +162,13 @@ func (x *Project) ClearUpdatedAt() {
 type Project_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	Id           uint64
-	Name         string
-	Slug         string
-	Description  string
-	TagList      []string
-	VcsUrl       *string
-	RevisionList []*Project
-	CreatedAt    *timestamppb.Timestamp
-	UpdatedAt    *timestamppb.Timestamp
+	Id          uint64
+	Name        string
+	Suid        string
+	Description string
+	LabelList   []string
+	CreatedAt   *timestamppb.Timestamp
+	UpdatedAt   *timestamppb.Timestamp
 }
 
 func (b0 Project_builder) Build() *Project {
@@ -223,14 +177,9 @@ func (b0 Project_builder) Build() *Project {
 	_, _ = b, x
 	x.xxx_hidden_Id = b.Id
 	x.xxx_hidden_Name = b.Name
-	x.xxx_hidden_Slug = b.Slug
+	x.xxx_hidden_Suid = b.Suid
 	x.xxx_hidden_Description = b.Description
-	x.xxx_hidden_TagList = b.TagList
-	if b.VcsUrl != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 9)
-		x.xxx_hidden_VcsUrl = b.VcsUrl
-	}
-	x.xxx_hidden_RevisionList = &b.RevisionList
+	x.xxx_hidden_LabelList = b.LabelList
 	x.xxx_hidden_CreatedAt = b.CreatedAt
 	x.xxx_hidden_UpdatedAt = b.UpdatedAt
 	return m0
@@ -240,15 +189,14 @@ var File_projects_v1_project_proto protoreflect.FileDescriptor
 
 const file_projects_v1_project_proto_rawDesc = "" +
 	"\n" +
-	"\x19projects/v1/project.proto\x12\x12dolina.projects.v1\x1a!google/protobuf/go_features.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xe4\x02\n" +
+	"\x19projects/v1/project.proto\x12\x12dolina.projects.v1\x1a!google/protobuf/go_features.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x86\x02\n" +
 	"\aProject\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x12\n" +
-	"\x04slug\x18\x03 \x01(\tR\x04slug\x12 \n" +
-	"\vdescription\x18\x04 \x01(\tR\vdescription\x12\x19\n" +
-	"\btag_list\x18\x05 \x03(\tR\atagList\x12\x1e\n" +
-	"\avcs_url\x18\x06 \x01(\tB\x05\xaa\x01\x02\b\x01R\x06vcsUrl\x12@\n" +
-	"\rrevision_list\x18\a \x03(\v2\x1b.dolina.projects.v1.ProjectR\frevisionList\x12@\n" +
+	"\x04suid\x18\x03 \x01(\tR\x04suid\x12 \n" +
+	"\vdescription\x18\x04 \x01(\tR\vdescription\x12\x1d\n" +
+	"\n" +
+	"label_list\x18\x05 \x03(\tR\tlabelList\x12@\n" +
 	"\n" +
 	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampB\x05\xaa\x01\x02\b\x01R\tcreatedAt\x12@\n" +
 	"\n" +
@@ -260,14 +208,13 @@ var file_projects_v1_project_proto_goTypes = []any{
 	(*timestamppb.Timestamp)(nil), // 1: google.protobuf.Timestamp
 }
 var file_projects_v1_project_proto_depIdxs = []int32{
-	0, // 0: dolina.projects.v1.Project.revision_list:type_name -> dolina.projects.v1.Project
-	1, // 1: dolina.projects.v1.Project.created_at:type_name -> google.protobuf.Timestamp
-	1, // 2: dolina.projects.v1.Project.updated_at:type_name -> google.protobuf.Timestamp
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	1, // 0: dolina.projects.v1.Project.created_at:type_name -> google.protobuf.Timestamp
+	1, // 1: dolina.projects.v1.Project.updated_at:type_name -> google.protobuf.Timestamp
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_projects_v1_project_proto_init() }

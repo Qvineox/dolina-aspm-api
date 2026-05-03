@@ -7,11 +7,13 @@
 package analysis_v1
 
 import (
+	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
 	v1 "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/common/v1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	_ "google.golang.org/protobuf/types/gofeaturespb"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	reflect "reflect"
 	unsafe "unsafe"
 )
@@ -23,33 +25,292 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type AnalysisWindowsQueryFilter struct {
+	state                 protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_State      AnalysisState          `protobuf:"varint,1,opt,name=state,enum=dolina.analysis.v1.AnalysisState"`
+	xxx_hidden_PipelineId string                 `protobuf:"bytes,2,opt,name=pipeline_id,json=pipelineId"`
+	xxx_hidden_AssetSuid  string                 `protobuf:"bytes,3,opt,name=asset_suid,json=assetSuid"`
+	xxx_hidden_Pagination *v1.Pagination         `protobuf:"bytes,4,opt,name=pagination"`
+	xxx_hidden_Sort       *v1.Sort               `protobuf:"bytes,5,opt,name=sort"`
+	unknownFields         protoimpl.UnknownFields
+	sizeCache             protoimpl.SizeCache
+}
+
+func (x *AnalysisWindowsQueryFilter) Reset() {
+	*x = AnalysisWindowsQueryFilter{}
+	mi := &file_analysis_v1_analysis_service_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AnalysisWindowsQueryFilter) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AnalysisWindowsQueryFilter) ProtoMessage() {}
+
+func (x *AnalysisWindowsQueryFilter) ProtoReflect() protoreflect.Message {
+	mi := &file_analysis_v1_analysis_service_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+func (x *AnalysisWindowsQueryFilter) GetState() AnalysisState {
+	if x != nil {
+		return x.xxx_hidden_State
+	}
+	return AnalysisState_ANALYSIS_STATE_UNSPECIFIED
+}
+
+func (x *AnalysisWindowsQueryFilter) GetPipelineId() string {
+	if x != nil {
+		return x.xxx_hidden_PipelineId
+	}
+	return ""
+}
+
+func (x *AnalysisWindowsQueryFilter) GetAssetSuid() string {
+	if x != nil {
+		return x.xxx_hidden_AssetSuid
+	}
+	return ""
+}
+
+func (x *AnalysisWindowsQueryFilter) GetPagination() *v1.Pagination {
+	if x != nil {
+		return x.xxx_hidden_Pagination
+	}
+	return nil
+}
+
+func (x *AnalysisWindowsQueryFilter) GetSort() *v1.Sort {
+	if x != nil {
+		return x.xxx_hidden_Sort
+	}
+	return nil
+}
+
+func (x *AnalysisWindowsQueryFilter) SetState(v AnalysisState) {
+	x.xxx_hidden_State = v
+}
+
+func (x *AnalysisWindowsQueryFilter) SetPipelineId(v string) {
+	x.xxx_hidden_PipelineId = v
+}
+
+func (x *AnalysisWindowsQueryFilter) SetAssetSuid(v string) {
+	x.xxx_hidden_AssetSuid = v
+}
+
+func (x *AnalysisWindowsQueryFilter) SetPagination(v *v1.Pagination) {
+	x.xxx_hidden_Pagination = v
+}
+
+func (x *AnalysisWindowsQueryFilter) SetSort(v *v1.Sort) {
+	x.xxx_hidden_Sort = v
+}
+
+func (x *AnalysisWindowsQueryFilter) HasPagination() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Pagination != nil
+}
+
+func (x *AnalysisWindowsQueryFilter) HasSort() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Sort != nil
+}
+
+func (x *AnalysisWindowsQueryFilter) ClearPagination() {
+	x.xxx_hidden_Pagination = nil
+}
+
+func (x *AnalysisWindowsQueryFilter) ClearSort() {
+	x.xxx_hidden_Sort = nil
+}
+
+type AnalysisWindowsQueryFilter_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	State      AnalysisState
+	PipelineId string
+	AssetSuid  string
+	Pagination *v1.Pagination
+	Sort       *v1.Sort
+}
+
+func (b0 AnalysisWindowsQueryFilter_builder) Build() *AnalysisWindowsQueryFilter {
+	m0 := &AnalysisWindowsQueryFilter{}
+	b, x := &b0, m0
+	_, _ = b, x
+	x.xxx_hidden_State = b.State
+	x.xxx_hidden_PipelineId = b.PipelineId
+	x.xxx_hidden_AssetSuid = b.AssetSuid
+	x.xxx_hidden_Pagination = b.Pagination
+	x.xxx_hidden_Sort = b.Sort
+	return m0
+}
+
+type AnalysisWindowsQueryResponse struct {
+	state                          protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_AnalysisWindowsList *[]*AnalysisWindow     `protobuf:"bytes,1,rep,name=analysis_windows_list,json=analysisWindowsList"`
+	xxx_hidden_Pagination          *v1.PaginationMetadata `protobuf:"bytes,2,opt,name=pagination"`
+	unknownFields                  protoimpl.UnknownFields
+	sizeCache                      protoimpl.SizeCache
+}
+
+func (x *AnalysisWindowsQueryResponse) Reset() {
+	*x = AnalysisWindowsQueryResponse{}
+	mi := &file_analysis_v1_analysis_service_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AnalysisWindowsQueryResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AnalysisWindowsQueryResponse) ProtoMessage() {}
+
+func (x *AnalysisWindowsQueryResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_analysis_v1_analysis_service_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+func (x *AnalysisWindowsQueryResponse) GetAnalysisWindowsList() []*AnalysisWindow {
+	if x != nil {
+		if x.xxx_hidden_AnalysisWindowsList != nil {
+			return *x.xxx_hidden_AnalysisWindowsList
+		}
+	}
+	return nil
+}
+
+func (x *AnalysisWindowsQueryResponse) GetPagination() *v1.PaginationMetadata {
+	if x != nil {
+		return x.xxx_hidden_Pagination
+	}
+	return nil
+}
+
+func (x *AnalysisWindowsQueryResponse) SetAnalysisWindowsList(v []*AnalysisWindow) {
+	x.xxx_hidden_AnalysisWindowsList = &v
+}
+
+func (x *AnalysisWindowsQueryResponse) SetPagination(v *v1.PaginationMetadata) {
+	x.xxx_hidden_Pagination = v
+}
+
+func (x *AnalysisWindowsQueryResponse) HasPagination() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Pagination != nil
+}
+
+func (x *AnalysisWindowsQueryResponse) ClearPagination() {
+	x.xxx_hidden_Pagination = nil
+}
+
+type AnalysisWindowsQueryResponse_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	AnalysisWindowsList []*AnalysisWindow
+	Pagination          *v1.PaginationMetadata
+}
+
+func (b0 AnalysisWindowsQueryResponse_builder) Build() *AnalysisWindowsQueryResponse {
+	m0 := &AnalysisWindowsQueryResponse{}
+	b, x := &b0, m0
+	_, _ = b, x
+	x.xxx_hidden_AnalysisWindowsList = &b.AnalysisWindowsList
+	x.xxx_hidden_Pagination = b.Pagination
+	return m0
+}
+
 var File_analysis_v1_analysis_service_proto protoreflect.FileDescriptor
 
 const file_analysis_v1_analysis_service_proto_rawDesc = "" +
 	"\n" +
-	"\"analysis/v1/analysis_service.proto\x12\x12dolina.analysis.v1\x1a!google/protobuf/go_features.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1aanalysis/v1/analysis.proto\x1a\x18analysis/v1/window.proto\x1a\x14common/v1/uuid.proto2\xf3\x02\n" +
+	"\"analysis/v1/analysis_service.proto\x12\x12dolina.analysis.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a!google/protobuf/go_features.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1aanalysis/v1/analysis.proto\x1a\x18analysis/v1/window.proto\x1a\x1acommon/v1/pagination.proto\x1a\x14common/v1/sort.proto\x1a\x14common/v1/uuid.proto\"\xff\x01\n" +
+	"\x1aAnalysisWindowsQueryFilter\x127\n" +
+	"\x05state\x18\x01 \x01(\x0e2!.dolina.analysis.v1.AnalysisStateR\x05state\x12\x1f\n" +
+	"\vpipeline_id\x18\x02 \x01(\tR\n" +
+	"pipelineId\x12\x1d\n" +
+	"\n" +
+	"asset_suid\x18\x03 \x01(\tR\tassetSuid\x12<\n" +
+	"\n" +
+	"pagination\x18\x04 \x01(\v2\x1c.dolina.common.v1.PaginationR\n" +
+	"pagination\x12*\n" +
+	"\x04sort\x18\x05 \x01(\v2\x16.dolina.common.v1.SortR\x04sort\"\xbc\x01\n" +
+	"\x1cAnalysisWindowsQueryResponse\x12V\n" +
+	"\x15analysis_windows_list\x18\x01 \x03(\v2\".dolina.analysis.v1.AnalysisWindowR\x13analysisWindowsList\x12D\n" +
+	"\n" +
+	"pagination\x18\x02 \x01(\v2$.dolina.common.v1.PaginationMetadataR\n" +
+	"pagination2\xaf\t\n" +
 	"\x0fAnalysisService\x12b\n" +
 	"\x14AnalyzeReportsStream\x12\".dolina.analysis.v1.AnalyzeOptions\x1a\".dolina.analysis.v1.AnalysisWindow\"\x000\x01\x12|\n" +
-	"\x0eAnalyzeReports\x12\".dolina.analysis.v1.AnalyzeOptions\x1a\".dolina.analysis.v1.AnalysisWindow\"\"\x82\xd3\xe4\x93\x02\x1c:\x01*\"\x17/api/v1/reports/analyze\x12~\n" +
-	"\x17GetAnalysisWindowByUUID\x12\x16.dolina.common.v1.UUID\x1a\".dolina.analysis.v1.AnalysisWindow\"'\x82\xd3\xe4\x93\x02!\x12\x1f/api/v1/analysis/windows/{uuid}BXZLgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/analysis/v1;analysis_v1\x92\x03\a\xd2>\x02\x10\x03\b\x01b\beditionsp\xe8\a"
+	"\x0eAnalyzeReports\x12\".dolina.analysis.v1.AnalyzeOptions\x1a\".dolina.analysis.v1.AnalysisWindow\"\"\x82\xd3\xe4\x93\x02\x1c:\x01*\"\x17/api/v1/reports/analyze\x12x\n" +
+	"\x15GetAnalysisWindowByID\x12\x14.dolina.common.v1.ID\x1a\".dolina.analysis.v1.AnalysisWindow\"%\x82\xd3\xe4\x93\x02\x1f\x12\x1d/api/v1/analysis/windows/{id}\x12\xa5\x01\n" +
+	"\x1fGetAnalysisWindowsByQueryFilter\x12..dolina.analysis.v1.AnalysisWindowsQueryFilter\x1a0.dolina.analysis.v1.AnalysisWindowsQueryResponse\" \x82\xd3\xe4\x93\x02\x1a\x12\x18/api/v1/analysis/windows\x12\xf0\x01\n" +
+	"\x10ForceWindowStart\x12\x14.dolina.common.v1.ID\x1a\x16.google.protobuf.Empty\"\xad\x01\x92A\x7f\x1a}Forces an active analysis window into closed state and immediately starts it, setting the priority to the max available value\x82\xd3\xe4\x93\x02%\"#/api/v1/analysis/windows/{id}/start\x12\xf8\x01\n" +
+	"\x14ForceAllWindowsStart\x12\x16.google.protobuf.Empty\x1a\x16.google.protobuf.Empty\"\xaf\x01\x92A\x85\x01\x1a\x82\x01Forces all active analysis windows into closed state and immediately starts them, setting the priority to the max available values\x82\xd3\xe4\x93\x02 \"\x1e/api/v1/analysis/windows/start\x12\xa9\x01\n" +
+	"\x11CancelWindowStart\x12\x14.dolina.common.v1.ID\x1a\x16.google.protobuf.Empty\"f\x92A7\x1a5Cancels analysis window start, if its not started yet\x82\xd3\xe4\x93\x02&\"$/api/v1/analysis/windows/{id}/cancelBXZLgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/analysis/v1;analysis_v1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
 
+var file_analysis_v1_analysis_service_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_analysis_v1_analysis_service_proto_goTypes = []any{
-	(*AnalyzeOptions)(nil), // 0: dolina.analysis.v1.AnalyzeOptions
-	(*v1.UUID)(nil),        // 1: dolina.common.v1.UUID
-	(*AnalysisWindow)(nil), // 2: dolina.analysis.v1.AnalysisWindow
+	(*AnalysisWindowsQueryFilter)(nil),   // 0: dolina.analysis.v1.AnalysisWindowsQueryFilter
+	(*AnalysisWindowsQueryResponse)(nil), // 1: dolina.analysis.v1.AnalysisWindowsQueryResponse
+	(AnalysisState)(0),                   // 2: dolina.analysis.v1.AnalysisState
+	(*v1.Pagination)(nil),                // 3: dolina.common.v1.Pagination
+	(*v1.Sort)(nil),                      // 4: dolina.common.v1.Sort
+	(*AnalysisWindow)(nil),               // 5: dolina.analysis.v1.AnalysisWindow
+	(*v1.PaginationMetadata)(nil),        // 6: dolina.common.v1.PaginationMetadata
+	(*AnalyzeOptions)(nil),               // 7: dolina.analysis.v1.AnalyzeOptions
+	(*v1.ID)(nil),                        // 8: dolina.common.v1.ID
+	(*emptypb.Empty)(nil),                // 9: google.protobuf.Empty
 }
 var file_analysis_v1_analysis_service_proto_depIdxs = []int32{
-	0, // 0: dolina.analysis.v1.AnalysisService.AnalyzeReportsStream:input_type -> dolina.analysis.v1.AnalyzeOptions
-	0, // 1: dolina.analysis.v1.AnalysisService.AnalyzeReports:input_type -> dolina.analysis.v1.AnalyzeOptions
-	1, // 2: dolina.analysis.v1.AnalysisService.GetAnalysisWindowByUUID:input_type -> dolina.common.v1.UUID
-	2, // 3: dolina.analysis.v1.AnalysisService.AnalyzeReportsStream:output_type -> dolina.analysis.v1.AnalysisWindow
-	2, // 4: dolina.analysis.v1.AnalysisService.AnalyzeReports:output_type -> dolina.analysis.v1.AnalysisWindow
-	2, // 5: dolina.analysis.v1.AnalysisService.GetAnalysisWindowByUUID:output_type -> dolina.analysis.v1.AnalysisWindow
-	3, // [3:6] is the sub-list for method output_type
-	0, // [0:3] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	2,  // 0: dolina.analysis.v1.AnalysisWindowsQueryFilter.state:type_name -> dolina.analysis.v1.AnalysisState
+	3,  // 1: dolina.analysis.v1.AnalysisWindowsQueryFilter.pagination:type_name -> dolina.common.v1.Pagination
+	4,  // 2: dolina.analysis.v1.AnalysisWindowsQueryFilter.sort:type_name -> dolina.common.v1.Sort
+	5,  // 3: dolina.analysis.v1.AnalysisWindowsQueryResponse.analysis_windows_list:type_name -> dolina.analysis.v1.AnalysisWindow
+	6,  // 4: dolina.analysis.v1.AnalysisWindowsQueryResponse.pagination:type_name -> dolina.common.v1.PaginationMetadata
+	7,  // 5: dolina.analysis.v1.AnalysisService.AnalyzeReportsStream:input_type -> dolina.analysis.v1.AnalyzeOptions
+	7,  // 6: dolina.analysis.v1.AnalysisService.AnalyzeReports:input_type -> dolina.analysis.v1.AnalyzeOptions
+	8,  // 7: dolina.analysis.v1.AnalysisService.GetAnalysisWindowByID:input_type -> dolina.common.v1.ID
+	0,  // 8: dolina.analysis.v1.AnalysisService.GetAnalysisWindowsByQueryFilter:input_type -> dolina.analysis.v1.AnalysisWindowsQueryFilter
+	8,  // 9: dolina.analysis.v1.AnalysisService.ForceWindowStart:input_type -> dolina.common.v1.ID
+	9,  // 10: dolina.analysis.v1.AnalysisService.ForceAllWindowsStart:input_type -> google.protobuf.Empty
+	8,  // 11: dolina.analysis.v1.AnalysisService.CancelWindowStart:input_type -> dolina.common.v1.ID
+	5,  // 12: dolina.analysis.v1.AnalysisService.AnalyzeReportsStream:output_type -> dolina.analysis.v1.AnalysisWindow
+	5,  // 13: dolina.analysis.v1.AnalysisService.AnalyzeReports:output_type -> dolina.analysis.v1.AnalysisWindow
+	5,  // 14: dolina.analysis.v1.AnalysisService.GetAnalysisWindowByID:output_type -> dolina.analysis.v1.AnalysisWindow
+	1,  // 15: dolina.analysis.v1.AnalysisService.GetAnalysisWindowsByQueryFilter:output_type -> dolina.analysis.v1.AnalysisWindowsQueryResponse
+	9,  // 16: dolina.analysis.v1.AnalysisService.ForceWindowStart:output_type -> google.protobuf.Empty
+	9,  // 17: dolina.analysis.v1.AnalysisService.ForceAllWindowsStart:output_type -> google.protobuf.Empty
+	9,  // 18: dolina.analysis.v1.AnalysisService.CancelWindowStart:output_type -> google.protobuf.Empty
+	12, // [12:19] is the sub-list for method output_type
+	5,  // [5:12] is the sub-list for method input_type
+	5,  // [5:5] is the sub-list for extension type_name
+	5,  // [5:5] is the sub-list for extension extendee
+	0,  // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_analysis_v1_analysis_service_proto_init() }
@@ -65,12 +326,13 @@ func file_analysis_v1_analysis_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_analysis_v1_analysis_service_proto_rawDesc), len(file_analysis_v1_analysis_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   0,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
 		GoTypes:           file_analysis_v1_analysis_service_proto_goTypes,
 		DependencyIndexes: file_analysis_v1_analysis_service_proto_depIdxs,
+		MessageInfos:      file_analysis_v1_analysis_service_proto_msgTypes,
 	}.Build()
 	File_analysis_v1_analysis_service_proto = out.File
 	file_analysis_v1_analysis_service_proto_goTypes = nil

@@ -297,11 +297,13 @@ func (x *FileUpload) ClearContent() {
 type FileUpload_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
+	// file_name is later will be processed into unique file key
 	FileName string
 	// base64 encoded file contents
 	Content []byte
 	TagMap  map[string]string
-	// when use_versioning is set to true file is saved with original name, without unique suffix this option will override existing file and increment its version
+	// when use_versioning is set to true file is saved with original name,
+	// without unique suffix this option will override existing file and increment its version
 	UseVersioning bool
 }
 

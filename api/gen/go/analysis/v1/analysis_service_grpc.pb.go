@@ -12,6 +12,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -20,9 +21,13 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	AnalysisService_AnalyzeReportsStream_FullMethodName    = "/dolina.analysis.v1.AnalysisService/AnalyzeReportsStream"
-	AnalysisService_AnalyzeReports_FullMethodName          = "/dolina.analysis.v1.AnalysisService/AnalyzeReports"
-	AnalysisService_GetAnalysisWindowByUUID_FullMethodName = "/dolina.analysis.v1.AnalysisService/GetAnalysisWindowByUUID"
+	AnalysisService_AnalyzeReportsStream_FullMethodName            = "/dolina.analysis.v1.AnalysisService/AnalyzeReportsStream"
+	AnalysisService_AnalyzeReports_FullMethodName                  = "/dolina.analysis.v1.AnalysisService/AnalyzeReports"
+	AnalysisService_GetAnalysisWindowByID_FullMethodName           = "/dolina.analysis.v1.AnalysisService/GetAnalysisWindowByID"
+	AnalysisService_GetAnalysisWindowsByQueryFilter_FullMethodName = "/dolina.analysis.v1.AnalysisService/GetAnalysisWindowsByQueryFilter"
+	AnalysisService_ForceWindowStart_FullMethodName                = "/dolina.analysis.v1.AnalysisService/ForceWindowStart"
+	AnalysisService_ForceAllWindowsStart_FullMethodName            = "/dolina.analysis.v1.AnalysisService/ForceAllWindowsStart"
+	AnalysisService_CancelWindowStart_FullMethodName               = "/dolina.analysis.v1.AnalysisService/CancelWindowStart"
 )
 
 // AnalysisServiceClient is the client API for AnalysisService service.
@@ -33,7 +38,11 @@ type AnalysisServiceClient interface {
 	AnalyzeReportsStream(ctx context.Context, in *AnalyzeOptions, opts ...grpc.CallOption) (grpc.ServerStreamingClient[AnalysisWindow], error)
 	// Asynchronous method for reports analysis, always returns uncertain info
 	AnalyzeReports(ctx context.Context, in *AnalyzeOptions, opts ...grpc.CallOption) (*AnalysisWindow, error)
-	GetAnalysisWindowByUUID(ctx context.Context, in *v1.UUID, opts ...grpc.CallOption) (*AnalysisWindow, error)
+	GetAnalysisWindowByID(ctx context.Context, in *v1.ID, opts ...grpc.CallOption) (*AnalysisWindow, error)
+	GetAnalysisWindowsByQueryFilter(ctx context.Context, in *AnalysisWindowsQueryFilter, opts ...grpc.CallOption) (*AnalysisWindowsQueryResponse, error)
+	ForceWindowStart(ctx context.Context, in *v1.ID, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	ForceAllWindowsStart(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	CancelWindowStart(ctx context.Context, in *v1.ID, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type analysisServiceClient struct {
@@ -73,10 +82,50 @@ func (c *analysisServiceClient) AnalyzeReports(ctx context.Context, in *AnalyzeO
 	return out, nil
 }
 
-func (c *analysisServiceClient) GetAnalysisWindowByUUID(ctx context.Context, in *v1.UUID, opts ...grpc.CallOption) (*AnalysisWindow, error) {
+func (c *analysisServiceClient) GetAnalysisWindowByID(ctx context.Context, in *v1.ID, opts ...grpc.CallOption) (*AnalysisWindow, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(AnalysisWindow)
-	err := c.cc.Invoke(ctx, AnalysisService_GetAnalysisWindowByUUID_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, AnalysisService_GetAnalysisWindowByID_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *analysisServiceClient) GetAnalysisWindowsByQueryFilter(ctx context.Context, in *AnalysisWindowsQueryFilter, opts ...grpc.CallOption) (*AnalysisWindowsQueryResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AnalysisWindowsQueryResponse)
+	err := c.cc.Invoke(ctx, AnalysisService_GetAnalysisWindowsByQueryFilter_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *analysisServiceClient) ForceWindowStart(ctx context.Context, in *v1.ID, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, AnalysisService_ForceWindowStart_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *analysisServiceClient) ForceAllWindowsStart(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, AnalysisService_ForceAllWindowsStart_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *analysisServiceClient) CancelWindowStart(ctx context.Context, in *v1.ID, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, AnalysisService_CancelWindowStart_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -91,7 +140,11 @@ type AnalysisServiceServer interface {
 	AnalyzeReportsStream(*AnalyzeOptions, grpc.ServerStreamingServer[AnalysisWindow]) error
 	// Asynchronous method for reports analysis, always returns uncertain info
 	AnalyzeReports(context.Context, *AnalyzeOptions) (*AnalysisWindow, error)
-	GetAnalysisWindowByUUID(context.Context, *v1.UUID) (*AnalysisWindow, error)
+	GetAnalysisWindowByID(context.Context, *v1.ID) (*AnalysisWindow, error)
+	GetAnalysisWindowsByQueryFilter(context.Context, *AnalysisWindowsQueryFilter) (*AnalysisWindowsQueryResponse, error)
+	ForceWindowStart(context.Context, *v1.ID) (*emptypb.Empty, error)
+	ForceAllWindowsStart(context.Context, *emptypb.Empty) (*emptypb.Empty, error)
+	CancelWindowStart(context.Context, *v1.ID) (*emptypb.Empty, error)
 }
 
 // UnimplementedAnalysisServiceServer should be embedded to have
@@ -107,8 +160,20 @@ func (UnimplementedAnalysisServiceServer) AnalyzeReportsStream(*AnalyzeOptions, 
 func (UnimplementedAnalysisServiceServer) AnalyzeReports(context.Context, *AnalyzeOptions) (*AnalysisWindow, error) {
 	return nil, status.Error(codes.Unimplemented, "method AnalyzeReports not implemented")
 }
-func (UnimplementedAnalysisServiceServer) GetAnalysisWindowByUUID(context.Context, *v1.UUID) (*AnalysisWindow, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetAnalysisWindowByUUID not implemented")
+func (UnimplementedAnalysisServiceServer) GetAnalysisWindowByID(context.Context, *v1.ID) (*AnalysisWindow, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetAnalysisWindowByID not implemented")
+}
+func (UnimplementedAnalysisServiceServer) GetAnalysisWindowsByQueryFilter(context.Context, *AnalysisWindowsQueryFilter) (*AnalysisWindowsQueryResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetAnalysisWindowsByQueryFilter not implemented")
+}
+func (UnimplementedAnalysisServiceServer) ForceWindowStart(context.Context, *v1.ID) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method ForceWindowStart not implemented")
+}
+func (UnimplementedAnalysisServiceServer) ForceAllWindowsStart(context.Context, *emptypb.Empty) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method ForceAllWindowsStart not implemented")
+}
+func (UnimplementedAnalysisServiceServer) CancelWindowStart(context.Context, *v1.ID) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method CancelWindowStart not implemented")
 }
 func (UnimplementedAnalysisServiceServer) testEmbeddedByValue() {}
 
@@ -159,20 +224,92 @@ func _AnalysisService_AnalyzeReports_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AnalysisService_GetAnalysisWindowByUUID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(v1.UUID)
+func _AnalysisService_GetAnalysisWindowByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(v1.ID)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AnalysisServiceServer).GetAnalysisWindowByUUID(ctx, in)
+		return srv.(AnalysisServiceServer).GetAnalysisWindowByID(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AnalysisService_GetAnalysisWindowByUUID_FullMethodName,
+		FullMethod: AnalysisService_GetAnalysisWindowByID_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AnalysisServiceServer).GetAnalysisWindowByUUID(ctx, req.(*v1.UUID))
+		return srv.(AnalysisServiceServer).GetAnalysisWindowByID(ctx, req.(*v1.ID))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AnalysisService_GetAnalysisWindowsByQueryFilter_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AnalysisWindowsQueryFilter)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AnalysisServiceServer).GetAnalysisWindowsByQueryFilter(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AnalysisService_GetAnalysisWindowsByQueryFilter_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AnalysisServiceServer).GetAnalysisWindowsByQueryFilter(ctx, req.(*AnalysisWindowsQueryFilter))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AnalysisService_ForceWindowStart_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(v1.ID)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AnalysisServiceServer).ForceWindowStart(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AnalysisService_ForceWindowStart_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AnalysisServiceServer).ForceWindowStart(ctx, req.(*v1.ID))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AnalysisService_ForceAllWindowsStart_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AnalysisServiceServer).ForceAllWindowsStart(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AnalysisService_ForceAllWindowsStart_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AnalysisServiceServer).ForceAllWindowsStart(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AnalysisService_CancelWindowStart_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(v1.ID)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AnalysisServiceServer).CancelWindowStart(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AnalysisService_CancelWindowStart_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AnalysisServiceServer).CancelWindowStart(ctx, req.(*v1.ID))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -189,8 +326,24 @@ var AnalysisService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _AnalysisService_AnalyzeReports_Handler,
 		},
 		{
-			MethodName: "GetAnalysisWindowByUUID",
-			Handler:    _AnalysisService_GetAnalysisWindowByUUID_Handler,
+			MethodName: "GetAnalysisWindowByID",
+			Handler:    _AnalysisService_GetAnalysisWindowByID_Handler,
+		},
+		{
+			MethodName: "GetAnalysisWindowsByQueryFilter",
+			Handler:    _AnalysisService_GetAnalysisWindowsByQueryFilter_Handler,
+		},
+		{
+			MethodName: "ForceWindowStart",
+			Handler:    _AnalysisService_ForceWindowStart_Handler,
+		},
+		{
+			MethodName: "ForceAllWindowsStart",
+			Handler:    _AnalysisService_ForceAllWindowsStart_Handler,
+		},
+		{
+			MethodName: "CancelWindowStart",
+			Handler:    _AnalysisService_CancelWindowStart_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

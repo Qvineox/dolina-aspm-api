@@ -8,6 +8,11 @@ option features.field_presence = IMPLICIT;
 
 import "google/protobuf/go_features.proto";
 
+
+message ID {
+  uint32 id = 1;
+}
+
 message UUID {
   string uuid = 1;
 }

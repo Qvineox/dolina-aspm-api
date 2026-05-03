@@ -8,81 +8,51 @@ option features.field_presence = IMPLICIT;
 
 import "google/protobuf/go_features.proto";
 import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
 
+import "common/v1/pagination.proto";
 import "projects/v1/project.proto";
-import "projects/v1/revision.proto";
+import "common/v1/sort.proto";
+import "common/v1/uuid.proto";
 
 service ProjectService {
-  rpc GetProjectsByQueryFilter(ProjectsQueryFilter) returns (ProjectsList) {
+  rpc GetProjectByID(common.v1.ID) returns (Project) {
+    option (google.api.http) = {
+      get: "/api/v1/projects/{id}"
+    };
+  };
+
+  rpc GetProjectByQueryFilter(ProjectsQueryFilter) returns (ProjectsQueryResponse) {
     option (google.api.http) = {
       get: "/api/v1/projects"
     };
   };
 
-  rpc GetProject(ProjectsQueryFilter) returns (Project) {
+  rpc CreateProject(Project) returns (common.v1.ID) {
     option (google.api.http) = {
-      get: "/api/v1/projects/{id}",
-      additional_bindings: [
-        {
-          get: "/api/v1/projects/{slug}",
-        }
-      ]
-    };
-  };
-
-  rpc CreateProject(Project) returns (Project) {
-    option (google.api.http) = {
-      put: "/api/v1/projects",
+      put: "/api/v1/project",
       body: "*"
-    };
-  };
-
-  rpc UpdateProject(Project) returns (Project) {
-    option (google.api.http) = {
-      patch: "/api/v1/projects/{id}",
-      body: "*"
-    };
-  };
-
-  rpc GetProjectRevision(ProjectRevisionQuery) returns (Revision) {
-    option (google.api.http) = {
-      get: "/api/v1/projects/{project_id}/{revision_id}"
-      additional_bindings: [
-        {
-          get: "/api/v1/projects/{project_slug}/{revision_id}"
-        }
-      ]
     };
   }
 
-  rpc UpdateProjectRevision(Revision) returns (Revision) {
+  rpc DeleteProjectByID(common.v1.ID) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      patch: "/api/v1/projects/{project_id}/{id}",
-      body: "*",
+      delete: "/api/v1/projects/{id}"
     };
   };
 }
 
 message ProjectsQueryFilter {
-  uint64 id = 1;
-  string slug = 2;
+  string name = 1;
 
-  string name = 3;
+  repeated string label_list = 2;
 
-  repeated string tags = 4;
+  common.v1.Pagination pagination = 3;
+  common.v1.Sort sort = 4;
 }
 
-message ProjectsList {
-  repeated Project list = 1;
-}
+message ProjectsQueryResponse {
+  repeated Project projects_list = 1;
 
-message ProjectRevisionQuery {
-  uint64 project_id = 1;
-  string project_slug = 2;
-
-  uint64 revision_id = 3;
-}
-
-message ProjectCreateOptions {
-
+  common.v1.PaginationMetadata pagination = 2;
 }

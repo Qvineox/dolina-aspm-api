@@ -4,13 +4,17 @@ package dolina.analysis.v1;
 
 option go_package = "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/analysis/v1;analysis_v1";
 option features.(pb.go).api_level = API_OPAQUE;
-option features.field_presence = EXPLICIT;
+option features.field_presence = IMPLICIT;
 
+import "protoc-gen-openapiv2/options/annotations.proto";
 import "google/protobuf/go_features.proto";
 import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
 
 import "analysis/v1/analysis.proto";
 import "analysis/v1/window.proto";
+import "common/v1/pagination.proto";
+import "common/v1/sort.proto";
 import "common/v1/uuid.proto";
 
 service AnalysisService {
@@ -25,9 +29,60 @@ service AnalysisService {
     };
   }
 
-  rpc GetAnalysisWindowByUUID(common.v1.UUID) returns (AnalysisWindow) {
+  rpc GetAnalysisWindowByID(common.v1.ID) returns (AnalysisWindow) {
     option (google.api.http) = {
-      get: "/api/v1/analysis/windows/{uuid}"
+      get: "/api/v1/analysis/windows/{id}"
     };
   }
+
+  rpc GetAnalysisWindowsByQueryFilter(AnalysisWindowsQueryFilter) returns (AnalysisWindowsQueryResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/analysis/windows"
+    };
+  }
+
+  rpc ForceWindowStart(common.v1.ID) returns (google.protobuf.Empty) {
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "Forces an active analysis window into closed state and immediately starts it, "
+          "setting the priority to the max available value"
+    };
+    option (google.api.http) = {
+      post: "/api/v1/analysis/windows/{id}/start"
+    };
+  }
+
+  rpc ForceAllWindowsStart(google.protobuf.Empty) returns (google.protobuf.Empty) {
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "Forces all active analysis windows into closed state and immediately starts them, "
+          "setting the priority to the max available values"
+    };
+    option (google.api.http) = {
+      post: "/api/v1/analysis/windows/start"
+    };
+  }
+
+  rpc CancelWindowStart(common.v1.ID) returns (google.protobuf.Empty) {
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "Cancels analysis window start, if its not started yet"
+    };
+    option (google.api.http) = {
+      post: "/api/v1/analysis/windows/{id}/cancel"
+    };
+  }
+}
+
+message AnalysisWindowsQueryFilter {
+  AnalysisState state = 1;
+
+  string pipeline_id = 2;
+  string asset_suid = 3;
+
+  common.v1.Pagination pagination = 4;
+  common.v1.Sort sort = 5;
+}
+
+message AnalysisWindowsQueryResponse {
+  repeated AnalysisWindow analysis_windows_list = 1;
+
+  common.v1.PaginationMetadata pagination = 2;
 }

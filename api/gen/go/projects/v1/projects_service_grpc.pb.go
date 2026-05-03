@@ -8,9 +8,11 @@ package projects_v1
 
 import (
 	context "context"
+	v1 "gitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/common/v1"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -19,24 +21,20 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	ProjectService_GetProjectsByQueryFilter_FullMethodName = "/dolina.projects.v1.ProjectService/GetProjectsByQueryFilter"
-	ProjectService_GetProject_FullMethodName               = "/dolina.projects.v1.ProjectService/GetProject"
-	ProjectService_CreateProject_FullMethodName            = "/dolina.projects.v1.ProjectService/CreateProject"
-	ProjectService_UpdateProject_FullMethodName            = "/dolina.projects.v1.ProjectService/UpdateProject"
-	ProjectService_GetProjectRevision_FullMethodName       = "/dolina.projects.v1.ProjectService/GetProjectRevision"
-	ProjectService_UpdateProjectRevision_FullMethodName    = "/dolina.projects.v1.ProjectService/UpdateProjectRevision"
+	ProjectService_GetProjectByID_FullMethodName          = "/dolina.projects.v1.ProjectService/GetProjectByID"
+	ProjectService_GetProjectByQueryFilter_FullMethodName = "/dolina.projects.v1.ProjectService/GetProjectByQueryFilter"
+	ProjectService_CreateProject_FullMethodName           = "/dolina.projects.v1.ProjectService/CreateProject"
+	ProjectService_DeleteProjectByID_FullMethodName       = "/dolina.projects.v1.ProjectService/DeleteProjectByID"
 )
 
 // ProjectServiceClient is the client API for ProjectService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ProjectServiceClient interface {
-	GetProjectsByQueryFilter(ctx context.Context, in *ProjectsQueryFilter, opts ...grpc.CallOption) (*ProjectsList, error)
-	GetProject(ctx context.Context, in *ProjectsQueryFilter, opts ...grpc.CallOption) (*Project, error)
-	CreateProject(ctx context.Context, in *Project, opts ...grpc.CallOption) (*Project, error)
-	UpdateProject(ctx context.Context, in *Project, opts ...grpc.CallOption) (*Project, error)
-	GetProjectRevision(ctx context.Context, in *ProjectRevisionQuery, opts ...grpc.CallOption) (*Revision, error)
-	UpdateProjectRevision(ctx context.Context, in *Revision, opts ...grpc.CallOption) (*Revision, error)
+	GetProjectByID(ctx context.Context, in *v1.ID, opts ...grpc.CallOption) (*Project, error)
+	GetProjectByQueryFilter(ctx context.Context, in *ProjectsQueryFilter, opts ...grpc.CallOption) (*ProjectsQueryResponse, error)
+	CreateProject(ctx context.Context, in *Project, opts ...grpc.CallOption) (*v1.ID, error)
+	DeleteProjectByID(ctx context.Context, in *v1.ID, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type projectServiceClient struct {
@@ -47,29 +45,29 @@ func NewProjectServiceClient(cc grpc.ClientConnInterface) ProjectServiceClient {
 	return &projectServiceClient{cc}
 }
 
-func (c *projectServiceClient) GetProjectsByQueryFilter(ctx context.Context, in *ProjectsQueryFilter, opts ...grpc.CallOption) (*ProjectsList, error) {
+func (c *projectServiceClient) GetProjectByID(ctx context.Context, in *v1.ID, opts ...grpc.CallOption) (*Project, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ProjectsList)
-	err := c.cc.Invoke(ctx, ProjectService_GetProjectsByQueryFilter_FullMethodName, in, out, cOpts...)
+	out := new(Project)
+	err := c.cc.Invoke(ctx, ProjectService_GetProjectByID_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *projectServiceClient) GetProject(ctx context.Context, in *ProjectsQueryFilter, opts ...grpc.CallOption) (*Project, error) {
+func (c *projectServiceClient) GetProjectByQueryFilter(ctx context.Context, in *ProjectsQueryFilter, opts ...grpc.CallOption) (*ProjectsQueryResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Project)
-	err := c.cc.Invoke(ctx, ProjectService_GetProject_FullMethodName, in, out, cOpts...)
+	out := new(ProjectsQueryResponse)
+	err := c.cc.Invoke(ctx, ProjectService_GetProjectByQueryFilter_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *projectServiceClient) CreateProject(ctx context.Context, in *Project, opts ...grpc.CallOption) (*Project, error) {
+func (c *projectServiceClient) CreateProject(ctx context.Context, in *Project, opts ...grpc.CallOption) (*v1.ID, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Project)
+	out := new(v1.ID)
 	err := c.cc.Invoke(ctx, ProjectService_CreateProject_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -77,30 +75,10 @@ func (c *projectServiceClient) CreateProject(ctx context.Context, in *Project, o
 	return out, nil
 }
 
-func (c *projectServiceClient) UpdateProject(ctx context.Context, in *Project, opts ...grpc.CallOption) (*Project, error) {
+func (c *projectServiceClient) DeleteProjectByID(ctx context.Context, in *v1.ID, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Project)
-	err := c.cc.Invoke(ctx, ProjectService_UpdateProject_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *projectServiceClient) GetProjectRevision(ctx context.Context, in *ProjectRevisionQuery, opts ...grpc.CallOption) (*Revision, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Revision)
-	err := c.cc.Invoke(ctx, ProjectService_GetProjectRevision_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *projectServiceClient) UpdateProjectRevision(ctx context.Context, in *Revision, opts ...grpc.CallOption) (*Revision, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Revision)
-	err := c.cc.Invoke(ctx, ProjectService_UpdateProjectRevision_FullMethodName, in, out, cOpts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, ProjectService_DeleteProjectByID_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -111,12 +89,10 @@ func (c *projectServiceClient) UpdateProjectRevision(ctx context.Context, in *Re
 // All implementations should embed UnimplementedProjectServiceServer
 // for forward compatibility.
 type ProjectServiceServer interface {
-	GetProjectsByQueryFilter(context.Context, *ProjectsQueryFilter) (*ProjectsList, error)
-	GetProject(context.Context, *ProjectsQueryFilter) (*Project, error)
-	CreateProject(context.Context, *Project) (*Project, error)
-	UpdateProject(context.Context, *Project) (*Project, error)
-	GetProjectRevision(context.Context, *ProjectRevisionQuery) (*Revision, error)
-	UpdateProjectRevision(context.Context, *Revision) (*Revision, error)
+	GetProjectByID(context.Context, *v1.ID) (*Project, error)
+	GetProjectByQueryFilter(context.Context, *ProjectsQueryFilter) (*ProjectsQueryResponse, error)
+	CreateProject(context.Context, *Project) (*v1.ID, error)
+	DeleteProjectByID(context.Context, *v1.ID) (*emptypb.Empty, error)
 }
 
 // UnimplementedProjectServiceServer should be embedded to have
@@ -126,23 +102,17 @@ type ProjectServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedProjectServiceServer struct{}
 
-func (UnimplementedProjectServiceServer) GetProjectsByQueryFilter(context.Context, *ProjectsQueryFilter) (*ProjectsList, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetProjectsByQueryFilter not implemented")
+func (UnimplementedProjectServiceServer) GetProjectByID(context.Context, *v1.ID) (*Project, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetProjectByID not implemented")
 }
-func (UnimplementedProjectServiceServer) GetProject(context.Context, *ProjectsQueryFilter) (*Project, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetProject not implemented")
+func (UnimplementedProjectServiceServer) GetProjectByQueryFilter(context.Context, *ProjectsQueryFilter) (*ProjectsQueryResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetProjectByQueryFilter not implemented")
 }
-func (UnimplementedProjectServiceServer) CreateProject(context.Context, *Project) (*Project, error) {
+func (UnimplementedProjectServiceServer) CreateProject(context.Context, *Project) (*v1.ID, error) {
 	return nil, status.Error(codes.Unimplemented, "method CreateProject not implemented")
 }
-func (UnimplementedProjectServiceServer) UpdateProject(context.Context, *Project) (*Project, error) {
-	return nil, status.Error(codes.Unimplemented, "method UpdateProject not implemented")
-}
-func (UnimplementedProjectServiceServer) GetProjectRevision(context.Context, *ProjectRevisionQuery) (*Revision, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetProjectRevision not implemented")
-}
-func (UnimplementedProjectServiceServer) UpdateProjectRevision(context.Context, *Revision) (*Revision, error) {
-	return nil, status.Error(codes.Unimplemented, "method UpdateProjectRevision not implemented")
+func (UnimplementedProjectServiceServer) DeleteProjectByID(context.Context, *v1.ID) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeleteProjectByID not implemented")
 }
 func (UnimplementedProjectServiceServer) testEmbeddedByValue() {}
 
@@ -164,38 +134,38 @@ func RegisterProjectServiceServer(s grpc.ServiceRegistrar, srv ProjectServiceSer
 	s.RegisterService(&ProjectService_ServiceDesc, srv)
 }
 
-func _ProjectService_GetProjectsByQueryFilter_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ProjectsQueryFilter)
+func _ProjectService_GetProjectByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(v1.ID)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ProjectServiceServer).GetProjectsByQueryFilter(ctx, in)
+		return srv.(ProjectServiceServer).GetProjectByID(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: ProjectService_GetProjectsByQueryFilter_FullMethodName,
+		FullMethod: ProjectService_GetProjectByID_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProjectServiceServer).GetProjectsByQueryFilter(ctx, req.(*ProjectsQueryFilter))
+		return srv.(ProjectServiceServer).GetProjectByID(ctx, req.(*v1.ID))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ProjectService_GetProject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _ProjectService_GetProjectByQueryFilter_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ProjectsQueryFilter)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ProjectServiceServer).GetProject(ctx, in)
+		return srv.(ProjectServiceServer).GetProjectByQueryFilter(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: ProjectService_GetProject_FullMethodName,
+		FullMethod: ProjectService_GetProjectByQueryFilter_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProjectServiceServer).GetProject(ctx, req.(*ProjectsQueryFilter))
+		return srv.(ProjectServiceServer).GetProjectByQueryFilter(ctx, req.(*ProjectsQueryFilter))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -218,56 +188,20 @@ func _ProjectService_CreateProject_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ProjectService_UpdateProject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Project)
+func _ProjectService_DeleteProjectByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(v1.ID)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ProjectServiceServer).UpdateProject(ctx, in)
+		return srv.(ProjectServiceServer).DeleteProjectByID(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: ProjectService_UpdateProject_FullMethodName,
+		FullMethod: ProjectService_DeleteProjectByID_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProjectServiceServer).UpdateProject(ctx, req.(*Project))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ProjectService_GetProjectRevision_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ProjectRevisionQuery)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ProjectServiceServer).GetProjectRevision(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ProjectService_GetProjectRevision_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProjectServiceServer).GetProjectRevision(ctx, req.(*ProjectRevisionQuery))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ProjectService_UpdateProjectRevision_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Revision)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ProjectServiceServer).UpdateProjectRevision(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ProjectService_UpdateProjectRevision_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProjectServiceServer).UpdateProjectRevision(ctx, req.(*Revision))
+		return srv.(ProjectServiceServer).DeleteProjectByID(ctx, req.(*v1.ID))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -280,28 +214,20 @@ var ProjectService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*ProjectServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetProjectsByQueryFilter",
-			Handler:    _ProjectService_GetProjectsByQueryFilter_Handler,
+			MethodName: "GetProjectByID",
+			Handler:    _ProjectService_GetProjectByID_Handler,
 		},
 		{
-			MethodName: "GetProject",
-			Handler:    _ProjectService_GetProject_Handler,
+			MethodName: "GetProjectByQueryFilter",
+			Handler:    _ProjectService_GetProjectByQueryFilter_Handler,
 		},
 		{
 			MethodName: "CreateProject",
 			Handler:    _ProjectService_CreateProject_Handler,
 		},
 		{
-			MethodName: "UpdateProject",
-			Handler:    _ProjectService_UpdateProject_Handler,
-		},
-		{
-			MethodName: "GetProjectRevision",
-			Handler:    _ProjectService_GetProjectRevision_Handler,
-		},
-		{
-			MethodName: "UpdateProjectRevision",
-			Handler:    _ProjectService_UpdateProjectRevision_Handler,
+			MethodName: "DeleteProjectByID",
+			Handler:    _ProjectService_DeleteProjectByID_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
