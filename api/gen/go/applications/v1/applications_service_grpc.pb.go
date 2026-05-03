@@ -27,7 +27,7 @@ const (
 	ApplicationsService_CreateApplication_FullMethodName            = "/dolina.application.v1.ApplicationsService/CreateApplication"
 	ApplicationsService_UpdateApplication_FullMethodName            = "/dolina.application.v1.ApplicationsService/UpdateApplication"
 	ApplicationsService_DeleteApplicationByID_FullMethodName        = "/dolina.application.v1.ApplicationsService/DeleteApplicationByID"
-	ApplicationsService_TransferApplicationToProject_FullMethodName = "/dolina.application.v1.ApplicationsService/TransferApplicationToProject"
+	ApplicationsService_TransferApplicationProjects_FullMethodName  = "/dolina.application.v1.ApplicationsService/TransferApplicationProjects"
 )
 
 // ApplicationsServiceClient is the client API for ApplicationsService service.
@@ -40,7 +40,7 @@ type ApplicationsServiceClient interface {
 	CreateApplication(ctx context.Context, in *Application, opts ...grpc.CallOption) (*v1.ID, error)
 	UpdateApplication(ctx context.Context, in *Application, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	DeleteApplicationByID(ctx context.Context, in *v1.ID, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	TransferApplicationToProject(ctx context.Context, in *ApplicationProjectTransferRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	TransferApplicationProjects(ctx context.Context, in *ApplicationProjectsTransferRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type applicationsServiceClient struct {
@@ -111,10 +111,10 @@ func (c *applicationsServiceClient) DeleteApplicationByID(ctx context.Context, i
 	return out, nil
 }
 
-func (c *applicationsServiceClient) TransferApplicationToProject(ctx context.Context, in *ApplicationProjectTransferRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *applicationsServiceClient) TransferApplicationProjects(ctx context.Context, in *ApplicationProjectsTransferRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, ApplicationsService_TransferApplicationToProject_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, ApplicationsService_TransferApplicationProjects_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -131,7 +131,7 @@ type ApplicationsServiceServer interface {
 	CreateApplication(context.Context, *Application) (*v1.ID, error)
 	UpdateApplication(context.Context, *Application) (*emptypb.Empty, error)
 	DeleteApplicationByID(context.Context, *v1.ID) (*emptypb.Empty, error)
-	TransferApplicationToProject(context.Context, *ApplicationProjectTransferRequest) (*emptypb.Empty, error)
+	TransferApplicationProjects(context.Context, *ApplicationProjectsTransferRequest) (*emptypb.Empty, error)
 }
 
 // UnimplementedApplicationsServiceServer should be embedded to have
@@ -159,8 +159,8 @@ func (UnimplementedApplicationsServiceServer) UpdateApplication(context.Context,
 func (UnimplementedApplicationsServiceServer) DeleteApplicationByID(context.Context, *v1.ID) (*emptypb.Empty, error) {
 	return nil, status.Error(codes.Unimplemented, "method DeleteApplicationByID not implemented")
 }
-func (UnimplementedApplicationsServiceServer) TransferApplicationToProject(context.Context, *ApplicationProjectTransferRequest) (*emptypb.Empty, error) {
-	return nil, status.Error(codes.Unimplemented, "method TransferApplicationToProject not implemented")
+func (UnimplementedApplicationsServiceServer) TransferApplicationProjects(context.Context, *ApplicationProjectsTransferRequest) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method TransferApplicationProjects not implemented")
 }
 func (UnimplementedApplicationsServiceServer) testEmbeddedByValue() {}
 
@@ -290,20 +290,20 @@ func _ApplicationsService_DeleteApplicationByID_Handler(srv interface{}, ctx con
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ApplicationsService_TransferApplicationToProject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ApplicationProjectTransferRequest)
+func _ApplicationsService_TransferApplicationProjects_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ApplicationProjectsTransferRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ApplicationsServiceServer).TransferApplicationToProject(ctx, in)
+		return srv.(ApplicationsServiceServer).TransferApplicationProjects(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: ApplicationsService_TransferApplicationToProject_FullMethodName,
+		FullMethod: ApplicationsService_TransferApplicationProjects_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ApplicationsServiceServer).TransferApplicationToProject(ctx, req.(*ApplicationProjectTransferRequest))
+		return srv.(ApplicationsServiceServer).TransferApplicationProjects(ctx, req.(*ApplicationProjectsTransferRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -340,8 +340,8 @@ var ApplicationsService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ApplicationsService_DeleteApplicationByID_Handler,
 		},
 		{
-			MethodName: "TransferApplicationToProject",
-			Handler:    _ApplicationsService_TransferApplicationToProject_Handler,
+			MethodName: "TransferApplicationProjects",
+			Handler:    _ApplicationsService_TransferApplicationProjects_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

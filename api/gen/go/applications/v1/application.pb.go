@@ -34,7 +34,7 @@ type Application struct {
 	xxx_hidden_LabelList     []string               `protobuf:"bytes,6,rep,name=label_list,json=labelList"`
 	xxx_hidden_Purl          *v1.PURL               `protobuf:"bytes,7,opt,name=purl"`
 	xxx_hidden_RiskProfileId uint32                 `protobuf:"varint,8,opt,name=risk_profile_id,json=riskProfileId"`
-	xxx_hidden_ProjectId     uint32                 `protobuf:"varint,9,opt,name=project_id,json=projectId"`
+	xxx_hidden_ProjectIdList []uint32               `protobuf:"varint,9,rep,packed,name=project_id_list,json=projectIdList"`
 	xxx_hidden_CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,20,opt,name=created_at,json=createdAt"`
 	xxx_hidden_UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,21,opt,name=updated_at,json=updatedAt"`
 	XXX_raceDetectHookData   protoimpl.RaceDetectHookData
@@ -127,11 +127,11 @@ func (x *Application) GetRiskProfileId() uint32 {
 	return 0
 }
 
-func (x *Application) GetProjectId() uint32 {
+func (x *Application) GetProjectIdList() []uint32 {
 	if x != nil {
-		return x.xxx_hidden_ProjectId
+		return x.xxx_hidden_ProjectIdList
 	}
-	return 0
+	return nil
 }
 
 func (x *Application) GetCreatedAt() *timestamppb.Timestamp {
@@ -181,8 +181,8 @@ func (x *Application) SetRiskProfileId(v uint32) {
 	x.xxx_hidden_RiskProfileId = v
 }
 
-func (x *Application) SetProjectId(v uint32) {
-	x.xxx_hidden_ProjectId = v
+func (x *Application) SetProjectIdList(v []uint32) {
+	x.xxx_hidden_ProjectIdList = v
 }
 
 func (x *Application) SetCreatedAt(v *timestamppb.Timestamp) {
@@ -251,7 +251,7 @@ type Application_builder struct {
 	// application component purl
 	Purl          *v1.PURL
 	RiskProfileId uint32
-	ProjectId     uint32
+	ProjectIdList []uint32
 	CreatedAt     *timestamppb.Timestamp
 	UpdatedAt     *timestamppb.Timestamp
 }
@@ -271,7 +271,7 @@ func (b0 Application_builder) Build() *Application {
 	x.xxx_hidden_LabelList = b.LabelList
 	x.xxx_hidden_Purl = b.Purl
 	x.xxx_hidden_RiskProfileId = b.RiskProfileId
-	x.xxx_hidden_ProjectId = b.ProjectId
+	x.xxx_hidden_ProjectIdList = b.ProjectIdList
 	x.xxx_hidden_CreatedAt = b.CreatedAt
 	x.xxx_hidden_UpdatedAt = b.UpdatedAt
 	return m0
@@ -281,7 +281,7 @@ var File_applications_v1_application_proto protoreflect.FileDescriptor
 
 const file_applications_v1_application_proto_rawDesc = "" +
 	"\n" +
-	"!applications/v1/application.proto\x12\x15dolina.application.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a!google/protobuf/go_features.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18components/v1/purl.proto\"\x99\x06\n" +
+	"!applications/v1/application.proto\x12\x15dolina.application.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a!google/protobuf/go_features.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18components/v1/purl.proto\"\xa2\x06\n" +
 	"\vApplication\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x12\n" +
 	"\x04suid\x18\x02 \x01(\tR\x04suid\x12\x12\n" +
@@ -291,9 +291,8 @@ const file_applications_v1_application_proto_rawDesc = "" +
 	"\n" +
 	"label_list\x18\x06 \x03(\tR\tlabelList\x125\n" +
 	"\x04purl\x18\a \x01(\v2\x1a.dolina.components.v1.PURLB\x05\xaa\x01\x02\b\x01R\x04purl\x12&\n" +
-	"\x0frisk_profile_id\x18\b \x01(\rR\rriskProfileId\x12\x1d\n" +
-	"\n" +
-	"project_id\x18\t \x01(\rR\tprojectId\x129\n" +
+	"\x0frisk_profile_id\x18\b \x01(\rR\rriskProfileId\x12&\n" +
+	"\x0fproject_id_list\x18\t \x03(\rR\rprojectIdList\x129\n" +
 	"\n" +
 	"created_at\x18\x14 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12@\n" +
 	"\n" +

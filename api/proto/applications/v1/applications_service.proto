@@ -54,10 +54,10 @@ service ApplicationsService {
     };
   }
 
-  rpc TransferApplicationToProject(ApplicationProjectTransferRequest) returns (google.protobuf.Empty) {
+  rpc TransferApplicationProjects(ApplicationProjectsTransferRequest) returns (google.protobuf.Empty) {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "Transfers application with all its relations to other project, also can be removed from any "
-          "projects if project_is if left unset"
+      description: "Transfers application with all its relations to other project (or multiple projects, also can be removed "
+          "from any projects if project_is if left unset"
     };
     option (google.api.http) = {
       patch: "/api/v1/applications/{application_id}/transfer"
@@ -71,9 +71,10 @@ message ApplicationsQueryFilter {
 
   repeated string label_list = 2;
   uint32 risk_profile_id = 3;
+  repeated uint32 project_id_list = 4;
 
-  common.v1.Pagination pagination = 4;
-  common.v1.Sort sort = 5;
+  common.v1.Pagination pagination = 5;
+  common.v1.Sort sort = 6;
 }
 
 message ApplicationsQueryResponse {
@@ -82,7 +83,7 @@ message ApplicationsQueryResponse {
   common.v1.PaginationMetadata pagination = 2;
 }
 
-message ApplicationProjectTransferRequest {
+message ApplicationProjectsTransferRequest {
   uint32 application_id = 1;
-  uint32 project_id = 2;
+  repeated uint32 project_id_list = 2;
 }

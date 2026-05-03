@@ -30,8 +30,9 @@ type ApplicationsQueryFilter struct {
 	xxx_hidden_Name          string                 `protobuf:"bytes,1,opt,name=name"`
 	xxx_hidden_LabelList     []string               `protobuf:"bytes,2,rep,name=label_list,json=labelList"`
 	xxx_hidden_RiskProfileId uint32                 `protobuf:"varint,3,opt,name=risk_profile_id,json=riskProfileId"`
-	xxx_hidden_Pagination    *v1.Pagination         `protobuf:"bytes,4,opt,name=pagination"`
-	xxx_hidden_Sort          *v1.Sort               `protobuf:"bytes,5,opt,name=sort"`
+	xxx_hidden_ProjectIdList []uint32               `protobuf:"varint,4,rep,packed,name=project_id_list,json=projectIdList"`
+	xxx_hidden_Pagination    *v1.Pagination         `protobuf:"bytes,5,opt,name=pagination"`
+	xxx_hidden_Sort          *v1.Sort               `protobuf:"bytes,6,opt,name=sort"`
 	unknownFields            protoimpl.UnknownFields
 	sizeCache                protoimpl.SizeCache
 }
@@ -82,6 +83,13 @@ func (x *ApplicationsQueryFilter) GetRiskProfileId() uint32 {
 	return 0
 }
 
+func (x *ApplicationsQueryFilter) GetProjectIdList() []uint32 {
+	if x != nil {
+		return x.xxx_hidden_ProjectIdList
+	}
+	return nil
+}
+
 func (x *ApplicationsQueryFilter) GetPagination() *v1.Pagination {
 	if x != nil {
 		return x.xxx_hidden_Pagination
@@ -106,6 +114,10 @@ func (x *ApplicationsQueryFilter) SetLabelList(v []string) {
 
 func (x *ApplicationsQueryFilter) SetRiskProfileId(v uint32) {
 	x.xxx_hidden_RiskProfileId = v
+}
+
+func (x *ApplicationsQueryFilter) SetProjectIdList(v []uint32) {
+	x.xxx_hidden_ProjectIdList = v
 }
 
 func (x *ApplicationsQueryFilter) SetPagination(v *v1.Pagination) {
@@ -144,6 +156,7 @@ type ApplicationsQueryFilter_builder struct {
 	Name          string
 	LabelList     []string
 	RiskProfileId uint32
+	ProjectIdList []uint32
 	Pagination    *v1.Pagination
 	Sort          *v1.Sort
 }
@@ -155,6 +168,7 @@ func (b0 ApplicationsQueryFilter_builder) Build() *ApplicationsQueryFilter {
 	x.xxx_hidden_Name = b.Name
 	x.xxx_hidden_LabelList = b.LabelList
 	x.xxx_hidden_RiskProfileId = b.RiskProfileId
+	x.xxx_hidden_ProjectIdList = b.ProjectIdList
 	x.xxx_hidden_Pagination = b.Pagination
 	x.xxx_hidden_Sort = b.Sort
 	return m0
@@ -244,28 +258,28 @@ func (b0 ApplicationsQueryResponse_builder) Build() *ApplicationsQueryResponse {
 	return m0
 }
 
-type ApplicationProjectTransferRequest struct {
+type ApplicationProjectsTransferRequest struct {
 	state                    protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_ApplicationId uint32                 `protobuf:"varint,1,opt,name=application_id,json=applicationId"`
-	xxx_hidden_ProjectId     uint32                 `protobuf:"varint,2,opt,name=project_id,json=projectId"`
+	xxx_hidden_ProjectIdList []uint32               `protobuf:"varint,2,rep,packed,name=project_id_list,json=projectIdList"`
 	unknownFields            protoimpl.UnknownFields
 	sizeCache                protoimpl.SizeCache
 }
 
-func (x *ApplicationProjectTransferRequest) Reset() {
-	*x = ApplicationProjectTransferRequest{}
+func (x *ApplicationProjectsTransferRequest) Reset() {
+	*x = ApplicationProjectsTransferRequest{}
 	mi := &file_applications_v1_applications_service_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ApplicationProjectTransferRequest) String() string {
+func (x *ApplicationProjectsTransferRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ApplicationProjectTransferRequest) ProtoMessage() {}
+func (*ApplicationProjectsTransferRequest) ProtoMessage() {}
 
-func (x *ApplicationProjectTransferRequest) ProtoReflect() protoreflect.Message {
+func (x *ApplicationProjectsTransferRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_applications_v1_applications_service_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -277,41 +291,41 @@ func (x *ApplicationProjectTransferRequest) ProtoReflect() protoreflect.Message 
 	return mi.MessageOf(x)
 }
 
-func (x *ApplicationProjectTransferRequest) GetApplicationId() uint32 {
+func (x *ApplicationProjectsTransferRequest) GetApplicationId() uint32 {
 	if x != nil {
 		return x.xxx_hidden_ApplicationId
 	}
 	return 0
 }
 
-func (x *ApplicationProjectTransferRequest) GetProjectId() uint32 {
+func (x *ApplicationProjectsTransferRequest) GetProjectIdList() []uint32 {
 	if x != nil {
-		return x.xxx_hidden_ProjectId
+		return x.xxx_hidden_ProjectIdList
 	}
-	return 0
+	return nil
 }
 
-func (x *ApplicationProjectTransferRequest) SetApplicationId(v uint32) {
+func (x *ApplicationProjectsTransferRequest) SetApplicationId(v uint32) {
 	x.xxx_hidden_ApplicationId = v
 }
 
-func (x *ApplicationProjectTransferRequest) SetProjectId(v uint32) {
-	x.xxx_hidden_ProjectId = v
+func (x *ApplicationProjectsTransferRequest) SetProjectIdList(v []uint32) {
+	x.xxx_hidden_ProjectIdList = v
 }
 
-type ApplicationProjectTransferRequest_builder struct {
+type ApplicationProjectsTransferRequest_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	ApplicationId uint32
-	ProjectId     uint32
+	ProjectIdList []uint32
 }
 
-func (b0 ApplicationProjectTransferRequest_builder) Build() *ApplicationProjectTransferRequest {
-	m0 := &ApplicationProjectTransferRequest{}
+func (b0 ApplicationProjectsTransferRequest_builder) Build() *ApplicationProjectsTransferRequest {
+	m0 := &ApplicationProjectsTransferRequest{}
 	b, x := &b0, m0
 	_, _ = b, x
 	x.xxx_hidden_ApplicationId = b.ApplicationId
-	x.xxx_hidden_ProjectId = b.ProjectId
+	x.xxx_hidden_ProjectIdList = b.ProjectIdList
 	return m0
 }
 
@@ -319,45 +333,45 @@ var File_applications_v1_applications_service_proto protoreflect.FileDescriptor
 
 const file_applications_v1_applications_service_proto_rawDesc = "" +
 	"\n" +
-	"*applications/v1/applications_service.proto\x12\x15dolina.application.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a!google/protobuf/go_features.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a!applications/v1/application.proto\x1a\x1acommon/v1/pagination.proto\x1a\x14common/v1/sort.proto\x1a\x14common/v1/uuid.proto\"\xde\x01\n" +
+	"*applications/v1/applications_service.proto\x12\x15dolina.application.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a!google/protobuf/go_features.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a!applications/v1/application.proto\x1a\x1acommon/v1/pagination.proto\x1a\x14common/v1/sort.proto\x1a\x14common/v1/uuid.proto\"\x86\x02\n" +
 	"\x17ApplicationsQueryFilter\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x1d\n" +
 	"\n" +
 	"label_list\x18\x02 \x03(\tR\tlabelList\x12&\n" +
-	"\x0frisk_profile_id\x18\x03 \x01(\rR\rriskProfileId\x12<\n" +
+	"\x0frisk_profile_id\x18\x03 \x01(\rR\rriskProfileId\x12&\n" +
+	"\x0fproject_id_list\x18\x04 \x03(\rR\rprojectIdList\x12<\n" +
 	"\n" +
-	"pagination\x18\x04 \x01(\v2\x1c.dolina.common.v1.PaginationR\n" +
+	"pagination\x18\x05 \x01(\v2\x1c.dolina.common.v1.PaginationR\n" +
 	"pagination\x12*\n" +
-	"\x04sort\x18\x05 \x01(\v2\x16.dolina.common.v1.SortR\x04sort\"\xb2\x01\n" +
+	"\x04sort\x18\x06 \x01(\v2\x16.dolina.common.v1.SortR\x04sort\"\xb2\x01\n" +
 	"\x19ApplicationsQueryResponse\x12O\n" +
 	"\x11applications_list\x18\x01 \x03(\v2\".dolina.application.v1.ApplicationR\x10applicationsList\x12D\n" +
 	"\n" +
 	"pagination\x18\x02 \x01(\v2$.dolina.common.v1.PaginationMetadataR\n" +
-	"pagination\"i\n" +
-	"!ApplicationProjectTransferRequest\x12%\n" +
-	"\x0eapplication_id\x18\x01 \x01(\rR\rapplicationId\x12\x1d\n" +
-	"\n" +
-	"project_id\x18\x02 \x01(\rR\tprojectId2\xac\b\n" +
+	"pagination\"s\n" +
+	"\"ApplicationProjectsTransferRequest\x12%\n" +
+	"\x0eapplication_id\x18\x01 \x01(\rR\rapplicationId\x12&\n" +
+	"\x0fproject_id_list\x18\x02 \x03(\rR\rprojectIdList2\xc2\b\n" +
 	"\x13ApplicationsService\x12q\n" +
 	"\x12GetApplicationByID\x12\x14.dolina.common.v1.ID\x1a\".dolina.application.v1.Application\"!\x82\xd3\xe4\x93\x02\x1b\x12\x19/api/v1/applications/{id}\x12~\n" +
 	"\x16GetProjectApplications\x12\x14.dolina.common.v1.ID\x1a\".dolina.application.v1.Application\"*\x82\xd3\xe4\x93\x02$\x12\"/api/v1/projects/{id}/applications\x12\x9e\x01\n" +
 	"\x1cGetApplicationsByQueryFilter\x12..dolina.application.v1.ApplicationsQueryFilter\x1a0.dolina.application.v1.ApplicationsQueryResponse\"\x1c\x82\xd3\xe4\x93\x02\x16\x12\x14/api/v1/applications\x12j\n" +
 	"\x11CreateApplication\x12\".dolina.application.v1.Application\x1a\x14.dolina.common.v1.ID\"\x1b\x82\xd3\xe4\x93\x02\x15\x1a\x13/api/v1/application\x12u\n" +
 	"\x11UpdateApplication\x12\".dolina.application.v1.Application\x1a\x16.google.protobuf.Empty\"$\x82\xd3\xe4\x93\x02\x1e:\x01*2\x19/api/v1/applications/{id}\x12h\n" +
-	"\x15DeleteApplicationByID\x12\x14.dolina.common.v1.ID\x1a\x16.google.protobuf.Empty\"!\x82\xd3\xe4\x93\x02\x1b*\x19/api/v1/applications/{id}\x12\xb3\x02\n" +
-	"\x1cTransferApplicationToProject\x128.dolina.application.v1.ApplicationProjectTransferRequest\x1a\x16.google.protobuf.Empty\"\xc0\x01\x92A\x83\x01\x1a\x80\x01Transfers application with all its relations to other project, also can be removed from any projects if project_is if left unset\x82\xd3\xe4\x93\x023:\x01*2./api/v1/applications/{application_id}/transferB_ZSgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/applications/v1;application_v1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
+	"\x15DeleteApplicationByID\x12\x14.dolina.common.v1.ID\x1a\x16.google.protobuf.Empty\"!\x82\xd3\xe4\x93\x02\x1b*\x19/api/v1/applications/{id}\x12\xc9\x02\n" +
+	"\x1bTransferApplicationProjects\x129.dolina.application.v1.ApplicationProjectsTransferRequest\x1a\x16.google.protobuf.Empty\"\xd6\x01\x92A\x99\x01\x1a\x96\x01Transfers application with all its relations to other project (or multiple projects, also can be removed from any projects if project_is if left unset\x82\xd3\xe4\x93\x023:\x01*2./api/v1/applications/{application_id}/transferB_ZSgitlab.domsnail.ru/dolina/dolina-aspm-api/api/gen/go/applications/v1;application_v1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
 
 var file_applications_v1_applications_service_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_applications_v1_applications_service_proto_goTypes = []any{
-	(*ApplicationsQueryFilter)(nil),           // 0: dolina.application.v1.ApplicationsQueryFilter
-	(*ApplicationsQueryResponse)(nil),         // 1: dolina.application.v1.ApplicationsQueryResponse
-	(*ApplicationProjectTransferRequest)(nil), // 2: dolina.application.v1.ApplicationProjectTransferRequest
-	(*v1.Pagination)(nil),                     // 3: dolina.common.v1.Pagination
-	(*v1.Sort)(nil),                           // 4: dolina.common.v1.Sort
-	(*Application)(nil),                       // 5: dolina.application.v1.Application
-	(*v1.PaginationMetadata)(nil),             // 6: dolina.common.v1.PaginationMetadata
-	(*v1.ID)(nil),                             // 7: dolina.common.v1.ID
-	(*emptypb.Empty)(nil),                     // 8: google.protobuf.Empty
+	(*ApplicationsQueryFilter)(nil),            // 0: dolina.application.v1.ApplicationsQueryFilter
+	(*ApplicationsQueryResponse)(nil),          // 1: dolina.application.v1.ApplicationsQueryResponse
+	(*ApplicationProjectsTransferRequest)(nil), // 2: dolina.application.v1.ApplicationProjectsTransferRequest
+	(*v1.Pagination)(nil),                      // 3: dolina.common.v1.Pagination
+	(*v1.Sort)(nil),                            // 4: dolina.common.v1.Sort
+	(*Application)(nil),                        // 5: dolina.application.v1.Application
+	(*v1.PaginationMetadata)(nil),              // 6: dolina.common.v1.PaginationMetadata
+	(*v1.ID)(nil),                              // 7: dolina.common.v1.ID
+	(*emptypb.Empty)(nil),                      // 8: google.protobuf.Empty
 }
 var file_applications_v1_applications_service_proto_depIdxs = []int32{
 	3,  // 0: dolina.application.v1.ApplicationsQueryFilter.pagination:type_name -> dolina.common.v1.Pagination
@@ -370,14 +384,14 @@ var file_applications_v1_applications_service_proto_depIdxs = []int32{
 	5,  // 7: dolina.application.v1.ApplicationsService.CreateApplication:input_type -> dolina.application.v1.Application
 	5,  // 8: dolina.application.v1.ApplicationsService.UpdateApplication:input_type -> dolina.application.v1.Application
 	7,  // 9: dolina.application.v1.ApplicationsService.DeleteApplicationByID:input_type -> dolina.common.v1.ID
-	2,  // 10: dolina.application.v1.ApplicationsService.TransferApplicationToProject:input_type -> dolina.application.v1.ApplicationProjectTransferRequest
+	2,  // 10: dolina.application.v1.ApplicationsService.TransferApplicationProjects:input_type -> dolina.application.v1.ApplicationProjectsTransferRequest
 	5,  // 11: dolina.application.v1.ApplicationsService.GetApplicationByID:output_type -> dolina.application.v1.Application
 	5,  // 12: dolina.application.v1.ApplicationsService.GetProjectApplications:output_type -> dolina.application.v1.Application
 	1,  // 13: dolina.application.v1.ApplicationsService.GetApplicationsByQueryFilter:output_type -> dolina.application.v1.ApplicationsQueryResponse
 	7,  // 14: dolina.application.v1.ApplicationsService.CreateApplication:output_type -> dolina.common.v1.ID
 	8,  // 15: dolina.application.v1.ApplicationsService.UpdateApplication:output_type -> google.protobuf.Empty
 	8,  // 16: dolina.application.v1.ApplicationsService.DeleteApplicationByID:output_type -> google.protobuf.Empty
-	8,  // 17: dolina.application.v1.ApplicationsService.TransferApplicationToProject:output_type -> google.protobuf.Empty
+	8,  // 17: dolina.application.v1.ApplicationsService.TransferApplicationProjects:output_type -> google.protobuf.Empty
 	11, // [11:18] is the sub-list for method output_type
 	4,  // [4:11] is the sub-list for method input_type
 	4,  // [4:4] is the sub-list for extension type_name

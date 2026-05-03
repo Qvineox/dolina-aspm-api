@@ -368,11 +368,15 @@
             "format": "int64"
           },
           {
-            "name": "projectId",
+            "name": "projectIdList",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int64"
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "collectionFormat": "multi"
           },
           {
             "name": "createdAt",
@@ -436,6 +440,17 @@
             "format": "int64"
           },
           {
+            "name": "projectIdList",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "collectionFormat": "multi"
+          },
+          {
             "name": "pagination.offset",
             "in": "query",
             "required": false,
@@ -457,8 +472,8 @@
     },
     "/api/v1/applications/{applicationId}/transfer": {
       "patch": {
-        "description": "Transfers application with all its relations to other project, also can be removed from any projects if project_is if left unset",
-        "operationId": "ApplicationsService_TransferApplicationToProject",
+        "description": "Transfers application with all its relations to other project (or multiple projects, also can be removed from any projects if project_is if left unset",
+        "operationId": "ApplicationsService_TransferApplicationProjects",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -487,7 +502,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/ApplicationsServiceTransferApplicationToProjectBody"
+              "$ref": "#/definitions/ApplicationsServiceTransferApplicationProjectsBody"
             }
           }
         ],
@@ -1726,12 +1741,15 @@
     }
   },
   "definitions": {
-    "ApplicationsServiceTransferApplicationToProjectBody": {
+    "ApplicationsServiceTransferApplicationProjectsBody": {
       "type": "object",
       "properties": {
-        "projectId": {
-          "type": "integer",
-          "format": "int64"
+        "projectIdList": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          }
         }
       }
     },
@@ -1765,9 +1783,12 @@
           "type": "integer",
           "format": "int64"
         },
-        "projectId": {
-          "type": "integer",
-          "format": "int64"
+        "projectIdList": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          }
         },
         "createdAt": {
           "type": "string",
@@ -2017,6 +2038,9 @@
         "assetSuid": {
           "type": "string"
         },
+        "projectSuid": {
+          "type": "string"
+        },
         "repositoryPath": {
           "type": "string",
           "description": "used to generate repository suid and name",
@@ -2039,7 +2063,7 @@
         },
         "autoCreate": {
           "type": "boolean",
-          "title": "defines if non-existing entities (assets, repositories or artifacts) will be created"
+          "title": "defines if non-existing entities (assets, repositories, artifacts or project) will be created"
         },
         "uploadWindowDuration": {
           "type": "string",
@@ -2087,9 +2111,12 @@
           "type": "integer",
           "format": "int64"
         },
-        "projectId": {
-          "type": "integer",
-          "format": "int64"
+        "projectIdList": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          }
         },
         "createdAt": {
           "type": "string",

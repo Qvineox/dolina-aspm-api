@@ -30,24 +30,25 @@ message AnalyzeOptions {
   // application/asset related fields
   string application_suid = 2;
   string asset_suid = 3;
+  string project_suid = 4;
 
   // create or update project repository by provided attributes
-  string repository_path = 4; // used to generate repository suid and name
-  string repository_url = 5;
-  string repository_ref = 6; // branch, tag, any variation of an app
+  string repository_path = 5; // used to generate repository suid and name
+  string repository_url = 6;
+  string repository_ref = 7; // branch, tag, any variation of an app
 
   // create or update project artifact by provided attributes
-  string artifact_purl = 7;
+  string artifact_purl = 8;
 
   // ci/cd attributes
-  string pipeline_id = 8;
+  string pipeline_id = 9;
 
-  // defines if non-existing entities (assets, repositories or artifacts) will be created
+  // defines if non-existing entities (assets, repositories, artifacts or project) will be created
   bool auto_create = 10;
 
   // if early_start set to true, workers start to process scanner reports immediately, not waiting for process window to close
-  google.protobuf.Duration upload_window_duration = 9; // defines how long to delay processing
-  bool early_start = 11;
+  google.protobuf.Duration upload_window_duration = 11; // defines how long to delay processing
+  bool early_start = 12;
 }
 
 message Analysis {
