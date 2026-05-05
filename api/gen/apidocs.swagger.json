@@ -1622,7 +1622,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/dolinaApplicationV1Revision"
+              "$ref": "#/definitions/v1Revision"
             }
           },
           "default": {
@@ -1836,49 +1836,6 @@
         "CVSS4_SEVERITY_CRITICAL"
       ],
       "default": "CVSS4_SEVERITY_UNSPECIFIED"
-    },
-    "dolinaApplicationV1Revision": {
-      "type": "object",
-      "properties": {
-        "uuid": {
-          "type": "string",
-          "title": "sequential internal revision number\nthere can be multiple revisions from same git ref"
-        },
-        "applicationId": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "assetUuid": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "ref": {
-          "type": "string",
-          "description": "branch name, tag, or ref/spec (e.g., \"main\", \"v1.2.3\"),\ncontextual branch/tag showing deployment context."
-        },
-        "repositoryUuid": {
-          "type": "string"
-        },
-        "artifactUuid": {
-          "type": "string"
-        },
-        "commit": {
-          "$ref": "#/definitions/v1Commit"
-        },
-        "repository": {
-          "$ref": "#/definitions/v1Repository"
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "updatedAt": {
-          "type": "string",
-          "format": "date-time"
-        }
-      },
-      "description": "Application revision representing a specific historical state in the application asset's version control history. Contains exact commit hash, branch/tag reference, commit timestamp, optional author metadata, and change summary for tracking security posture evolution across application versions in the ASPM system.",
-      "title": "Revision"
     },
     "protobufAny": {
       "type": "object",
@@ -2907,6 +2864,49 @@
       "description": "Git repository configuration defining the source code origin for application revisions. Contains repository identification, clone URL, authentication details (masked), branch/tag defaults, and metadata for ASPM scanning and historical analysis.",
       "title": "Git repository"
     },
+    "v1Revision": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string",
+          "title": "sequential internal revision number\nthere can be multiple revisions from same git ref"
+        },
+        "applicationId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "assetUuid": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "ref": {
+          "type": "string",
+          "description": "branch name, tag, or ref/spec (e.g., \"main\", \"v1.2.3\"),\ncontextual branch/tag showing deployment context."
+        },
+        "repositoryUuid": {
+          "type": "string"
+        },
+        "artifactUuid": {
+          "type": "string"
+        },
+        "commit": {
+          "$ref": "#/definitions/v1Commit"
+        },
+        "repository": {
+          "$ref": "#/definitions/v1Repository"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "description": "Application revision representing a specific historical state in the application asset's version control history. Contains exact commit hash, branch/tag reference, commit timestamp, optional author metadata, and change summary for tracking security posture evolution across application versions in the ASPM system.",
+      "title": "Revision"
+    },
     "v1RevisionsQueryResponse": {
       "type": "object",
       "properties": {
@@ -2914,7 +2914,7 @@
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/dolinaApplicationV1Revision"
+            "$ref": "#/definitions/v1Revision"
           }
         },
         "pagination": {
